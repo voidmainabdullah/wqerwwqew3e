@@ -7,8 +7,11 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { AuthPage } from "@/components/auth/AuthPage";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Dashboard } from "@/components/dashboard/Dashboard";
+import { Analytics } from "@/components/dashboard/Analytics";
+import { Settings } from "@/components/dashboard/Settings";
 import { FileUpload } from "@/components/upload/FileUpload";
 import { FileManager } from "@/components/files/FileManager";
+import { SharedLinks } from "@/components/files/SharedLinks";
 import { FileReceiver } from "@/components/files/FileReceiver";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import { CodeSharePage } from "@/components/sharing/CodeSharePage";
@@ -52,17 +55,17 @@ const App = () => (
               } />
               <Route path="/dashboard/shared" element={
                 <DashboardLayout>
-                  <FileManager />
+                  <SharedLinks />
                 </DashboardLayout>
               } />
               <Route path="/dashboard/analytics" element={
                 <DashboardLayout>
-                  <div>Analytics page coming soon...</div>
+                  <Analytics />
                 </DashboardLayout>
               } />
               <Route path="/dashboard/settings" element={
                 <DashboardLayout>
-                  <div>Settings page coming soon...</div>
+                  <Settings />
                 </DashboardLayout>
               } />
               <Route path="/subscription" element={<SubscriptionPage />} />

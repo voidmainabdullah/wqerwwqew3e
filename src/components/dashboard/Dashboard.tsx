@@ -76,7 +76,7 @@ export const Dashboard: React.FC = () => {
         totalShares: shareCount || 0,
         totalDownloads: downloadCount || 0,
         dailyUploadCount: profile?.daily_upload_count || 0,
-        dailyUploadLimit: profile?.daily_upload_limit || 5,
+        dailyUploadLimit: profile?.daily_upload_limit || 10,
         subscriptionTier: profile?.subscription_tier || 'free',
       });
     } catch (error) {

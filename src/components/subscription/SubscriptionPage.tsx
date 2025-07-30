@@ -21,7 +21,15 @@ export const SubscriptionPage: React.FC = () => {
     }
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error("No valid session found");
+      }
+
       const { data, error } = await supabase.functions.invoke('create-paddle-checkout', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: { plan }
       });
 
@@ -42,7 +50,7 @@ export const SubscriptionPage: React.FC = () => {
 
   const features = {
     free: [
-      "5 uploads per day",
+      "10 uploads per day",
       "Basic file sharing",
       "7-day link expiry",
       "Community support"
