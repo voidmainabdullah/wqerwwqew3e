@@ -11,7 +11,7 @@ A modern, secure file sharing platform built with React, Supabase, and Paddle pa
 - **Download limits**: Control how many times files can be downloaded
 
 ### 💼 Subscription Management
-- **Free tier**: 5 uploads per day with basic features
+- **Free tier**: 10 uploads per day with basic features
 - **Pro tier**: Unlimited uploads with advanced features
 - **Paddle integration**: Secure payment processing
 - **Flexible billing**: Monthly and yearly subscription options
@@ -70,9 +70,10 @@ A modern, secure file sharing platform built with React, Supabase, and Paddle pa
 
 ### Required Configuration
 1. **Supabase Project**: Set up with database migrations from `supabase/migrations/`
-2. **Paddle Account**: Configure subscription products and get API keys
-3. **Edge Functions**: Deploy `create-paddle-checkout` and `send-email` functions
-4. **Environment Variables**: Set all required keys in production
+2. **Database Update**: Run the SQL script in `supabase/update_upload_limit.sql` to set correct upload limits
+3. **Paddle Account**: Configure subscription products and get API keys
+4. **Edge Functions**: Deploy `create-paddle-checkout` and `send-email` functions
+5. **Environment Variables**: Set all required keys in production
 
 ### Database Tables
 - `profiles` - User profiles and subscription information

@@ -62,7 +62,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [toast]);
 
   const signUp = async (email: string, password: string, displayName?: string) => {
-    const redirectUrl = `${window.location.origin}/`;
+    // Use the actual domain instead of localhost
+    const redirectUrl = window.location.hostname === 'localhost' 
+      ? `${window.location.origin}/` 
+      : `https://${window.location.hostname}/`;
     
     const { error } = await supabase.auth.signUp({
       email,
@@ -109,10 +112,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInWithGoogle = async () => {
+    // Use the actual domain instead of localhost
+    const redirectUrl = window.location.hostname === 'localhost' 
+      ? `${window.location.origin}/` 
+      : `https://${window.location.hostname}/`;
+      
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/`,
+        redirectTo: redirectUrl,
       },
     });
 
