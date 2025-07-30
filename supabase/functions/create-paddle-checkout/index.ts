@@ -82,12 +82,12 @@ serve(async (req) => {
       }
     };
 
+    console.log("Making request to Paddle API...");
     const response = await fetch("https://api.paddle.com/transactions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${paddleApiKey}`,
-        "Content-Type": "application/json",
-        "Paddle-Version": "1",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(transactionData),
     });
