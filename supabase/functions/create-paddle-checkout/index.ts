@@ -12,10 +12,14 @@ serve(async (req) => {
   }
 
   try {
+    console.log("Starting checkout creation...");
+    
     const paddleApiKey = Deno.env.get("PADDLE_API_KEY");
     if (!paddleApiKey) {
+      console.error("PADDLE_API_KEY is not configured");
       throw new Error("PADDLE_API_KEY is not configured");
     }
+    console.log("Paddle API key found");
 
     // Get user from request
     const supabaseClient = createClient(
@@ -24,12 +28,27 @@ serve(async (req) => {
     );
 
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("No authorization header");
+    if (!authHeader) {
+      console.error("No authorization header provided");
+      throw new Error("No authorization header");
+    }
+    console.log("Authorization header found");
 
     const token = authHeader.replace("Bearer ", "");
-    const { data: userData } = await supabaseClient.auth.getUser(token);
+    console.log("Attempting to get user from token...");
+    
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
+    if (userError) {
+      console.error("Error getting user:", userError);
+      throw new Error(`Authentication failed: ${userError.message}`);
+    }
+    
     const user = userData.user;
-    if (!user?.email) throw new Error("User not authenticated");
+    if (!user?.email) {
+      console.error("User not found or no email:", user);
+      throw new Error("User not authenticated or email not available");
+    }
+    console.log("User authenticated:", user.email);
 
     const { plan } = await req.json();
     
