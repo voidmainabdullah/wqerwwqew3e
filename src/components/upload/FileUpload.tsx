@@ -62,11 +62,12 @@ export const FileUpload: React.FC = () => {
         .eq('id', user.id)
         .single();
 
-      if (profile && profile.daily_upload_count >= profile.daily_upload_limit) {
+      // Skip limit check for pro users (they have unlimited uploads)
+      if (profile && profile.subscription_tier !== 'pro' && profile.daily_upload_count >= profile.daily_upload_limit) {
         toast({
           variant: "destructive",
           title: "Upload limit reached",
-          description: `You've reached your daily upload limit of ${profile.daily_upload_limit} files.`,
+          description: `You've reached your daily upload limit of ${profile.daily_upload_limit} files. Upgrade to Pro for unlimited uploads.`,
         });
         setIsUploading(false);
         return;
@@ -110,13 +111,15 @@ export const FileUpload: React.FC = () => {
 
           if (dbError) throw dbError;
 
-          // Update upload count
-          await supabase
-            .from('profiles')
-            .update({ 
-              daily_upload_count: (profile?.daily_upload_count || 0) + 1 
-            })
-            .eq('id', user.id);
+          // Update upload count (only for free users, pro users have unlimited)
+          if (profile?.subscription_tier !== 'pro') {
+            await supabase
+              .from('profiles')
+              .update({ 
+                daily_upload_count: (profile?.daily_upload_count || 0) + 1 
+              })
+              .eq('id', user.id);
+          }
 
           // Mark as success
           setUploadFiles(prev => prev.map((f, idx) => 

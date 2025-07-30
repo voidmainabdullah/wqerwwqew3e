@@ -76,7 +76,7 @@ export const Dashboard: React.FC = () => {
         totalShares: shareCount || 0,
         totalDownloads: downloadCount || 0,
         dailyUploadCount: profile?.daily_upload_count || 0,
-        dailyUploadLimit: profile?.daily_upload_limit || 10,
+        dailyUploadLimit: profile?.subscription_tier === 'pro' ? 999 : (profile?.daily_upload_limit || 10),
         subscriptionTier: profile?.subscription_tier || 'free',
       });
     } catch (error) {
@@ -106,7 +106,7 @@ export const Dashboard: React.FC = () => {
     );
   }
 
-  const uploadProgress = stats ? (stats.dailyUploadCount / stats.dailyUploadLimit) * 100 : 0;
+  const uploadProgress = stats ? (stats.subscriptionTier === 'pro' ? 0 : (stats.dailyUploadCount / stats.dailyUploadLimit) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -178,11 +178,16 @@ export const Dashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {stats?.dailyUploadCount}/{stats?.dailyUploadLimit}
+              {stats?.subscriptionTier === 'pro' ? 
+                `${stats?.dailyUploadCount}/∞` : 
+                `${stats?.dailyUploadCount}/${stats?.dailyUploadLimit}`
+              }
             </div>
-            <Progress value={uploadProgress} className="mt-2" />
+            {stats?.subscriptionTier !== 'pro' && (
+              <Progress value={uploadProgress} className="mt-2" />
+            )}
             <p className="text-xs text-muted-foreground mt-1">
-              Daily upload limit
+              {stats?.subscriptionTier === 'pro' ? 'Unlimited uploads' : 'Daily upload limit'}
             </p>
           </CardContent>
         </Card>

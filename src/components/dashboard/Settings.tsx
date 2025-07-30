@@ -204,7 +204,10 @@ export const Settings: React.FC = () => {
               <div>
                 <p className="font-medium">Daily Upload Limit</p>
                 <p className="text-sm text-muted-foreground">
-                  {profile?.daily_upload_count || 0} / {profile?.daily_upload_limit || 10} files used today
+                  {profile?.subscription_tier === 'pro' ? 
+                    `${profile?.daily_upload_count || 0} files uploaded today (unlimited)` :
+                    `${profile?.daily_upload_count || 0} / ${profile?.daily_upload_limit || 10} files used today`
+                  }
                 </p>
               </div>
             </div>
