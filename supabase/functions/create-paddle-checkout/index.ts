@@ -35,8 +35,8 @@ serve(async (req) => {
     
     // Define price IDs for monthly and yearly plans
     const priceIds = {
-      monthly: "pri_01jgy7z8vcd7md8vwj8xhqhmpb", // Replace with actual Paddle price ID
-      yearly: "pri_01jgy7z8vcd7md8vwj8xhqhmpb"   // Replace with actual Paddle price ID
+      monthly: Deno.env.get("PADDLE_PRICE_ID_MONTHLY") || "pri_01jgy7z8vcd7md8vwj8xhqhmpb",
+      yearly: Deno.env.get("PADDLE_PRICE_ID_YEARLY") || "pri_01jgy80a1vcd7md8vwj8xhqhmpb"
     };
 
     if (!priceIds[plan as keyof typeof priceIds]) {
@@ -54,6 +54,9 @@ serve(async (req) => {
       customer_email: user.email,
       checkout: {
         url: `${req.headers.get("origin")}/subscription-success`
+      },
+      billing_address: {
+        country_code: "US" // Default, will be overridden in checkout
       },
       custom_data: {
         user_id: user.id

@@ -13,6 +13,7 @@ import { FileReceiver } from "@/components/files/FileReceiver";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import { CodeSharePage } from "@/components/sharing/CodeSharePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
+import { SubscriptionSuccess } from "./pages/SubscriptionSuccess";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -65,6 +66,7 @@ const App = () => (
                 </DashboardLayout>
               } />
               <Route path="/subscription" element={<SubscriptionPage />} />
+              <Route path="/subscription-success" element={<SubscriptionSuccess />} />
               <Route path="/share/:token" element={<PublicSharePage />} />
               <Route path="/code" element={<CodeSharePage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

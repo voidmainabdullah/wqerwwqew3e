@@ -208,7 +208,26 @@ export const FileManager: React.FC = () => {
       } else if (shareMethod === 'email') {
         shareUrl = `${baseUrl}/share/${data.share_token}`;
         copyText = shareUrl;
-        // TODO: Send email with the link (would need email service)
+        
+        // Send email via edge function
+        try {
+          const { error: emailError } = await supabase.functions.invoke('send-email', {
+            body: {
+              recipientEmail,
+              shareUrl,
+              fileName: selectedFile.original_name,
+              subject: `File shared: ${selectedFile.original_name}`
+            }
+          });
+          
+          if (emailError) {
+            console.warn('Email sending failed:', emailError.message);
+            // Still continue with link creation even if email fails
+          }
+        } catch (emailError) {
+          console.warn('Email sending failed:', emailError);
+          // Still continue with link creation even if email fails
+        }
       } else {
         shareUrl = `${baseUrl}/share/${data.share_token}`;
         copyText = shareUrl;
@@ -567,28 +586,72 @@ export const FileManager: React.FC = () => {
                   <div className="mt-4 pt-4 border-t">
                     <h4 className="text-sm font-medium mb-2">Active Share Links</h4>
                     <div className="space-y-2">
-                      {sharedLinks[file.id].map((link) => (
-                        <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded">
-                          <div>
-                            <Badge variant="outline" className="mr-2">
-                              {link.link_type}
-                            </Badge>
-                            {link.recipient_email && <span className="text-muted-foreground">{link.recipient_email}</span>}
-                            <span className="ml-2">{link.download_count} downloads</span>
-                            {link.download_limit && <span> / {link.download_limit}</span>}
+                      {sharedLinks[file.id].map((link) => {
+                        const baseUrl = window.location.origin;
+                        const shareUrl = link.link_type === 'code' 
+                          ? `${baseUrl}/code` 
+                          : `${baseUrl}/share/${link.share_token}`;
+                        
+                        return (
+                          <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded">
+                            <div className="flex-1">
+                              <div className="flex items-center mb-1">
+                                <Badge variant="outline" className="mr-2">
+                                  {link.link_type}
+                                </Badge>
+                                {link.recipient_email && <span className="text-muted-foreground">{link.recipient_email}</span>}
+                                <span className="ml-2">{link.download_count} downloads</span>
+                                {link.download_limit && <span> / {link.download_limit}</span>}
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Input
+                                  value={shareUrl}
+                                  readOnly
+                                  className="text-xs h-6 bg-background"
+                                />
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-6 px-2"
+                                  onClick={async () => {
+                                    await navigator.clipboard.writeText(shareUrl);
+                                    toast({
+                                      title: "Link copied",
+                                      description: "Share link copied to clipboard",
+                                    });
+                                  }}
+                                >
+                                  <Copy className="h-3 w-3" />
+                                </Button>
+                                {link.link_type === 'email' && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="h-6 px-2"
+                                    onClick={() => {
+                                      const subject = `File shared: ${file.original_name}`;
+                                      const body = `Hi,\n\nI've shared a file with you: ${file.original_name}\n\nAccess it here: ${shareUrl}\n\nBest regards`;
+                                      window.open(`mailto:${link.recipient_email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+                                    }}
+                                  >
+                                    <Mail className="h-3 w-3" />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2 ml-2">
+                              {link.expires_at && (
+                                <span className="text-muted-foreground">
+                                  Expires {formatDate(link.expires_at)}
+                                </span>
+                              )}
+                              <Badge variant={link.is_active ? "default" : "secondary"}>
+                                {link.is_active ? "Active" : "Inactive"}
+                              </Badge>
+                            </div>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            {link.expires_at && (
-                              <span className="text-muted-foreground">
-                                Expires {formatDate(link.expires_at)}
-                              </span>
-                            )}
-                            <Badge variant={link.is_active ? "default" : "secondary"}>
-                              {link.is_active ? "Active" : "Inactive"}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}

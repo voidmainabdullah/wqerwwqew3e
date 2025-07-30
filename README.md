@@ -1,73 +1,131 @@
-# Welcome to your Lovable project
+# SecureShare - File Sharing Platform
 
-## Project info
+A modern, secure file sharing platform built with React, Supabase, and Paddle payments.
 
-**URL**: https://lovable.dev/projects/ad044e5e-107b-438b-bc91-d872c4842f8b
+## 🚀 Features
 
-## How can I edit this code?
+### 🔐 Secure File Sharing
+- **Multiple sharing methods**: Direct links, email sharing, and share codes
+- **Password protection**: Secure sensitive files with password protection  
+- **Expiration control**: Set custom expiry dates or permanent links
+- **Download limits**: Control how many times files can be downloaded
 
-There are several ways of editing your application.
+### 💼 Subscription Management
+- **Free tier**: 5 uploads per day with basic features
+- **Pro tier**: Unlimited uploads with advanced features
+- **Paddle integration**: Secure payment processing
+- **Flexible billing**: Monthly and yearly subscription options
 
-**Use Lovable**
+### 📊 Analytics & Management
+- **Download tracking**: Monitor who downloads your files and when
+- **Link management**: View and manage all active share links with copy functionality
+- **File organization**: Public/private visibility controls
+- **Usage analytics**: Track your sharing activity
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ad044e5e-107b-438b-bc91-d872c4842f8b) and start prompting.
+### 🛡️ Security Features
+- **Authentication**: Secure user accounts via Supabase Auth
+- **Row-level security**: Database-level access controls
+- **File encryption**: Secure storage in Supabase Storage
+- **Audit logging**: Complete download and access logging
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Tech Stack
 
-**Use your preferred IDE**
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Payments**: Paddle
+- **Email**: Resend (optional)
+- **Deployment**: Lovable Platform
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚦 Quick Start
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **Clone the repository**
+   ```bash
+   git clone <YOUR_GIT_URL>
+   cd secureshare
+   ```
 
-Follow these steps:
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. **Set up environment variables**
+   Create a `.env.local` file with:
+   ```env
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+   PADDLE_API_KEY=your_paddle_api_key
+   PADDLE_PRICE_ID_MONTHLY=your_monthly_price_id
+   PADDLE_PRICE_ID_YEARLY=your_yearly_price_id
+   RESEND_API_KEY=your_resend_api_key # Optional
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 📋 Production Setup
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Required Configuration
+1. **Supabase Project**: Set up with database migrations from `supabase/migrations/`
+2. **Paddle Account**: Configure subscription products and get API keys
+3. **Edge Functions**: Deploy `create-paddle-checkout` and `send-email` functions
+4. **Environment Variables**: Set all required keys in production
 
-**Edit a file directly in GitHub**
+### Database Tables
+- `profiles` - User profiles and subscription information
+- `files` - File metadata and storage paths  
+- `shared_links` - Shareable links with access controls
+- `download_logs` - Download tracking and analytics
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🔧 Features Status
 
-**Use GitHub Codespaces**
+### ✅ Implemented
+- [x] File upload with drag & drop
+- [x] Multiple sharing methods (link, email, code)
+- [x] Password protection for files
+- [x] Download limits and expiration
+- [x] Copy-to-clipboard functionality
+- [x] Email sharing with automatic composition
+- [x] Subscription management with Paddle
+- [x] Download tracking and analytics
+- [x] Responsive design with dark theme
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### 🏗️ Production Ready
+- [x] Row-level security policies
+- [x] Error handling and loading states
+- [x] File cleanup and management
+- [x] Subscription success page
+- [x] Email service integration
+- [x] Secure authentication flow
 
-## What technologies are used for this project?
+## 📝 Usage
 
-This project is built with:
+1. **Sign up** for a free account
+2. **Upload files** using drag-and-drop
+3. **Create share links** with custom settings
+4. **Track downloads** from your dashboard
+5. **Upgrade to Pro** for unlimited features
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🔒 Security
 
-## How can I deploy this project?
+- All user data protected by row-level security
+- Files stored securely in Supabase Storage  
+- Download access logged and monitored
+- Secure password hashing for protected files
+
+## 📞 Support
+
+For technical support, see `DEPLOYMENT_GUIDE.md` for detailed setup instructions.
+
+## 🎯 Deployment
 
 Simply open [Lovable](https://lovable.dev/projects/ad044e5e-107b-438b-bc91-d872c4842f8b) and click on Share -> Publish.
 
-## Can I connect a custom domain to my Lovable project?
+## 🌐 Custom Domain
 
-Yes, you can!
+To connect a custom domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Read more: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)

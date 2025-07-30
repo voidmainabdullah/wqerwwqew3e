@@ -42,12 +42,11 @@ export const CodeSharePage: React.FC = () => {
       const { data, error } = await supabase
         .from('files')
         .select('*')
-        .eq('share_code', shareCode.trim().toUpperCase())
-        .single();
+        .eq('share_code', shareCode.trim().toUpperCase());
 
       if (error) throw error;
 
-      if (!data) {
+      if (!data || data.length === 0) {
         toast({
           variant: "destructive",
           title: "File not found",
@@ -56,16 +55,18 @@ export const CodeSharePage: React.FC = () => {
         return;
       }
 
-      setFileData(data);
+      const fileData = Array.isArray(data) ? data[0] : data;
+
+      setFileData(fileData);
       
       // Check if file is locked
-      if (data.is_locked) {
+      if (fileData.is_locked) {
         setPasswordRequired(true);
       }
 
       toast({
         title: "File found",
-        description: `Found: ${data.original_name}`,
+        description: `Found: ${fileData.original_name}`,
       });
     } catch (error: any) {
       toast({
