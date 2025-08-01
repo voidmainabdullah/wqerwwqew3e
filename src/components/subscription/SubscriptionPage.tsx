@@ -26,6 +26,8 @@ export const SubscriptionPage: React.FC = () => {
         throw new Error("No valid session found");
       }
 
+      console.log('Attempting subscription with plan:', plan);
+      
       const { data, error } = await supabase.functions.invoke('create-paddle-checkout', {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
@@ -33,13 +35,32 @@ export const SubscriptionPage: React.FC = () => {
         body: { plan }
       });
 
-      if (error) throw error;
+      console.log('Subscription response:', { data, error });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw new Error(error.message || 'Failed to create checkout session');
+      }
+
+      if (data?.error) {
+        console.error('Paddle API error:', data.error);
+        throw new Error(data.error);
+      }
 
       if (data?.checkout_url) {
+        console.log('Opening checkout URL:', data.checkout_url);
         // Open Paddle checkout in new tab
         window.open(data.checkout_url, '_blank');
+        
+        toast({
+          title: "Checkout opened",
+          description: "Complete your subscription in the new tab",
+        });
+      } else {
+        throw new Error('No checkout URL received from Paddle');
       }
     } catch (error: any) {
+      console.error('Subscription error:', error);
       toast({
         variant: "destructive",
         title: "Subscription error",
