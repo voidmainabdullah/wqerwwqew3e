@@ -96,20 +96,36 @@ export const CodeSharePage: React.FC = () => {
     try {
       // If file is locked, validate password first
       if (fileData.is_locked && password.trim()) {
-        // Here you would validate the password - for now we'll simulate
-        // In a real implementation, you'd have a password validation function
-        // For now, we'll skip password validation since function doesn't exist
-        // In production, implement proper password validation
-        console.warn('Password validation would happen here');
-        
-        // Simulate password validation - in real implementation this would be proper
-        if (false) { // This will be replaced with actual validation
-          toast({
-            variant: "destructive",
-            title: "Invalid password",
-            description: "The password you entered is incorrect",
+        // First get the file's password hash by checking if it has a share link with password
+        const { data: shareLink, error: shareLinkError } = await supabase
+          .from('shared_links')
+          .select('password_hash, share_token')
+          .eq('file_id', fileData.id)
+          .not('password_hash', 'is', null)
+          .maybeSingle();
+
+        if (shareLinkError && shareLinkError.code !== 'PGRST116') {
+          throw shareLinkError;
+        }
+
+        if (shareLink?.password_hash) {
+          // Validate password using the database function
+          const { data: isValid, error: validateError } = await supabase.rpc('validate_share_password', {
+            token: shareLink.share_token,
+            password: password
           });
-          return;
+
+          if (validateError) throw validateError;
+
+          if (!isValid) {
+            toast({
+              variant: "destructive",
+              title: "Invalid password",
+              description: "The password you entered is incorrect",
+            });
+            setDownloading(false);
+            return;
+          }
         }
       }
 

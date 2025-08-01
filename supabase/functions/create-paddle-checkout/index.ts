@@ -82,7 +82,9 @@ serve(async (req) => {
       }
     };
 
+    console.log("Transaction data being sent:", JSON.stringify(transactionData, null, 2));
     console.log("Making request to Paddle API...");
+    
     const response = await fetch("https://api.paddle.com/transactions", {
       method: "POST",
       headers: {
@@ -92,16 +94,23 @@ serve(async (req) => {
       body: JSON.stringify(transactionData),
     });
 
+    console.log("Paddle API response status:", response.status);
+    
     if (!response.ok) {
       const errorData = await response.text();
+      console.error("Paddle API error response:", errorData);
       throw new Error(`Paddle API error: ${response.status} - ${errorData}`);
     }
 
     const transaction = await response.json();
+    console.log("Paddle transaction response:", JSON.stringify(transaction, null, 2));
+
+    const checkoutUrl = transaction.data?.checkout?.url || `https://www.paddle.com/checkout?txn=${transaction.data.id}`;
+    console.log("Generated checkout URL:", checkoutUrl);
 
     return new Response(
       JSON.stringify({ 
-        checkout_url: transaction.data.checkout?.url || `https://www.paddle.com/checkout?txn=${transaction.data.id}`
+        checkout_url: checkoutUrl
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
