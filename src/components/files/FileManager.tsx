@@ -273,7 +273,8 @@ export const FileManager: React.FC = () => {
       const { error } = await supabase
         .from('files')
         .update({ is_public: !currentStatus })
-        .eq('id', fileId);
+        .eq('id', fileId)
+        .eq('user_id', user?.id); // Ensure user can only update their own files
 
       if (error) throw error;
       
