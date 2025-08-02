@@ -54,8 +54,8 @@ serve(async (req) => {
     
     // Define price IDs for monthly and yearly plans
     const priceIds = {
-      monthly: Deno.env.get("PADDLE_PRICE_ID_MONTHLY") || "pri_01jgy7z8vcd7md8vwj8xhqhmpb",
-      yearly: Deno.env.get("PADDLE_PRICE_ID_YEARLY") || "pri_01jgy80a1vcd7md8vwj8xhqhmpb"
+      monthly: Deno.env.get("PADDLE_PRICE_ID_MONTHLY") || "pri_01k1n1c47khbpnamppf3rtd52b",
+      yearly: Deno.env.get("PADDLE_PRICE_ID_YEARLY") || "pri_01k1n1c47khbpnamppf3rtd52b"
     };
 
     if (!priceIds[plan as keyof typeof priceIds]) {
