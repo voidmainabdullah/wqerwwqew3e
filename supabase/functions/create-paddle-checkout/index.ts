@@ -19,7 +19,14 @@ serve(async (req) => {
       console.error("PADDLE_API_KEY is not configured");
       throw new Error("PADDLE_API_KEY is not configured");
     }
-    console.log("Paddle API key found");
+    
+    // Validate API key format (should start with 'apikey_')
+    if (!paddleApiKey.startsWith('apikey_')) {
+      console.error("Invalid Paddle API key format - should start with 'apikey_'");
+      throw new Error("Invalid Paddle API key format");
+    }
+    
+    console.log("Paddle API key found and validated");
 
     // Get user from request
     const supabaseClient = createClient(
@@ -89,7 +96,8 @@ serve(async (req) => {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${paddleApiKey}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Paddle-Version": "1"
       },
       body: JSON.stringify(transactionData),
     });
