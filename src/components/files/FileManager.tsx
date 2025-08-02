@@ -66,12 +66,29 @@ export const FileManager: React.FC = () => {
   const [downloadLimit, setDownloadLimit] = useState<string>('');
   const [expiryDays, setExpiryDays] = useState<string>('7');
   const [sharePassword, setSharePassword] = useState('');
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   useEffect(() => {
     if (user) {
       fetchFiles();
+      fetchUserProfile();
     }
   }, [user]);
+
+  const fetchUserProfile = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('subscription_tier')
+        .eq('id', user?.id)
+        .single();
+
+      if (error) throw error;
+      setUserProfile(data);
+    } catch (error: any) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
 
   const fetchFiles = async () => {
     try {
@@ -155,6 +172,27 @@ export const FileManager: React.FC = () => {
 
   const createShareLink = async () => {
     if (!selectedFile) return;
+
+    // Check for premium features
+    const isPro = userProfile?.subscription_tier === 'pro';
+    
+    if (sharePassword && !isPro) {
+      toast({
+        variant: "destructive",
+        title: "Premium feature",
+        description: "Password protection requires Pro subscription",
+      });
+      return;
+    }
+
+    if (expiryDays && expiryDays !== '7' && !isPro) {
+      toast({
+        variant: "destructive", 
+        title: "Premium feature",
+        description: "Custom expiry dates require Pro subscription",
+      });
+      return;
+    }
 
     try {
       const expiresAt = expiryDays && expiryDays !== 'never' ? 
@@ -534,28 +572,42 @@ export const FileManager: React.FC = () => {
                           </div>
 
                           <div>
-                            <Label htmlFor="sharePassword">Password Protection (optional)</Label>
+                            <Label htmlFor="sharePassword">
+                              Password Protection 
+                              {userProfile?.subscription_tier !== 'pro' && (
+                                <Badge variant="secondary" className="ml-2">Pro</Badge>
+                              )}
+                            </Label>
                             <Input
                               id="sharePassword"
                               type="password"
                               value={sharePassword}
                               onChange={(e) => setSharePassword(e.target.value)}
-                              placeholder="Enter password to protect the link"
+                              placeholder={userProfile?.subscription_tier === 'pro' ? 
+                                "Enter password to protect the link" : 
+                                "Upgrade to Pro for password protection"
+                              }
+                              disabled={userProfile?.subscription_tier !== 'pro'}
                             />
                           </div>
 
                           <div>
-                            <Label htmlFor="expiryDays">Expires in (days)</Label>
+                            <Label htmlFor="expiryDays">
+                              Expires in (days)
+                              {userProfile?.subscription_tier !== 'pro' && (
+                                <Badge variant="secondary" className="ml-2">Pro for custom dates</Badge>
+                              )}
+                            </Label>
                             <Select value={expiryDays} onValueChange={setExpiryDays}>
                               <SelectTrigger>
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="1">1 day</SelectItem>
+                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="1">1 day</SelectItem>}
                                 <SelectItem value="7">7 days</SelectItem>
-                                <SelectItem value="30">30 days</SelectItem>
-                                <SelectItem value="90">90 days</SelectItem>
-                                <SelectItem value="never">Never</SelectItem>
+                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="30">30 days</SelectItem>}
+                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="90">90 days</SelectItem>}
+                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="never">Never</SelectItem>}
                               </SelectContent>
                             </Select>
                           </div>
