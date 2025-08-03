@@ -20,7 +20,8 @@ import {
   Settings, 
   LogOut,
   Shield,
-  Home
+  Home,
+  Users
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -43,6 +44,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
     { icon: Home, label: 'Dashboard', href: '/dashboard' },
     { icon: Upload, label: 'Upload', href: '/dashboard/upload' },
     { icon: Files, label: 'My Files', href: '/dashboard/files' },
+    { icon: Users, label: 'Teams', href: '/dashboard/teams' },
     { icon: Share, label: 'Shared Links', href: '/dashboard/shared' },
     { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
     { icon: Settings, label: 'Settings', href: '/dashboard/settings' },

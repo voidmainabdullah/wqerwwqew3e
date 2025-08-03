@@ -13,6 +13,8 @@ import { FileUpload } from "@/components/upload/FileUpload";
 import { FileManager } from "@/components/files/FileManager";
 import { SharedLinks } from "@/components/files/SharedLinks";
 import { FileReceiver } from "@/components/files/FileReceiver";
+import { TeamsManager } from "@/components/teams/TeamsManager";
+import { TeamFiles } from "@/components/teams/TeamFiles";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import { CodeSharePage } from "@/components/sharing/CodeSharePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
@@ -51,6 +53,14 @@ const App = () => (
               <Route path="/dashboard/receive" element={
                 <DashboardLayout>
                   <FileReceiver />
+                </DashboardLayout>
+              } />
+              <Route path="/dashboard/teams" element={
+                <DashboardLayout>
+                  <div className="space-y-8">
+                    <TeamsManager />
+                    <TeamFiles />
+                  </div>
                 </DashboardLayout>
               } />
               <Route path="/dashboard/shared" element={

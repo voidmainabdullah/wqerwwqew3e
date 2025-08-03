@@ -289,7 +289,7 @@ export const Dashboard: React.FC = () => {
 
       {/* Teams Management Section */}
       <div className="mt-8">
-        <TeamsManager userProfile={userProfile} />
+        <TeamsManager />
       </div>
     </div>
   );
