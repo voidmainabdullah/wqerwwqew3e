@@ -205,6 +205,107 @@ export type Database = {
           },
         ]
       }
+      team_file_shares: {
+        Row: {
+          file_id: string
+          id: string
+          shared_at: string
+          shared_by: string
+          team_id: string
+        }
+        Insert: {
+          file_id: string
+          id?: string
+          shared_at?: string
+          shared_by: string
+          team_id: string
+        }
+        Update: {
+          file_id?: string
+          id?: string
+          shared_at?: string
+          shared_by?: string
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_file_shares_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_file_shares_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_members: {
+        Row: {
+          added_by: string
+          id: string
+          joined_at: string
+          permissions: Json | null
+          role: string
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          added_by: string
+          id?: string
+          joined_at?: string
+          permissions?: Json | null
+          role?: string
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          added_by?: string
+          id?: string
+          joined_at?: string
+          permissions?: Json | null
+          role?: string
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teams: {
+        Row: {
+          admin_id: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -213,6 +314,23 @@ export type Database = {
       generate_share_code: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_user_by_email: {
+        Args: { email_input: string }
+        Returns: {
+          user_id: string
+          email: string
+        }[]
+      }
+      get_user_teams: {
+        Args: { user_id: string }
+        Returns: {
+          team_id: string
+          team_name: string
+          is_admin: boolean
+          role: string
+          permissions: Json
+        }[]
       }
       hash_password: {
         Args: { password: string }
