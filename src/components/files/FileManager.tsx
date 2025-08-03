@@ -444,8 +444,9 @@ export const FileManager: React.FC = () => {
         </Card>
       ) : (
         <div className="grid gap-4">
-          {files.map((file) => (
-            <Card key={file.id}>
+          {files.map((file, index) => (
+            <Card key={file.id} className="transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in" 
+                  style={{ animationDelay: `${index * 0.1}s` }}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -479,6 +480,7 @@ export const FileManager: React.FC = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => downloadFile(file)}
+                      className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105"
                     >
                       <Download className="h-4 w-4" />
                     </Button>
@@ -487,6 +489,7 @@ export const FileManager: React.FC = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => toggleFileVisibility(file.id, file.is_public)}
+                      className="hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-105"
                     >
                       {file.is_public ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                     </Button>
@@ -495,6 +498,7 @@ export const FileManager: React.FC = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => toggleFileLock(file.id, file.is_locked)}
+                      className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105"
                     >
                       {file.is_locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
                     </Button>
@@ -505,6 +509,7 @@ export const FileManager: React.FC = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => setSelectedFile(file)}
+                          className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105"
                         >
                           <Share2 className="h-4 w-4" />
                         </Button>
@@ -628,6 +633,7 @@ export const FileManager: React.FC = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => deleteFile(file.id, file.storage_path)}
+                      className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all duration-300 hover:scale-105"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

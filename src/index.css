@@ -61,6 +61,20 @@
     --shadow-glow: 0 0 40px hsl(0 0% 95% / 0.4);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
+    /* Function highlight colors - vibrant accent colors */
+    --function-upload: 142 71% 45%;
+    --function-upload-glow: 142 71% 55%;
+    --function-share: 217 91% 60%;
+    --function-share-glow: 217 91% 70%;
+    --function-download: 45 93% 47%;
+    --function-download-glow: 45 93% 57%;
+    --function-delete: 0 84% 60%;
+    --function-delete-glow: 0 84% 70%;
+    --function-success: 142 76% 36%;
+    --function-success-glow: 142 76% 46%;
+    --function-processing: 262 83% 58%;
+    --function-processing-glow: 262 83% 68%;
+    
     /* Cosmic effects - monochromatic greys */
     --cosmic-dark: 0 0% 25%;
     --cosmic-medium: 0 0% 19%;

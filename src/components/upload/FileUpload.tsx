@@ -197,18 +197,20 @@ export const FileUpload: React.FC = () => {
         <CardContent className="space-y-4">
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
+            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-300 transform ${
               isDragActive 
-                ? 'border-primary bg-primary/5' 
-                : 'border-border hover:border-primary/50'
-            } ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                ? 'border-functions-upload bg-functions-upload/10 scale-[1.02] shadow-lg shadow-functions-uploadGlow/20' 
+                : 'border-border hover:border-functions-upload/50 hover:bg-functions-upload/5'
+            } ${isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.01]'}`}
           >
             <input {...getInputProps()} />
-            <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+            <Upload className={`mx-auto h-12 w-12 mb-4 transition-colors duration-300 ${
+              isDragActive ? 'text-functions-upload animate-bounce-subtle' : 'text-muted-foreground'
+            }`} />
             {isDragActive ? (
-              <p className="text-primary">Drop the files here...</p>
+              <p className="text-functions-upload font-medium animate-pulse">Drop the files here...</p>
             ) : (
-              <div>
+              <div className="animate-fade-in">
                 <p className="text-foreground font-medium mb-2">
                   Click to upload or drag and drop
                 </p>
@@ -227,11 +229,12 @@ export const FileUpload: React.FC = () => {
                   onClick={handleUploadFiles}
                   disabled={isUploading || uploadFiles.every(f => f.status !== 'pending')}
                   size="sm"
+                  className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle"
                 >
                   {isUploading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Uploading...
+                      <span className="animate-pulse">Uploading...</span>
                     </>
                   ) : (
                     <>
@@ -244,8 +247,15 @@ export const FileUpload: React.FC = () => {
 
               <div className="space-y-2">
                 {uploadFiles.map((uploadFile, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg">
-                    {getStatusIcon(uploadFile.status)}
+                  <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg transition-all duration-300 hover:shadow-md animate-fade-in" 
+                       style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className={`transition-colors duration-300 ${
+                      uploadFile.status === 'uploading' ? 'animate-glow text-functions-processing' :
+                      uploadFile.status === 'success' ? 'text-functions-success' :
+                      uploadFile.status === 'error' ? 'text-functions-delete' : ''
+                    }`}>
+                      {getStatusIcon(uploadFile.status)}
+                    </div>
                     
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">
@@ -256,11 +266,19 @@ export const FileUpload: React.FC = () => {
                       </p>
                       
                       {uploadFile.status === 'uploading' && (
-                        <Progress value={uploadFile.progress} className="mt-1" />
+                        <div className="mt-1 animate-pulse">
+                          <Progress 
+                            value={uploadFile.progress} 
+                            className="h-2"
+                            style={{
+                              background: 'linear-gradient(to right, hsl(var(--functions-processing)), hsl(var(--functions-processing-glow)))'
+                            }}
+                          />
+                        </div>
                       )}
                       
                       {uploadFile.error && (
-                        <p className="text-xs text-destructive mt-1">
+                        <p className="text-xs text-functions-delete mt-1 animate-fade-in">
                           {uploadFile.error}
                         </p>
                       )}
@@ -270,7 +288,11 @@ export const FileUpload: React.FC = () => {
                       uploadFile.status === 'success' ? 'default' :
                       uploadFile.status === 'error' ? 'destructive' :
                       uploadFile.status === 'uploading' ? 'secondary' : 'outline'
-                    }>
+                    } className={`transition-all duration-300 ${
+                      uploadFile.status === 'success' ? 'bg-functions-success hover:bg-functions-successGlow animate-bounce-subtle' :
+                      uploadFile.status === 'uploading' ? 'bg-functions-processing animate-pulse' :
+                      uploadFile.status === 'error' ? 'bg-functions-delete' : ''
+                    }`}>
                       {uploadFile.status}
                     </Badge>
 
@@ -279,6 +301,7 @@ export const FileUpload: React.FC = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => removeFile(index)}
+                        className="hover:text-functions-delete hover:bg-functions-delete/10 transition-colors duration-300"
                       >
                         <X className="h-4 w-4" />
                       </Button>

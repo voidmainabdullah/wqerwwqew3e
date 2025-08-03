@@ -187,13 +187,15 @@ export const SharedLinks: React.FC = () => {
         </Card>
       ) : (
         <div className="grid gap-4">
-          {sharedLinks.map((link) => {
+          {sharedLinks.map((link, index) => {
             const expired = isExpired(link.expires_at);
             const limitReached = isLimitReached(link.download_limit, link.download_count);
             const inactive = expired || limitReached;
             
             return (
-              <Card key={link.id} className={inactive ? 'opacity-60' : ''}>
+              <Card key={link.id} 
+                    className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`}
+                    style={{ animationDelay: `${index * 0.1}s` }}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -235,6 +237,7 @@ export const SharedLinks: React.FC = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => copyToClipboard(link.share_token)}
+                      className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300"
                     >
                       <Copy className="h-4 w-4" />
                     </Button>
@@ -242,6 +245,7 @@ export const SharedLinks: React.FC = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => window.open(`/share/${link.share_token}`, '_blank')}
+                      className="hover:bg-primary/10 hover:text-primary transition-all duration-300"
                     >
                       <ExternalLink className="h-4 w-4" />
                     </Button>
@@ -277,7 +281,7 @@ export const SharedLinks: React.FC = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => deleteSharedLink(link.id)}
-                        className="text-destructive hover:text-destructive"
+                        className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
