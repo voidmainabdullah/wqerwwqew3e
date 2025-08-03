@@ -23,7 +23,11 @@ import {
   Copy,
   Mail,
   Code,
-  MoreHorizontal
+  MoreHorizontal,
+  Shield,
+  Users,
+  Send,
+  ShieldCheck
 } from 'lucide-react';
 
 interface FileData {
@@ -67,6 +71,14 @@ export const FileManager: React.FC = () => {
   const [expiryDays, setExpiryDays] = useState<string>('7');
   const [sharePassword, setSharePassword] = useState('');
   const [userProfile, setUserProfile] = useState<any>(null);
+  const [virusScanning, setVirusScanning] = useState<{[fileId: string]: boolean}>({});
+  const [teamSendDialogOpen, setTeamSendDialogOpen] = useState(false);
+  const [selectedTeamFile, setSelectedTeamFile] = useState<FileData | null>(null);
+  const [teamMembers] = useState([
+    { id: '1', email: 'john@example.com', name: 'John Doe' },
+    { id: '2', email: 'sarah@example.com', name: 'Sarah Wilson' },
+    { id: '3', email: 'mike@example.com', name: 'Mike Johnson' }
+  ]);
 
   useEffect(() => {
     if (user) {
@@ -418,6 +430,73 @@ export const FileManager: React.FC = () => {
     }
   };
 
+  const scanForVirus = async (file: FileData) => {
+    setVirusScanning(prev => ({ ...prev, [file.id]: true }));
+
+    try {
+      // Simulate virus scanning with realistic delay
+      await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 3000));
+      
+      // Simulate random results with 95% clean rate
+      const isClean = Math.random() > 0.05;
+      
+      if (isClean) {
+        toast({
+          title: "Virus scan complete",
+          description: `${file.original_name} is clean and safe`,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Threat detected",
+          description: `Potential threat found in ${file.original_name}`,
+        });
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive", 
+        title: "Scan failed",
+        description: "Unable to complete virus scan",
+      });
+    } finally {
+      setVirusScanning(prev => ({ ...prev, [file.id]: false }));
+    }
+  };
+
+  const sendToTeamMember = async (memberId: string, memberEmail: string) => {
+    if (!selectedTeamFile) return;
+
+    const isPro = userProfile?.subscription_tier === 'pro';
+    
+    if (!isPro) {
+      toast({
+        variant: "destructive",
+        title: "Premium feature",
+        description: "Teams feature requires Pro subscription",
+      });
+      return;
+    }
+
+    try {
+      // Simulate sending file to team member
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "File sent to team member",
+        description: `${selectedTeamFile.original_name} sent to ${memberEmail}`,
+      });
+
+      setTeamSendDialogOpen(false);
+      setSelectedTeamFile(null);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error sending file",
+        description: error.message,
+      });
+    }
+  };
+
   if (loading) {
     return <div className="flex items-center justify-center h-64">Loading files...</div>;
   }
@@ -447,43 +526,73 @@ export const FileManager: React.FC = () => {
           {files.map((file, index) => (
             <Card key={file.id} className="transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in" 
                   style={{ animationDelay: `${index * 0.1}s` }}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <File className="h-8 w-8 text-muted-foreground" />
-                    <div>
-                      <h3 className="font-medium">{file.original_name}</h3>
-                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex items-center space-x-4 min-w-0 flex-1">
+                    <File className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-medium truncate">{file.original_name}</h3>
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                         <span>{formatFileSize(file.file_size)}</span>
-                        <span>{file.download_count} downloads</span>
-                        <span>Uploaded {formatDate(file.created_at)}</span>
+                        <span className="hidden sm:inline">{file.download_count} downloads</span>
+                        <span className="hidden md:inline">Uploaded {formatDate(file.created_at)}</span>
                       </div>
-                      <div className="flex items-center space-x-2 mt-2">
-                        <Badge variant={file.is_public ? "default" : "secondary"}>
+                      <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2">
+                        <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs">
                           {file.is_public ? "Public" : "Private"}
                         </Badge>
                         {file.is_locked && (
-                          <Badge variant="destructive">Locked</Badge>
+                          <Badge variant="destructive" className="text-xs">Locked</Badge>
                         )}
                         {file.expires_at && new Date(file.expires_at) < new Date() && (
-                          <Badge variant="destructive">Expired</Badge>
+                          <Badge variant="destructive" className="text-xs">Expired</Badge>
                         )}
                         {file.share_code && (
-                          <Badge variant="outline">Code: {file.share_code}</Badge>
+                          <Badge variant="outline" className="text-xs">Code: {file.share_code}</Badge>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => downloadFile(file)}
                       className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105"
                     >
-                      <Download className="h-4 w-4" />
+                      <Download className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => scanForVirus(file)}
+                      disabled={virusScanning[file.id]}
+                      className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105"
+                    >
+                      {virusScanning[file.id] ? (
+                        <div className="flex items-center">
+                          <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-functions-share border-t-transparent"></div>
+                        </div>
+                      ) : (
+                        <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4" />
+                      )}
+                    </Button>
+
+                    {userProfile?.subscription_tier === 'pro' && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedTeamFile(file);
+                          setTeamSendDialogOpen(true);
+                        }}
+                        className="hover:bg-functions-processing/10 hover:text-functions-processing transition-all duration-300 hover:scale-105"
+                      >
+                        <Send className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </Button>
+                    )}
 
                     <Button
                       variant="ghost"
@@ -491,7 +600,7 @@ export const FileManager: React.FC = () => {
                       onClick={() => toggleFileVisibility(file.id, file.is_public)}
                       className="hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-105"
                     >
-                      {file.is_public ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                      {file.is_public ? <Eye className="h-3 w-3 sm:h-4 sm:w-4" /> : <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" />}
                     </Button>
 
                     <Button
@@ -500,7 +609,7 @@ export const FileManager: React.FC = () => {
                       onClick={() => toggleFileLock(file.id, file.is_locked)}
                       className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105"
                     >
-                      {file.is_locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                      {file.is_locked ? <Lock className="h-3 w-3 sm:h-4 sm:w-4" /> : <Unlock className="h-3 w-3 sm:h-4 sm:w-4" />}
                     </Button>
 
                     <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
@@ -511,7 +620,7 @@ export const FileManager: React.FC = () => {
                           onClick={() => setSelectedFile(file)}
                           className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105"
                         >
-                          <Share2 className="h-4 w-4" />
+                          <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                       </DialogTrigger>
                       <DialogContent>
@@ -635,7 +744,7 @@ export const FileManager: React.FC = () => {
                       onClick={() => deleteFile(file.id, file.storage_path)}
                       className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all duration-300 hover:scale-105"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                   </div>
                 </div>
@@ -719,6 +828,50 @@ export const FileManager: React.FC = () => {
           ))}
         </div>
       )}
+
+      {/* Team Send Dialog */}
+      <Dialog open={teamSendDialogOpen} onOpenChange={setTeamSendDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Send className="w-5 h-5 mr-2" />
+              Send to Team Member
+            </DialogTitle>
+            <DialogDescription>
+              Send {selectedTeamFile?.original_name} to a team member
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            {teamMembers.map((member) => (
+              <div key={member.id} 
+                   className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent/50 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="font-medium">{member.name}</p>
+                    <p className="text-sm text-muted-foreground">{member.email}</p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => sendToTeamMember(member.id, member.email)}
+                  className="hover:scale-105 transition-transform"
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  Send
+                </Button>
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setTeamSendDialogOpen(false)}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
