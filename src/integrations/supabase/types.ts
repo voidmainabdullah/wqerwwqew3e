@@ -340,6 +340,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      user_is_team_admin: {
+        Args: { team_id: string; user_id: string }
+        Returns: boolean
+      }
+      user_is_team_member: {
+        Args: { team_id: string; user_id: string }
+        Returns: boolean
+      }
       validate_share_password: {
         Args: { token: string; password: string }
         Returns: boolean

@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { TeamFileShare } from '@/components/teams/TeamFileShare';
 import { useToast } from '@/hooks/use-toast';
 import { 
   File, 
@@ -73,12 +74,8 @@ export const FileManager: React.FC = () => {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [virusScanning, setVirusScanning] = useState<{[fileId: string]: boolean}>({});
   const [teamSendDialogOpen, setTeamSendDialogOpen] = useState(false);
+  const [teamShareDialogOpen, setTeamShareDialogOpen] = useState(false);
   const [selectedTeamFile, setSelectedTeamFile] = useState<FileData | null>(null);
-  const [teamMembers] = useState([
-    { id: '1', email: 'john@example.com', name: 'John Doe' },
-    { id: '2', email: 'sarah@example.com', name: 'Sarah Wilson' },
-    { id: '3', email: 'mike@example.com', name: 'Mike Johnson' }
-  ]);
 
   useEffect(() => {
     if (user) {
@@ -580,19 +577,18 @@ export const FileManager: React.FC = () => {
                       )}
                     </Button>
 
-                    {userProfile?.subscription_tier === 'pro' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedTeamFile(file);
-                          setTeamSendDialogOpen(true);
-                        }}
-                        className="hover:bg-functions-processing/10 hover:text-functions-processing transition-all duration-300 hover:scale-105"
-                      >
-                        <Send className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
-                    )}
+                    {/* Team Share Button */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedTeamFile(file);
+                        setTeamShareDialogOpen(true);
+                      }}
+                      className="hover:bg-functions-processing/10 hover:text-functions-processing transition-all duration-300 hover:scale-105"
+                    >
+                      <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                    </Button>
 
                     <Button
                       variant="ghost"
@@ -829,49 +825,13 @@ export const FileManager: React.FC = () => {
         </div>
       )}
 
-      {/* Team Send Dialog */}
-      <Dialog open={teamSendDialogOpen} onOpenChange={setTeamSendDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center">
-              <Send className="w-5 h-5 mr-2" />
-              Send to Team Member
-            </DialogTitle>
-            <DialogDescription>
-              Send {selectedTeamFile?.original_name} to a team member
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-3">
-            {teamMembers.map((member) => (
-              <div key={member.id} 
-                   className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent/50 transition-colors">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Users className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="font-medium">{member.name}</p>
-                    <p className="text-sm text-muted-foreground">{member.email}</p>
-                  </div>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => sendToTeamMember(member.id, member.email)}
-                  className="hover:scale-105 transition-transform"
-                >
-                  <Send className="w-4 h-4 mr-2" />
-                  Send
-                </Button>
-              </div>
-            ))}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setTeamSendDialogOpen(false)}>
-              Cancel
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Team Share Dialog */}
+      <TeamFileShare
+        fileId={selectedTeamFile?.id || ''}
+        fileName={selectedTeamFile?.original_name || ''}
+        isOpen={teamShareDialogOpen}
+        onOpenChange={setTeamShareDialogOpen}
+      />
     </div>
   );
 };
