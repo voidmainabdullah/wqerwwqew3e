@@ -14,8 +14,10 @@ import {
   Upload,
   Clock,
   Shield,
-  Zap
+  Zap,
+  Users
 } from 'lucide-react';
+import { TeamsManager } from '@/components/teams/TeamsManager';
 
 interface DashboardStats {
   totalFiles: number;
@@ -30,6 +32,7 @@ export const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   useEffect(() => {
     if (user) {
@@ -79,6 +82,7 @@ export const Dashboard: React.FC = () => {
         dailyUploadLimit: profile?.subscription_tier === 'pro' ? 999 : (profile?.daily_upload_limit || 10),
         subscriptionTier: profile?.subscription_tier || 'free',
       });
+      setUserProfile(profile);
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
     } finally {
@@ -281,6 +285,11 @@ export const Dashboard: React.FC = () => {
             </Button>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Teams Management Section */}
+      <div className="mt-8">
+        <TeamsManager userProfile={userProfile} />
       </div>
     </div>
   );
