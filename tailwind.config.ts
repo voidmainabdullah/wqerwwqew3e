@@ -80,6 +80,17 @@ export default {
 					archive: 'hsl(var(--file-archive))',
 					code: 'hsl(var(--file-code))',
 					default: 'hsl(var(--file-default))'
+				},
+				cosmic: {
+					dark: 'hsl(var(--cosmic-dark))',
+					medium: 'hsl(var(--cosmic-medium))',
+					light: 'hsl(var(--cosmic-light))',
+					grey1: 'hsl(var(--cosmic-grey-1))',
+					grey2: 'hsl(var(--cosmic-grey-2))'
+				},
+				glass: {
+					border: 'hsl(var(--glass-border))',
+					bg: 'hsl(var(--glass-bg))'
 				}
 			},
 			backgroundImage: {
