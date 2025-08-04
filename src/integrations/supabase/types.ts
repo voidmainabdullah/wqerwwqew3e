@@ -323,7 +323,7 @@ export type Database = {
         }[]
       }
       get_user_teams: {
-        Args: { user_id: string }
+        Args: { p_user_id: string }
         Returns: {
           team_id: string
           team_name: string
