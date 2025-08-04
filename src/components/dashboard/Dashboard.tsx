@@ -237,9 +237,9 @@ export const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-indigo-700">
           <CardHeader>
-            <CardTitle className="flex items-center text-blue-500">
+            <CardTitle className="flex items-center text-2xl font-medium text-right text-neutral-100">
               <Zap className="mr-2 h-5 w-5 bg-transparent animate-bounce" />
               Upgrade to Pro
             </CardTitle>

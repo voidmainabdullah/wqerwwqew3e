@@ -59,7 +59,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <SidebarHeader className="p-6 border-b border-sidebar-border">
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-sidebar-primary" />
-              <h1 className="text-xl font-bold text-sidebar-foreground">SecureShare</h1>
+              <h1 className="text-xl font-bold text-sidebar-foreground">DropThrow</h1>
             </div>
           </SidebarHeader>
           

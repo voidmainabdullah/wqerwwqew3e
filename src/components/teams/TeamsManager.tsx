@@ -10,7 +10,6 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { Users, Plus, Trash2, Crown, Shield, UserCheck, UserX, Settings } from 'lucide-react';
-
 interface Team {
   id: string;
   name: string;
@@ -24,7 +23,6 @@ interface Team {
     can_share: boolean;
   };
 }
-
 interface TeamMember {
   id: string;
   user_id: string;
@@ -37,10 +35,13 @@ interface TeamMember {
   };
   joined_at: string;
 }
-
 export const TeamsManager: React.FC = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const {
+    user
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
@@ -50,40 +51,41 @@ export const TeamsManager: React.FC = () => {
   const [newMemberEmail, setNewMemberEmail] = useState('');
   const [newMemberRole, setNewMemberRole] = useState('member');
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (user) {
       fetchTeams();
       setupRealtimeSubscriptions();
     }
   }, [user]);
-
   const setupRealtimeSubscriptions = () => {
-    const teamChannel = supabase
-      .channel('teams-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'teams' }, () => {
-        fetchTeams();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'team_members' }, () => {
-        if (selectedTeam) {
-          fetchTeamMembers(selectedTeam.id);
-        }
-      })
-      .subscribe();
-
+    const teamChannel = supabase.channel('teams-changes').on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'teams'
+    }, () => {
+      fetchTeams();
+    }).on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'team_members'
+    }, () => {
+      if (selectedTeam) {
+        fetchTeamMembers(selectedTeam.id);
+      }
+    }).subscribe();
     return () => {
       supabase.removeChannel(teamChannel);
     };
   };
-
   const fetchTeams = async () => {
     try {
-      const { data, error } = await supabase.rpc('get_user_teams', {
+      const {
+        data,
+        error
+      } = await supabase.rpc('get_user_teams', {
         p_user_id: user!.id
       });
-
       if (error) throw error;
-      
       const mappedTeams = data?.map(team => ({
         id: team.team_id,
         name: team.team_name,
@@ -93,85 +95,77 @@ export const TeamsManager: React.FC = () => {
         role: team.role,
         permissions: team.permissions as any
       })) || [];
-      
       setTeams(mappedTeams);
     } catch (error: any) {
       console.error('Error fetching teams:', error);
       toast({
         variant: "destructive",
         title: "Error fetching teams",
-        description: error.message,
+        description: error.message
       });
     } finally {
       setLoading(false);
     }
   };
-
   const fetchTeamMembers = async (teamId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('team_members')
-        .select(`
+      const {
+        data,
+        error
+      } = await supabase.from('team_members').select(`
           id,
           user_id,
           role,
           permissions,
           joined_at
-        `)
-        .eq('team_id', teamId);
-
+        `).eq('team_id', teamId);
       if (error) throw error;
-      
       const members = data?.map(member => ({
         ...member,
         email: 'Team Member',
         permissions: member.permissions as any
       })) || [];
-      
       setTeamMembers(members);
     } catch (error: any) {
       console.error('Error fetching team members:', error);
       toast({
         variant: "destructive",
         title: "Error fetching team members",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const createTeam = async () => {
     if (!newTeamName.trim()) return;
-
     try {
-      const { data: teamData, error: teamError } = await supabase
-        .from('teams')
-        .insert({
-          name: newTeamName,
-          admin_id: user!.id
-        })
-        .select()
-        .single();
-
+      const {
+        data: teamData,
+        error: teamError
+      } = await supabase.from('teams').insert({
+        name: newTeamName,
+        admin_id: user!.id
+      }).select().single();
       if (teamError) throw teamError;
 
       // Add creator as admin member
-      const { error: memberError } = await supabase
-        .from('team_members')
-        .insert({
-          team_id: teamData.id,
-          user_id: user!.id,
-          role: 'admin',
-          permissions: { can_view: true, can_edit: true, can_share: true },
-          added_by: user!.id
-        });
-
+      const {
+        error: memberError
+      } = await supabase.from('team_members').insert({
+        team_id: teamData.id,
+        user_id: user!.id,
+        role: 'admin',
+        permissions: {
+          can_view: true,
+          can_edit: true,
+          can_share: true
+        },
+        added_by: user!.id
+      });
       if (memberError) throw memberError;
-
       toast({
         title: "Team created successfully",
-        description: `${newTeamName} is ready for collaboration`,
+        description: `${newTeamName} is ready for collaboration`
       });
-
       setCreateTeamDialogOpen(false);
       setNewTeamName('');
       fetchTeams();
@@ -179,53 +173,48 @@ export const TeamsManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Error creating team",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const addTeamMember = async () => {
     if (!newMemberEmail.trim() || !selectedTeam) return;
-
     try {
       // Check if user exists
-      const { data: userData, error: userError } = await supabase.rpc('get_user_by_email', {
+      const {
+        data: userData,
+        error: userError
+      } = await supabase.rpc('get_user_by_email', {
         email_input: newMemberEmail
       });
-
       if (userError) throw userError;
       if (!userData || userData.length === 0) {
         toast({
           variant: "destructive",
           title: "User not found",
-          description: "No authenticated user found with this email",
+          description: "No authenticated user found with this email"
         });
         return;
       }
-
       const permissions = {
         can_view: true,
         can_edit: newMemberRole === 'admin' || newMemberRole === 'member',
         can_share: newMemberRole === 'admin' || newMemberRole === 'member'
       };
-
-      const { error } = await supabase
-        .from('team_members')
-        .insert({
-          team_id: selectedTeam.id,
-          user_id: userData[0].user_id,
-          role: newMemberRole,
-          permissions,
-          added_by: user!.id
-        });
-
+      const {
+        error
+      } = await supabase.from('team_members').insert({
+        team_id: selectedTeam.id,
+        user_id: userData[0].user_id,
+        role: newMemberRole,
+        permissions,
+        added_by: user!.id
+      });
       if (error) throw error;
-
       toast({
         title: "Member added successfully",
-        description: `${newMemberEmail} has been added to the team`,
+        description: `${newMemberEmail} has been added to the team`
       });
-
       setAddMemberDialogOpen(false);
       setNewMemberEmail('');
       setNewMemberRole('member');
@@ -234,31 +223,28 @@ export const TeamsManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Error adding member",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const updateMemberRole = async (memberId: string, newRole: string) => {
     const permissions = {
       can_view: true,
       can_edit: newRole === 'admin' || newRole === 'member',
       can_share: newRole === 'admin' || newRole === 'member'
     };
-
     try {
-      const { error } = await supabase
-        .from('team_members')
-        .update({ role: newRole, permissions })
-        .eq('id', memberId);
-
+      const {
+        error
+      } = await supabase.from('team_members').update({
+        role: newRole,
+        permissions
+      }).eq('id', memberId);
       if (error) throw error;
-
       toast({
         title: "Role updated",
-        description: "Member role has been updated successfully",
+        description: "Member role has been updated successfully"
       });
-
       if (selectedTeam) {
         fetchTeamMembers(selectedTeam.id);
       }
@@ -266,25 +252,20 @@ export const TeamsManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Error updating role",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const removeMember = async (memberId: string, email: string) => {
     try {
-      const { error } = await supabase
-        .from('team_members')
-        .delete()
-        .eq('id', memberId);
-
+      const {
+        error
+      } = await supabase.from('team_members').delete().eq('id', memberId);
       if (error) throw error;
-
       toast({
         title: "Member removed",
-        description: `${email} has been removed from the team`,
+        description: `${email} has been removed from the team`
       });
-
       if (selectedTeam) {
         fetchTeamMembers(selectedTeam.id);
       }
@@ -292,39 +273,32 @@ export const TeamsManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Error removing member",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const deleteTeam = async (teamId: string, teamName: string) => {
     try {
-      const { error } = await supabase
-        .from('teams')
-        .delete()
-        .eq('id', teamId);
-
+      const {
+        error
+      } = await supabase.from('teams').delete().eq('id', teamId);
       if (error) throw error;
-
       toast({
         title: "Team deleted",
-        description: `${teamName} has been deleted successfully`,
+        description: `${teamName} has been deleted successfully`
       });
-
       setSelectedTeam(null);
       fetchTeams();
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error deleting team",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   if (loading) {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-muted rounded w-1/4"></div>
           <div className="grid gap-4">
@@ -332,12 +306,9 @@ export const TeamsManager: React.FC = () => {
             <div className="h-32 bg-muted rounded"></div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Teams</h1>
@@ -360,12 +331,7 @@ export const TeamsManager: React.FC = () => {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="team-name">Team Name</Label>
-                <Input
-                  id="team-name"
-                  placeholder="Enter team name"
-                  value={newTeamName}
-                  onChange={(e) => setNewTeamName(e.target.value)}
-                />
+                <Input id="team-name" placeholder="Enter team name" value={newTeamName} onChange={e => setNewTeamName(e.target.value)} />
               </div>
             </div>
             <DialogFooter>
@@ -391,25 +357,15 @@ export const TeamsManager: React.FC = () => {
             <CardDescription>Teams you're part of</CardDescription>
           </CardHeader>
           <CardContent>
-            {teams.length === 0 ? (
-              <div className="text-center py-6">
+            {teams.length === 0 ? <div className="text-center py-6">
                 <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium mb-2">No teams yet</h3>
                 <p className="text-muted-foreground">Create a team to start collaborating</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {teams.map((team) => (
-                  <div
-                    key={team.id}
-                    className={`p-3 rounded-lg border cursor-pointer transition-all hover:bg-accent/50 ${
-                      selectedTeam?.id === team.id ? 'border-primary bg-accent/30' : 'border-border'
-                    }`}
-                    onClick={() => {
-                      setSelectedTeam(team);
-                      fetchTeamMembers(team.id);
-                    }}
-                  >
+              </div> : <div className="space-y-3">
+                {teams.map(team => <div key={team.id} className={`p-3 rounded-lg border cursor-pointer transition-all hover:bg-accent/50 ${selectedTeam?.id === team.id ? 'border-primary bg-accent/30' : 'border-border'}`} onClick={() => {
+              setSelectedTeam(team);
+              fetchTeamMembers(team.id);
+            }}>
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-medium">{team.name}</p>
@@ -419,27 +375,18 @@ export const TeamsManager: React.FC = () => {
                           </Badge>
                         </div>
                       </div>
-                      {team.is_admin && (
-                        <div className="flex items-center space-x-1">
-                          <Crown className="w-4 h-4 text-yellow-500" />
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteTeam(team.id, team.name);
-                            }}
-                            className="hover:bg-functions-delete/10 hover:text-functions-delete"
-                          >
+                      {team.is_admin && <div className="flex items-center space-x-1">
+                          <Crown className="w-4 h-4 text-yellow-500 bg-transparent" />
+                          <Button variant="ghost" size="sm" onClick={e => {
+                    e.stopPropagation();
+                    deleteTeam(team.id, team.name);
+                  }} className="hover:bg-functions-delete/10 hover:text-functions-delete">
                             <Trash2 className="w-4 h-4" />
                           </Button>
-                        </div>
-                      )}
+                        </div>}
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  </div>)}
+              </div>}
           </CardContent>
         </Card>
 
@@ -456,8 +403,7 @@ export const TeamsManager: React.FC = () => {
                   {selectedTeam ? `Members of ${selectedTeam.name}` : 'Select a team to view members'}
                 </CardDescription>
               </div>
-              {selectedTeam?.is_admin && (
-                <Dialog open={addMemberDialogOpen} onOpenChange={setAddMemberDialogOpen}>
+              {selectedTeam?.is_admin && <Dialog open={addMemberDialogOpen} onOpenChange={setAddMemberDialogOpen}>
                   <DialogTrigger asChild>
                     <Button size="sm">
                       <Plus className="w-4 h-4 mr-2" />
@@ -474,13 +420,7 @@ export const TeamsManager: React.FC = () => {
                     <div className="space-y-4">
                       <div>
                         <Label htmlFor="member-email">Email Address</Label>
-                        <Input
-                          id="member-email"
-                          type="email"
-                          placeholder="member@example.com"
-                          value={newMemberEmail}
-                          onChange={(e) => setNewMemberEmail(e.target.value)}
-                        />
+                        <Input id="member-email" type="email" placeholder="member@example.com" value={newMemberEmail} onChange={e => setNewMemberEmail(e.target.value)} />
                       </div>
                       <div>
                         <Label htmlFor="member-role">Role</Label>
@@ -505,33 +445,22 @@ export const TeamsManager: React.FC = () => {
                       </Button>
                     </DialogFooter>
                   </DialogContent>
-                </Dialog>
-              )}
+                </Dialog>}
             </div>
           </CardHeader>
           <CardContent>
-            {!selectedTeam ? (
-              <div className="text-center py-6">
+            {!selectedTeam ? <div className="text-center py-6">
                 <Shield className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                 <p className="text-muted-foreground">Select a team to view its members</p>
-              </div>
-            ) : teamMembers.length === 0 ? (
-              <div className="text-center py-6">
+              </div> : teamMembers.length === 0 ? <div className="text-center py-6">
                 <UserX className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium mb-2">No members</h3>
                 <p className="text-muted-foreground">Add members to start collaborating</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {teamMembers.map((member) => (
-                  <div key={member.id} className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
+              </div> : <div className="space-y-3">
+                {teamMembers.map(member => <div key={member.id} className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                        {member.role === 'admin' ? (
-                          <Crown className="w-4 h-4 text-yellow-500" />
-                        ) : (
-                          <Users className="w-4 h-4 text-muted-foreground" />
-                        )}
+                        {member.role === 'admin' ? <Crown className="w-4 h-4 text-yellow-500" /> : <Users className="w-4 h-4 text-muted-foreground" />}
                       </div>
                       <div>
                         <p className="font-medium">{member.email}</p>
@@ -540,25 +469,15 @@ export const TeamsManager: React.FC = () => {
                             {member.role}
                           </Badge>
                           <div className="flex space-x-1">
-                            {member.permissions.can_view && (
-                              <Badge variant="outline" className="text-xs">View</Badge>
-                            )}
-                            {member.permissions.can_edit && (
-                              <Badge variant="outline" className="text-xs">Edit</Badge>
-                            )}
-                            {member.permissions.can_share && (
-                              <Badge variant="outline" className="text-xs">Share</Badge>
-                            )}
+                            {member.permissions.can_view && <Badge variant="outline" className="text-xs">View</Badge>}
+                            {member.permissions.can_edit && <Badge variant="outline" className="text-xs">Edit</Badge>}
+                            {member.permissions.can_share && <Badge variant="outline" className="text-xs">Share</Badge>}
                           </div>
                         </div>
                       </div>
                     </div>
-                    {selectedTeam?.is_admin && member.user_id !== user?.id && (
-                      <div className="flex items-center space-x-2">
-                        <Select
-                          value={member.role}
-                          onValueChange={(newRole) => updateMemberRole(member.id, newRole)}
-                        >
+                    {selectedTeam?.is_admin && member.user_id !== user?.id && <div className="flex items-center space-x-2">
+                        <Select value={member.role} onValueChange={newRole => updateMemberRole(member.id, newRole)}>
                           <SelectTrigger className="w-24 h-8">
                             <SelectValue />
                           </SelectTrigger>
@@ -568,23 +487,14 @@ export const TeamsManager: React.FC = () => {
                             <SelectItem value="admin">Admin</SelectItem>
                           </SelectContent>
                         </Select>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeMember(member.id, member.email)}
-                          className="hover:bg-functions-delete/10 hover:text-functions-delete"
-                        >
+                        <Button variant="ghost" size="sm" onClick={() => removeMember(member.id, member.email)} className="hover:bg-functions-delete/10 hover:text-functions-delete">
                           <Trash2 className="w-4 h-4" />
                         </Button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+                      </div>}
+                  </div>)}
+              </div>}
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
