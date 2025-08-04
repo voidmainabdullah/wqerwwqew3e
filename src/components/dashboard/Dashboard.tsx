@@ -6,19 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Files, 
-  Share, 
-  Download, 
-  TrendingUp, 
-  Upload,
-  Clock,
-  Shield,
-  Zap,
-  Users
-} from 'lucide-react';
+import { Files, Share, Download, TrendingUp, Upload, Clock, Shield, Zap, Users } from 'lucide-react';
 import { TeamsManager } from '@/components/teams/TeamsManager';
-
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -27,60 +16,59 @@ interface DashboardStats {
   dailyUploadLimit: number;
   subscriptionTier: string;
 }
-
 export const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<any>(null);
-
   useEffect(() => {
     if (user) {
       fetchDashboardStats();
     }
   }, [user]);
-
   const fetchDashboardStats = async () => {
     try {
       // Fetch user profile
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('daily_upload_count, daily_upload_limit, subscription_tier')
-        .eq('id', user?.id)
-        .single();
+      const {
+        data: profile
+      } = await supabase.from('profiles').select('daily_upload_count, daily_upload_limit, subscription_tier').eq('id', user?.id).single();
 
       // Fetch file count
-      const { count: fileCount } = await supabase
-        .from('files')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user?.id);
+      const {
+        count: fileCount
+      } = await supabase.from('files').select('*', {
+        count: 'exact',
+        head: true
+      }).eq('user_id', user?.id);
 
       // Fetch share count - Get shared links for user's files
-      const { data: userFiles } = await supabase
-        .from('files')
-        .select('id')
-        .eq('user_id', user?.id);
-      
+      const {
+        data: userFiles
+      } = await supabase.from('files').select('id').eq('user_id', user?.id);
       const fileIds = userFiles?.map(f => f.id) || [];
-      
-      const { count: shareCount } = await supabase
-        .from('shared_links')
-        .select('*', { count: 'exact', head: true })
-        .in('file_id', fileIds);
+      const {
+        count: shareCount
+      } = await supabase.from('shared_links').select('*', {
+        count: 'exact',
+        head: true
+      }).in('file_id', fileIds);
 
       // Fetch download count
-      const { count: downloadCount } = await supabase
-        .from('download_logs')
-        .select('*', { count: 'exact', head: true })
-        .in('file_id', fileIds);
-
+      const {
+        count: downloadCount
+      } = await supabase.from('download_logs').select('*', {
+        count: 'exact',
+        head: true
+      }).in('file_id', fileIds);
       setStats({
         totalFiles: fileCount || 0,
         totalShares: shareCount || 0,
         totalDownloads: downloadCount || 0,
         dailyUploadCount: profile?.daily_upload_count || 0,
-        dailyUploadLimit: profile?.subscription_tier === 'pro' ? 999 : (profile?.daily_upload_limit || 10),
-        subscriptionTier: profile?.subscription_tier || 'free',
+        dailyUploadLimit: profile?.subscription_tier === 'pro' ? 999 : profile?.daily_upload_limit || 10,
+        subscriptionTier: profile?.subscription_tier || 'free'
       });
       setUserProfile(profile);
     } catch (error) {
@@ -89,13 +77,10 @@ export const Dashboard: React.FC = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
+          {[...Array(4)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div className="h-4 bg-muted rounded w-24"></div>
                 <div className="h-4 w-4 bg-muted rounded"></div>
@@ -103,17 +88,12 @@ export const Dashboard: React.FC = () => {
               <CardContent>
                 <div className="h-8 bg-muted rounded w-16"></div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  const uploadProgress = stats ? (stats.subscriptionTier === 'pro' ? 0 : (stats.dailyUploadCount / stats.dailyUploadLimit) * 100) : 0;
-
-  return (
-    <div className="space-y-6">
+  const uploadProgress = stats ? stats.subscriptionTier === 'pro' ? 0 : stats.dailyUploadCount / stats.dailyUploadLimit * 100 : 0;
+  return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
@@ -123,14 +103,10 @@ export const Dashboard: React.FC = () => {
         </div>
         <div className="flex items-center space-x-2">
           <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'}>
-            {stats?.subscriptionTier === 'pro' ? (
-              <>
+            {stats?.subscriptionTier === 'pro' ? <>
                 <Zap className="w-3 h-3 mr-1" />
                 Pro
-              </>
-            ) : (
-              'Free'
-            )}
+              </> : 'Free'}
           </Badge>
         </div>
       </div>
@@ -182,14 +158,9 @@ export const Dashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {stats?.subscriptionTier === 'pro' ? 
-                `${stats?.dailyUploadCount}/∞` : 
-                `${stats?.dailyUploadCount}/${stats?.dailyUploadLimit}`
-              }
+              {stats?.subscriptionTier === 'pro' ? `${stats?.dailyUploadCount}/∞` : `${stats?.dailyUploadCount}/${stats?.dailyUploadLimit}`}
             </div>
-            {stats?.subscriptionTier !== 'pro' && (
-              <Progress value={uploadProgress} className="mt-2" />
-            )}
+            {stats?.subscriptionTier !== 'pro' && <Progress value={uploadProgress} className="mt-2" />}
             <p className="text-xs text-muted-foreground mt-1">
               {stats?.subscriptionTier === 'pro' ? 'Unlimited uploads' : 'Daily upload limit'}
             </p>
@@ -268,8 +239,8 @@ export const Dashboard: React.FC = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Zap className="mr-2 h-5 w-5" />
+            <CardTitle className="flex items-center text-blue-500">
+              <Zap className="mr-2 h-5 w-5 bg-transparent animate-bounce" />
               Upgrade to Pro
             </CardTitle>
             <CardDescription>
@@ -291,6 +262,5 @@ export const Dashboard: React.FC = () => {
       <div className="mt-8">
         <TeamsManager />
       </div>
-    </div>
-  );
+    </div>;
 };
