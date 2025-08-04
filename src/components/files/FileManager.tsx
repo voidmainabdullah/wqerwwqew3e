@@ -624,7 +624,7 @@ export const FileManager: React.FC = () => {
                       {sharedLinks[file.id].map(link => {
                 const baseUrl = window.location.origin;
                 const shareUrl = link.link_type === 'code' ? `${baseUrl}/code` : `${baseUrl}/share/${link.share_token}`;
-                return <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded">
+                return <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded-xl">
                             <div className="flex-1">
                               <div className="flex items-center mb-1">
                                 <Badge variant="outline" className="mr-2">
