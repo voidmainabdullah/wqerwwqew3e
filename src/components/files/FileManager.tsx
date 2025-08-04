@@ -481,7 +481,7 @@ export const FileManager: React.FC = () => {
                         <span className="hidden md:inline">Uploaded {formatDate(file.created_at)}</span>
                       </div>
                       <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2">
-                        <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs bg-indigo-600">
+                        <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs bg-blue-500">
                           {file.is_public ? "Public" : "Private"}
                         </Badge>
                         {file.is_locked && <Badge variant="destructive" className="text-xs">Locked</Badge>}
