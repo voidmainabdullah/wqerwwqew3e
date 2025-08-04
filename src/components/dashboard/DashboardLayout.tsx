@@ -59,14 +59,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <SidebarHeader className="p-6 border-b border-sidebar-border">
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-sidebar-primary" />
-              <h1 className="text-xl font-bold text-sidebar-foreground">DropThrow</h1>
+              <h1 className="text-xl font-bold text-sidebar-foreground">SecureShare</h1>
             </div>
           </SidebarHeader>
           
           <SidebarContent className="p-4">
             <nav className="space-y-2">
               {sidebarItems.map(item => <Button key={item.href} variant="ghost" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" asChild>
-                  <Link to={item.href} className="mx-0 my-0 px-0 py-0">
+                  <Link to={item.href} className="mx-0 my-px py-0 px-0">
                     <item.icon className="mr-3 h-4 w-4" />
                     {item.label}
                   </Link>
