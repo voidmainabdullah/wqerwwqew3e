@@ -118,7 +118,7 @@ export const Settings: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" value={user?.email || ''} disabled className="bg-muted" />
+              <Input id="email" value={user?.email || ''} disabled className="bg-indigo-700" />
               <p className="text-xs text-muted-foreground">
                 Email cannot be changed. Contact support if you need to update your email.
               </p>
