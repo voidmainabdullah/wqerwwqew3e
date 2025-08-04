@@ -79,7 +79,7 @@ export const TeamsManager: React.FC = () => {
   const fetchTeams = async () => {
     try {
       const { data, error } = await supabase.rpc('get_user_teams', {
-        user_id: user!.id
+        p_user_id: user!.id
       });
 
       if (error) throw error;
