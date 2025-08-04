@@ -635,7 +635,7 @@ export const FileManager: React.FC = () => {
                                 {link.download_limit && <span> / {link.download_limit}</span>}
                               </div>
                               <div className="flex items-center space-x-2">
-                                <Input value={shareUrl} readOnly className="text-xs h-6 bg-background" />
+                                <Input value={shareUrl} readOnly className="text-xs h-6 bg-zinc-700" />
                                 <Button size="sm" variant="outline" className="h-6 px-2" onClick={async () => {
                         await navigator.clipboard.writeText(shareUrl);
                         toast({
