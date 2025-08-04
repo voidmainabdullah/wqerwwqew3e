@@ -477,7 +477,7 @@ export const FileManager: React.FC = () => {
                       <h3 className="font-medium truncate">{file.original_name}</h3>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                         <span>{formatFileSize(file.file_size)}</span>
-                        <span className="hidden sm:inline text-base text-green-200">{file.download_count} downloads</span>
+                        <span className="hidden sm:inline text-green-200 text-sm font-thin">{file.download_count} downloads</span>
                         <span className="hidden md:inline">Uploaded {formatDate(file.created_at)}</span>
                       </div>
                       <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2">
