@@ -6,17 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { 
-  Share,
-  Copy,
-  Download,
-  Eye,
-  Clock,
-  Shield,
-  Trash2,
-  ExternalLink
-} from 'lucide-react';
-
+import { Share, Copy, Download, Eye, Clock, Shield, Trash2, ExternalLink } from 'lucide-react';
 interface SharedLink {
   id: string;
   share_token: string;
@@ -30,44 +20,42 @@ interface SharedLink {
     file_size: number;
   };
 }
-
 export const SharedLinks: React.FC = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const {
+    user
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const [sharedLinks, setSharedLinks] = useState<SharedLink[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (user) {
       fetchSharedLinks();
     }
   }, [user]);
-
   const fetchSharedLinks = async () => {
     try {
       // Get user's files first
-      const { data: userFiles } = await supabase
-        .from('files')
-        .select('id')
-        .eq('user_id', user?.id);
-
+      const {
+        data: userFiles
+      } = await supabase.from('files').select('id').eq('user_id', user?.id);
       const fileIds = userFiles?.map(f => f.id) || [];
-
       if (fileIds.length === 0) {
         setSharedLinks([]);
         return;
       }
 
       // Get shared links for user's files
-      const { data, error } = await supabase
-        .from('shared_links')
-        .select(`
+      const {
+        data,
+        error
+      } = await supabase.from('shared_links').select(`
           *,
           files!inner(original_name, file_size)
-        `)
-        .in('file_id', fileIds)
-        .order('created_at', { ascending: false });
-
+        `).in('file_id', fileIds).order('created_at', {
+        ascending: false
+      });
       if (error) throw error;
       setSharedLinks(data || []);
     } catch (error) {
@@ -75,53 +63,47 @@ export const SharedLinks: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to load shared links.",
+        description: "Failed to load shared links."
       });
     } finally {
       setLoading(false);
     }
   };
-
   const copyToClipboard = async (shareToken: string) => {
     const url = `${window.location.origin}/share/${shareToken}`;
     try {
       await navigator.clipboard.writeText(url);
       toast({
         title: "Link copied",
-        description: "Share link has been copied to clipboard.",
+        description: "Share link has been copied to clipboard."
       });
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Copy failed",
-        description: "Could not copy link to clipboard.",
+        description: "Could not copy link to clipboard."
       });
     }
   };
-
   const deleteSharedLink = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('shared_links')
-        .delete()
-        .eq('id', id);
-
+      const {
+        error
+      } = await supabase.from('shared_links').delete().eq('id', id);
       if (error) throw error;
-
       setSharedLinks(prev => prev.filter(link => link.id !== id));
       toast({
         title: "Link deleted",
-        description: "Shared link has been deleted successfully.",
+        description: "Shared link has been deleted successfully."
       });
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Delete failed",
-        description: "Could not delete the shared link.",
+        description: "Could not delete the shared link."
       });
     }
   };
-
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -129,23 +111,18 @@ export const SharedLinks: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-
   const isExpired = (expiresAt: string | null) => {
     if (!expiresAt) return false;
     return new Date(expiresAt) < new Date();
   };
-
   const isLimitReached = (downloadLimit: number | null, downloadCount: number) => {
     if (!downloadLimit) return false;
     return downloadCount >= downloadLimit;
   };
-
   if (loading) {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div className="grid gap-4">
-          {[...Array(3)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
+          {[...Array(3)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader>
                 <div className="h-4 bg-muted rounded w-48"></div>
                 <div className="h-3 bg-muted rounded w-32"></div>
@@ -153,15 +130,11 @@ export const SharedLinks: React.FC = () => {
               <CardContent>
                 <div className="h-10 bg-muted rounded"></div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Shared Links</h1>
         <p className="text-muted-foreground">
@@ -169,8 +142,7 @@ export const SharedLinks: React.FC = () => {
         </p>
       </div>
 
-      {sharedLinks.length === 0 ? (
-        <Card>
+      {sharedLinks.length === 0 ? <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Share className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">No shared links yet</h3>
@@ -184,18 +156,14 @@ export const SharedLinks: React.FC = () => {
               </a>
             </Button>
           </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-4">
+        </Card> : <div className="grid gap-4">
           {sharedLinks.map((link, index) => {
-            const expired = isExpired(link.expires_at);
-            const limitReached = isLimitReached(link.download_limit, link.download_count);
-            const inactive = expired || limitReached;
-            
-            return (
-              <Card key={link.id} 
-                    className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`}
-                    style={{ animationDelay: `${index * 0.1}s` }}>
+        const expired = isExpired(link.expires_at);
+        const limitReached = isLimitReached(link.download_limit, link.download_count);
+        const inactive = expired || limitReached;
+        return <Card key={link.id} className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`} style={{
+          animationDelay: `${index * 0.1}s`
+        }}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -208,45 +176,23 @@ export const SharedLinks: React.FC = () => {
                       </CardDescription>
                     </div>
                     <div className="flex items-center space-x-2">
-                      {link.password_hash && (
-                        <Badge variant="secondary">
+                      {link.password_hash && <Badge variant="secondary">
                           <Shield className="w-3 h-3 mr-1" />
                           Protected
-                        </Badge>
-                      )}
-                      {expired && (
-                        <Badge variant="destructive">Expired</Badge>
-                      )}
-                      {limitReached && (
-                        <Badge variant="destructive">Limit Reached</Badge>
-                      )}
-                      {!inactive && (
-                        <Badge variant="default">Active</Badge>
-                      )}
+                        </Badge>}
+                      {expired && <Badge variant="destructive">Expired</Badge>}
+                      {limitReached && <Badge variant="destructive">Limit Reached</Badge>}
+                      {!inactive && <Badge variant="default" className="bg-lime-300">Active</Badge>}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center space-x-2">
-                    <Input
-                      value={`${window.location.origin}/share/${link.share_token}`}
-                      readOnly
-                      className="font-mono text-sm"
-                    />
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => copyToClipboard(link.share_token)}
-                      className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300"
-                    >
+                    <Input value={`${window.location.origin}/share/${link.share_token}`} readOnly className="font-mono text-sm" />
+                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300">
                       <Copy className="h-4 w-4" />
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => window.open(`/share/${link.share_token}`, '_blank')}
-                      className="hover:bg-primary/10 hover:text-primary transition-all duration-300"
-                    >
+                    <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300">
                       <ExternalLink className="h-4 w-4" />
                     </Button>
                   </div>
@@ -262,10 +208,7 @@ export const SharedLinks: React.FC = () => {
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
                       <span>
-                        {link.expires_at 
-                          ? `Expires ${new Date(link.expires_at).toLocaleDateString()}`
-                          : 'Never expires'
-                        }
+                        {link.expires_at ? `Expires ${new Date(link.expires_at).toLocaleDateString()}` : 'Never expires'}
                       </span>
                     </div>
 
@@ -277,22 +220,14 @@ export const SharedLinks: React.FC = () => {
                     </div>
 
                     <div className="flex justify-end">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => deleteSharedLink(link.id)}
-                        className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105"
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
+              </Card>;
+      })}
+        </div>}
+    </div>;
 };
