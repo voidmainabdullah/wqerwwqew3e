@@ -118,8 +118,10 @@ export const FileManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Error loading files",
-        description: error.message || "Failed to load your files. Please try again.",
+        description: error.message || "Failed to load your files. Please refresh the page.",
       });
+      // Set empty array on error to prevent infinite loading
+      setFiles([]);
     } finally {
       setLoading(false);
     }
@@ -138,13 +140,23 @@ export const FileManager: React.FC = () => {
         return;
       }
 
+      // Check if file exists in storage first
+      const { data: fileExists, error: existsError } = await supabase.storage
+        .from('files')
+        .list('', { search: file.storage_path });
+
+      if (existsError) {
+        console.error('Error checking file existence:', existsError);
+        throw new Error('Failed to verify file existence');
+      }
+
       const { data, error } = await supabase.storage
         .from('files')
         .download(file.storage_path);
 
       if (error) {
         console.error('Storage download error:', error);
-        throw error;
+        throw new Error(`Download failed: ${error.message}`);
       }
 
       // Create download link
@@ -158,17 +170,27 @@ export const FileManager: React.FC = () => {
       URL.revokeObjectURL(url);
 
       // Log the download
-      await supabase.from('download_logs').insert({
+      const { error: logError } = await supabase.from('download_logs').insert({
         file_id: file.id,
         download_method: 'direct',
         downloader_user_agent: navigator.userAgent,
       });
 
+      if (logError) {
+        console.warn('Failed to log download:', logError);
+        // Don't fail the download for logging issues
+      }
+
       // Update download count
-      await supabase
+      const { error: updateError } = await supabase
         .from('files')
         .update({ download_count: file.download_count + 1 })
         .eq('id', file.id);
+
+      if (updateError) {
+        console.warn('Failed to update download count:', updateError);
+        // Don't fail the download for count update issues
+      }
 
       console.log('File downloaded successfully:', file.original_name);
       toast({
@@ -182,7 +204,7 @@ export const FileManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Download failed",
-        description: error.message || "Failed to download file. Please try again.",
+        description: error.message || "The file may have been moved or deleted.",
       });
     }
   };
@@ -194,17 +216,7 @@ export const FileManager: React.FC = () => {
     try {
       console.log('Deleting file:', file.id, file.original_name);
 
-      // Delete from storage
-      const { error: storageError } = await supabase.storage
-        .from('files')
-        .remove([file.storage_path]);
-
-      if (storageError) {
-        console.error('Storage deletion error:', storageError);
-        // Continue with database deletion even if storage fails
-      }
-
-      // Delete from database
+      // First delete from database to prevent orphaned records
       const { error: dbError } = await supabase
         .from('files')
         .delete()
@@ -212,7 +224,17 @@ export const FileManager: React.FC = () => {
 
       if (dbError) {
         console.error('Database deletion error:', dbError);
-        throw dbError;
+        throw new Error(`Failed to delete file record: ${dbError.message}`);
+      }
+
+      // Delete from storage
+      const { error: storageError } = await supabase.storage
+        .from('files')
+        .remove([file.storage_path]);
+
+      if (storageError) {
+        console.warn('Storage deletion warning:', storageError);
+        // Don't fail if storage deletion fails - file record is already deleted
       }
 
       console.log('File deleted successfully:', file.original_name);
@@ -227,7 +249,7 @@ export const FileManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Delete failed",
-        description: error.message || "Failed to delete file. Please try again.",
+        description: error.message || "Failed to delete file. It may have already been removed.",
       });
     }
   };
@@ -243,7 +265,7 @@ export const FileManager: React.FC = () => {
 
       if (error) {
         console.error('Lock toggle error:', error);
-        throw error;
+        throw new Error(`Failed to update lock status: ${error.message}`);
       }
 
       console.log('File lock toggled successfully:', file.original_name);
@@ -258,7 +280,7 @@ export const FileManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Lock toggle failed",
-        description: error.message || "Failed to update file lock status.",
+        description: error.message || "Unable to change file lock status. Please try again.",
       });
     }
   };
@@ -274,7 +296,7 @@ export const FileManager: React.FC = () => {
 
       if (error) {
         console.error('Visibility toggle error:', error);
-        throw error;
+        throw new Error(`Failed to update visibility: ${error.message}`);
       }
 
       console.log('File visibility toggled successfully:', file.original_name);
@@ -289,7 +311,7 @@ export const FileManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Visibility toggle failed",
-        description: error.message || "Failed to update file visibility.",
+        description: error.message || "Unable to change file visibility. Please try again.",
       });
     }
   };
@@ -298,12 +320,22 @@ export const FileManager: React.FC = () => {
     try {
       console.log('Generating share code for file:', file.id);
 
+      // Check if file already has a share code
+      if (file.share_code) {
+        setGeneratedCode(file.share_code);
+        toast({
+          title: "Share code already exists",
+          description: `Share code: ${file.share_code}`,
+        });
+        return;
+      }
+
       // Generate a unique 8-character code
       const { data: codeData, error: codeError } = await supabase.rpc('generate_share_code');
       
       if (codeError) {
         console.error('Share code generation error:', codeError);
-        throw codeError;
+        throw new Error(`Failed to generate share code: ${codeError.message}`);
       }
 
       const shareCode = codeData;
@@ -316,7 +348,7 @@ export const FileManager: React.FC = () => {
 
       if (updateError) {
         console.error('Share code update error:', updateError);
-        throw updateError;
+        throw new Error(`Failed to save share code: ${updateError.message}`);
       }
 
       console.log('Share code generated successfully:', shareCode);
@@ -332,7 +364,7 @@ export const FileManager: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Share code generation failed",
-        description: error.message || "Failed to generate share code.",
+        description: error.message || "Unable to generate share code. Please try again.",
       });
     }
   };
@@ -343,11 +375,33 @@ export const FileManager: React.FC = () => {
     try {
       console.log('Creating share link:', shareType, selectedFile.id);
 
+      // Validate inputs
+      if (shareType === 'email' && !shareEmail.trim()) {
+        toast({
+          variant: "destructive",
+          title: "Email required",
+          description: "Please enter a recipient email address.",
+        });
+        return;
+      }
+
       const shareToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
       const expiryDate = shareExpiry ? new Date(shareExpiry).toISOString() : null;
       const downloadLimit = shareLimit ? parseInt(shareLimit) : null;
-      const passwordHash = sharePassword ? 
-        (await supabase.rpc('hash_password', { password: sharePassword })).data : null;
+      
+      let passwordHash = null;
+      if (sharePassword.trim()) {
+        const { data: hashData, error: hashError } = await supabase.rpc('hash_password', { 
+          password: sharePassword 
+        });
+        
+        if (hashError) {
+          console.error('Password hashing error:', hashError);
+          throw new Error('Failed to secure password');
+        }
+        
+        passwordHash = hashData;
+      }
 
       const { data, error } = await supabase
         .from('shared_links')
@@ -365,7 +419,7 @@ export const FileManager: React.FC = () => {
 
       if (error) {
         console.error('Share link creation error:', error);
-        throw error;
+        throw new Error(`Failed to create share link: ${error.message}`);
       }
 
       const shareUrl = `${window.location.origin}/share/${shareToken}`;
@@ -376,7 +430,7 @@ export const FileManager: React.FC = () => {
       // Send email if it's an email share
       if (shareType === 'email' && shareEmail) {
         try {
-          await supabase.functions.invoke('send-email', {
+          const { error: emailError } = await supabase.functions.invoke('send-email', {
             body: {
               recipientEmail: shareEmail,
               subject: `File shared: ${selectedFile.original_name}`,
@@ -385,23 +439,40 @@ export const FileManager: React.FC = () => {
               message: shareMessage,
             },
           });
-          console.log('Email sent successfully');
+          
+          if (emailError) {
+            console.warn('Email sending failed:', emailError);
+            toast({
+              variant: "destructive",
+              title: "Email sending failed",
+              description: "Share link created but email could not be sent.",
+            });
+          } else {
+            console.log('Email sent successfully');
+            toast({
+              title: "Email sent",
+              description: `Share link sent to ${shareEmail}`,
+            });
+          }
         } catch (emailError) {
-          console.error('Email sending failed:', emailError);
-          // Don't fail the whole operation if email fails
+          console.warn('Email service error:', emailError);
+          toast({
+            title: "Share link created",
+            description: "Link created but email service is unavailable.",
+          });
         }
+      } else {
+        toast({
+          title: "Share link created",
+          description: "Your file has been shared successfully",
+        });
       }
-
-      toast({
-        title: "Share link created",
-        description: "Your file has been shared successfully",
-      });
     } catch (error: any) {
       console.error('Share link creation failed:', error);
       toast({
         variant: "destructive",
         title: "Share link creation failed",
-        description: error.message || "Failed to create share link.",
+        description: error.message || "Unable to create share link. Please try again.",
       });
     }
   };
@@ -415,11 +486,27 @@ export const FileManager: React.FC = () => {
       });
     } catch (error) {
       console.error('Clipboard copy failed:', error);
-      toast({
-        variant: "destructive",
-        title: "Copy failed",
-        description: "Failed to copy to clipboard",
-      });
+      // Fallback for browsers that don't support clipboard API
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        toast({
+          title: "Copied to clipboard",
+          description: "Link has been copied to your clipboard",
+        });
+      } catch (fallbackError) {
+        console.error('Fallback copy also failed:', fallbackError);
+        toast({
+          variant: "destructive",
+          title: "Copy failed",
+          description: "Please manually copy the link",
+        });
+      }
     }
   };
 

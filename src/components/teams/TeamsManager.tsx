@@ -98,17 +98,47 @@ export const TeamsManager: React.FC = () => {
   const fetchTeamMembers = async (teamId: string) => {
     try {
       console.log('Fetching team members for team:', teamId);
-      const { data, error } = await supabase.rpc('get_team_members', {
-        p_team_id: teamId
-      });
+      const { data, error } = await supabase
+        .from('team_members')
+        .select(`
+          id,
+          user_id,
+          role,
+          permissions,
+          joined_at,
+          profiles!team_members_user_id_fkey(email, display_name)
+        `)
+        .eq('team_id', teamId)
+        .order('joined_at', { ascending: true });
 
       if (error) {
         console.error('Error fetching team members:', error);
-        throw error;
+        // Fallback to RPC function if direct query fails
+        const { data: rpcData, error: rpcError } = await supabase.rpc('get_team_members', {
+        p_team_id: teamId
+      });
+
+        if (rpcError) {
+          console.error('RPC fallback also failed:', rpcError);
+          throw rpcError;
+        }
+        
+        setTeamMembers(rpcData || []);
+      } else {
+        // Transform the data to match expected format
+        const transformedData = data.map(member => ({
+          id: member.id,
+          user_id: member.user_id,
+          email: (member.profiles as any)?.email || 'Unknown',
+          display_name: (member.profiles as any)?.display_name || 'Unknown',
+          role: member.role,
+          permissions: member.permissions,
+          joined_at: member.joined_at
+        }));
+        setTeamMembers(transformedData);
       }
 
-      console.log('Team members fetched successfully:', data?.length || 0);
-      setTeamMembers(data || []);
+      console.log('Team members fetched successfully:', teamMembers.length);
     } catch (error: any) {
       console.error('Failed to fetch team members:', error);
       toast({

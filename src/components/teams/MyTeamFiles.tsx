@@ -60,19 +60,33 @@ export const MyTeamFiles: React.FC = () => {
 
   const fetchMyTeamFiles = async () => {
     try {
+      if (!user?.id) {
+        console.error('No user ID available for team files');
+        return;
+      }
+
+      console.log('Fetching team files for user:', user.id);
+
       const { data, error } = await supabase.rpc('get_my_team_files', {
         p_user_id: user!.id
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching team files:', error);
+        throw new Error(`Failed to load team files: ${error.message}`);
+      }
+
+      console.log('Team files fetched successfully:', data?.length || 0);
       setTeamFiles(data || []);
     } catch (error: any) {
       console.error('Error fetching team files:', error);
       toast({
         variant: "destructive",
         title: "Error fetching team files",
-        description: error.message,
+        description: error.message || "Unable to load team files. Please refresh the page.",
       });
+      // Set empty array on error to prevent infinite loading
+      setTeamFiles([]);
     } finally {
       setLoading(false);
     }
@@ -80,11 +94,20 @@ export const MyTeamFiles: React.FC = () => {
 
   const downloadFile = async (fileId: string, fileName: string) => {
     try {
+      console.log('Downloading team file:', fileId, fileName);
+
       const { data, error } = await supabase.storage
         .from('files')
-        .download(`${fileId}`);
+        .download(fileId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Storage download error:', error);
+        throw new Error(`Download failed: ${error.message}`);
+      }
+
+      if (!data) {
+        throw new Error('File data not available');
+      }
 
       // Create download link
       const url = URL.createObjectURL(data);
@@ -97,7 +120,7 @@ export const MyTeamFiles: React.FC = () => {
       URL.revokeObjectURL(url);
 
       // Log download
-      await supabase
+      const { error: logError } = await supabase
         .from('download_logs')
         .insert({
           file_id: fileId,
@@ -105,28 +128,41 @@ export const MyTeamFiles: React.FC = () => {
           downloader_user_agent: navigator.userAgent
         });
 
+      if (logError) {
+        console.warn('Failed to log team download:', logError);
+        // Don't fail download for logging issues
+      }
+
+      console.log('Team file downloaded successfully:', fileName);
       toast({
         title: "Download started",
         description: `${fileName} is being downloaded`,
       });
     } catch (error: any) {
+      console.error('Team file download failed:', error);
       toast({
         variant: "destructive",
         title: "Download failed",
-        description: error.message,
+        description: error.message || "Unable to download file. Please try again.",
       });
     }
   };
 
   const toggleFileLock = async (fileId: string, currentLockStatus: boolean) => {
     try {
+      console.log('Toggling file lock for team file:', fileId, !currentLockStatus);
+
       const { error } = await supabase
         .from('files')
         .update({ is_locked: !currentLockStatus })
         .eq('id', fileId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Lock toggle error:', error);
+        throw new Error(`Failed to update lock status: ${error.message}`);
+      }
 
+      console.log('File lock toggled successfully');
       toast({
         title: currentLockStatus ? "File unlocked" : "File locked",
         description: `File has been ${currentLockStatus ? 'unlocked' : 'locked'} successfully`,
@@ -134,10 +170,11 @@ export const MyTeamFiles: React.FC = () => {
 
       fetchMyTeamFiles();
     } catch (error: any) {
+      console.error('Lock toggle failed:', error);
       toast({
         variant: "destructive",
         title: "Error updating file",
-        description: error.message,
+        description: error.message || "Unable to change file lock status.",
       });
     }
   };

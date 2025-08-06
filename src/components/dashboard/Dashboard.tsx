@@ -30,49 +30,113 @@ export const Dashboard: React.FC = () => {
   }, [user]);
   const fetchDashboardStats = async () => {
     try {
+      if (!user?.id) {
+        console.error('No user ID available for dashboard stats');
+        return;
+      }
+
+      console.log('Fetching dashboard stats for user:', user.id);
+
       // Fetch user profile
-      const {
-        data: profile
-      } = await supabase.from('profiles').select('daily_upload_count, daily_upload_limit, subscription_tier').eq('id', user?.id).single();
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('daily_upload_count, daily_upload_limit, subscription_tier')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+        throw new Error(`Failed to load profile: ${profileError.message}`);
+      }
 
       // Fetch file count
-      const {
-        count: fileCount
-      } = await supabase.from('files').select('*', {
+      const { count: fileCount, error: fileCountError } = await supabase
+        .from('files')
+        .select('*', {
         count: 'exact',
         head: true
-      }).eq('user_id', user?.id);
+      }).eq('user_id', user.id);
+
+      if (fileCountError) {
+        console.warn('Error fetching file count:', fileCountError);
+        // Continue with 0 count
+      }
 
       // Fetch share count - Get shared links for user's files
-      const {
-        data: userFiles
-      } = await supabase.from('files').select('id').eq('user_id', user?.id);
+      const { data: userFiles, error: userFilesError } = await supabase
+        .from('files')
+        .select('id')
+        .eq('user_id', user.id);
+
+      if (userFilesError) {
+        console.warn('Error fetching user files for share count:', userFilesError);
+      }
+
       const fileIds = userFiles?.map(f => f.id) || [];
-      const {
-        count: shareCount
-      } = await supabase.from('shared_links').select('*', {
+      
+      let shareCount = 0;
+      if (fileIds.length > 0) {
+        const { count, error: shareCountError } = await supabase
+          .from('shared_links')
+          .select('*', {
         count: 'exact',
         head: true
-      }).in('file_id', fileIds);
+          })
+          .in('file_id', fileIds);
+
+        if (shareCountError) {
+          console.warn('Error fetching share count:', shareCountError);
+        } else {
+          shareCount = count || 0;
+        }
+      }
 
       // Fetch download count
-      const {
-        count: downloadCount
-      } = await supabase.from('download_logs').select('*', {
+      let downloadCount = 0;
+      if (fileIds.length > 0) {
+        const { count, error: downloadCountError } = await supabase
+          .from('download_logs')
+          .select('*', {
         count: 'exact',
         head: true
-      }).in('file_id', fileIds);
+          })
+          .in('file_id', fileIds);
+
+        if (downloadCountError) {
+          console.warn('Error fetching download count:', downloadCountError);
+        } else {
+          downloadCount = count || 0;
+        }
+      }
+
       setStats({
         totalFiles: fileCount || 0,
-        totalShares: shareCount || 0,
-        totalDownloads: downloadCount || 0,
+        totalShares: shareCount,
+        totalDownloads: downloadCount,
         dailyUploadCount: profile?.daily_upload_count || 0,
         dailyUploadLimit: profile?.subscription_tier === 'pro' ? 999 : profile?.daily_upload_limit || 10,
         subscriptionTier: profile?.subscription_tier || 'free'
       });
+
+      console.log('Dashboard stats loaded successfully');
       setUserProfile(profile);
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
+      toast({
+        variant: "destructive",
+        title: "Dashboard loading failed",
+        description: "Unable to load dashboard data. Please refresh the page.",
+      });
+      
+      // Set fallback stats to prevent UI issues
+      setStats({
+        totalFiles: 0,
+        totalShares: 0,
+        totalDownloads: 0,
+        dailyUploadCount: 0,
+        dailyUploadLimit: 10,
+        subscriptionTier: 'free'
+      });
     } finally {
       setLoading(false);
     }

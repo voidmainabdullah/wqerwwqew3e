@@ -36,35 +36,59 @@ export const SharedLinks: React.FC = () => {
   }, [user]);
   const fetchSharedLinks = async () => {
     try {
+      if (!user?.id) {
+        console.error('No user ID available for shared links');
+        return;
+      }
+
+      console.log('Fetching shared links for user:', user.id);
+
       // Get user's files first
-      const {
-        data: userFiles
-      } = await supabase.from('files').select('id').eq('user_id', user?.id);
+      const { data: userFiles, error: userFilesError } = await supabase
+        .from('files')
+        .select('id')
+        .eq('user_id', user.id);
+
+      if (userFilesError) {
+        console.error('Error fetching user files:', userFilesError);
+        throw new Error(`Failed to load user files: ${userFilesError.message}`);
+      }
+
       const fileIds = userFiles?.map(f => f.id) || [];
+      
       if (fileIds.length === 0) {
+        console.log('No files found for user, setting empty shared links');
         setSharedLinks([]);
         return;
       }
 
       // Get shared links for user's files
-      const {
-        data,
-        error
-      } = await supabase.from('shared_links').select(`
+      const { data, error } = await supabase
+        .from('shared_links')
+        .select(`
           *,
           files!inner(original_name, file_size)
-        `).in('file_id', fileIds).order('created_at', {
+        `)
+        .in('file_id', fileIds)
+        .order('created_at', {
         ascending: false
       });
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Error fetching shared links:', error);
+        throw new Error(`Failed to load shared links: ${error.message}`);
+      }
+
+      console.log('Shared links fetched successfully:', data?.length || 0);
       setSharedLinks(data || []);
     } catch (error) {
       console.error('Error fetching shared links:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to load shared links."
+        description: "Failed to load shared links. Please refresh the page."
       });
+      setSharedLinks([]);
     } finally {
       setLoading(false);
     }
@@ -78,29 +102,55 @@ export const SharedLinks: React.FC = () => {
         description: "Share link has been copied to clipboard."
       });
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Copy failed",
-        description: "Could not copy link to clipboard."
-      });
+      console.error('Clipboard copy failed:', error);
+      // Fallback for browsers that don't support clipboard API
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        toast({
+          title: "Link copied",
+          description: "Share link has been copied to clipboard."
+        });
+      } catch (fallbackError) {
+        console.error('Fallback copy also failed:', fallbackError);
+        toast({
+          variant: "destructive",
+          title: "Copy failed",
+          description: "Please manually copy the link."
+        });
+      }
     }
   };
   const deleteSharedLink = async (id: string) => {
     try {
+      console.log('Deleting shared link:', id);
+
       const {
         error
       } = await supabase.from('shared_links').delete().eq('id', id);
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Error deleting shared link:', error);
+        throw new Error(`Failed to delete link: ${error.message}`);
+      }
+
       setSharedLinks(prev => prev.filter(link => link.id !== id));
+      console.log('Shared link deleted successfully');
       toast({
         title: "Link deleted",
         description: "Shared link has been deleted successfully."
       });
     } catch (error) {
+      console.error('Delete shared link failed:', error);
       toast({
         variant: "destructive",
         title: "Delete failed",
-        description: "Could not delete the shared link."
+        description: "Could not delete the shared link. Please try again."
       });
     }
   };

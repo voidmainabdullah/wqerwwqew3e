@@ -46,6 +46,11 @@ export const PublicSharePage: React.FC = () => {
 
   const fetchShareData = async () => {
     try {
+      if (!token) {
+        setError('Invalid share link');
+        return;
+      }
+
       const { data, error } = await supabase
         .from('shared_links')
         .select(`
@@ -62,10 +67,18 @@ export const PublicSharePage: React.FC = () => {
         .eq('is_active', true)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching share data:', error);
+        throw new Error(`Failed to load share link: ${error.message}`);
+      }
 
       if (!data) {
         setError('Share link not found or has expired');
+        return;
+      }
+
+      if (!data.file) {
+        setError('Associated file not found');
         return;
       }
 
@@ -87,7 +100,10 @@ export const PublicSharePage: React.FC = () => {
       if (data.password_hash) {
         setPasswordRequired(true);
       }
+
+      console.log('Share data loaded successfully:', data.file.original_name);
     } catch (error: any) {
+      console.error('Failed to fetch share data:', error);
       setError(error.message || 'Failed to load share link');
     } finally {
       setLoading(false);
@@ -103,21 +119,28 @@ export const PublicSharePage: React.FC = () => {
         return;
       }
 
+      console.log('Validating password for share token:', token);
+
       // Use the database function to properly validate password
       const { data, error } = await supabase.rpc('validate_share_password', {
         token: token,
         password: password
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Password validation error:', error);
+        throw new Error(`Password validation failed: ${error.message}`);
+      }
       
       if (data === true) {
         setPasswordRequired(false);
+        console.log('Password validated successfully');
         toast({
           title: "Access granted",
           description: "Password verified successfully",
         });
       } else {
+        console.log('Invalid password provided');
         toast({
           variant: "destructive",
           title: "Invalid password",
@@ -125,10 +148,11 @@ export const PublicSharePage: React.FC = () => {
         });
       }
     } catch (error: any) {
+      console.error('Password validation failed:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: error.message || "Password validation failed",
       });
     }
   };
@@ -148,11 +172,20 @@ export const PublicSharePage: React.FC = () => {
 
     setDownloading(true);
     try {
+      console.log('Starting download for file:', shareData.file.original_name);
+
       const { data: fileData, error } = await supabase.storage
         .from('files')
         .download(shareData.file.storage_path);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Storage download error:', error);
+        throw new Error(`Download failed: ${error.message}`);
+      }
+
+      if (!fileBlob) {
+        throw new Error('File data not available');
+      }
 
       // Create download link
       const url = URL.createObjectURL(fileData);
@@ -165,7 +198,7 @@ export const PublicSharePage: React.FC = () => {
       URL.revokeObjectURL(url);
 
       // Log the download
-      await supabase.from('download_logs').insert({
+      const { error: logError } = await supabase.from('download_logs').insert({
         file_id: shareData.file_id,
         shared_link_id: shareData.id,
         download_method: 'shared_link',
@@ -173,21 +206,33 @@ export const PublicSharePage: React.FC = () => {
         downloader_user_agent: navigator.userAgent,
       });
 
+      if (logError) {
+        console.warn('Failed to log download:', logError);
+        // Don't fail download for logging issues
+      }
+
       // Update download count
-      await supabase
+      const { error: updateError } = await supabase
         .from('shared_links')
         .update({ download_count: shareData.download_count + 1 })
         .eq('id', shareData.id);
 
+      if (updateError) {
+        console.warn('Failed to update download count:', updateError);
+        // Don't fail download for count update issues
+      }
+
+      console.log('File downloaded successfully:', shareData.file.original_name);
       toast({
         title: "Download started",
         description: "Your file download has begun",
       });
     } catch (error: any) {
+      console.error('Download failed:', error);
       toast({
         variant: "destructive",
         title: "Download failed",
-        description: error.message,
+        description: error.message || "Unable to download file. Please try again.",
       });
     } finally {
       setDownloading(false);
