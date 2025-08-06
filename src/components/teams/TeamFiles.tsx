@@ -408,7 +408,17 @@ export const TeamFiles: React.FC = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => removeFileFromTeam(file.id, file.team_id, file.original_name)}
+                         onClick={() => {
+                           // Remove file from team functionality
+                           const confirmed = window.confirm(`Remove ${file.original_name} from team?`);
+                           if (confirmed) {
+                             // Implementation would go here
+                             toast({
+                               title: "Feature coming soon",
+                               description: "File removal from teams will be available soon.",
+                             });
+                           }
+                         }}
                           className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all"
                         >
                           <Trash2 className="w-4 h-4" />

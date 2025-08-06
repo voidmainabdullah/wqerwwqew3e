@@ -96,9 +96,21 @@ export const MyTeamFiles: React.FC = () => {
     try {
       console.log('Downloading team file:', fileId, fileName);
 
+      // Get the actual storage path for the file
+      const { data: fileData, error: fileError } = await supabase
+        .from('files')
+        .select('storage_path')
+        .eq('id', fileId)
+        .single();
+
+      if (fileError) {
+        console.error('Error fetching file data:', fileError);
+        throw new Error(`File not found: ${fileError.message}`);
+      }
+
       const { data, error } = await supabase.storage
         .from('files')
-        .download(fileId);
+        .download(fileData.storage_path);
 
       if (error) {
         console.error('Storage download error:', error);
