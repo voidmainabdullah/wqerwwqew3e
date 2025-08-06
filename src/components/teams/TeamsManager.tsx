@@ -109,23 +109,10 @@ export const TeamsManager: React.FC = () => {
   };
   const fetchTeamMembers = async (teamId: string) => {
     try {
-      const {
-        data,
-        error
-      } = await supabase.from('team_members').select(`
-          id,
-          user_id,
-          role,
-          permissions,
-          joined_at
-        `).eq('team_id', teamId);
-      if (error) throw error;
-      const members = data?.map(member => ({
-        ...member,
-        email: 'Team Member',
-        permissions: member.permissions as any
-      })) || [];
-      setTeamMembers(members);
+      const { data, error } = await supabase.rpc('get_team_members', {
+        p_team_id: teamId
+      });
+      setTeamMembers(data || []);
     } catch (error: any) {
       console.error('Error fetching team members:', error);
       toast({
@@ -183,43 +170,80 @@ export const TeamsManager: React.FC = () => {
       // Check if user exists
       const {
         data: userData,
-        error: userError
-      } = await supabase.rpc('get_user_by_email', {
-        email_input: newMemberEmail
-      });
-      if (userError) throw userError;
+      // Check if user exists using the fixed function
+      const { data: userData, error: userError } = await supabase
+        .rpc('get_user_by_email', {
+          email_input: newMemberEmail.trim()
+        });
+
+      if (userError) {
+        console.error('Error checking user:', userError);
+        throw new Error(`Failed to find user: ${userError.message}`);
+      }
+
       if (!userData || userData.length === 0) {
         toast({
           variant: "destructive",
           title: "User not found",
-          description: "No authenticated user found with this email"
+          description: "No user found with this email address. They need to create an account first."
         });
         return;
       }
+
+      const targetUser = userData[0];
+
+      // Check if user is already a team member
+      const { data: existingMember, error: checkError } = await supabase
+        .from('team_members')
+        .select('id')
+        .eq('team_id', selectedTeam.id)
+        .eq('user_id', targetUser.user_id)
+        .maybeSingle();
+
+      if (checkError) {
+        throw new Error(`Error checking existing membership: ${checkError.message}`);
+      }
+
+      if (existingMember) {
+        toast({
+          variant: "destructive",
+          title: "User already in team",
+          description: "This user is already a member of this team"
+        });
+        return;
+      }
+
+      // Define permissions based on role
       const permissions = {
         can_view: true,
         can_edit: newMemberRole === 'admin' || newMemberRole === 'member',
         can_share: newMemberRole === 'admin' || newMemberRole === 'member'
       };
-      const {
-        error
-      } = await supabase.from('team_members').insert({
-        team_id: selectedTeam.id,
-        user_id: userData[0].user_id,
-        role: newMemberRole,
-        permissions,
-        added_by: user!.id
-      });
-      if (error) throw error;
-      toast({
-        title: "Member added successfully",
-        description: `${newMemberEmail} has been added to the team`
-      });
+
+      // Add the team member
+      const { error: insertError } = await supabase
+        .from('team_members')
+        .insert({
+          team_id: selectedTeam.id,
+          user_id: targetUser.user_id,
+          role: newMemberRole,
+          permissions,
+          added_by: user!.id
+        });
+
+      if (insertError) {
+        console.error('Error inserting team member:', insertError);
+
       setAddMemberDialogOpen(false);
       setNewMemberEmail('');
       setNewMemberRole('member');
-      fetchTeamMembers(selectedTeam.id);
+      
+      // Refresh both teams and team members
+      await fetchTeams();
+      await fetchTeamMembers(selectedTeam.id);
+      
     } catch (error: any) {
+      console.error('Add member error:', error);
       toast({
         variant: "destructive",
         title: "Error adding member",
@@ -469,9 +493,9 @@ export const TeamsManager: React.FC = () => {
                             {member.role}
                           </Badge>
                           <div className="flex space-x-1">
-                            {member.permissions.can_view && <Badge variant="outline" className="text-xs">View</Badge>}
-                            {member.permissions.can_edit && <Badge variant="outline" className="text-xs">Edit</Badge>}
-                            {member.permissions.can_share && <Badge variant="outline" className="text-xs">Share</Badge>}
+                            {member.permissions?.can_view && <Badge variant="outline" className="text-xs">View</Badge>}
+                            {member.permissions?.can_edit && <Badge variant="outline" className="text-xs">Edit</Badge>}
+                            {member.permissions?.can_share && <Badge variant="outline" className="text-xs">Share</Badge>}
                           </div>
                         </div>
                       </div>

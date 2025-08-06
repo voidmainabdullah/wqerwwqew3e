@@ -416,16 +416,6 @@ export const FileManager: React.FC = () => {
         [file.id]: false
       }));
     }
-  };
-  const sendToTeamMember = async (memberId: string, memberEmail: string) => {
-    if (!selectedTeamFile) return;
-    const isPro = userProfile?.subscription_tier === 'pro';
-    if (!isPro) {
-      toast({
-        variant: "destructive",
-        title: "Premium feature",
-        description: "Teams feature requires Pro subscription"
-      });
       return;
     }
     try {

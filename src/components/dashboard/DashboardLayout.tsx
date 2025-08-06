@@ -41,6 +41,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     label: 'Teams',
     href: '/dashboard/teams'
   }, {
+    icon: Users,
+    label: 'My Team',
+    href: '/dashboard/my-team'
+  }, {
     icon: Share,
     label: 'Shared Links',
     href: '/dashboard/shared'

@@ -5,65 +5,51 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Download, Eye, Lock, Unlock, Trash2, Users, Calendar } from 'lucide-react';
+import { FileText, Download, Eye, Lock, Unlock, Trash2, Users, Calendar, Share } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { TeamFileShare } from './TeamFileShare';
 
-interface TeamFile {
-  id: string;
-  original_name: string;
+interface MyTeamFile {
+  file_id: string;
+  file_name: string;
   file_size: number;
   file_type: string;
   created_at: string;
   is_locked: boolean;
   download_count: number;
+  team_id: string;
+  team_name: string;
   shared_by: string;
   shared_at: string;
-  team_name: string;
-  team_id: string;
   sharer_email: string;
-  can_edit: boolean;
   can_download: boolean;
-  is_admin: boolean;
+  can_edit: boolean;
+  is_team_admin: boolean;
 }
 
-interface Team {
-  team_id: string;
-  team_name: string;
-  is_admin: boolean;
-  role: string;
-  permissions: any;
-}
-
-export const TeamFiles: React.FC = () => {
+export const MyTeamFiles: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [teamFiles, setTeamFiles] = useState<TeamFile[]>([]);
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [selectedTeam, setSelectedTeam] = useState<string>('all');
+  const [teamFiles, setTeamFiles] = useState<MyTeamFile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedFile, setSelectedFile] = useState<MyTeamFile | null>(null);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
-      fetchTeams();
-      fetchTeamFiles();
+      fetchMyTeamFiles();
       setupRealtimeSubscriptions();
     }
   }, [user]);
 
-  useEffect(() => {
-    if (user) {
-      fetchTeamFiles();
-    }
-  }, [selectedTeam]);
-
   const setupRealtimeSubscriptions = () => {
     const channel = supabase
-      .channel('team-files-changes')
+      .channel('my-team-files-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'team_file_shares' }, () => {
-        fetchTeamFiles();
+        fetchMyTeamFiles();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'files' }, () => {
-        fetchTeamFiles();
+        fetchMyTeamFiles();
       })
       .subscribe();
 
@@ -72,52 +58,14 @@ export const TeamFiles: React.FC = () => {
     };
   };
 
-  const fetchTeams = async () => {
-    try {
-      const { data, error } = await supabase.rpc('get_user_teams', {
-        p_user_id: user!.id
-      });
-
-      if (error) throw error;
-      setTeams(data || []);
-    } catch (error: any) {
-      console.error('Error fetching teams:', error);
-    }
-  };
-
-  const fetchTeamFiles = async () => {
+  const fetchMyTeamFiles = async () => {
     try {
       const { data, error } = await supabase.rpc('get_my_team_files', {
         p_user_id: user!.id
       });
 
       if (error) throw error;
-
-      // Filter by selected team if not 'all'
-      let filteredFiles = data || [];
-      if (selectedTeam !== 'all') {
-        filteredFiles = filteredFiles.filter(file => file.team_id === selectedTeam);
-      }
-
-      const mappedFiles = filteredFiles.map(file => ({
-        id: file.file_id,
-        original_name: file.file_name,
-        file_size: file.file_size,
-        file_type: file.file_type,
-        created_at: file.created_at,
-        is_locked: file.is_locked,
-        download_count: file.download_count,
-        shared_by: file.shared_by,
-        shared_at: file.shared_at,
-        team_name: file.team_name,
-        team_id: file.team_id,
-        sharer_email: file.sharer_email,
-        can_edit: file.can_edit,
-        can_download: file.can_download,
-        is_admin: file.is_team_admin
-      }));
-
-      setTeamFiles(mappedFiles);
+      setTeamFiles(data || []);
     } catch (error: any) {
       console.error('Error fetching team files:', error);
       toast({
@@ -134,7 +82,7 @@ export const TeamFiles: React.FC = () => {
     try {
       const { data, error } = await supabase.storage
         .from('files')
-        .download(fileId);
+        .download(`${fileId}`);
 
       if (error) throw error;
 
@@ -184,7 +132,7 @@ export const TeamFiles: React.FC = () => {
         description: `File has been ${currentLockStatus ? 'unlocked' : 'locked'} successfully`,
       });
 
-      fetchTeamFiles();
+      fetchMyTeamFiles();
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -194,29 +142,9 @@ export const TeamFiles: React.FC = () => {
     }
   };
 
-  const removeFileFromTeam = async (fileId: string, teamId: string, fileName: string) => {
-    try {
-      const { error } = await supabase
-        .from('team_file_shares')
-        .delete()
-        .eq('file_id', fileId)
-        .eq('team_id', teamId);
-
-      if (error) throw error;
-
-      toast({
-        title: "File removed from team",
-        description: `${fileName} has been removed from the team`,
-      });
-
-      fetchTeamFiles();
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error removing file",
-        description: error.message,
-      });
-    }
+  const shareFileWithAnotherTeam = (file: MyTeamFile) => {
+    setSelectedFile(file);
+    setShareDialogOpen(true);
   };
 
   const formatFileSize = (bytes: number) => {
@@ -244,25 +172,11 @@ export const TeamFiles: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Team Files</h2>
-          <p className="text-muted-foreground">Files shared within your teams</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <select
-            value={selectedTeam}
-            onChange={(e) => setSelectedTeam(e.target.value)}
-            className="px-3 py-2 border border-border rounded-md bg-background text-foreground"
-          >
-            <option value="all">All Teams</option>
-            {teams.map((team) => (
-              <option key={team.team_id} value={team.team_id}>
-                {team.team_name}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">My Team Files</h1>
+        <p className="text-muted-foreground">
+          Files shared with you by your team members
+        </p>
       </div>
 
       {teamFiles.length === 0 ? (
@@ -272,18 +186,19 @@ export const TeamFiles: React.FC = () => {
               <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <h3 className="text-lg font-medium mb-2">No team files</h3>
               <p className="text-muted-foreground">
-                {selectedTeam === 'all' 
-                  ? 'No files have been shared with your teams yet' 
-                  : 'No files have been shared with this team yet'
-                }
+                No files have been shared with your teams yet
               </p>
             </div>
           </CardContent>
         </Card>
       ) : (
         <div className="grid gap-4">
-          {teamFiles.map((file) => (
-            <Card key={`${file.id}-${file.team_id}`} className="hover:shadow-md transition-shadow">
+          {teamFiles.map((file, index) => (
+            <Card 
+              key={`${file.file_id}-${file.team_id}`} 
+              className="hover:shadow-md transition-all duration-300 animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4 flex-1">
@@ -292,8 +207,8 @@ export const TeamFiles: React.FC = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2">
-                        <h3 className="font-medium truncate">{file.original_name}</h3>
-                        {file.is_locked && <Lock className="w-4 h-4 text-yellow-500" />}
+                        <h3 className="font-medium truncate">{file.file_name}</h3>
+                        {file.is_locked && <Lock className="w-4 h-4 text-warning" />}
                       </div>
                       <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                         <span>{formatFileSize(file.file_size)}</span>
@@ -325,33 +240,34 @@ export const TeamFiles: React.FC = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => downloadFile(file.id, file.original_name)}
-                        className="hover:scale-105 transition-transform"
-                        disabled={file.is_locked && !file.is_admin}
+                        onClick={() => downloadFile(file.file_id, file.file_name)}
+                        className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105"
+                        disabled={file.is_locked && !file.is_team_admin}
                       >
                         <Download className="w-4 h-4" />
                       </Button>
                     )}
+
+                    {file.can_edit && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => shareFileWithAnotherTeam(file)}
+                        className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105"
+                      >
+                        <Share className="w-4 h-4" />
+                      </Button>
+                    )}
                     
-                    {file.is_admin && (
-                      <>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleFileLock(file.id, file.is_locked)}
-                          className="hover:scale-105 transition-transform"
-                        >
-                          {file.is_locked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => removeFileFromTeam(file.id, file.team_id, file.original_name)}
-                          className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </>
+                    {file.is_team_admin && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toggleFileLock(file.file_id, file.is_locked)}
+                        className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105"
+                      >
+                        {file.is_locked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -360,6 +276,14 @@ export const TeamFiles: React.FC = () => {
           ))}
         </div>
       )}
+
+      {/* Team File Share Dialog */}
+      <TeamFileShare 
+        fileId={selectedFile?.file_id || ''} 
+        fileName={selectedFile?.file_name || ''} 
+        isOpen={shareDialogOpen} 
+        onOpenChange={setShareDialogOpen} 
+      />
     </div>
   );
 };
