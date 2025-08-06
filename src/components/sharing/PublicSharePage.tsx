@@ -76,10 +76,6 @@ export const PublicSharePage: React.FC = () => {
         setError('Share link not found or has expired');
         return;
       }
-
-      if (!data.file) {
-        setError('Associated file not found');
-        return;
       }
 
       // Check if link has expired

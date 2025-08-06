@@ -18,10 +18,8 @@ interface DashboardStats {
   subscriptionTier: string;
 }
 export const Dashboard: React.FC = () => {
-  const {
   const { toast } = useToast();
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<any>(null);
@@ -55,9 +53,10 @@ export const Dashboard: React.FC = () => {
       const { count: fileCount, error: fileCountError } = await supabase
         .from('files')
         .select('*', {
-        count: 'exact',
-        head: true
-      }).eq('user_id', user.id);
+          count: 'exact',
+          head: true
+        })
+        .eq('user_id', user.id);
 
       if (fileCountError) {
         console.warn('Error fetching file count:', fileCountError);
@@ -81,8 +80,8 @@ export const Dashboard: React.FC = () => {
         const { count, error: shareCountError } = await supabase
           .from('shared_links')
           .select('*', {
-        count: 'exact',
-        head: true
+            count: 'exact',
+            head: true
           })
           .in('file_id', fileIds);
 
@@ -99,8 +98,8 @@ export const Dashboard: React.FC = () => {
         const { count, error: downloadCountError } = await supabase
           .from('download_logs')
           .select('*', {
-        count: 'exact',
-        head: true
+            count: 'exact',
+            head: true
           })
           .in('file_id', fileIds);
 
@@ -144,9 +143,11 @@ export const Dashboard: React.FC = () => {
     }
   };
   if (loading) {
-    return <div className="space-y-6">
+    return (
+      <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => <Card key={i} className="animate-pulse">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div className="h-4 bg-muted rounded w-24"></div>
                 <div className="h-4 w-4 bg-muted rounded"></div>
@@ -154,12 +155,15 @@ export const Dashboard: React.FC = () => {
               <CardContent>
                 <div className="h-8 bg-muted rounded w-16"></div>
               </CardContent>
-            </Card>)}
+            </Card>
+          ))}
         </div>
-      </div>;
+      </div>
+    );
   }
   const uploadProgress = stats ? stats.subscriptionTier === 'pro' ? 0 : stats.dailyUploadCount / stats.dailyUploadLimit * 100 : 0;
-  return <div className="space-y-6">
+  return (
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
@@ -169,10 +173,12 @@ export const Dashboard: React.FC = () => {
         </div>
         <div className="flex items-center space-x-2">
           <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'}>
-            {stats?.subscriptionTier === 'pro' ? <>
+            {stats?.subscriptionTier === 'pro' ? (
+              <>
                 <Zap className="w-3 h-3 mr-1" />
                 Pro
-              </> : 'Free'}
+              </>
+            ) : 'Free'}
           </Badge>
         </div>
       </div>
@@ -328,5 +334,6 @@ export const Dashboard: React.FC = () => {
       <div className="mt-8">
         <TeamsManager />
       </div>
-    </div>;
+    </div>
+  );
 };

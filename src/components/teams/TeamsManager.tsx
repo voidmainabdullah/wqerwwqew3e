@@ -115,8 +115,8 @@ export const TeamsManager: React.FC = () => {
         console.error('Error fetching team members:', error);
         // Fallback to RPC function if direct query fails
         const { data: rpcData, error: rpcError } = await supabase.rpc('get_team_members', {
-        p_team_id: teamId
-      });
+          p_team_id: teamId
+        });
 
         if (rpcError) {
           console.error('RPC fallback also failed:', rpcError);

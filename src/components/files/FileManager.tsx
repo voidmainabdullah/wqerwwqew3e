@@ -140,16 +140,6 @@ export const FileManager: React.FC = () => {
         return;
       }
 
-      // Check if file exists in storage first
-      const { data: fileExists, error: existsError } = await supabase.storage
-        .from('files')
-        .list('', { search: file.storage_path });
-
-      if (existsError) {
-        console.error('Error checking file existence:', existsError);
-        throw new Error('Failed to verify file existence');
-      }
-
       const { data, error } = await supabase.storage
         .from('files')
         .download(file.storage_path);

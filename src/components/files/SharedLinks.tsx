@@ -21,12 +21,8 @@ interface SharedLink {
   };
 }
 export const SharedLinks: React.FC = () => {
-  const {
-    user
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [sharedLinks, setSharedLinks] = useState<SharedLink[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -70,9 +66,7 @@ export const SharedLinks: React.FC = () => {
           files!inner(original_name, file_size)
         `)
         .in('file_id', fileIds)
-        .order('created_at', {
-        ascending: false
-      });
+        .order('created_at', { ascending: false });
       
       if (error) {
         console.error('Error fetching shared links:', error);
@@ -130,9 +124,10 @@ export const SharedLinks: React.FC = () => {
     try {
       console.log('Deleting shared link:', id);
 
-      const {
-        error
-      } = await supabase.from('shared_links').delete().eq('id', id);
+      const { error } = await supabase
+        .from('shared_links')
+        .delete()
+        .eq('id', id);
       
       if (error) {
         console.error('Error deleting shared link:', error);
@@ -170,9 +165,11 @@ export const SharedLinks: React.FC = () => {
     return downloadCount >= downloadLimit;
   };
   if (loading) {
-    return <div className="space-y-6">
+    return (
+      <div className="space-y-6">
         <div className="grid gap-4">
-          {[...Array(3)].map((_, i) => <Card key={i} className="animate-pulse">
+          {[...Array(3)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
               <CardHeader>
                 <div className="h-4 bg-muted rounded w-48"></div>
                 <div className="h-3 bg-muted rounded w-32"></div>
@@ -180,11 +177,14 @@ export const SharedLinks: React.FC = () => {
               <CardContent>
                 <div className="h-10 bg-muted rounded"></div>
               </CardContent>
-            </Card>)}
+            </Card>
+          ))}
         </div>
-      </div>;
+      </div>
+    );
   }
-  return <div className="space-y-6">
+  return (
+    <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Shared Links</h1>
         <p className="text-muted-foreground">
@@ -192,7 +192,8 @@ export const SharedLinks: React.FC = () => {
         </p>
       </div>
 
-      {sharedLinks.length === 0 ? <Card>
+      {sharedLinks.length === 0 ? (
+        <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Share className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">No shared links yet</h3>
@@ -206,14 +207,19 @@ export const SharedLinks: React.FC = () => {
               </a>
             </Button>
           </CardContent>
-        </Card> : <div className="grid gap-4">
+        </Card>
+      ) : (
+        <div className="grid gap-4">
           {sharedLinks.map((link, index) => {
-        const expired = isExpired(link.expires_at);
-        const limitReached = isLimitReached(link.download_limit, link.download_count);
-        const inactive = expired || limitReached;
-        return <Card key={link.id} className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`} style={{
-          animationDelay: `${index * 0.1}s`
-        }}>
+            const expired = isExpired(link.expires_at);
+            const limitReached = isLimitReached(link.download_limit, link.download_count);
+            const inactive = expired || limitReached;
+            return (
+              <Card 
+                key={link.id} 
+                className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`} 
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -226,10 +232,12 @@ export const SharedLinks: React.FC = () => {
                       </CardDescription>
                     </div>
                     <div className="flex items-center space-x-2">
-                      {link.password_hash && <Badge variant="secondary">
+                      {link.password_hash && (
+                        <Badge variant="secondary">
                           <Shield className="w-3 h-3 mr-1" />
                           Protected
-                        </Badge>}
+                        </Badge>
+                      )}
                       {expired && <Badge variant="destructive">Expired</Badge>}
                       {limitReached && <Badge variant="destructive">Limit Reached</Badge>}
                       {!inactive && <Badge variant="default" className="bg-lime-300">Active</Badge>}
@@ -276,8 +284,11 @@ export const SharedLinks: React.FC = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>;
-      })}
-        </div>}
-    </div>;
+              </Card>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 };
