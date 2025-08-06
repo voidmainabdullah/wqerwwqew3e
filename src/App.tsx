@@ -60,8 +60,12 @@ const App = () => (
                 <DashboardLayout>
                   <div className="space-y-8">
                     <TeamsManager />
-                    <TeamFiles />
                   </div>
+                </DashboardLayout>
+              } />
+              <Route path="/dashboard/my-team" element={
+                <DashboardLayout>
+                  <MyTeamFiles />
                 </DashboardLayout>
               } />
               <Route path="/dashboard/shared" element={

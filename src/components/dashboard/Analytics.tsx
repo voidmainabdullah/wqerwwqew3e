@@ -12,6 +12,7 @@ import {
   Users,
   Calendar
 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface AnalyticsData {
   totalDownloads: number;
@@ -23,6 +24,7 @@ interface AnalyticsData {
 
 export const Analytics: React.FC = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 

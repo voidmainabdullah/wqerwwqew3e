@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Files, Share, Download, TrendingUp, Upload, Clock, Shield, Zap, Users } from 'lucide-react';
 import { TeamsManager } from '@/components/teams/TeamsManager';
+import { useToast } from '@/hooks/use-toast';
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -18,6 +19,7 @@ interface DashboardStats {
 }
 export const Dashboard: React.FC = () => {
   const {
+  const { toast } = useToast();
     user
   } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
