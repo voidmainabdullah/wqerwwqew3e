@@ -272,7 +272,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
             <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
-              <Link to="/subscription" className="bg-red-400 -mx-0.5 text-cosmic items-center text-black/65 ">
+              <Link to="/subscription" className="mx-0.5 text-cosmic items-center text-black/65 bg-black:shadow-border ">
                 <Zap className="mr-2 h-4 w-4" />
                 Upgrade Now - Starting at $9/month
               </Link>
