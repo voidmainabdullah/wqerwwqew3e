@@ -18,7 +18,7 @@ import {
   Users
 } from 'lucide-react';
 import TeamsManager from '@/components/teams/TeamsManager';
-import TeamFileShare from '@/components/teams/TeamFileShare';
+import { TeamFileShare } from '@/components/teams/TeamFileShare';
 
 interface DashboardStats {
   totalFiles: number;
