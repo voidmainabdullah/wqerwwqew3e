@@ -61,7 +61,8 @@ export const TeamFileShare: React.FC<TeamFileShareProps> = ({
       
       // Filter teams where user has share permissions
       const shareableTeams = data?.filter(team => {
-        return team.permissions?.can_share || team.is_admin;
+        const permissions = team.permissions as any;
+        return permissions?.can_share || team.is_admin;
       }) || [];
       
       console.log('Shareable teams found:', shareableTeams.length);

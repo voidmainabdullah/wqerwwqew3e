@@ -56,12 +56,6 @@ export const FileUpload: React.FC = () => {
     
     try {
       // Check daily upload limit
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('daily_upload_count, daily_upload_limit, subscription_tier')
-        .eq('id', user.id)
-        .single();
-
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('daily_upload_count, daily_upload_limit, subscription_tier')
