@@ -1,225 +1,244 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, Lock, Eye, FileText } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
+import { Download, Lock, AlertCircle, FileText } from 'lucide-react';
 
-interface SharedFile {
+interface ShareData {
   id: string;
-  original_name: string;
-  file_size: number;
-  file_type: string;
-  storage_path: string;
-}
-
-interface SharedLink {
-  id: string;
+  file_id: string;
   share_token: string;
-  expires_at: string | null;
-  download_limit: number | null;
+  link_type: string;
   download_count: number;
-  password_hash: string | null;
+  download_limit: number | null;
+  expires_at: string | null;
   is_active: boolean;
-  files: SharedFile;
+  password_hash: string | null;
+  file: {
+    original_name: string;
+    file_size: number;
+    file_type: string;
+    storage_path: string;
+    is_locked: boolean;
+  };
 }
 
-export const PublicSharePage = () => {
+export const PublicSharePage: React.FC = () => {
   const { token } = useParams<{ token: string }>();
-  const [sharedLink, setSharedLink] = useState<SharedLink | null>(null);
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [isPasswordRequired, setIsPasswordRequired] = useState(false);
   const { toast } = useToast();
+  const [shareData, setShareData] = useState<ShareData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
+  const [passwordRequired, setPasswordRequired] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     if (token) {
-      fetchSharedLink();
+      fetchShareData();
     }
   }, [token]);
 
-  const fetchSharedLink = async () => {
+  const fetchShareData = async () => {
     try {
-      setIsLoading(true);
       const { data, error } = await supabase
         .from('shared_links')
         .select(`
           *,
-          files!inner(*)
+          file:files(
+            original_name,
+            file_size,
+            file_type,
+            storage_path,
+            is_locked
+          )
         `)
         .eq('share_token', token)
         .eq('is_active', true)
-        .single();
+        .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching shared link:', error);
-        toast({
-          title: "Error",
-          description: "Shared link not found or expired.",
-          variant: "destructive",
-        });
+      if (error) throw error;
+
+      if (!data) {
+        setError('Share link not found or has expired');
         return;
       }
 
-      setSharedLink(data);
-      setIsPasswordRequired(!!data.password_hash);
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load shared link.",
-        variant: "destructive",
-      });
+      // Check if link has expired
+      if (data.expires_at && new Date(data.expires_at) < new Date()) {
+        setError('This share link has expired');
+        return;
+      }
+
+      // Check download limit
+      if (data.download_limit && data.download_count >= data.download_limit) {
+        setError('Download limit exceeded for this file');
+        return;
+      }
+
+      setShareData(data);
+      
+      // Check if password is required
+      if (data.password_hash) {
+        setPasswordRequired(true);
+      }
+    } catch (error: any) {
+      setError(error.message || 'Failed to load share link');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   const validatePassword = async () => {
-    if (!token || !password) return false;
+    if (!token || !password) return;
 
     try {
-      const { data, error } = await supabase.rpc('validate_share_password', {
-        token,
-        password
-      });
-
-      if (error) {
-        console.error('Password validation error:', error);
-        return false;
+      if (!shareData?.password_hash) {
+        setPasswordRequired(false);
+        return;
       }
 
-      return data;
-    } catch (error) {
-      console.error('Error validating password:', error);
-      return false;
+      // Use the database function to properly validate password
+      const { data, error } = await supabase.rpc('validate_share_password', {
+        token: token,
+        password: password
+      });
+
+      if (error) throw error;
+      
+      if (data === true) {
+        setPasswordRequired(false);
+        toast({
+          title: "Access granted",
+          description: "Password verified successfully",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Invalid password",
+          description: "Please check your password and try again",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
     }
   };
 
-  const handleDownload = async () => {
-    if (!sharedLink) return;
+  const downloadFile = async () => {
+    if (!shareData) return;
 
-    // Check if password is required and validate it
-    if (isPasswordRequired) {
-      const isValidPassword = await validatePassword();
-      if (!isValidPassword) {
-        toast({
-          title: "Invalid Password",
-          description: "The password you entered is incorrect.",
-          variant: "destructive",
-        });
-        return;
-      }
-    }
-
-    // Check if download limit is reached
-    if (sharedLink.download_limit && sharedLink.download_count >= sharedLink.download_limit) {
+    // Check if file is locked and password is required
+    if (shareData.file.is_locked && passwordRequired) {
       toast({
-        title: "Download Limit Reached",
-        description: "This file has reached its download limit.",
         variant: "destructive",
+        title: "Password required",
+        description: "Please enter the password to unlock this file",
       });
       return;
     }
 
-    // Check if link has expired
-    if (sharedLink.expires_at && new Date(sharedLink.expires_at) < new Date()) {
-      toast({
-        title: "Link Expired",
-        description: "This shared link has expired.",
-        variant: "destructive",
-      });
-      return;
-    }
-
+    setDownloading(true);
     try {
-      setIsDownloading(true);
-
-      // Download the file from storage
-      const { data, error } = await supabase.storage
+      const { data: fileData, error } = await supabase.storage
         .from('files')
-        .download(sharedLink.files.storage_path);
+        .download(shareData.file.storage_path);
 
-      if (error) {
-        console.error('Download error:', error);
-        toast({
-          title: "Download Failed",
-          description: "Failed to download the file.",
-          variant: "destructive",
-        });
-        return;
-      }
+      if (error) throw error;
 
       // Create download link
-      const url = URL.createObjectURL(data);
+      const url = URL.createObjectURL(fileData);
       const a = document.createElement('a');
       a.href = url;
-      a.download = sharedLink.files.original_name;
+      a.download = shareData.file.original_name;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
       // Log the download
-      await supabase
-        .from('download_logs')
-        .insert({
-          file_id: sharedLink.files.id,
-          shared_link_id: sharedLink.id,
-          download_method: 'public_share',
-          downloader_user_agent: navigator.userAgent,
-        });
-
-      toast({
-        title: "Download Started",
-        description: "Your file download has started.",
+      await supabase.from('download_logs').insert({
+        file_id: shareData.file_id,
+        shared_link_id: shareData.id,
+        download_method: 'shared_link',
+        downloader_ip: null, // Could be implemented with IP detection
+        downloader_user_agent: navigator.userAgent,
       });
 
-      // Refresh the shared link data to update download count
-      fetchSharedLink();
-    } catch (error) {
-      console.error('Download error:', error);
+      // Update download count
+      await supabase
+        .from('shared_links')
+        .update({ download_count: shareData.download_count + 1 })
+        .eq('id', shareData.id);
+
       toast({
-        title: "Download Failed",
-        description: "An error occurred while downloading the file.",
+        title: "Download started",
+        description: "Your file download has begun",
+      });
+    } catch (error: any) {
+      toast({
         variant: "destructive",
+        title: "Download failed",
+        description: error.message,
       });
     } finally {
-      setIsDownloading(false);
+      setDownloading(false);
     }
   };
 
   const formatFileSize = (bytes: number) => {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     if (bytes === 0) return '0 Bytes';
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading shared file...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Loading share link...</p>
         </div>
       </div>
     );
   }
 
-  if (!sharedLink) {
+  if (error) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Card className="w-full max-w-md">
-          <CardContent className="pt-6 text-center">
-            <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h2 className="text-lg font-semibold mb-2">File Not Found</h2>
-            <p className="text-muted-foreground">
-              This shared link is invalid or has expired.
-            </p>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <AlertCircle className="mx-auto h-12 w-12 text-destructive mb-4" />
+              <h2 className="text-lg font-semibold mb-2">Access Denied</h2>
+              <p className="text-muted-foreground">{error}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!shareData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <AlertCircle className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h2 className="text-lg font-semibold mb-2">Share Link Not Found</h2>
+              <p className="text-muted-foreground">This share link does not exist or has been deactivated.</p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -227,89 +246,71 @@ export const PublicSharePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="flex items-center justify-center gap-2">
-            <FileText className="h-5 w-5" />
-            Shared File
-          </CardTitle>
+          <FileText className="mx-auto h-12 w-12 text-primary mb-2" />
+          <CardTitle>Shared File</CardTitle>
+          <CardDescription>
+            Someone has shared a file with you
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-4">
           <div className="text-center space-y-2">
-            <h3 className="font-medium text-lg break-words">
-              {sharedLink.files.original_name}
-            </h3>
+            <h3 className="font-medium text-lg">{shareData.file.original_name}</h3>
             <p className="text-sm text-muted-foreground">
-              {formatFileSize(sharedLink.files.file_size)} • {sharedLink.files.file_type}
+              {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
             </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              <Download className="h-4 w-4 text-muted-foreground" />
-              <span className="text-muted-foreground">Downloads:</span>
-              <span>{sharedLink.download_count}</span>
-              {sharedLink.download_limit && (
-                <span className="text-muted-foreground">/ {sharedLink.download_limit}</span>
-              )}
-            </div>
-            {sharedLink.expires_at && (
-              <div className="flex items-center gap-2">
-                <Eye className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Expires:</span>
-                <span className="text-xs">
-                  {new Date(sharedLink.expires_at).toLocaleDateString()}
-                </span>
-              </div>
+            
+            {shareData.expires_at && (
+              <p className="text-xs text-muted-foreground">
+                Expires: {new Date(shareData.expires_at).toLocaleDateString()}
+              </p>
+            )}
+            
+            {shareData.download_limit && (
+              <p className="text-xs text-muted-foreground">
+                Downloads: {shareData.download_count}/{shareData.download_limit}
+              </p>
             )}
           </div>
 
-          {isPasswordRequired && (
+          {shareData.file.is_locked && (
+            <Alert>
+              <Lock className="h-4 w-4" />
+              <AlertDescription>
+                This file is password protected
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {passwordRequired && (
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Lock className="h-4 w-4" />
-                <span>Password required</span>
+              <Label htmlFor="password">Enter Password</Label>
+              <div className="flex space-x-2">
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  onKeyPress={(e) => e.key === 'Enter' && validatePassword()}
+                />
+                <Button onClick={validatePassword} size="sm">
+                  Unlock
+                </Button>
               </div>
-              <Input
-                type="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleDownload()}
-              />
             </div>
           )}
 
-          <Button
-            onClick={handleDownload}
-            disabled={isDownloading || (isPasswordRequired && !password)}
+          <Button 
+            onClick={downloadFile} 
+            disabled={downloading || passwordRequired}
             className="w-full"
           >
-            {isDownloading ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Downloading...
-              </>
-            ) : (
-              <>
-                <Download className="h-4 w-4 mr-2" />
-                Download File
-              </>
-            )}
+            <Download className="mr-2 h-4 w-4" />
+            {downloading ? 'Downloading...' : 'Download File'}
           </Button>
-
-          {sharedLink.expires_at && new Date(sharedLink.expires_at) < new Date() && (
-            <p className="text-sm text-destructive text-center">
-              This link has expired
-            </p>
-          )}
-
-          {sharedLink.download_limit && sharedLink.download_count >= sharedLink.download_limit && (
-            <p className="text-sm text-destructive text-center">
-              Download limit reached
-            </p>
-          )}
         </CardContent>
       </Card>
     </div>

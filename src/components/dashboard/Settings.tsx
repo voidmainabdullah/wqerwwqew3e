@@ -33,67 +33,38 @@ export const Settings: React.FC = () => {
 
   const fetchProfile = async () => {
     try {
-      if (!user?.id) {
-        console.error('No user ID available for profile fetch');
-        return;
-      }
-
-      console.log('Fetching profile for user:', user.id);
-
       const { data } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', user.id)
+        .eq('id', user?.id)
         .single();
       
-      console.log('Profile fetched successfully');
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
-      toast({
-        variant: "destructive",
-        title: "Profile loading failed",
-        description: "Unable to load profile data. Please refresh the page.",
-      });
     }
   };
 
   const updateDisplayName = async () => {
     if (!user) return;
     
-    if (!displayName.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Invalid name",
-        description: "Display name cannot be empty.",
-      });
-      return;
-    }
-
     setLoading(true);
     try {
-      console.log('Updating display name for user:', user.id);
-
       const { error } = await supabase.auth.updateUser({
         data: { display_name: displayName }
       });
 
-      if (error) {
-        console.error('Display name update error:', error);
-        throw new Error(`Failed to update name: ${error.message}`);
-      }
+      if (error) throw error;
 
-      console.log('Display name updated successfully');
       toast({
         title: "Profile updated",
         description: "Your display name has been updated successfully.",
       });
     } catch (error: any) {
-      console.error('Display name update failed:', error);
       toast({
         variant: "destructive",
         title: "Update failed",
-        description: error.message || "Unable to update display name. Please try again.",
+        description: error.message,
       });
     } finally {
       setLoading(false);
@@ -110,8 +81,6 @@ export const Settings: React.FC = () => {
     if (!confirmed) return;
 
     try {
-      console.log('Starting account deletion process for user:', user.id);
-
       // Delete user files from storage
       const { data: files } = await supabase
         .from('files')
@@ -121,41 +90,23 @@ export const Settings: React.FC = () => {
       if (files) {
         const filePaths = files.map(f => f.storage_path);
         if (filePaths.length > 0) {
-          console.log('Deleting files from storage:', filePaths.length);
-          const { error: storageError } = await supabase.storage
+          await supabase.storage
             .from('files')
             .remove(filePaths);
-
-          if (storageError) {
-            console.warn('Some files could not be deleted from storage:', storageError);
-            // Continue with account deletion even if storage cleanup fails
-          }
         }
       }
 
       // Delete user data
-      console.log('Deleting user profile and files from database');
-      const { error: profileError } = await supabase
+      await supabase
         .from('profiles')
         .delete()
         .eq('id', user.id);
 
-      if (profileError) {
-        console.error('Error deleting profile:', profileError);
-        // Continue with file deletion
-      }
-
-      const { error: filesError } = await supabase
+      await supabase
         .from('files')
         .delete()
         .eq('user_id', user.id);
 
-      if (filesError) {
-        console.error('Error deleting files:', filesError);
-        // Continue with sign out
-      }
-
-      console.log('Account deletion completed successfully');
       toast({
         title: "Account deleted",
         description: "Your account and all data have been permanently deleted.",
@@ -164,11 +115,10 @@ export const Settings: React.FC = () => {
       // Sign out after successful deletion
       await signOut();
     } catch (error: any) {
-      console.error('Account deletion failed:', error);
       toast({
         variant: "destructive",
         title: "Deletion failed",
-        description: error.message || "Unable to delete account. Please contact support.",
+        description: error.message,
       });
     }
   };

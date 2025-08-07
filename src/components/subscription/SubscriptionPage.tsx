@@ -21,11 +21,8 @@ export const SubscriptionPage: React.FC = () => {
     }
 
     try {
-      console.log('Starting subscription process for plan:', plan);
-
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
-        console.error('No valid session found for subscription');
         throw new Error("No valid session found");
       }
 
@@ -34,7 +31,6 @@ export const SubscriptionPage: React.FC = () => {
       const { data, error } = await supabase.functions.invoke('create-paddle-checkout', {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
         },
         body: { plan }
       });
@@ -43,29 +39,24 @@ export const SubscriptionPage: React.FC = () => {
 
       if (error) {
         console.error('Supabase function error:', error);
-        throw new Error(`Checkout creation failed: ${error.message || 'Unknown error'}`);
+        throw new Error(error.message || 'Failed to create checkout session');
       }
 
       if (data?.error) {
         console.error('Paddle API error:', data.error);
-        throw new Error(`Paddle error: ${data.error}`);
+        throw new Error(data.error);
       }
 
       if (data?.checkout_url) {
         console.log('Opening checkout URL:', data.checkout_url);
         // Open Paddle checkout in new tab
-        const newWindow = window.open(data.checkout_url, '_blank');
-        
-        if (!newWindow) {
-          throw new Error('Popup blocked. Please allow popups and try again.');
-        }
+        window.open(data.checkout_url, '_blank');
         
         toast({
           title: "Checkout opened",
           description: "Complete your subscription in the new tab",
         });
       } else {
-        console.error('No checkout URL in response:', data);
         throw new Error('No checkout URL received from Paddle');
       }
     } catch (error: any) {
@@ -73,7 +64,7 @@ export const SubscriptionPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Subscription error",
-        description: error.message || "Unable to start subscription process. Please try again.",
+        description: error.message || "Failed to create subscription",
       });
     }
   };

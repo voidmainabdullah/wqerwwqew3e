@@ -6,7 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Share, Copy, Download, Eye, Clock, Shield, Trash2, ExternalLink } from 'lucide-react';
+import { 
+  Share,
+  Copy,
+  Download,
+  Eye,
+  Clock,
+  Shield,
+  Trash2,
+  ExternalLink
+} from 'lucide-react';
+
 interface SharedLink {
   id: string;
   share_token: string;
@@ -20,40 +30,30 @@ interface SharedLink {
     file_size: number;
   };
 }
+
 export const SharedLinks: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [sharedLinks, setSharedLinks] = useState<SharedLink[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (user) {
       fetchSharedLinks();
     }
   }, [user]);
+
   const fetchSharedLinks = async () => {
     try {
-      if (!user?.id) {
-        console.error('No user ID available for shared links');
-        return;
-      }
-
-      console.log('Fetching shared links for user:', user.id);
-
       // Get user's files first
-      const { data: userFiles, error: userFilesError } = await supabase
+      const { data: userFiles } = await supabase
         .from('files')
         .select('id')
-        .eq('user_id', user.id);
-
-      if (userFilesError) {
-        console.error('Error fetching user files:', userFilesError);
-        throw new Error(`Failed to load user files: ${userFilesError.message}`);
-      }
+        .eq('user_id', user?.id);
 
       const fileIds = userFiles?.map(f => f.id) || [];
-      
+
       if (fileIds.length === 0) {
-        console.log('No files found for user, setting empty shared links');
         setSharedLinks([]);
         return;
       }
@@ -67,88 +67,61 @@ export const SharedLinks: React.FC = () => {
         `)
         .in('file_id', fileIds)
         .order('created_at', { ascending: false });
-      
-      if (error) {
-        console.error('Error fetching shared links:', error);
-        throw new Error(`Failed to load shared links: ${error.message}`);
-      }
 
-      console.log('Shared links fetched successfully:', data?.length || 0);
+      if (error) throw error;
       setSharedLinks(data || []);
     } catch (error) {
       console.error('Error fetching shared links:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to load shared links. Please refresh the page."
+        description: "Failed to load shared links.",
       });
-      setSharedLinks([]);
     } finally {
       setLoading(false);
     }
   };
+
   const copyToClipboard = async (shareToken: string) => {
     const url = `${window.location.origin}/share/${shareToken}`;
     try {
       await navigator.clipboard.writeText(url);
       toast({
         title: "Link copied",
-        description: "Share link has been copied to clipboard."
+        description: "Share link has been copied to clipboard.",
       });
     } catch (error) {
-      console.error('Clipboard copy failed:', error);
-      // Fallback for browsers that don't support clipboard API
-      try {
-        const textArea = document.createElement('textarea');
-        textArea.value = url;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        
-        toast({
-          title: "Link copied",
-          description: "Share link has been copied to clipboard."
-        });
-      } catch (fallbackError) {
-        console.error('Fallback copy also failed:', fallbackError);
-        toast({
-          variant: "destructive",
-          title: "Copy failed",
-          description: "Please manually copy the link."
-        });
-      }
+      toast({
+        variant: "destructive",
+        title: "Copy failed",
+        description: "Could not copy link to clipboard.",
+      });
     }
   };
+
   const deleteSharedLink = async (id: string) => {
     try {
-      console.log('Deleting shared link:', id);
-
       const { error } = await supabase
         .from('shared_links')
         .delete()
         .eq('id', id);
-      
-      if (error) {
-        console.error('Error deleting shared link:', error);
-        throw new Error(`Failed to delete link: ${error.message}`);
-      }
+
+      if (error) throw error;
 
       setSharedLinks(prev => prev.filter(link => link.id !== id));
-      console.log('Shared link deleted successfully');
       toast({
         title: "Link deleted",
-        description: "Shared link has been deleted successfully."
+        description: "Shared link has been deleted successfully.",
       });
     } catch (error) {
-      console.error('Delete shared link failed:', error);
       toast({
         variant: "destructive",
         title: "Delete failed",
-        description: "Could not delete the shared link. Please try again."
+        description: "Could not delete the shared link.",
       });
     }
   };
+
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -156,14 +129,17 @@ export const SharedLinks: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
+
   const isExpired = (expiresAt: string | null) => {
     if (!expiresAt) return false;
     return new Date(expiresAt) < new Date();
   };
+
   const isLimitReached = (downloadLimit: number | null, downloadCount: number) => {
     if (!downloadLimit) return false;
     return downloadCount >= downloadLimit;
   };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -183,6 +159,7 @@ export const SharedLinks: React.FC = () => {
       </div>
     );
   }
+
   return (
     <div className="space-y-6">
       <div>
@@ -214,12 +191,11 @@ export const SharedLinks: React.FC = () => {
             const expired = isExpired(link.expires_at);
             const limitReached = isLimitReached(link.download_limit, link.download_count);
             const inactive = expired || limitReached;
+            
             return (
-              <Card 
-                key={link.id} 
-                className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`} 
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
+              <Card key={link.id} 
+                    className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`}
+                    style={{ animationDelay: `${index * 0.1}s` }}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -238,19 +214,39 @@ export const SharedLinks: React.FC = () => {
                           Protected
                         </Badge>
                       )}
-                      {expired && <Badge variant="destructive">Expired</Badge>}
-                      {limitReached && <Badge variant="destructive">Limit Reached</Badge>}
-                      {!inactive && <Badge variant="default" className="bg-lime-300">Active</Badge>}
+                      {expired && (
+                        <Badge variant="destructive">Expired</Badge>
+                      )}
+                      {limitReached && (
+                        <Badge variant="destructive">Limit Reached</Badge>
+                      )}
+                      {!inactive && (
+                        <Badge variant="default">Active</Badge>
+                      )}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center space-x-2">
-                    <Input value={`${window.location.origin}/share/${link.share_token}`} readOnly className="font-mono text-sm" />
-                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300">
+                    <Input
+                      value={`${window.location.origin}/share/${link.share_token}`}
+                      readOnly
+                      className="font-mono text-sm"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => copyToClipboard(link.share_token)}
+                      className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300"
+                    >
                       <Copy className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open(`/share/${link.share_token}`, '_blank')}
+                      className="hover:bg-primary/10 hover:text-primary transition-all duration-300"
+                    >
                       <ExternalLink className="h-4 w-4" />
                     </Button>
                   </div>
@@ -266,7 +262,10 @@ export const SharedLinks: React.FC = () => {
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
                       <span>
-                        {link.expires_at ? `Expires ${new Date(link.expires_at).toLocaleDateString()}` : 'Never expires'}
+                        {link.expires_at 
+                          ? `Expires ${new Date(link.expires_at).toLocaleDateString()}`
+                          : 'Never expires'
+                        }
                       </span>
                     </div>
 
@@ -278,7 +277,12 @@ export const SharedLinks: React.FC = () => {
                     </div>
 
                     <div className="flex justify-end">
-                      <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteSharedLink(link.id)}
+                        className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105"
+                      >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

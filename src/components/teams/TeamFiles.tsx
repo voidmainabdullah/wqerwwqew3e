@@ -74,90 +74,80 @@ export const TeamFiles: React.FC = () => {
 
   const fetchTeams = async () => {
     try {
-      if (!user?.id) {
-        console.error('No user ID available for fetching teams');
-        return;
-      }
-
-      console.log('Fetching teams for user:', user.id);
-
       const { data, error } = await supabase.rpc('get_user_teams', {
-        p_user_id: user!.id
+        user_id: user!.id
       });
 
-      if (error) {
-        console.error('Error fetching teams:', error);
-        throw new Error(`Failed to load teams: ${error.message}`);
-      }
-
-      console.log('Teams fetched successfully:', data?.length || 0);
+      if (error) throw error;
       setTeams(data || []);
     } catch (error: any) {
       console.error('Error fetching teams:', error);
-      toast({
-        variant: "destructive",
-        title: "Error loading teams",
-        description: error.message || "Unable to load teams. Please refresh the page.",
-      });
-      setTeams([]);
     }
   };
 
   const fetchTeamFiles = async () => {
     try {
-      if (!user?.id) {
-        console.error('No user ID available for team files');
-        return;
-      }
+      let query = supabase
+        .from('team_file_shares')
+        .select(`
+          id,
+          shared_at,
+          files!inner(
+            id,
+            original_name,
+            file_size,
+            file_type,
+            created_at,
+            is_locked,
+            download_count,
+            user_id
+          ),
+          teams!inner(
+            id,
+            name,
+            admin_id
+          ),
+          profiles!team_file_shares_shared_by_fkey(email)
+        `);
 
-      console.log('Fetching team files for user:', user.id, 'selected team:', selectedTeam);
-
-      const { data, error } = await supabase.rpc('get_my_team_files', {
-        p_user_id: user!.id
-      });
-
-      if (error) {
-        console.error('Error fetching team files:', error);
-        throw new Error(`Failed to load team files: ${error.message}`);
-      }
-
-      // Filter by selected team if not 'all'
-      const teamFilesData = Array.isArray(data) ? data : [];
-      let filteredFiles = teamFilesData;
       if (selectedTeam !== 'all') {
-        filteredFiles = teamFilesData.filter(file => file.team_id === selectedTeam);
+        query = query.eq('team_id', selectedTeam);
       }
 
-      console.log('Team files filtered:', filteredFiles.length, 'total files:', teamFilesData.length);
+      const { data, error } = await query;
 
-      const mappedFiles = filteredFiles.map(file => ({
-        id: file.file_id,
-        original_name: file.file_name,
-        file_size: file.file_size,
-        file_type: file.file_type,
-        created_at: file.created_at,
-        is_locked: file.is_locked,
-        download_count: file.download_count,
-        shared_by: file.shared_by,
-        shared_at: file.shared_at,
-        team_name: file.team_name,
-        team_id: file.team_id,
-        sharer_email: file.sharer_email,
-        can_edit: file.can_edit,
-        can_download: file.can_download,
-        is_admin: file.is_team_admin
-      }));
+      if (error) throw error;
 
-      setTeamFiles(mappedFiles);
-      console.log('Team files processed successfully:', mappedFiles.length);
+      const filesWithTeamInfo = data?.map(item => {
+        const userTeam = teams.find(t => t.team_id === item.teams.id);
+        const permissions = userTeam?.permissions as any;
+        return {
+          id: item.files.id,
+          original_name: item.files.original_name,
+          file_size: item.files.file_size,
+          file_type: item.files.file_type,
+          created_at: item.files.created_at,
+          is_locked: item.files.is_locked,
+          download_count: item.files.download_count,
+          shared_by: item.files.user_id,
+          shared_at: item.shared_at,
+          team_name: item.teams.name,
+          team_id: item.teams.id,
+          sharer_email: 'Team Member',
+          can_edit: permissions?.can_edit || userTeam?.is_admin || false,
+          can_download: permissions?.can_view || userTeam?.is_admin || false,
+          is_admin: userTeam?.is_admin || item.teams.admin_id === user?.id || false
+        };
+      }) || [];
+
+      setTeamFiles(filesWithTeamInfo);
     } catch (error: any) {
       console.error('Error fetching team files:', error);
       toast({
         variant: "destructive",
         title: "Error fetching team files",
-        description: error.message || "Unable to load team files. Please refresh the page.",
+        description: error.message,
       });
-      setTeamFiles([]);
     } finally {
       setLoading(false);
     }
@@ -165,20 +155,11 @@ export const TeamFiles: React.FC = () => {
 
   const downloadFile = async (fileId: string, fileName: string) => {
     try {
-      console.log('Downloading team file:', fileId, fileName);
-
       const { data, error } = await supabase.storage
         .from('files')
-        .download(fileId);
+        .download(`${fileId}`);
 
-      if (error) {
-        console.error('Storage download error:', error);
-        throw new Error(`Download failed: ${error.message}`);
-      }
-
-      if (!data) {
-        throw new Error('File data not available');
-      }
+      if (error) throw error;
 
       // Create download link
       const url = URL.createObjectURL(data);
@@ -191,7 +172,7 @@ export const TeamFiles: React.FC = () => {
       URL.revokeObjectURL(url);
 
       // Log download
-      const { error: logError } = await supabase
+      await supabase
         .from('download_logs')
         .insert({
           file_id: fileId,
@@ -199,41 +180,28 @@ export const TeamFiles: React.FC = () => {
           downloader_user_agent: navigator.userAgent
         });
 
-      if (logError) {
-        console.warn('Failed to log team download:', logError);
-        // Don't fail download for logging issues
-      }
-
-      console.log('Team file downloaded successfully:', fileName);
       toast({
         title: "Download started",
         description: `${fileName} is being downloaded`,
       });
     } catch (error: any) {
-      console.error('Team file download failed:', error);
       toast({
         variant: "destructive",
         title: "Download failed",
-        description: error.message || "Unable to download file. Please try again.",
+        description: error.message,
       });
     }
   };
 
   const toggleFileLock = async (fileId: string, currentLockStatus: boolean) => {
     try {
-      console.log('Toggling file lock:', fileId, !currentLockStatus);
-
       const { error } = await supabase
         .from('files')
         .update({ is_locked: !currentLockStatus })
         .eq('id', fileId);
 
-      if (error) {
-        console.error('Lock toggle error:', error);
-        throw new Error(`Failed to update lock status: ${error.message}`);
-      }
+      if (error) throw error;
 
-      console.log('File lock toggled successfully');
       toast({
         title: currentLockStatus ? "File unlocked" : "File locked",
         description: `File has been ${currentLockStatus ? 'unlocked' : 'locked'} successfully`,
@@ -241,31 +209,24 @@ export const TeamFiles: React.FC = () => {
 
       fetchTeamFiles();
     } catch (error: any) {
-      console.error('Lock toggle failed:', error);
       toast({
         variant: "destructive",
         title: "Error updating file",
-        description: error.message || "Unable to change file lock status.",
+        description: error.message,
       });
     }
   };
 
   const removeFileFromTeam = async (fileId: string, teamId: string, fileName: string) => {
     try {
-      console.log('Removing file from team:', fileId, teamId);
-
       const { error } = await supabase
         .from('team_file_shares')
         .delete()
         .eq('file_id', fileId)
         .eq('team_id', teamId);
 
-      if (error) {
-        console.error('Error removing file from team:', error);
-        throw new Error(`Failed to remove file: ${error.message}`);
-      }
+      if (error) throw error;
 
-      console.log('File removed from team successfully:', fileName);
       toast({
         title: "File removed from team",
         description: `${fileName} has been removed from the team`,
@@ -273,11 +234,10 @@ export const TeamFiles: React.FC = () => {
 
       fetchTeamFiles();
     } catch (error: any) {
-      console.error('Remove file from team failed:', error);
       toast({
         variant: "destructive",
         title: "Error removing file",
-        description: error.message || "Unable to remove file from team. Please try again.",
+        description: error.message,
       });
     }
   };
@@ -409,17 +369,7 @@ export const TeamFiles: React.FC = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                         onClick={() => {
-                           // Remove file from team functionality
-                           const confirmed = window.confirm(`Remove ${file.original_name} from team?`);
-                           if (confirmed) {
-                             // Implementation would go here
-                             toast({
-                               title: "Feature coming soon",
-                               description: "File removal from teams will be available soon.",
-                             });
-                           }
-                         }}
+                          onClick={() => removeFileFromTeam(file.id, file.team_id, file.original_name)}
                           className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all"
                         >
                           <Trash2 className="w-4 h-4" />

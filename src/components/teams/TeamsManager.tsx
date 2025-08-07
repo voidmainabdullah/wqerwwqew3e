@@ -1,31 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Users, Plus, Settings, Trash2, UserPlus, Crown, Shield } from 'lucide-react';
+import { Users, Plus, Trash2, Crown, Shield, UserCheck, UserX, Settings } from 'lucide-react';
 
 interface Team {
-  team_id: string;
-  team_name: string;
+  id: string;
+  name: string;
+  admin_id: string;
+  created_at: string;
   is_admin: boolean;
   role: string;
-  permissions: any;
+  permissions: {
+    can_view: boolean;
+    can_edit: boolean;
+    can_share: boolean;
+  };
 }
 
 interface TeamMember {
   id: string;
   user_id: string;
   email: string;
-  display_name: string;
   role: string;
-  permissions: any;
+  permissions: {
+    can_view: boolean;
+    can_edit: boolean;
+    can_share: boolean;
+  };
   joined_at: string;
 }
 
@@ -35,12 +44,12 @@ export const TeamsManager: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [createTeamOpen, setCreateTeamOpen] = useState(false);
-  const [addMemberOpen, setAddMemberOpen] = useState(false);
+  const [createTeamDialogOpen, setCreateTeamDialogOpen] = useState(false);
+  const [addMemberDialogOpen, setAddMemberDialogOpen] = useState(false);
   const [newTeamName, setNewTeamName] = useState('');
   const [newMemberEmail, setNewMemberEmail] = useState('');
   const [newMemberRole, setNewMemberRole] = useState('member');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -50,45 +59,48 @@ export const TeamsManager: React.FC = () => {
   }, [user]);
 
   const setupRealtimeSubscriptions = () => {
-    const channel = supabase
+    const teamChannel = supabase
       .channel('teams-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'teams' }, () => {
-        console.log('Teams table changed, refreshing...');
         fetchTeams();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'team_members' }, () => {
-        console.log('Team members changed, refreshing...');
         if (selectedTeam) {
-          fetchTeamMembers(selectedTeam.team_id);
+          fetchTeamMembers(selectedTeam.id);
         }
       })
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(teamChannel);
     };
   };
 
   const fetchTeams = async () => {
     try {
-      console.log('Fetching teams for user:', user?.id);
       const { data, error } = await supabase.rpc('get_user_teams', {
-        p_user_id: user!.id
+        user_id: user!.id
       });
 
-      if (error) {
-        console.error('Error fetching teams:', error);
-        throw error;
-      }
-
-      console.log('Teams fetched successfully:', data?.length || 0);
-      setTeams(data || []);
+      if (error) throw error;
+      
+      const mappedTeams = data?.map(team => ({
+        id: team.team_id,
+        name: team.team_name,
+        admin_id: '',
+        created_at: '',
+        is_admin: team.is_admin,
+        role: team.role,
+        permissions: team.permissions as any
+      })) || [];
+      
+      setTeams(mappedTeams);
     } catch (error: any) {
-      console.error('Failed to fetch teams:', error);
+      console.error('Error fetching teams:', error);
       toast({
         variant: "destructive",
-        title: "Error loading teams",
-        description: error.message || "Failed to load your teams. Please try again.",
+        title: "Error fetching teams",
+        description: error.message,
       });
     } finally {
       setLoading(false);
@@ -97,7 +109,6 @@ export const TeamsManager: React.FC = () => {
 
   const fetchTeamMembers = async (teamId: string) => {
     try {
-      console.log('Fetching team members for team:', teamId);
       const { data, error } = await supabase
         .from('team_members')
         .select(`
@@ -105,294 +116,220 @@ export const TeamsManager: React.FC = () => {
           user_id,
           role,
           permissions,
-          joined_at,
-          profiles!team_members_user_id_fkey(email, display_name)
+          joined_at
         `)
-        .eq('team_id', teamId)
-        .order('joined_at', { ascending: true });
+        .eq('team_id', teamId);
 
-      if (error) {
-        console.error('Error fetching team members:', error);
-        // Fallback to RPC function if direct query fails
-        const { data: rpcData, error: rpcError } = await supabase.rpc('get_team_members', {
-          p_team_id: teamId
-        });
-
-        if (rpcError) {
-          console.error('RPC fallback also failed:', rpcError);
-          throw rpcError;
-        }
-        
-        setTeamMembers(Array.isArray(rpcData) ? rpcData : []);
-      } else {
-        // Transform the data to match expected format
-        const transformedData = data.map(member => ({
-          id: member.id,
-          user_id: member.user_id,
-          email: (member.profiles as any)?.email || 'Unknown',
-          display_name: (member.profiles as any)?.display_name || 'Unknown',
-          role: member.role,
-          permissions: member.permissions,
-          joined_at: member.joined_at
-        }));
-        setTeamMembers(transformedData);
-      }
-
-      console.log('Team members fetched successfully:', teamMembers.length);
+      if (error) throw error;
+      
+      const members = data?.map(member => ({
+        ...member,
+        email: 'Team Member',
+        permissions: member.permissions as any
+      })) || [];
+      
+      setTeamMembers(members);
     } catch (error: any) {
-      console.error('Failed to fetch team members:', error);
+      console.error('Error fetching team members:', error);
       toast({
         variant: "destructive",
-        title: "Error loading team members",
-        description: error.message || "Failed to load team members.",
+        title: "Error fetching team members",
+        description: error.message,
       });
     }
   };
 
   const createTeam = async () => {
-    if (!newTeamName.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Team name required",
-        description: "Please enter a team name.",
-      });
-      return;
-    }
+    if (!newTeamName.trim()) return;
 
     try {
-      console.log('Creating team:', newTeamName);
-      
-      // Create the team
       const { data: teamData, error: teamError } = await supabase
         .from('teams')
         .insert({
-          name: newTeamName.trim(),
+          name: newTeamName,
           admin_id: user!.id
         })
         .select()
         .single();
 
-      if (teamError) {
-        console.error('Team creation error:', teamError);
-        throw teamError;
-      }
+      if (teamError) throw teamError;
 
-      // Add the creator as an admin member
+      // Add creator as admin member
       const { error: memberError } = await supabase
         .from('team_members')
         .insert({
           team_id: teamData.id,
           user_id: user!.id,
           role: 'admin',
-          added_by: user!.id,
-          permissions: {
-            can_view: true,
-            can_edit: true,
-            can_share: true,
-            can_manage_members: true
-          }
+          permissions: { can_view: true, can_edit: true, can_share: true },
+          added_by: user!.id
         });
 
-      if (memberError) {
-        console.error('Member addition error:', memberError);
-        // Don't throw here, team was created successfully
-      }
+      if (memberError) throw memberError;
 
-      console.log('Team created successfully:', teamData.name);
       toast({
-        title: "Team created",
-        description: `Team "${newTeamName}" has been created successfully.`,
+        title: "Team created successfully",
+        description: `${newTeamName} is ready for collaboration`,
       });
 
+      setCreateTeamDialogOpen(false);
       setNewTeamName('');
-      setCreateTeamOpen(false);
       fetchTeams();
     } catch (error: any) {
-      console.error('Team creation failed:', error);
       toast({
         variant: "destructive",
-        title: "Team creation failed",
-        description: error.message || "Failed to create team. Please try again.",
+        title: "Error creating team",
+        description: error.message,
       });
     }
   };
 
   const addTeamMember = async () => {
-    if (!selectedTeam || !newMemberEmail.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Missing information",
-        description: "Please enter a valid email address.",
-      });
-      return;
-    }
+    if (!newMemberEmail.trim() || !selectedTeam) return;
 
     try {
-      console.log('Adding team member:', newMemberEmail, 'to team:', selectedTeam.team_id);
-
-      // First, find the user by email
+      // Check if user exists
       const { data: userData, error: userError } = await supabase.rpc('get_user_by_email', {
-        email_input: newMemberEmail.trim()
+        email_input: newMemberEmail
       });
 
-      if (userError) {
-        console.error('User lookup error:', userError);
-        throw userError;
-      }
-
+      if (userError) throw userError;
       if (!userData || userData.length === 0) {
         toast({
           variant: "destructive",
           title: "User not found",
-          description: "No user found with this email address. They need to create an account first.",
+          description: "No authenticated user found with this email",
         });
         return;
       }
 
-      const targetUser = userData[0];
-
-      // Check if user is already a member
-      const { data: existingMember } = await supabase
-        .from('team_members')
-        .select('id')
-        .eq('team_id', selectedTeam.team_id)
-        .eq('user_id', targetUser.user_id)
-        .single();
-
-      if (existingMember) {
-        toast({
-          variant: "destructive",
-          title: "User already a member",
-          description: "This user is already a member of the team.",
-        });
-        return;
-      }
-
-      // Add the member
       const permissions = {
         can_view: true,
-        can_edit: newMemberRole === 'admin' || newMemberRole === 'editor',
-        can_share: newMemberRole === 'admin' || newMemberRole === 'editor',
-        can_manage_members: newMemberRole === 'admin'
+        can_edit: newMemberRole === 'admin' || newMemberRole === 'member',
+        can_share: newMemberRole === 'admin' || newMemberRole === 'member'
       };
 
-      const { error: addError } = await supabase
+      const { error } = await supabase
         .from('team_members')
         .insert({
-          team_id: selectedTeam.team_id,
-          user_id: targetUser.user_id,
+          team_id: selectedTeam.id,
+          user_id: userData[0].user_id,
           role: newMemberRole,
-          added_by: user!.id,
-          permissions: permissions
+          permissions,
+          added_by: user!.id
         });
 
-      if (addError) {
-        console.error('Member addition error:', addError);
-        throw addError;
-      }
+      if (error) throw error;
 
-      console.log('Team member added successfully:', newMemberEmail);
       toast({
-        title: "Member added",
-        description: `${newMemberEmail} has been added to the team.`,
+        title: "Member added successfully",
+        description: `${newMemberEmail} has been added to the team`,
       });
 
+      setAddMemberDialogOpen(false);
       setNewMemberEmail('');
       setNewMemberRole('member');
-      setAddMemberOpen(false);
-      fetchTeamMembers(selectedTeam.team_id);
+      fetchTeamMembers(selectedTeam.id);
     } catch (error: any) {
-      console.error('Add member failed:', error);
       toast({
         variant: "destructive",
-        title: "Add member failed",
-        description: error.message || "Failed to add team member. Please try again.",
+        title: "Error adding member",
+        description: error.message,
       });
     }
   };
 
-  const removeTeamMember = async (memberId: string, memberEmail: string) => {
-    if (!selectedTeam) return;
-
-    const confirmed = window.confirm(`Are you sure you want to remove ${memberEmail} from the team?`);
-    if (!confirmed) return;
+  const updateMemberRole = async (memberId: string, newRole: string) => {
+    const permissions = {
+      can_view: true,
+      can_edit: newRole === 'admin' || newRole === 'member',
+      can_share: newRole === 'admin' || newRole === 'member'
+    };
 
     try {
-      console.log('Removing team member:', memberId);
+      const { error } = await supabase
+        .from('team_members')
+        .update({ role: newRole, permissions })
+        .eq('id', memberId);
 
+      if (error) throw error;
+
+      toast({
+        title: "Role updated",
+        description: "Member role has been updated successfully",
+      });
+
+      if (selectedTeam) {
+        fetchTeamMembers(selectedTeam.id);
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error updating role",
+        description: error.message,
+      });
+    }
+  };
+
+  const removeMember = async (memberId: string, email: string) => {
+    try {
       const { error } = await supabase
         .from('team_members')
         .delete()
         .eq('id', memberId);
 
-      if (error) {
-        console.error('Member removal error:', error);
-        throw error;
-      }
+      if (error) throw error;
 
-      console.log('Team member removed successfully:', memberEmail);
       toast({
         title: "Member removed",
-        description: `${memberEmail} has been removed from the team.`,
+        description: `${email} has been removed from the team`,
       });
 
-      fetchTeamMembers(selectedTeam.team_id);
+      if (selectedTeam) {
+        fetchTeamMembers(selectedTeam.id);
+      }
     } catch (error: any) {
-      console.error('Remove member failed:', error);
       toast({
         variant: "destructive",
-        title: "Remove member failed",
-        description: error.message || "Failed to remove team member.",
+        title: "Error removing member",
+        description: error.message,
       });
     }
   };
 
-  const deleteTeam = async (team: Team) => {
-    const confirmed = window.confirm(`Are you sure you want to delete the team "${team.team_name}"? This action cannot be undone.`);
-    if (!confirmed) return;
-
+  const deleteTeam = async (teamId: string, teamName: string) => {
     try {
-      console.log('Deleting team:', team.team_id);
-
       const { error } = await supabase
         .from('teams')
         .delete()
-        .eq('id', team.team_id);
+        .eq('id', teamId);
 
-      if (error) {
-        console.error('Team deletion error:', error);
-        throw error;
-      }
+      if (error) throw error;
 
-      console.log('Team deleted successfully:', team.team_name);
       toast({
         title: "Team deleted",
-        description: `Team "${team.team_name}" has been deleted.`,
+        description: `${teamName} has been deleted successfully`,
       });
 
-      if (selectedTeam?.team_id === team.team_id) {
-        setSelectedTeam(null);
-        setTeamMembers([]);
-      }
+      setSelectedTeam(null);
       fetchTeams();
     } catch (error: any) {
-      console.error('Team deletion failed:', error);
       toast({
         variant: "destructive",
-        title: "Team deletion failed",
-        description: error.message || "Failed to delete team.",
+        title: "Error deleting team",
+        description: error.message,
       });
     }
   };
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-muted rounded w-1/4"></div>
-          <div className="space-y-2">
-            <div className="h-16 bg-muted rounded"></div>
-            <div className="h-16 bg-muted rounded"></div>
+          <div className="grid gap-4">
+            <div className="h-32 bg-muted rounded"></div>
+            <div className="h-32 bg-muted rounded"></div>
           </div>
         </div>
       </div>
@@ -403,11 +340,10 @@ export const TeamsManager: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Teams</h2>
+          <h1 className="text-3xl font-bold">Teams</h1>
           <p className="text-muted-foreground">Collaborate and share files with your team members</p>
         </div>
-        
-        <Dialog open={createTeamOpen} onOpenChange={setCreateTeamOpen}>
+        <Dialog open={createTeamDialogOpen} onOpenChange={setCreateTeamDialogOpen}>
           <DialogTrigger asChild>
             <Button className="hover:scale-105 transition-transform">
               <Plus className="w-4 h-4 mr-2" />
@@ -418,216 +354,237 @@ export const TeamsManager: React.FC = () => {
             <DialogHeader>
               <DialogTitle>Create New Team</DialogTitle>
               <DialogDescription>
-                Create a team to collaborate and share files with others.
+                Create a team to collaborate and share files with other users
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="teamName">Team Name</Label>
+                <Label htmlFor="team-name">Team Name</Label>
                 <Input
-                  id="teamName"
+                  id="team-name"
+                  placeholder="Enter team name"
                   value={newTeamName}
                   onChange={(e) => setNewTeamName(e.target.value)}
-                  placeholder="Enter team name"
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setCreateTeamOpen(false)}>
+              <Button variant="outline" onClick={() => setCreateTeamDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={createTeam}>Create Team</Button>
+              <Button onClick={createTeam} disabled={!newTeamName.trim()}>
+                Create Team
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
 
-      {teams.length === 0 ? (
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Teams List */}
         <Card>
-          <CardContent className="p-12">
-            <div className="text-center">
-              <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium mb-2">No teams yet</h3>
-              <p className="text-muted-foreground mb-4">
-                Create your first team to start collaborating with others.
-              </p>
-              <Button onClick={() => setCreateTeamOpen(true)}>
-                <Plus className="w-4 h-4 mr-2" />
-                Create Your First Team
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Your Teams</h3>
-            {teams.map((team, index) => (
-              <Card 
-                key={team.team_id} 
-                className={`cursor-pointer transition-all duration-300 hover:shadow-md animate-fade-in ${
-                  selectedTeam?.team_id === team.team_id ? 'ring-2 ring-primary' : ''
-                }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => {
-                  setSelectedTeam(team);
-                  fetchTeamMembers(team.team_id);
-                }}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Users className="w-5 h-5 text-primary" />
-                      </div>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Users className="w-5 h-5 mr-2" />
+              My Teams
+            </CardTitle>
+            <CardDescription>Teams you're part of</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {teams.length === 0 ? (
+              <div className="text-center py-6">
+                <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium mb-2">No teams yet</h3>
+                <p className="text-muted-foreground">Create a team to start collaborating</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {teams.map((team) => (
+                  <div
+                    key={team.id}
+                    className={`p-3 rounded-lg border cursor-pointer transition-all hover:bg-accent/50 ${
+                      selectedTeam?.id === team.id ? 'border-primary bg-accent/30' : 'border-border'
+                    }`}
+                    onClick={() => {
+                      setSelectedTeam(team);
+                      fetchTeamMembers(team.id);
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="font-medium">{team.team_name}</h4>
-                        <div className="flex items-center space-x-2">
+                        <p className="font-medium">{team.name}</p>
+                        <div className="flex items-center space-x-2 mt-1">
                           <Badge variant={team.is_admin ? 'default' : 'secondary'} className="text-xs">
-                            {team.is_admin ? (
-                              <>
-                                <Crown className="w-3 h-3 mr-1" />
-                                Admin
-                              </>
-                            ) : (
-                              team.role
-                            )}
+                            {team.is_admin ? 'Admin' : team.role}
                           </Badge>
                         </div>
                       </div>
-                    </div>
-                    {team.is_admin && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteTeam(team);
-                        }}
-                        className="hover:text-functions-delete hover:bg-functions-delete/10"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            {selectedTeam ? (
-              <>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium">Team Members</h3>
-                  {selectedTeam.is_admin && (
-                    <Dialog open={addMemberOpen} onOpenChange={setAddMemberOpen}>
-                      <DialogTrigger asChild>
-                        <Button size="sm" className="hover:scale-105 transition-transform">
-                          <UserPlus className="w-4 h-4 mr-2" />
-                          Add Member
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Add Team Member</DialogTitle>
-                          <DialogDescription>
-                            Add a new member to "{selectedTeam.team_name}"
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="memberEmail">Email Address</Label>
-                            <Input
-                              id="memberEmail"
-                              type="email"
-                              value={newMemberEmail}
-                              onChange={(e) => setNewMemberEmail(e.target.value)}
-                              placeholder="Enter member's email"
-                            />
-                          </div>
-                          <div>
-                            <Label>Role</Label>
-                            <Select value={newMemberRole} onValueChange={setNewMemberRole}>
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="member">Member</SelectItem>
-                                <SelectItem value="editor">Editor</SelectItem>
-                                <SelectItem value="admin">Admin</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                        <DialogFooter>
-                          <Button variant="outline" onClick={() => setAddMemberOpen(false)}>
-                            Cancel
+                      {team.is_admin && (
+                        <div className="flex items-center space-x-1">
+                          <Crown className="w-4 h-4 text-yellow-500" />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteTeam(team.id, team.name);
+                            }}
+                            className="hover:bg-functions-delete/10 hover:text-functions-delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
                           </Button>
-                          <Button onClick={addTeamMember}>Add Member</Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-                <div className="space-y-2">
-                  {teamMembers.map((member, index) => (
-                    <Card 
-                      key={member.id} 
-                      className="animate-fade-in"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      <CardContent className="p-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                              <span className="text-sm font-medium">
-                                {member.display_name?.charAt(0) || member.email.charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                            <div>
-                              <p className="font-medium text-sm">
-                                {member.display_name || member.email}
-                              </p>
-                              <p className="text-xs text-muted-foreground">{member.email}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Badge variant={member.role === 'admin' ? 'default' : 'secondary'} className="text-xs">
-                              {member.role === 'admin' && <Crown className="w-3 h-3 mr-1" />}
-                              {member.role}
-                            </Badge>
-                            {selectedTeam.is_admin && member.user_id !== user?.id && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeTeamMember(member.id, member.email)}
-                                className="hover:text-functions-delete hover:bg-functions-delete/10"
-                              >
-                                <Trash2 className="w-3 h-3" />
-                              </Button>
+        {/* Team Members */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center">
+                  <UserCheck className="w-5 h-5 mr-2" />
+                  Team Members
+                </CardTitle>
+                <CardDescription>
+                  {selectedTeam ? `Members of ${selectedTeam.name}` : 'Select a team to view members'}
+                </CardDescription>
+              </div>
+              {selectedTeam?.is_admin && (
+                <Dialog open={addMemberDialogOpen} onOpenChange={setAddMemberDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Member
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add Team Member</DialogTitle>
+                      <DialogDescription>
+                        Add a new member to {selectedTeam.name}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="member-email">Email Address</Label>
+                        <Input
+                          id="member-email"
+                          type="email"
+                          placeholder="member@example.com"
+                          value={newMemberEmail}
+                          onChange={(e) => setNewMemberEmail(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="member-role">Role</Label>
+                        <Select value={newMemberRole} onValueChange={setNewMemberRole}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="viewer">Viewer (Can only view files)</SelectItem>
+                            <SelectItem value="member">Member (Can view, edit & share files)</SelectItem>
+                            <SelectItem value="admin">Admin (Full access)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setAddMemberDialogOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button onClick={addTeamMember} disabled={!newMemberEmail.trim()}>
+                        Add Member
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            {!selectedTeam ? (
+              <div className="text-center py-6">
+                <Shield className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Select a team to view its members</p>
+              </div>
+            ) : teamMembers.length === 0 ? (
+              <div className="text-center py-6">
+                <UserX className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium mb-2">No members</h3>
+                <p className="text-muted-foreground">Add members to start collaborating</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {teamMembers.map((member) => (
+                  <div key={member.id} className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        {member.role === 'admin' ? (
+                          <Crown className="w-4 h-4 text-yellow-500" />
+                        ) : (
+                          <Users className="w-4 h-4 text-muted-foreground" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-medium">{member.email}</p>
+                        <div className="flex items-center space-x-2">
+                          <Badge variant={member.role === 'admin' ? 'default' : 'secondary'} className="text-xs">
+                            {member.role}
+                          </Badge>
+                          <div className="flex space-x-1">
+                            {member.permissions.can_view && (
+                              <Badge variant="outline" className="text-xs">View</Badge>
+                            )}
+                            {member.permissions.can_edit && (
+                              <Badge variant="outline" className="text-xs">Edit</Badge>
+                            )}
+                            {member.permissions.can_share && (
+                              <Badge variant="outline" className="text-xs">Share</Badge>
                             )}
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <Card>
-                <CardContent className="p-8">
-                  <div className="text-center text-muted-foreground">
-                    <Shield className="mx-auto h-8 w-8 mb-2" />
-                    <p>Select a team to view its members</p>
+                      </div>
+                    </div>
+                    {selectedTeam?.is_admin && member.user_id !== user?.id && (
+                      <div className="flex items-center space-x-2">
+                        <Select
+                          value={member.role}
+                          onValueChange={(newRole) => updateMemberRole(member.id, newRole)}
+                        >
+                          <SelectTrigger className="w-24 h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="viewer">Viewer</SelectItem>
+                            <SelectItem value="member">Member</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeMember(member.id, member.email)}
+                          className="hover:bg-functions-delete/10 hover:text-functions-delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
+                ))}
+              </div>
             )}
-          </div>
-        </div>
-      )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

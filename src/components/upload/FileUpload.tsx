@@ -56,16 +56,11 @@ export const FileUpload: React.FC = () => {
     
     try {
       // Check daily upload limit
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('daily_upload_count, daily_upload_limit, subscription_tier')
         .eq('id', user.id)
         .single();
-
-      if (profileError) {
-        console.error('Error fetching profile:', profileError);
-        throw new Error('Failed to verify upload permissions');
-      }
 
       // Skip limit check for pro users (they have unlimited uploads)
       if (profile && profile.subscription_tier !== 'pro' && profile.daily_upload_count >= profile.daily_upload_limit) {
@@ -77,9 +72,6 @@ export const FileUpload: React.FC = () => {
         setIsUploading(false);
         return;
       }
-
-      let successCount = 0;
-      let errorCount = 0;
 
       // Upload files one by one
       for (let i = 0; i < uploadFiles.length; i++) {
@@ -93,27 +85,16 @@ export const FileUpload: React.FC = () => {
             idx === i ? { ...f, status: 'uploading' as const } : f
           ));
 
-          // Validate file size (100MB limit)
-          const maxFileSize = 100 * 1024 * 1024; // 100MB
-          if (uploadFile.file.size > maxFileSize) {
-            throw new Error(`File too large. Maximum size is 100MB.`);
-          }
-
           // Create unique file path
           const fileExt = uploadFile.file.name.split('.').pop();
-          const timestamp = Date.now();
-          const randomId = Math.random().toString(36).substring(2);
-          const fileName = `${user.id}/${timestamp}-${randomId}.${fileExt}`;
+          const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
 
           // Upload to Supabase Storage
           const { data: storageData, error: storageError } = await supabase.storage
             .from('files')
             .upload(fileName, uploadFile.file);
 
-          if (storageError) {
-            console.error('Storage upload error:', storageError);
-            throw new Error(`Upload failed: ${storageError.message}`);
-          }
+          if (storageError) throw storageError;
 
           // Save file metadata to database
           const { data: fileData, error: dbError } = await supabase
@@ -128,26 +109,16 @@ export const FileUpload: React.FC = () => {
             .select()
             .single();
 
-          if (dbError) {
-            console.error('Database insert error:', dbError);
-            // Try to clean up storage if database insert fails
-            await supabase.storage.from('files').remove([fileName]);
-            throw new Error(`Failed to save file metadata: ${dbError.message}`);
-          }
+          if (dbError) throw dbError;
 
           // Update upload count (only for free users, pro users have unlimited)
           if (profile?.subscription_tier !== 'pro') {
-            const { error: updateError } = await supabase
+            await supabase
               .from('profiles')
               .update({ 
                 daily_upload_count: (profile?.daily_upload_count || 0) + 1 
               })
               .eq('id', user.id);
-
-            if (updateError) {
-              console.warn('Failed to update upload count:', updateError);
-              // Don't fail upload for count update issues
-            }
           }
 
           // Mark as success
@@ -155,43 +126,31 @@ export const FileUpload: React.FC = () => {
             idx === i ? { ...f, status: 'success' as const, progress: 100, id: fileData.id } : f
           ));
 
-          successCount++;
-          console.log(`File ${i + 1}/${uploadFiles.length} uploaded successfully:`, uploadFile.file.name);
-
         } catch (error: any) {
           console.error('Upload error:', error);
           setUploadFiles(prev => prev.map((f, idx) => 
             idx === i ? { 
               ...f, 
               status: 'error' as const, 
-              error: error.message || 'Upload failed'
+              error: error.message || 'Upload failed' 
             } : f
           ));
-          errorCount++;
         }
       }
 
+      const successCount = uploadFiles.filter(f => f.status === 'success').length;
       if (successCount > 0) {
         toast({
           title: "Upload complete",
-          description: `Successfully uploaded ${successCount} file(s)${errorCount > 0 ? `. ${errorCount} failed.` : '.'}`,
-        });
-      }
-
-      if (errorCount > 0 && successCount === 0) {
-        toast({
-          variant: "destructive",
-          title: "All uploads failed",
-          description: "Please check file sizes and try again.",
+          description: `Successfully uploaded ${successCount} file(s).`,
         });
       }
 
     } catch (error: any) {
-      console.error('Upload process failed:', error);
       toast({
         variant: "destructive",
         title: "Upload failed",
-        description: error.message || 'An unexpected error occurred during upload.',
+        description: error.message || 'An error occurred during upload.',
       });
     } finally {
       setIsUploading(false);

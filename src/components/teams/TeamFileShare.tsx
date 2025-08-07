@@ -43,21 +43,11 @@ export const TeamFileShare: React.FC<TeamFileShareProps> = ({
 
   const fetchUserTeams = async () => {
     try {
-      if (!user?.id) {
-        console.error('No user ID available for fetching teams');
-        return;
-      }
-
-      console.log('Fetching user teams for sharing:', user.id);
-
       const { data, error } = await supabase.rpc('get_user_teams', {
-        p_user_id: user!.id
+        user_id: user!.id
       });
 
-      if (error) {
-        console.error('Error fetching user teams:', error);
-        throw new Error(`Failed to load teams: ${error.message}`);
-      }
+      if (error) throw error;
       
       // Filter teams where user has share permissions
       const shareableTeams = data?.filter(team => {
@@ -65,51 +55,22 @@ export const TeamFileShare: React.FC<TeamFileShareProps> = ({
         return permissions?.can_share || team.is_admin;
       }) || [];
       
-      console.log('Shareable teams found:', shareableTeams.length);
       setTeams(shareableTeams);
     } catch (error: any) {
       console.error('Error fetching teams:', error);
       toast({
         variant: "destructive",
         title: "Error fetching teams",
-        description: error.message || "Unable to load teams for sharing.",
+        description: error.message,
       });
-      setTeams([]);
     }
   };
 
   const shareWithTeam = async () => {
-    if (!selectedTeam || !fileId) {
-      toast({
-        variant: "destructive",
-        title: "Missing information",
-        description: "Please select a team to share with.",
-      });
-      return;
-    }
+    if (!selectedTeam) return;
 
     setLoading(true);
     try {
-      console.log('Sharing file with team:', fileId, selectedTeam);
-
-      // Check if file is already shared with this team
-      const { data: existingShare } = await supabase
-        .from('team_file_shares')
-        .select('id')
-        .eq('file_id', fileId)
-        .eq('team_id', selectedTeam)
-        .single();
-
-      if (existingShare) {
-        toast({
-          variant: "destructive",
-          title: "Already shared",
-          description: "This file is already shared with the selected team.",
-        });
-        setLoading(false);
-        return;
-      }
-
       const { error } = await supabase
         .from('team_file_shares')
         .insert({
@@ -118,14 +79,10 @@ export const TeamFileShare: React.FC<TeamFileShareProps> = ({
           shared_by: user!.id
         });
 
-      if (error) {
-        console.error('Error sharing file with team:', error);
-        throw new Error(`Failed to share file: ${error.message}`);
-      }
+      if (error) throw error;
 
       const teamName = teams.find(t => t.team_id === selectedTeam)?.team_name;
       
-      console.log('File shared successfully with team:', teamName);
       toast({
         title: "File shared successfully",
         description: `${fileName} has been shared with ${teamName}`,
@@ -134,11 +91,10 @@ export const TeamFileShare: React.FC<TeamFileShareProps> = ({
       onOpenChange(false);
       setSelectedTeam('');
     } catch (error: any) {
-      console.error('Team file sharing failed:', error);
       toast({
         variant: "destructive",
         title: "Error sharing file",
-        description: error.message || "Unable to share file with team. Please try again.",
+        description: error.message,
       });
     } finally {
       setLoading(false);

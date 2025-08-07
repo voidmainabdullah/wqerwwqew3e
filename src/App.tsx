@@ -15,7 +15,6 @@ import { SharedLinks } from "@/components/files/SharedLinks";
 import { FileReceiver } from "@/components/files/FileReceiver";
 import { TeamsManager } from "@/components/teams/TeamsManager";
 import { TeamFiles } from "@/components/teams/TeamFiles";
-import { MyTeamFiles } from "@/components/teams/MyTeamFiles";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import { CodeSharePage } from "@/components/sharing/CodeSharePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
@@ -60,12 +59,8 @@ const App = () => (
                 <DashboardLayout>
                   <div className="space-y-8">
                     <TeamsManager />
+                    <TeamFiles />
                   </div>
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/my-team" element={
-                <DashboardLayout>
-                  <MyTeamFiles />
                 </DashboardLayout>
               } />
               <Route path="/dashboard/shared" element={

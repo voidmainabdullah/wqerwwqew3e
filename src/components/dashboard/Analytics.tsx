@@ -12,7 +12,6 @@ import {
   Users,
   Calendar
 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 
 interface AnalyticsData {
   totalDownloads: number;
@@ -24,7 +23,6 @@ interface AnalyticsData {
 
 export const Analytics: React.FC = () => {
   const { user } = useAuth();
-  const { toast } = useToast();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,62 +34,30 @@ export const Analytics: React.FC = () => {
 
   const fetchAnalytics = async () => {
     try {
-      if (!user?.id) {
-        console.error('No user ID available for analytics');
-        return;
-      }
-
       // Get user's files
-      const { data: userFiles, error: filesError } = await supabase
+      const { data: userFiles } = await supabase
         .from('files')
         .select('id, original_name, created_at')
         .eq('user_id', user?.id);
 
-      if (filesError) {
-        console.error('Error fetching user files:', filesError);
-        throw new Error(`Failed to load files: ${filesError.message}`);
-      }
-
       const fileIds = userFiles?.map(f => f.id) || [];
 
-      if (fileIds.length === 0) {
-        // No files, set empty analytics
-        setData({
-          totalDownloads: 0,
-          totalShares: 0,
-          totalFiles: 0,
-          recentDownloads: [],
-          popularFiles: []
-        });
-        return;
-      }
-
       // Get download logs
-      const { data: downloads, error: downloadsError } = await supabase
+      const { data: downloads } = await supabase
         .from('download_logs')
         .select('*, files!inner(original_name)')
         .in('file_id', fileIds)
         .order('downloaded_at', { ascending: false });
 
-      if (downloadsError) {
-        console.warn('Error fetching downloads:', downloadsError);
-        // Continue with empty downloads array
-      }
-
       // Get shared links
-      const { data: shares, error: sharesError } = await supabase
+      const { data: shares } = await supabase
         .from('shared_links')
         .select('*')
         .in('file_id', fileIds);
 
-      if (sharesError) {
-        console.warn('Error fetching shares:', sharesError);
-        // Continue with empty shares array
-      }
-
       // Calculate popular files
       const fileDownloadCounts = downloads?.reduce((acc: any, download: any) => {
-        const fileName = download.files?.original_name || 'Unknown file';
+        const fileName = download.files.original_name;
         acc[fileName] = (acc[fileName] || 0) + 1;
         return acc;
       }, {}) || {};
@@ -108,24 +74,8 @@ export const Analytics: React.FC = () => {
         recentDownloads: downloads?.slice(0, 10) || [],
         popularFiles
       });
-
-      console.log('Analytics data loaded successfully');
     } catch (error) {
       console.error('Error fetching analytics:', error);
-      toast({
-        variant: "destructive",
-        title: "Analytics loading failed",
-        description: "Unable to load analytics data. Please refresh the page.",
-      });
-      
-      // Set fallback data to prevent UI issues
-      setData({
-        totalDownloads: 0,
-        totalShares: 0,
-        totalFiles: 0,
-        recentDownloads: [],
-        popularFiles: []
-      });
     } finally {
       setLoading(false);
     }
