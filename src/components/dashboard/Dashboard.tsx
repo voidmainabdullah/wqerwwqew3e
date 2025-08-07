@@ -110,7 +110,7 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="bg-blue-600">
+          <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="bg-green-400 text-black">
             {stats?.subscriptionTier === 'pro' ? <>
                 <Zap className="w-3 h-3 mr-1" />
                 Pro
@@ -165,7 +165,7 @@ export const Dashboard: React.FC = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-sm font-bold mx-0 my-0 bg-[#4262f0]/[0.89] rounded-xl py-0 px-[10px]">
+            <div className="text-sm font-bold bg-green-400 text-gray-800">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
             {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
@@ -219,7 +219,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="bg-black">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
               <Shield className="mr-2 h-5 w-5" />
@@ -230,8 +230,8 @@ export const Dashboard: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="flex items-center text-sm bg-black">
-              <Clock className="mr-2 h-4 w-4 text-success bg-black" />
+            <div className="flex items-center text-sm">
+              <Clock className="mr-2 h-4 w-4 text-success" />
               Automatic expiry dates
             </div>
             <div className="flex items-center text-sm">
@@ -246,17 +246,17 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-[2563EB] bg-blue-600"></div>
-          <CardHeader className="relative bg-blue-600 backdrop-blur-3xl ">
-            <CardTitle className="flex items-center text-xl font-semibold text-slate-50">
-              <Zap className="mr-2 h-6 w-6 text-primary text-red bg-inherit" />
+          <div className="absolute inset-0 bg-inherit"></div>
+          <CardHeader className="relative bg-inherit">
+            <CardTitle className="flex items-center text-xl font-semibold text-green-500">
+              <Zap className="mr-2 h-6 w-6 text-primary bg-black text-red " />
               Upgrade to Pro
             </CardTitle>
-            <CardDescription className="text-base">
+            <CardDescription className="text-base text-gray-200">
               Unlock unlimited storage and advanced team features.
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative space-y-4 mx-0 my-0 bg-blue-600">
+          <CardContent className="relative space-y-4 mx-0 my-0 bg-inherit">
             <div className="space-y-2">
               <div className="flex items-center text-sm text-muted-foreground">
                 <Zap className="mr-2 h-4 w-4 text-primary" />
@@ -272,7 +272,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
             <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
-              <Link to="/subscription" className="mx-0.5 text-cosmic items-center text-black/65 bg-black:shadow-border ">
+              <Link to="/subscription" className="bg-red-400 ">
                 <Zap className="mr-2 h-4 w-4" />
                 Upgrade Now - Starting at $9/month
               </Link>
