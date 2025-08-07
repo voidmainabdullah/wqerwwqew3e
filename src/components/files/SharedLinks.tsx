@@ -182,7 +182,7 @@ export const SharedLinks: React.FC = () => {
                         </Badge>}
                       {expired && <Badge variant="destructive">Expired</Badge>}
                       {limitReached && <Badge variant="destructive">Limit Reached</Badge>}
-                      {!inactive && <Badge variant="default" className="bg-[#4bd65d]">Active</Badge>}
+                      {!inactive && <Badge variant="default" className="bg-[#41e174]/[0.81]">Active</Badge>}
                     </div>
                   </div>
                 </CardHeader>
