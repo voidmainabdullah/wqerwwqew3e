@@ -16,7 +16,6 @@ const formatFileSize = (bytes: number): string => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
-
 interface TeamFile {
   file_id: string;
   file_name: string;
@@ -34,7 +33,6 @@ interface TeamFile {
   can_edit: boolean;
   is_team_admin: boolean;
 }
-
 interface UserFile {
   id: string;
   original_name: string;
@@ -44,7 +42,6 @@ interface UserFile {
   is_locked: boolean;
   created_at: string;
 }
-
 interface Team {
   id: string;
   name: string;
@@ -52,11 +49,13 @@ interface Team {
   role: string;
   permissions: any;
 }
-
 const TeamFileShare: React.FC = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  
+  const {
+    user
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const [teamFiles, setTeamFiles] = useState<TeamFile[]>([]);
   const [userFiles, setUserFiles] = useState<UserFile[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
@@ -64,41 +63,42 @@ const TeamFileShare: React.FC = () => {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<UserFile | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<string>('');
-
   useEffect(() => {
     if (user) {
       fetchData();
     }
   }, [user]);
-
   const fetchData = async () => {
     setLoading(true);
     try {
       // Fetch team files shared with user
-      const { data: teamFilesData, error: teamFilesError } = await supabase.rpc('get_my_team_files', {
+      const {
+        data: teamFilesData,
+        error: teamFilesError
+      } = await supabase.rpc('get_my_team_files', {
         p_user_id: user!.id
       });
-
       if (teamFilesError) throw teamFilesError;
       setTeamFiles(teamFilesData || []);
 
       // Fetch user's own files
-      const { data: userFilesData, error: userFilesError } = await supabase
-        .from('files')
-        .select('*')
-        .eq('user_id', user!.id)
-        .order('created_at', { ascending: false });
-
+      const {
+        data: userFilesData,
+        error: userFilesError
+      } = await supabase.from('files').select('*').eq('user_id', user!.id).order('created_at', {
+        ascending: false
+      });
       if (userFilesError) throw userFilesError;
       setUserFiles(userFilesData || []);
 
       // Fetch user's teams
-      const { data: teamsData, error: teamsError } = await supabase.rpc('get_user_teams', {
+      const {
+        data: teamsData,
+        error: teamsError
+      } = await supabase.rpc('get_user_teams', {
         p_user_id: user!.id
       });
-
       if (teamsError) throw teamsError;
-      
       const mappedTeams = teamsData?.map(team => ({
         id: team.team_id,
         name: team.team_name,
@@ -106,46 +106,40 @@ const TeamFileShare: React.FC = () => {
         role: team.role,
         permissions: team.permissions
       })) || [];
-      
       setTeams(mappedTeams);
     } catch (error: any) {
       console.error('Error fetching data:', error);
       toast({
         variant: "destructive",
         title: "Error loading files",
-        description: error.message,
+        description: error.message
       });
     } finally {
       setLoading(false);
     }
   };
-
   const shareFileWithTeam = async () => {
     if (!selectedFile || !selectedTeam) {
       toast({
         variant: "destructive",
         title: "Selection required",
-        description: "Please select both a file and a team",
+        description: "Please select both a file and a team"
       });
       return;
     }
-
     try {
-      const { error } = await supabase
-        .from('team_file_shares')
-        .insert({
-          file_id: selectedFile.id,
-          team_id: selectedTeam,
-          shared_by: user!.id
-        });
-
+      const {
+        error
+      } = await supabase.from('team_file_shares').insert({
+        file_id: selectedFile.id,
+        team_id: selectedTeam,
+        shared_by: user!.id
+      });
       if (error) throw error;
-
       toast({
         title: "File shared",
-        description: `${selectedFile.original_name} has been shared with the team`,
+        description: `${selectedFile.original_name} has been shared with the team`
       });
-
       setShareDialogOpen(false);
       setSelectedFile(null);
       setSelectedTeam('');
@@ -154,34 +148,29 @@ const TeamFileShare: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Error sharing file",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const downloadFile = async (file: TeamFile | UserFile, storagePathOverride?: string) => {
     try {
       let storagePath: string;
-      
       if ('storage_path' in file) {
         // UserFile
         storagePath = file.storage_path;
       } else {
         // TeamFile - we need to get the storage path
-        const { data: fileData, error: fileError } = await supabase
-          .from('files')
-          .select('storage_path')
-          .eq('id', file.file_id)
-          .single();
-        
+        const {
+          data: fileData,
+          error: fileError
+        } = await supabase.from('files').select('storage_path').eq('id', file.file_id).single();
         if (fileError) throw fileError;
         storagePath = fileData.storage_path;
       }
-
-      const { data, error } = await supabase.storage
-        .from('files')
-        .download(storagePath);
-
+      const {
+        data,
+        error
+      } = await supabase.storage.from('files').download(storagePath);
       if (error) throw error;
 
       // Create download link
@@ -196,51 +185,44 @@ const TeamFileShare: React.FC = () => {
 
       // Update download count
       const fileId = 'file_id' in file ? file.file_id : file.id;
-      await supabase
-        .from('files')
-        .update({ download_count: ('download_count' in file ? file.download_count : 0) + 1 })
-        .eq('id', fileId);
-
+      await supabase.from('files').update({
+        download_count: ('download_count' in file ? file.download_count : 0) + 1
+      }).eq('id', fileId);
       toast({
         title: "Download started",
-        description: "Your file is downloading",
+        description: "Your file is downloading"
       });
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Download failed",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const toggleFileLock = async (fileId: string, currentLocked: boolean) => {
     try {
-      const { error } = await supabase
-        .from('files')
-        .update({ is_locked: !currentLocked })
-        .eq('id', fileId);
-
+      const {
+        error
+      } = await supabase.from('files').update({
+        is_locked: !currentLocked
+      }).eq('id', fileId);
       if (error) throw error;
-
       toast({
         title: currentLocked ? "File unlocked" : "File locked",
-        description: `File has been ${currentLocked ? 'unlocked' : 'locked'}`,
+        description: `File has been ${currentLocked ? 'unlocked' : 'locked'}`
       });
-
       fetchData();
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error updating file",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   if (loading) {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-muted rounded w-1/4"></div>
           <div className="grid gap-4">
@@ -248,12 +230,9 @@ const TeamFileShare: React.FC = () => {
             <div className="h-32 bg-muted rounded"></div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Team Files</h1>
@@ -276,16 +255,15 @@ const TeamFileShare: React.FC = () => {
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Select File</label>
-                <Select value={selectedFile?.id || ''} onValueChange={(value) => {
-                  const file = userFiles.find(f => f.id === value);
-                  setSelectedFile(file || null);
-                }}>
+                <Select value={selectedFile?.id || ''} onValueChange={value => {
+                const file = userFiles.find(f => f.id === value);
+                setSelectedFile(file || null);
+              }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Choose a file to share" />
                   </SelectTrigger>
                   <SelectContent>
-                    {userFiles.map((file) => (
-                      <SelectItem key={file.id} value={file.id}>
+                    {userFiles.map(file => <SelectItem key={file.id} value={file.id}>
                         <div className="flex items-center space-x-2">
                           <File className="w-4 h-4" />
                           <span>{file.original_name}</span>
@@ -293,8 +271,7 @@ const TeamFileShare: React.FC = () => {
                             ({formatFileSize(file.file_size)})
                           </span>
                         </div>
-                      </SelectItem>
-                    ))}
+                      </SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -306,8 +283,7 @@ const TeamFileShare: React.FC = () => {
                     <SelectValue placeholder="Choose a team" />
                   </SelectTrigger>
                   <SelectContent>
-                    {teams.map((team) => (
-                      <SelectItem key={team.id} value={team.id}>
+                    {teams.map(team => <SelectItem key={team.id} value={team.id}>
                         <div className="flex items-center space-x-2">
                           <Users className="w-4 h-4" />
                           <span>{team.name}</span>
@@ -315,8 +291,7 @@ const TeamFileShare: React.FC = () => {
                             {team.is_admin ? 'Admin' : team.role}
                           </Badge>
                         </div>
-                      </SelectItem>
-                    ))}
+                      </SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -347,19 +322,12 @@ const TeamFileShare: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {teamFiles.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
+            {teamFiles.length === 0 ? <div className="text-center py-8 text-muted-foreground">
                 <File className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p className="text-lg font-medium">No team files yet</p>
                 <p className="text-sm">Files shared with your teams will appear here</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {teamFiles.map((file) => (
-                  <div
-                    key={file.file_id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                  >
+              </div> : <div className="space-y-4">
+                {teamFiles.map(file => <div key={file.file_id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="flex items-center space-x-4">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                         <File className="w-5 h-5 text-primary" />
@@ -367,9 +335,7 @@ const TeamFileShare: React.FC = () => {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <p className="font-medium">{file.file_name}</p>
-                          {file.is_locked && (
-                            <Lock className="w-4 h-4 text-destructive" />
-                          )}
+                          {file.is_locked && <Lock className="w-4 h-4 text-destructive" />}
                         </div>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
@@ -391,41 +357,23 @@ const TeamFileShare: React.FC = () => {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      {file.can_download && !file.is_locked && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => downloadFile(file)}
-                        >
+                      {file.can_download && !file.is_locked && <Button variant="outline" size="sm" onClick={() => downloadFile(file)}>
                           <Download className="w-4 h-4 mr-2" />
                           Download
-                        </Button>
-                      )}
+                        </Button>}
                       
-                      {file.can_edit && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleFileLock(file.file_id, file.is_locked)}
-                        >
-                          {file.is_locked ? (
-                            <>
+                      {file.can_edit && <Button variant="outline" size="sm" onClick={() => toggleFileLock(file.file_id, file.is_locked)} className="text-red-400">
+                          {file.is_locked ? <>
                               <Unlock className="w-4 h-4 mr-2" />
                               Unlock
-                            </>
-                          ) : (
-                            <>
+                            </> : <>
                               <Lock className="w-4 h-4 mr-2" />
                               Lock
-                            </>
-                          )}
-                        </Button>
-                      )}
+                            </>}
+                        </Button>}
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  </div>)}
+              </div>}
           </CardContent>
         </Card>
 
@@ -441,19 +389,12 @@ const TeamFileShare: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {userFiles.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
+            {userFiles.length === 0 ? <div className="text-center py-8 text-muted-foreground">
                 <File className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p className="text-lg font-medium">No files uploaded yet</p>
                 <p className="text-sm">Upload files to start sharing with teams</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {userFiles.map((file) => (
-                  <div
-                    key={file.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                  >
+              </div> : <div className="space-y-4">
+                {userFiles.map(file => <div key={file.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="flex items-center space-x-4">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                         <File className="w-5 h-5 text-primary" />
@@ -461,9 +402,7 @@ const TeamFileShare: React.FC = () => {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <p className="font-medium">{file.original_name}</p>
-                          {file.is_locked && (
-                            <Lock className="w-4 h-4 text-destructive" />
-                          )}
+                          {file.is_locked && <Lock className="w-4 h-4 text-destructive" />}
                         </div>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span>{formatFileSize(file.file_size)}</span>
@@ -473,56 +412,34 @@ const TeamFileShare: React.FC = () => {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => downloadFile(file)}
-                        disabled={file.is_locked}
-                      >
+                      <Button variant="outline" size="sm" onClick={() => downloadFile(file)} disabled={file.is_locked}>
                         <Download className="w-4 h-4 mr-2" />
                         Download
                       </Button>
                       
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedFile(file);
-                          setShareDialogOpen(true);
-                        }}
-                        disabled={file.is_locked}
-                      >
+                      <Button variant="outline" size="sm" onClick={() => {
+                  setSelectedFile(file);
+                  setShareDialogOpen(true);
+                }} disabled={file.is_locked}>
                         <Share2 className="w-4 h-4 mr-2" />
                         Share
                       </Button>
                       
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => toggleFileLock(file.id, file.is_locked)}
-                      >
-                        {file.is_locked ? (
-                          <>
+                      <Button variant="outline" size="sm" onClick={() => toggleFileLock(file.id, file.is_locked)}>
+                        {file.is_locked ? <>
                             <Unlock className="w-4 h-4 mr-2" />
                             Unlock
-                          </>
-                        ) : (
-                          <>
+                          </> : <>
                             <Lock className="w-4 h-4 mr-2" />
                             Lock
-                          </>
-                        )}
+                          </>}
                       </Button>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  </div>)}
+              </div>}
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default TeamFileShare;
