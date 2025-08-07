@@ -6,20 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Files, 
-  Share, 
-  Download, 
-  TrendingUp, 
-  Upload,
-  Clock,
-  Shield,
-  Zap,
-  Users
-} from 'lucide-react';
+import { Files, Share, Download, TrendingUp, Upload, Clock, Shield, Zap, Users } from 'lucide-react';
 import TeamsManager from '@/components/teams/TeamsManager';
-
-
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -28,60 +16,60 @@ interface DashboardStats {
   storageLimit: number;
   subscriptionTier: string;
 }
-
 export const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<any>(null);
-
   useEffect(() => {
     if (user) {
       fetchDashboardStats();
     }
   }, [user]);
-
   const fetchDashboardStats = async () => {
     try {
       // Fetch user profile with storage info
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('storage_used, storage_limit, subscription_tier')
-        .eq('id', user?.id)
-        .single();
+      const {
+        data: profile
+      } = await supabase.from('profiles').select('storage_used, storage_limit, subscription_tier').eq('id', user?.id).single();
 
       // Fetch file count
-      const { count: fileCount } = await supabase
-        .from('files')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user?.id);
+      const {
+        count: fileCount
+      } = await supabase.from('files').select('*', {
+        count: 'exact',
+        head: true
+      }).eq('user_id', user?.id);
 
       // Fetch share count - Get shared links for user's files
-      const { data: userFiles } = await supabase
-        .from('files')
-        .select('id')
-        .eq('user_id', user?.id);
-      
+      const {
+        data: userFiles
+      } = await supabase.from('files').select('id').eq('user_id', user?.id);
       const fileIds = userFiles?.map(f => f.id) || [];
-      
-      const { count: shareCount } = await supabase
-        .from('shared_links')
-        .select('*', { count: 'exact', head: true })
-        .in('file_id', fileIds);
+      const {
+        count: shareCount
+      } = await supabase.from('shared_links').select('*', {
+        count: 'exact',
+        head: true
+      }).in('file_id', fileIds);
 
       // Fetch download count
-      const { count: downloadCount } = await supabase
-        .from('download_logs')
-        .select('*', { count: 'exact', head: true })
-        .in('file_id', fileIds);
-
+      const {
+        count: downloadCount
+      } = await supabase.from('download_logs').select('*', {
+        count: 'exact',
+        head: true
+      }).in('file_id', fileIds);
       setStats({
         totalFiles: fileCount || 0,
         totalShares: shareCount || 0,
         totalDownloads: downloadCount || 0,
         storageUsed: profile?.storage_used || 0,
-        storageLimit: profile?.storage_limit || 6442450944, // 6GB default
-        subscriptionTier: profile?.subscription_tier || 'free',
+        storageLimit: profile?.storage_limit || 6442450944,
+        // 6GB default
+        subscriptionTier: profile?.subscription_tier || 'free'
       });
       setUserProfile(profile);
     } catch (error) {
@@ -90,13 +78,10 @@ export const Dashboard: React.FC = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
+          {[...Array(4)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div className="h-4 bg-muted rounded w-24"></div>
                 <div className="h-4 w-4 bg-muted rounded"></div>
@@ -104,13 +89,10 @@ export const Dashboard: React.FC = () => {
               <CardContent>
                 <div className="h-8 bg-muted rounded w-16"></div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
-      </div>
-    );
+      </div>;
   }
-
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -118,11 +100,8 @@ export const Dashboard: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-
-  const storageProgress = stats ? (stats.subscriptionTier === 'pro' ? 0 : (stats.storageUsed / stats.storageLimit) * 100) : 0;
-
-  return (
-    <div className="space-y-6">
+  const storageProgress = stats ? stats.subscriptionTier === 'pro' ? 0 : stats.storageUsed / stats.storageLimit * 100 : 0;
+  return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
@@ -132,14 +111,10 @@ export const Dashboard: React.FC = () => {
         </div>
         <div className="flex items-center space-x-2">
           <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'}>
-            {stats?.subscriptionTier === 'pro' ? (
-              <>
+            {stats?.subscriptionTier === 'pro' ? <>
                 <Zap className="w-3 h-3 mr-1" />
                 Pro
-              </>
-            ) : (
-              'Free'
-            )}
+              </> : 'Free'}
           </Badge>
         </div>
       </div>
@@ -191,14 +166,9 @@ export const Dashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {stats?.subscriptionTier === 'pro' ? 
-                formatFileSize(stats?.storageUsed || 0) : 
-                `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`
-              }
+              {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
-            {stats?.subscriptionTier !== 'pro' && (
-              <Progress value={storageProgress} className="mt-2" />
-            )}
+            {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
             <p className="text-xs text-muted-foreground mt-1">
               {stats?.subscriptionTier === 'pro' ? 'Unlimited storage' : '6GB total storage limit'}
             </p>
@@ -276,17 +246,17 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20"></div>
-          <CardHeader className="relative">
-            <CardTitle className="flex items-center text-xl">
-              <Zap className="mr-2 h-6 w-6 text-primary" />
+          <div className="absolute inset-0 bg-black"></div>
+          <CardHeader className="relative bg-black">
+            <CardTitle className="flex items-center text-xl text-blue-500 font-semibold ">
+              <Zap className="mr-2 h-6 w-6 text-primary bg-black text-red " />
               Upgrade to Pro
             </CardTitle>
             <CardDescription className="text-base">
               Unlock unlimited storage and advanced team features.
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative space-y-4">
+          <CardContent className="relative space-y-4 bg-black mx-0 my-0">
             <div className="space-y-2">
               <div className="flex items-center text-sm text-muted-foreground">
                 <Zap className="mr-2 h-4 w-4 text-primary" />
@@ -302,7 +272,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
             <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
-              <Link to="/subscription">
+              <Link to="/subscription" className="bg-red-400 ">
                 <Zap className="mr-2 h-4 w-4" />
                 Upgrade Now - Starting at $9/month
               </Link>
@@ -315,6 +285,5 @@ export const Dashboard: React.FC = () => {
       <div className="mt-8">
         <TeamsManager />
       </div>
-    </div>
-  );
+    </div>;
 };
