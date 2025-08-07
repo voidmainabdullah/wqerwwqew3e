@@ -8,22 +8,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Settings as SettingsIcon,
-  User,
-  Shield,
-  Trash2,
-  Crown,
-  AlertTriangle
-} from 'lucide-react';
-
+import { Settings as SettingsIcon, User, Shield, Trash2, Crown, AlertTriangle } from 'lucide-react';
 export const Settings: React.FC = () => {
-  const { user, signOut } = useAuth();
-  const { toast } = useToast();
+  const {
+    user,
+    signOut
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const [profile, setProfile] = useState<any>(null);
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
-
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -31,93 +27,70 @@ export const Settings: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-
   useEffect(() => {
     if (user) {
       fetchProfile();
       setDisplayName(user.user_metadata?.display_name || user.email?.split('@')[0] || '');
     }
   }, [user]);
-
   const fetchProfile = async () => {
     try {
-      const { data } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user?.id)
-        .single();
-      
+      const {
+        data
+      } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }
   };
-
   const updateDisplayName = async () => {
     if (!user) return;
-    
     setLoading(true);
     try {
-      const { error } = await supabase.auth.updateUser({
-        data: { display_name: displayName }
+      const {
+        error
+      } = await supabase.auth.updateUser({
+        data: {
+          display_name: displayName
+        }
       });
-
       if (error) throw error;
-
       toast({
         title: "Profile updated",
-        description: "Your display name has been updated successfully.",
+        description: "Your display name has been updated successfully."
       });
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Update failed",
-        description: error.message,
+        description: error.message
       });
     } finally {
       setLoading(false);
     }
   };
-
   const deleteAccount = async () => {
     if (!user) return;
-    
-    const confirmed = window.confirm(
-      'Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your files and data.'
-    );
-    
+    const confirmed = window.confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your files and data.');
     if (!confirmed) return;
-
     try {
       // Delete user files from storage
-      const { data: files } = await supabase
-        .from('files')
-        .select('storage_path')
-        .eq('user_id', user.id);
-
+      const {
+        data: files
+      } = await supabase.from('files').select('storage_path').eq('user_id', user.id);
       if (files) {
         const filePaths = files.map(f => f.storage_path);
         if (filePaths.length > 0) {
-          await supabase.storage
-            .from('files')
-            .remove(filePaths);
+          await supabase.storage.from('files').remove(filePaths);
         }
       }
 
       // Delete user data
-      await supabase
-        .from('profiles')
-        .delete()
-        .eq('id', user.id);
-
-      await supabase
-        .from('files')
-        .delete()
-        .eq('user_id', user.id);
-
+      await supabase.from('profiles').delete().eq('id', user.id);
+      await supabase.from('files').delete().eq('user_id', user.id);
       toast({
         title: "Account deleted",
-        description: "Your account and all data have been permanently deleted.",
+        description: "Your account and all data have been permanently deleted."
       });
 
       // Sign out after successful deletion
@@ -126,13 +99,11 @@ export const Settings: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Deletion failed",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">
@@ -154,12 +125,7 @@ export const Settings: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                value={user?.email || ''} 
-                disabled 
-                className="bg-muted"
-              />
+              <Input id="email" value={user?.email || ''} disabled className="bg-muted" />
               <p className="text-xs text-muted-foreground">
                 Email cannot be changed. Contact support if you need to update your email.
               </p>
@@ -168,16 +134,8 @@ export const Settings: React.FC = () => {
             <div className="grid gap-2">
               <Label htmlFor="displayName">Display Name</Label>
               <div className="flex gap-2">
-                <Input 
-                  id="displayName" 
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="Enter your display name"
-                />
-                <Button 
-                  onClick={updateDisplayName}
-                  disabled={loading}
-                >
+                <Input id="displayName" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Enter your display name" />
+                <Button onClick={updateDisplayName} disabled={loading}>
                   Update
                 </Button>
               </div>
@@ -187,7 +145,7 @@ export const Settings: React.FC = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-lime-300">
               <Crown className="mr-2 h-5 w-5" />
               Subscription
             </CardTitle>
@@ -212,22 +170,17 @@ export const Settings: React.FC = () => {
               <div>
                 <p className="font-medium">Storage Usage</p>
                 <p className="text-sm text-muted-foreground">
-                  {profile?.subscription_tier === 'pro' ? 
-                    `${formatFileSize(profile?.storage_used || 0)} used (unlimited)` :
-                    `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(profile?.storage_limit || 6442450944)} used`
-                  }
+                  {profile?.subscription_tier === 'pro' ? `${formatFileSize(profile?.storage_used || 0)} used (unlimited)` : `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(profile?.storage_limit || 6442450944)} used`}
                 </p>
               </div>
             </div>
 
-            {profile?.subscription_tier !== 'pro' && (
-              <Button asChild>
+            {profile?.subscription_tier !== 'pro' && <Button asChild>
                 <a href="/subscription">
                   <Crown className="mr-2 h-4 w-4" />
                   Upgrade to Pro
                 </a>
-              </Button>
-            )}
+              </Button>}
           </CardContent>
         </Card>
 
@@ -271,11 +224,7 @@ export const Settings: React.FC = () => {
                   Once you delete your account, there is no going back. Please be certain.
                 </p>
               </div>
-              <Button 
-                variant="destructive" 
-                onClick={deleteAccount}
-                className="w-full"
-              >
+              <Button variant="destructive" onClick={deleteAccount} className="w-full">
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete Account Permanently
               </Button>
@@ -283,6 +232,5 @@ export const Settings: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
