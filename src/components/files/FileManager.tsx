@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { TeamFileShare } from '@/components/teams/TeamFileShare';
+
 import { useToast } from '@/hooks/use-toast';
 import { 
   File, 
@@ -825,13 +825,6 @@ export const FileManager: React.FC = () => {
         </div>
       )}
 
-      {/* Team Share Dialog */}
-      <TeamFileShare
-        fileId={selectedTeamFile?.id || ''}
-        fileName={selectedTeamFile?.original_name || ''}
-        isOpen={teamShareDialogOpen}
-        onOpenChange={setTeamShareDialogOpen}
-      />
     </div>
   );
 };
