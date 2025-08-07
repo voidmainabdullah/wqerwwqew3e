@@ -143,9 +143,9 @@ export const Settings: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-[#00ff00]/[0.04]">
           <CardHeader>
-            <CardTitle className="flex items-center text-lime-300">
+            <CardTitle className="flex items-center text-green-400">
               <Crown className="mr-2 h-5 w-5" />
               Subscription
             </CardTitle>
@@ -176,7 +176,7 @@ export const Settings: React.FC = () => {
             </div>
 
             {profile?.subscription_tier !== 'pro' && <Button asChild>
-                <a href="/subscription">
+                <a href="/subscription" className="\n">
                   <Crown className="mr-2 h-4 w-4" />
                   Upgrade to Pro
                 </a>
@@ -200,7 +200,7 @@ export const Settings: React.FC = () => {
               <p className="text-sm text-muted-foreground mb-4">
                 Your account is secured with email authentication. All file uploads and shares are encrypted.
               </p>
-              <Button variant="outline" onClick={() => signOut()}>
+              <Button variant="outline" onClick={() => signOut()} className="bg-black">
                 Sign Out
               </Button>
             </div>
