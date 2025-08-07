@@ -75,7 +75,7 @@ export const TeamFiles: React.FC = () => {
   const fetchTeams = async () => {
     try {
       const { data, error } = await supabase.rpc('get_user_teams', {
-        user_id: user!.id
+        p_user_id: user!.id
       });
 
       if (error) throw error;
@@ -107,7 +107,9 @@ export const TeamFiles: React.FC = () => {
             name,
             admin_id
           ),
-          profiles!team_file_shares_shared_by_fkey(email)
+          profiles!team_file_shares_shared_by_fkey(
+            email
+          )
         `);
 
       if (selectedTeam !== 'all') {
