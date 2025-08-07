@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { UserPlus, Crown, Settings, Trash2, Shield, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
 interface TeamMember {
   id: string;
   user_id: string;
@@ -23,7 +22,6 @@ interface TeamMember {
   };
   joined_at: string;
 }
-
 interface Team {
   id: string;
   name: string;
@@ -33,7 +31,6 @@ interface Team {
   role: string;
   permissions: any;
 }
-
 interface MemberManagementProps {
   team: Team;
   members: TeamMember[];
@@ -43,7 +40,6 @@ interface MemberManagementProps {
   onRemoveMember: (memberId: string, email: string) => Promise<void>;
   onRefreshMembers: () => void;
 }
-
 const MemberManagement: React.FC<MemberManagementProps> = ({
   team,
   members,
@@ -57,18 +53,18 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
   const [newMemberEmail, setNewMemberEmail] = useState('');
   const [newMemberRole, setNewMemberRole] = useState('member');
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const handleAddMember = async () => {
     if (!newMemberEmail.trim()) {
       toast({
         variant: "destructive",
         title: "Email required",
-        description: "Please enter a valid email address",
+        description: "Please enter a valid email address"
       });
       return;
     }
-
     setIsLoading(true);
     try {
       await onAddMember(newMemberEmail, newMemberRole);
@@ -78,19 +74,18 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
       onRefreshMembers();
       toast({
         title: "Member added",
-        description: `${newMemberEmail} has been added to the team`,
+        description: `${newMemberEmail} has been added to the team`
       });
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error adding member",
-        description: error.message,
+        description: error.message
       });
     } finally {
       setIsLoading(false);
     }
   };
-
   const handleRoleChange = async (memberId: string, newRole: string) => {
     try {
       await onUpdateMemberRole(memberId, newRole);
@@ -99,11 +94,10 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
       toast({
         variant: "destructive",
         title: "Error updating role",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const handleRemoveMember = async (memberId: string, email: string) => {
     try {
       await onRemoveMember(memberId, email);
@@ -112,11 +106,10 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
       toast({
         variant: "destructive",
         title: "Error removing member",
-        description: error.message,
+        description: error.message
       });
     }
   };
-
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
       case 'admin':
@@ -127,7 +120,6 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
         return 'outline';
     }
   };
-
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'admin':
@@ -138,7 +130,6 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
         return <Users className="w-3 h-3" />;
     }
   };
-
   const getPermissionsList = (permissions: any) => {
     const perms = [];
     if (permissions?.can_view) perms.push('View');
@@ -146,9 +137,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
     if (permissions?.can_share) perms.push('Share');
     return perms.join(', ') || 'No permissions';
   };
-
-  return (
-    <Card>
+  return <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -160,8 +149,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
               Manage team members and their permissions
             </CardDescription>
           </div>
-          {isAdmin && (
-            <Dialog open={addMemberDialogOpen} onOpenChange={setAddMemberDialogOpen}>
+          {isAdmin && <Dialog open={addMemberDialogOpen} onOpenChange={setAddMemberDialogOpen}>
               <DialogTrigger asChild>
                 <Button size="sm" className="hover:scale-105 transition-transform">
                   <UserPlus className="w-4 h-4 mr-2" />
@@ -178,13 +166,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="member-email">Email Address</Label>
-                    <Input
-                      id="member-email"
-                      type="email"
-                      placeholder="user@example.com"
-                      value={newMemberEmail}
-                      onChange={(e) => setNewMemberEmail(e.target.value)}
-                    />
+                    <Input id="member-email" type="email" placeholder="user@example.com" value={newMemberEmail} onChange={e => setNewMemberEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="member-role">Role</Label>
@@ -200,40 +182,25 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
                     </Select>
                   </div>
                   <div className="flex justify-end space-x-2 pt-4">
-                    <Button
-                      variant="outline"
-                      onClick={() => setAddMemberDialogOpen(false)}
-                      disabled={isLoading}
-                    >
+                    <Button variant="outline" onClick={() => setAddMemberDialogOpen(false)} disabled={isLoading}>
                       Cancel
                     </Button>
-                    <Button
-                      onClick={handleAddMember}
-                      disabled={isLoading}
-                    >
+                    <Button onClick={handleAddMember} disabled={isLoading}>
                       {isLoading ? 'Adding...' : 'Add Member'}
                     </Button>
                   </div>
                 </div>
               </DialogContent>
-            </Dialog>
-          )}
+            </Dialog>}
         </div>
       </CardHeader>
       <CardContent>
-        {members.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
+        {members.length === 0 ? <div className="text-center py-8 text-muted-foreground">
             <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p className="text-lg font-medium">No team members yet</p>
             <p className="text-sm">Start building your team by adding members</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {members.map((member) => (
-              <div
-                key={member.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-              >
+          </div> : <div className="space-y-4">
+            {members.map(member => <div key={member.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="flex items-center space-x-4">
                   <Avatar className="w-10 h-10">
                     <AvatarFallback className="bg-primary/10 text-primary font-medium">
@@ -259,12 +226,8 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
                   </div>
                 </div>
                 
-                {isAdmin && member.role !== 'admin' && (
-                  <div className="flex items-center space-x-2">
-                    <Select
-                      value={member.role}
-                      onValueChange={(newRole) => handleRoleChange(member.id, newRole)}
-                    >
+                {isAdmin && member.role !== 'admin' && <div className="flex items-center space-x-2">
+                    <Select value={member.role} onValueChange={newRole => handleRoleChange(member.id, newRole)}>
                       <SelectTrigger className="w-32">
                         <SelectValue />
                       </SelectTrigger>
@@ -291,31 +254,21 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleRemoveMember(member.id, member.email)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
+                          <AlertDialogAction onClick={() => handleRemoveMember(member.id, member.email)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                             Remove Member
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-                  </div>
-                )}
+                  </div>}
                 
-                {member.role === 'admin' && (
-                  <Badge variant="default" className="text-xs">
+                {member.role === 'admin' && <Badge variant="default" className="text-xs bg-lime-300">
                     <Crown className="w-3 h-3 mr-1" />
                     Team Admin
-                  </Badge>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+                  </Badge>}
+              </div>)}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default MemberManagement;
