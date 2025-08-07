@@ -165,7 +165,7 @@ export const Dashboard: React.FC = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-sm font-bold bg-green-400 text-gray-800">
+            <div className="text-sm font-bold bg-green-400 text-gray-800 px-[10px] rounded-3xl">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
             {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
@@ -247,22 +247,22 @@ export const Dashboard: React.FC = () => {
 
         <Card className="relative overflow-hidden">
           <div className="absolute inset-0 bg-inherit"></div>
-          <CardHeader className="relative bg-inherit">
-            <CardTitle className="flex items-center text-xl font-semibold text-green-500">
-              <Zap className="mr-2 h-6 w-6 text-primary bg-black text-red " />
+          <CardHeader className="relative bg-[#6bffa0]/5">
+            <CardTitle className="flex items-center font-semibold text-xl text-green-400">
+              <Zap className="mr-2 h-6 w-6 text-primary text-red bg-inherit" />
               Upgrade to Pro
             </CardTitle>
             <CardDescription className="text-base text-gray-200">
               Unlock unlimited storage and advanced team features.
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative space-y-4 mx-0 my-0 bg-inherit">
+          <CardContent className="bg-gradient-to-t from-blue-900 via-blue-800 bg-[#6bffa0]/5">
             <div className="space-y-2">
               <div className="flex items-center text-sm text-muted-foreground">
                 <Zap className="mr-2 h-4 w-4 text-primary" />
                 Unlimited file storage
               </div>
-              <div className="flex items-center text-sm text-muted-foreground">
+              <div className="flex items-center text-sm text-muted-foreground bg-[#00ee00]/0">
                 <Users className="mr-2 h-4 w-4 text-primary" />
                 Advanced team collaboration
               </div>
