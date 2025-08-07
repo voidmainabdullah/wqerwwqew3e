@@ -17,7 +17,7 @@ import {
   Zap,
   Users
 } from 'lucide-react';
-import { TeamsManager } from '@/components/teams/TeamsManager';
+import TeamsManager from '@/components/teams/TeamsManager';
 
 interface DashboardStats {
   totalFiles: number;
