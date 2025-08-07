@@ -574,7 +574,7 @@ export const FileManager: React.FC = () => {
                           <div>
                             <Label htmlFor="sharePassword">
                               Password Protection 
-                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2">Pro</Badge>}
+                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro</Badge>}
                             </Label>
                             <Input id="sharePassword" type="password" value={sharePassword} onChange={e => setSharePassword(e.target.value)} placeholder={userProfile?.subscription_tier === 'pro' ? "Enter password to protect the link" : "Upgrade to Pro for password protection"} disabled={userProfile?.subscription_tier !== 'pro'} />
                           </div>
@@ -582,7 +582,7 @@ export const FileManager: React.FC = () => {
                           <div>
                             <Label htmlFor="expiryDays">
                               Expires in (days)
-                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2">Pro for custom dates</Badge>}
+                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro for custom dates</Badge>}
                             </Label>
                             <Select value={expiryDays} onValueChange={setExpiryDays}>
                               <SelectTrigger>
