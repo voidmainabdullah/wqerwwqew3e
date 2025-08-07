@@ -165,7 +165,7 @@ export const Dashboard: React.FC = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold mx-0 my-0 py-px px-[5px] bg-[#4262f0]/[0.89] rounded-xl">
+            <div className="text-sm font-bold mx-0 my-0 bg-[#4262f0]/[0.89] rounded-xl py-0 px-[10px]">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
             {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
@@ -246,8 +246,8 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-indigo-700"></div>
-          <CardHeader className="relative bg-indigo-700">
+          <div className="absolute inset-0 bg-[2563EB] bg-blue-600"></div>
+          <CardHeader className="relative bg-blue-600">
             <CardTitle className="flex items-center text-xl font-semibold text-slate-50">
               <Zap className="mr-2 h-6 w-6 text-primary text-red bg-inherit" />
               Upgrade to Pro
@@ -256,7 +256,7 @@ export const Dashboard: React.FC = () => {
               Unlock unlimited storage and advanced team features.
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative space-y-4 mx-0 my-0 bg-indigo-700">
+          <CardContent className="relative space-y-4 mx-0 my-0 bg-blue-600">
             <div className="space-y-2">
               <div className="flex items-center text-sm text-muted-foreground">
                 <Zap className="mr-2 h-4 w-4 text-primary" />
