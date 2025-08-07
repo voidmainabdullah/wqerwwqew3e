@@ -106,24 +106,16 @@ const TeamsManager: React.FC = () => {
 
   const fetchTeamMembers = async (teamId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('team_members')
-        .select(`
-          id,
-          user_id,
-          role,
-          permissions,
-          joined_at,
-          profiles!team_members_user_id_fkey(email)
-        `)
-        .eq('team_id', teamId);
+      const { data, error } = await supabase.rpc('get_team_members', {
+        p_team_id: teamId
+      });
 
       if (error) throw error;
 
       const membersWithEmails = data?.map(member => ({
         id: member.id,
         user_id: member.user_id,
-        email: (member.profiles as any)?.email || 'Unknown',
+        email: member.email || 'Unknown',
         role: member.role,
         permissions: member.permissions as any,
         joined_at: member.joined_at
@@ -218,7 +210,7 @@ const TeamsManager: React.FC = () => {
         .select('id')
         .eq('team_id', selectedTeam!.id)
         .eq('user_id', targetUserId)
-        .single();
+        .maybeSingle();
 
       if (existingMember) {
         throw new Error('User is already a member of this team');

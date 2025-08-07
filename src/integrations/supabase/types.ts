@@ -120,6 +120,8 @@ export type Database = {
           email: string
           id: string
           last_upload_reset: string | null
+          storage_limit: number | null
+          storage_used: number | null
           subscription_end_date: string | null
           subscription_status: string | null
           subscription_tier: string
@@ -134,6 +136,8 @@ export type Database = {
           email: string
           id: string
           last_upload_reset?: string | null
+          storage_limit?: number | null
+          storage_used?: number | null
           subscription_end_date?: string | null
           subscription_status?: string | null
           subscription_tier?: string
@@ -148,6 +152,8 @@ export type Database = {
           email?: string
           id?: string
           last_upload_reset?: string | null
+          storage_limit?: number | null
+          storage_used?: number | null
           subscription_end_date?: string | null
           subscription_status?: string | null
           subscription_tier?: string
@@ -321,6 +327,38 @@ export type Database = {
       generate_share_code: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_my_team_files: {
+        Args: { p_user_id: string }
+        Returns: {
+          file_id: string
+          file_name: string
+          file_size: number
+          file_type: string
+          created_at: string
+          is_locked: boolean
+          download_count: number
+          team_id: string
+          team_name: string
+          shared_by: string
+          shared_at: string
+          sharer_email: string
+          can_download: boolean
+          can_edit: boolean
+          is_team_admin: boolean
+        }[]
+      }
+      get_team_members: {
+        Args: { p_team_id: string }
+        Returns: {
+          id: string
+          user_id: string
+          email: string
+          display_name: string
+          role: string
+          permissions: Json
+          joined_at: string
+        }[]
       }
       get_user_by_email: {
         Args: { email_input: string }
