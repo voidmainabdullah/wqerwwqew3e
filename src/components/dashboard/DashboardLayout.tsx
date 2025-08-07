@@ -3,81 +3,78 @@ import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { 
-  Files, 
-  Upload, 
-  Share, 
-  BarChart3, 
-  Settings, 
-  LogOut,
-  Shield,
-  Home,
-  Users,
-  FolderOpen
-} from 'lucide-react';
-
+import { Files, Upload, Share, BarChart3, Settings, LogOut, Shield, Home, Users, FolderOpen } from 'lucide-react';
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
-
-export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  const { user, signOut } = useAuth();
+export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+  children
+}) => {
+  const {
+    user,
+    signOut
+  } = useAuth();
 
   // Redirect if not authenticated
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
-
   const handleSignOut = async () => {
     await signOut();
   };
-
-  const sidebarItems = [
-    { icon: Home, label: 'Dashboard', href: '/dashboard' },
-    { icon: Upload, label: 'Upload', href: '/dashboard/upload' },
-    { icon: Files, label: 'My Files', href: '/dashboard/files' },
-    { icon: Users, label: 'Teams', href: '/dashboard/teams' },
-    { icon: FolderOpen, label: 'Team Files', href: '/dashboard/team-files' },
-    { icon: Share, label: 'Shared Links', href: '/dashboard/shared' },
-    { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
-    { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
-  ];
-
-  return (
-    <SidebarProvider>
+  const sidebarItems = [{
+    icon: Home,
+    label: 'Dashboard',
+    href: '/dashboard'
+  }, {
+    icon: Upload,
+    label: 'Upload',
+    href: '/dashboard/upload'
+  }, {
+    icon: Files,
+    label: 'My Files',
+    href: '/dashboard/files'
+  }, {
+    icon: Users,
+    label: 'Teams',
+    href: '/dashboard/teams'
+  }, {
+    icon: FolderOpen,
+    label: 'Team Files',
+    href: '/dashboard/team-files'
+  }, {
+    icon: Share,
+    label: 'Shared Links',
+    href: '/dashboard/shared'
+  }, {
+    icon: BarChart3,
+    label: 'Analytics',
+    href: '/dashboard/analytics'
+  }, {
+    icon: Settings,
+    label: 'Settings',
+    href: '/dashboard/settings'
+  }];
+  return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <Sidebar className="bg-sidebar border-sidebar-border">
           <SidebarHeader className="p-6 border-b border-sidebar-border">
             <div className="flex items-center space-x-2">
-              <Shield className="h-8 w-8 text-sidebar-primary" />
-              <h1 className="text-xl font-bold text-sidebar-foreground">SecureShare</h1>
+              <Shield className="h-8 w-8 text-sidebar-primary bg-inherit" />
+              <h1 className="text-xl font-bold text-sidebar-foreground">DropThrow</h1>
             </div>
           </SidebarHeader>
           
           <SidebarContent className="p-4">
             <nav className="space-y-2">
-              {sidebarItems.map((item) => (
-                <Button
-                  key={item.href}
-                  variant="ghost"
-                  className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  asChild
-                >
+              {sidebarItems.map(item => <Button key={item.href} variant="ghost" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" asChild>
                   <Link to={item.href}>
                     <item.icon className="mr-3 h-4 w-4" />
                     {item.label}
                   </Link>
-                </Button>
-              ))}
+                </Button>)}
             </nav>
           </SidebarContent>
         </Sidebar>
@@ -119,11 +116,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             </div>
           </header>
 
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-6 bg-inherit">
             {children}
           </main>
         </div>
       </div>
-    </SidebarProvider>
-  );
+    </SidebarProvider>;
 };

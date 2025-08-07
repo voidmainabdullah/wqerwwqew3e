@@ -110,7 +110,7 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'}>
+          <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="bg-blue-600">
             {stats?.subscriptionTier === 'pro' ? <>
                 <Zap className="w-3 h-3 mr-1" />
                 Pro
@@ -165,7 +165,7 @@ export const Dashboard: React.FC = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold rounded-xl mx-0 my-0 py-px px-[5px] bg-[#4262f0]/[0.89]">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
             {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
@@ -219,7 +219,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="bg-black">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Shield className="mr-2 h-5 w-5" />
@@ -230,8 +230,8 @@ export const Dashboard: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="flex items-center text-sm">
-              <Clock className="mr-2 h-4 w-4 text-success" />
+            <div className="flex items-center text-sm bg-black">
+              <Clock className="mr-2 h-4 w-4 text-success bg-black" />
               Automatic expiry dates
             </div>
             <div className="flex items-center text-sm">
@@ -246,17 +246,17 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-black"></div>
-          <CardHeader className="relative bg-black">
-            <CardTitle className="flex items-center text-xl text-blue-500 font-semibold ">
-              <Zap className="mr-2 h-6 w-6 text-primary bg-black text-red " />
+          <div className="absolute inset-0 bg-indigo-700"></div>
+          <CardHeader className="relative bg-indigo-700">
+            <CardTitle className="flex items-center text-xl font-semibold text-slate-50">
+              <Zap className="mr-2 h-6 w-6 text-primary text-red bg-inherit" />
               Upgrade to Pro
             </CardTitle>
             <CardDescription className="text-base">
               Unlock unlimited storage and advanced team features.
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative space-y-4 bg-black mx-0 my-0">
+          <CardContent className="relative space-y-4 mx-0 my-0 bg-indigo-700">
             <div className="space-y-2">
               <div className="flex items-center text-sm text-muted-foreground">
                 <Zap className="mr-2 h-4 w-4 text-primary" />
@@ -272,7 +272,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
             <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
-              <Link to="/subscription" className="bg-red-400 ">
+              <Link to="/subscription" className="bg-red-400 mx-0">
                 <Zap className="mr-2 h-4 w-4" />
                 Upgrade Now - Starting at $9/month
               </Link>
