@@ -342,6 +342,18 @@ export type Database = {
           is_team_admin: boolean
         }[]
       }
+      get_team_members: {
+        Args: { p_team_id: string }
+        Returns: {
+          id: string
+          user_id: string
+          email: string
+          display_name: string
+          role: string
+          permissions: Json
+          joined_at: string
+        }[]
+      }
       get_user_by_email: {
         Args: { email_input: string }
         Returns: {

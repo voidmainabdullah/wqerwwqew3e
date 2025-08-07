@@ -122,12 +122,13 @@ export const TeamFiles: React.FC = () => {
       }
 
       // Filter by selected team if not 'all'
-      let filteredFiles = data || [];
+      const teamFilesData = Array.isArray(data) ? data : [];
+      let filteredFiles = teamFilesData;
       if (selectedTeam !== 'all') {
-        filteredFiles = filteredFiles.filter(file => file.team_id === selectedTeam);
+        filteredFiles = teamFilesData.filter(file => file.team_id === selectedTeam);
       }
 
-      console.log('Team files filtered:', filteredFiles.length, 'total files:', data?.length || 0);
+      console.log('Team files filtered:', filteredFiles.length, 'total files:', teamFilesData.length);
 
       const mappedFiles = filteredFiles.map(file => ({
         id: file.file_id,

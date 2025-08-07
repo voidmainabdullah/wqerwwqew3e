@@ -76,8 +76,8 @@ export const MyTeamFiles: React.FC = () => {
         throw new Error(`Failed to load team files: ${error.message}`);
       }
 
-      console.log('Team files fetched successfully:', data?.length || 0);
-      setTeamFiles(data || []);
+      console.log('Team files fetched successfully:', Array.isArray(data) ? data.length : 0);
+      setTeamFiles(Array.isArray(data) ? data : []);
     } catch (error: any) {
       console.error('Error fetching team files:', error);
       toast({

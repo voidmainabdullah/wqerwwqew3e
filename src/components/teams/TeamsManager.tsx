@@ -123,7 +123,7 @@ export const TeamsManager: React.FC = () => {
           throw rpcError;
         }
         
-        setTeamMembers(rpcData || []);
+        setTeamMembers(Array.isArray(rpcData) ? rpcData : []);
       } else {
         // Transform the data to match expected format
         const transformedData = data.map(member => ({
