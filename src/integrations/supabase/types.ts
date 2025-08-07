@@ -115,7 +115,7 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           daily_upload_count: number
-          daily_upload_limit: number
+          daily_upload_limit: number | null
           display_name: string | null
           email: string
           id: string
@@ -131,7 +131,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           daily_upload_count?: number
-          daily_upload_limit?: number
+          daily_upload_limit?: number | null
           display_name?: string | null
           email: string
           id: string
@@ -147,7 +147,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           daily_upload_count?: number
-          daily_upload_limit?: number
+          daily_upload_limit?: number | null
           display_name?: string | null
           email?: string
           id?: string
@@ -324,6 +324,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_storage_quota: {
+        Args: { p_user_id: string; p_file_size: number }
+        Returns: boolean
+      }
       generate_share_code: {
         Args: Record<PropertyKey, never>
         Returns: string

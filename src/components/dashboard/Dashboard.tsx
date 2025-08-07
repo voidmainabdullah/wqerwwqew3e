@@ -24,8 +24,8 @@ interface DashboardStats {
   totalFiles: number;
   totalShares: number;
   totalDownloads: number;
-  dailyUploadCount: number;
-  dailyUploadLimit: number;
+  storageUsed: number;
+  storageLimit: number;
   subscriptionTier: string;
 }
 
@@ -43,10 +43,10 @@ export const Dashboard: React.FC = () => {
 
   const fetchDashboardStats = async () => {
     try {
-      // Fetch user profile
+      // Fetch user profile with storage info
       const { data: profile } = await supabase
         .from('profiles')
-        .select('daily_upload_count, daily_upload_limit, subscription_tier')
+        .select('storage_used, storage_limit, subscription_tier')
         .eq('id', user?.id)
         .single();
 
@@ -79,8 +79,8 @@ export const Dashboard: React.FC = () => {
         totalFiles: fileCount || 0,
         totalShares: shareCount || 0,
         totalDownloads: downloadCount || 0,
-        dailyUploadCount: profile?.daily_upload_count || 0,
-        dailyUploadLimit: profile?.subscription_tier === 'pro' ? 999 : (profile?.daily_upload_limit || 10),
+        storageUsed: profile?.storage_used || 0,
+        storageLimit: profile?.storage_limit || 6442450944, // 6GB default
         subscriptionTier: profile?.subscription_tier || 'free',
       });
       setUserProfile(profile);
@@ -111,7 +111,15 @@ export const Dashboard: React.FC = () => {
     );
   }
 
-  const uploadProgress = stats ? (stats.subscriptionTier === 'pro' ? 0 : (stats.dailyUploadCount / stats.dailyUploadLimit) * 100) : 0;
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const storageProgress = stats ? (stats.subscriptionTier === 'pro' ? 0 : (stats.storageUsed / stats.storageLimit) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -178,21 +186,21 @@ export const Dashboard: React.FC = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Daily Usage</CardTitle>
+            <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {stats?.subscriptionTier === 'pro' ? 
-                `${stats?.dailyUploadCount}/∞` : 
-                `${stats?.dailyUploadCount}/${stats?.dailyUploadLimit}`
+                formatFileSize(stats?.storageUsed || 0) : 
+                `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`
               }
             </div>
             {stats?.subscriptionTier !== 'pro' && (
-              <Progress value={uploadProgress} className="mt-2" />
+              <Progress value={storageProgress} className="mt-2" />
             )}
             <p className="text-xs text-muted-foreground mt-1">
-              {stats?.subscriptionTier === 'pro' ? 'Unlimited uploads' : 'Daily upload limit'}
+              {stats?.subscriptionTier === 'pro' ? 'Unlimited storage' : '6GB total storage limit'}
             </p>
           </CardContent>
         </Card>
@@ -267,21 +275,36 @@ export const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Zap className="mr-2 h-5 w-5" />
+        <Card className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20"></div>
+          <CardHeader className="relative">
+            <CardTitle className="flex items-center text-xl">
+              <Zap className="mr-2 h-6 w-6 text-primary" />
               Upgrade to Pro
             </CardTitle>
-            <CardDescription>
-              Unlock unlimited uploads and advanced features.
+            <CardDescription className="text-base">
+              Unlock unlimited storage and advanced team features.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button className="w-full" asChild>
+          <CardContent className="relative space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Zap className="mr-2 h-4 w-4 text-primary" />
+                Unlimited file storage
+              </div>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Users className="mr-2 h-4 w-4 text-primary" />
+                Advanced team collaboration
+              </div>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Shield className="mr-2 h-4 w-4 text-primary" />
+                Priority support & security
+              </div>
+            </div>
+            <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
               <Link to="/subscription">
                 <Zap className="mr-2 h-4 w-4" />
-                View Plans
+                Upgrade Now - Starting at $9/month
               </Link>
             </Button>
           </CardContent>

@@ -55,19 +55,35 @@ export const FileUpload: React.FC = () => {
     setIsUploading(true);
     
     try {
-      // Check daily upload limit
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('daily_upload_count, daily_upload_limit, subscription_tier')
-        .eq('id', user.id)
-        .single();
+      // Check storage quota before upload
+      const totalFileSize = uploadFiles.reduce((sum, file) => sum + file.file.size, 0);
+      
+      const { data: canUpload, error: quotaError } = await supabase.rpc('check_storage_quota', {
+        p_user_id: user.id,
+        p_file_size: totalFileSize
+      });
 
-      // Skip limit check for pro users (they have unlimited uploads)
-      if (profile && profile.subscription_tier !== 'pro' && profile.daily_upload_count >= profile.daily_upload_limit) {
+      if (quotaError) throw quotaError;
+
+      if (!canUpload) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('storage_used, storage_limit, subscription_tier')
+          .eq('id', user.id)
+          .single();
+
+        const formatFileSize = (bytes: number): string => {
+          if (bytes === 0) return '0 Bytes';
+          const k = 1024;
+          const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+          const i = Math.floor(Math.log(bytes) / Math.log(k));
+          return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        };
+
         toast({
           variant: "destructive",
-          title: "Upload limit reached",
-          description: `You've reached your daily upload limit of ${profile.daily_upload_limit} files. Upgrade to Pro for unlimited uploads.`,
+          title: "Storage limit exceeded",
+          description: `You've used ${formatFileSize(profile?.storage_used || 0)} of your ${formatFileSize(profile?.storage_limit || 0)} storage limit. Upgrade to Pro for unlimited storage.`,
         });
         setIsUploading(false);
         return;
@@ -111,15 +127,8 @@ export const FileUpload: React.FC = () => {
 
           if (dbError) throw dbError;
 
-          // Update upload count (only for free users, pro users have unlimited)
-          if (profile?.subscription_tier !== 'pro') {
-            await supabase
-              .from('profiles')
-              .update({ 
-                daily_upload_count: (profile?.daily_upload_count || 0) + 1 
-              })
-              .eq('id', user.id);
-          }
+          // Storage is automatically updated by database trigger
+          // No need to manually update upload counts
 
           // Mark as success
           setUploadFiles(prev => prev.map((f, idx) => 

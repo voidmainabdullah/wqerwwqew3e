@@ -24,6 +24,14 @@ export const Settings: React.FC = () => {
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
   useEffect(() => {
     if (user) {
       fetchProfile();
@@ -202,11 +210,11 @@ export const Settings: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium">Daily Upload Limit</p>
+                <p className="font-medium">Storage Usage</p>
                 <p className="text-sm text-muted-foreground">
                   {profile?.subscription_tier === 'pro' ? 
-                    `${profile?.daily_upload_count || 0} files uploaded today (unlimited)` :
-                    `${profile?.daily_upload_count || 0} / ${profile?.daily_upload_limit || 10} files used today`
+                    `${formatFileSize(profile?.storage_used || 0)} used (unlimited)` :
+                    `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(profile?.storage_limit || 6442450944)} used`
                   }
                 </p>
               </div>

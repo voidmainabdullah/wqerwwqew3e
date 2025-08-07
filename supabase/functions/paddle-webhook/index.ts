@@ -46,8 +46,8 @@ serve(async (req) => {
           subscription_tier: 'pro',
           subscription_status: 'active',
           subscription_end_date: subscriptionEndDate.toISOString(),
-          daily_upload_limit: 999, // Unlimited uploads
-          daily_upload_count: 0 // Reset count
+          storage_limit: null, // Unlimited storage for pro
+          storage_used: null // Reset storage tracking for pro users
         })
         .eq('id', userId);
 
@@ -72,8 +72,8 @@ serve(async (req) => {
           .update({
             subscription_tier: 'free',
             subscription_status: 'canceled',
-            daily_upload_limit: 10, // Back to free limit
-            daily_upload_count: 0 // Reset count
+            storage_limit: 6442450944, // Back to 6GB limit
+            storage_used: null // Keep current storage usage
           })
           .eq('id', userId);
 
