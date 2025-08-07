@@ -538,7 +538,7 @@ export const FileManager: React.FC = () => {
                               <SelectTrigger>
                                 <SelectValue placeholder="Select sharing method" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent className="bg-stone-900">
                                 <SelectItem value="public">
                                   <div className="flex items-center space-x-2">
                                     <Copy className="h-4 w-4" />
