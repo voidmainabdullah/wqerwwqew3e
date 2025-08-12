@@ -110,7 +110,7 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="bg-green-400 text-black">
+          <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="text-white bg-blue-500">
             {stats?.subscriptionTier === 'pro' ? <>
                 <Zap className="w-3 h-3 mr-1" />
                 Pro
@@ -165,7 +165,7 @@ export const Dashboard: React.FC = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-sm font-bold bg-green-400 text-gray-800 px-[10px] rounded-3xl">
+            <div className="text-sm font-bold text-white px-[10px] rounded-3xl bg-blue-500">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
             {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
@@ -246,9 +246,9 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-inherit"></div>
-          <CardHeader className="relative bg-[#6bffa0]/5">
-            <CardTitle className="flex items-center font-semibold text-xl text-green-400">
+          <div className="absolute inset-0 bg-zinc-600"></div>
+          <CardHeader className="relative bg-zinc-600">
+            <CardTitle className="flex items-center font-semibold text-xl text-slate-50">
               <Zap className="mr-2 h-6 w-6 text-primary text-red bg-inherit" />
               Upgrade to Pro
             </CardTitle>
