@@ -3,16 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  BarChart3,
-  Download,
-  Share,
-  Files,
-  TrendingUp,
-  Users,
-  Calendar
-} from 'lucide-react';
-
+import { BarChart3, Download, Share, Files, TrendingUp, Users, Calendar } from 'lucide-react';
 interface AnalyticsData {
   totalDownloads: number;
   totalShares: number;
@@ -20,40 +11,36 @@ interface AnalyticsData {
   recentDownloads: any[];
   popularFiles: any[];
 }
-
 export const Analytics: React.FC = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (user) {
       fetchAnalytics();
     }
   }, [user]);
-
   const fetchAnalytics = async () => {
     try {
       // Get user's files
-      const { data: userFiles } = await supabase
-        .from('files')
-        .select('id, original_name, created_at')
-        .eq('user_id', user?.id);
-
+      const {
+        data: userFiles
+      } = await supabase.from('files').select('id, original_name, created_at').eq('user_id', user?.id);
       const fileIds = userFiles?.map(f => f.id) || [];
 
       // Get download logs
-      const { data: downloads } = await supabase
-        .from('download_logs')
-        .select('*, files!inner(original_name)')
-        .in('file_id', fileIds)
-        .order('downloaded_at', { ascending: false });
+      const {
+        data: downloads
+      } = await supabase.from('download_logs').select('*, files!inner(original_name)').in('file_id', fileIds).order('downloaded_at', {
+        ascending: false
+      });
 
       // Get shared links
-      const { data: shares } = await supabase
-        .from('shared_links')
-        .select('*')
-        .in('file_id', fileIds);
+      const {
+        data: shares
+      } = await supabase.from('shared_links').select('*').in('file_id', fileIds);
 
       // Calculate popular files
       const fileDownloadCounts = downloads?.reduce((acc: any, download: any) => {
@@ -61,12 +48,10 @@ export const Analytics: React.FC = () => {
         acc[fileName] = (acc[fileName] || 0) + 1;
         return acc;
       }, {}) || {};
-
-      const popularFiles = Object.entries(fileDownloadCounts)
-        .map(([name, count]) => ({ name, downloads: count }))
-        .sort((a: any, b: any) => b.downloads - a.downloads)
-        .slice(0, 5);
-
+      const popularFiles = Object.entries(fileDownloadCounts).map(([name, count]) => ({
+        name,
+        downloads: count
+      })).sort((a: any, b: any) => b.downloads - a.downloads).slice(0, 5);
       setData({
         totalDownloads: downloads?.length || 0,
         totalShares: shares?.length || 0,
@@ -80,28 +65,21 @@ export const Analytics: React.FC = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
-          {[...Array(3)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
+          {[...Array(3)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader>
                 <div className="h-4 bg-muted rounded w-24"></div>
               </CardHeader>
               <CardContent>
                 <div className="h-8 bg-muted rounded w-16"></div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
         <p className="text-muted-foreground">
@@ -113,7 +91,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Downloads</CardTitle>
-            <Download className="h-4 w-4 text-muted-foreground" />
+            <Download className="h-4 w-4 text-green-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalDownloads}</div>
@@ -126,7 +104,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <Share className="h-4 w-4 text-muted-foreground" />
+            <Share className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalShares}</div>
@@ -139,7 +117,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Files</CardTitle>
-            <Files className="h-4 w-4 text-muted-foreground" />
+            <Files className="h-4 w-4 text-yellow-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalFiles}</div>
@@ -154,7 +132,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <TrendingUp className="mr-2 h-5 w-5" />
+              <TrendingUp className="mr-2 h-5 w-5 text-green-600" />
               Popular Files
             </CardTitle>
             <CardDescription>
@@ -162,10 +140,8 @@ export const Analytics: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {data?.popularFiles.length ? (
-              <div className="space-y-3">
-                {data.popularFiles.map((file: any, index: number) => (
-                  <div key={index} className="flex items-center justify-between">
+            {data?.popularFiles.length ? <div className="space-y-3">
+                {data.popularFiles.map((file: any, index: number) => <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Files className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium truncate max-w-[200px]">
@@ -175,19 +151,15 @@ export const Analytics: React.FC = () => {
                     <Badge variant="secondary">
                       {file.downloads} downloads
                     </Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No downloads yet</p>
-            )}
+                  </div>)}
+              </div> : <p className="text-sm text-muted-foreground">No downloads yet</p>}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Calendar className="mr-2 h-5 w-5" />
+              <Calendar className="mr-2 h-5 w-5 text-red-500" />
               Recent Downloads
             </CardTitle>
             <CardDescription>
@@ -195,10 +167,8 @@ export const Analytics: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {data?.recentDownloads.length ? (
-              <div className="space-y-3">
-                {data.recentDownloads.map((download: any, index: number) => (
-                  <div key={index} className="flex items-center justify-between">
+            {data?.recentDownloads.length ? <div className="space-y-3">
+                {data.recentDownloads.map((download: any, index: number) => <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Download className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm truncate max-w-[200px]">
@@ -208,15 +178,10 @@ export const Analytics: React.FC = () => {
                     <span className="text-xs text-muted-foreground">
                       {new Date(download.downloaded_at).toLocaleDateString()}
                     </span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No downloads yet</p>
-            )}
+                  </div>)}
+              </div> : <p className="text-sm text-muted-foreground">No downloads yet</p>}
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
