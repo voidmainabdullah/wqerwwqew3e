@@ -149,7 +149,7 @@ export const Dashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Downloads</CardTitle>
-            <Download className="h-4 w-4 text-muted-foreground" />
+            <Download className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.totalDownloads}</div>
@@ -162,10 +162,10 @@ export const Dashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground bg-[#17d117]/0 text-green-400" />
+            <TrendingUp className="h-4 w-4 t bg-[#17d117]/0 text-green-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-sm font-bold text-white px-[10px] rounded-3xl bg-blue-500">
+            <div className="text-sm font-bold text-white px-[10px] rounded-3xl bg-blue-600">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
             {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
