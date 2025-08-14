@@ -246,10 +246,10 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-blue-700"></div>
-          <CardHeader className="relative bg-gray-950">
+          <div className="absolute inset-0 bg-zinc-800"></div>
+          <CardHeader className="relative bg-neutral-800">
             <CardTitle className="flex items-center font-semibold text-xl text-slate-50">
-              <Zap className="mr-2 h-6 w-6 text-primary text-red bg-inherit" />
+              <Zap className="mr-2 h-6 w-6  text-blue-500 bg-inherit" />
               Upgrade to Pro
             </CardTitle>
             <CardDescription className="text-base text-gray-200">
@@ -272,7 +272,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
             <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
-              <Link to="/subscription" className="bg-red-400 ">
+              <Link to="/subscription" className="">
                 <Zap className="mr-2 h-4 w-4" />
                 Upgrade Now - Starting at $9/month
               </Link>
