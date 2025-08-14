@@ -123,7 +123,7 @@ export const Dashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Files</CardTitle>
-            <Files className="h-4 w-4 text-muted-foreground" />
+            <Files className="h-4 w-4 text-yellow-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.totalFiles}</div>
@@ -136,7 +136,7 @@ export const Dashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <Share className="h-4 w-4 text-muted-foreground" />
+            <Share className="h-4 w-4 text-green-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.totalShares}</div>
@@ -162,7 +162,7 @@ export const Dashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
-            <TrendingUp className="h-4 w-4 t bg-[#17d117]/0 text-green-400" />
+            <TrendingUp className="h-4 w-4 t bg-[#17d117]/0 text-red-400" />
           </CardHeader>
           <CardContent>
             <div className="text-sm font-semibold rounded-3xl text-white bg-blue-50/[0.03]">
@@ -246,8 +246,8 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-zinc-600"></div>
-          <CardHeader className="relative bg-zinc-600">
+          <div className="absolute inset-0 bg-blue-700"></div>
+          <CardHeader className="relative bg-gray-950">
             <CardTitle className="flex items-center font-semibold text-xl text-slate-50">
               <Zap className="mr-2 h-6 w-6 text-primary text-red bg-inherit" />
               Upgrade to Pro
