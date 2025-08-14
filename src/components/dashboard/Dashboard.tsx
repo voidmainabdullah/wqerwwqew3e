@@ -165,7 +165,7 @@ export const Dashboard: React.FC = () => {
             <TrendingUp className="h-4 w-4 t bg-[#17d117]/0 text-green-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-sm font-bold text-white px-[10px] rounded-3xl bg-blue-600">
+            <div className="text-sm font-semibold rounded-3xl bg-blue-50 text-neutral-500">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
             {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
