@@ -70,7 +70,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <SidebarContent className="p-4">
             <nav className="space-y-2">
               {sidebarItems.map(item => <Button key={item.href} variant="ghost" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" asChild>
-                  <Link to={item.href}>
+                  <Link to={item.href} className="">
                     <item.icon className="mr-3 h-4 w-4" />
                     {item.label}
                   </Link>
