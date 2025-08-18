@@ -62,8 +62,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <Sidebar className="bg-sidebar border-sidebar-border">
           <SidebarHeader className="p-6 border-b border-sidebar-border">
             <div className="flex items-center space-x-2">
-              <Shield className="h-8 w-8 text-sidebar-primary bg-inherit" />
-              <h1 className="text-xl font-bold text-sidebar-foreground">DropThrow</h1>
+              <img 
+                src="/Skieshare-removebg-preview.png" 
+                alt="DropThrow Logo" 
+                className="h-8 w-auto sm:h-10 md:h-12 object-contain"
+              />
+              <h1 className="text-lg sm:text-xl font-bold text-sidebar-foreground">DropThrow</h1>
             </div>
           </SidebarHeader>
           

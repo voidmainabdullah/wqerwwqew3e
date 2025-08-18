@@ -53,9 +53,16 @@ export const AuthPage: React.FC = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            SecureShare
-          </h1>
+          <div className="flex flex-col items-center space-y-2">
+            <img 
+              src="/Skieshare-removebg-preview.png" 
+              alt="SecureShare Logo" 
+              className="h-12 w-auto sm:h-16 md:h-20 object-contain"
+            />
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              SecureShare
+            </h1>
+          </div>
           <p className="text-muted-foreground mt-2">
             Secure file sharing made simple
           </p>

@@ -70,8 +70,12 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2">
-              <Shield className="h-8 w-8 text-primary" />
-              <h1 className="text-xl font-bold">SecureShare</h1>
+              <img 
+                src="/Skieshare-removebg-preview.png" 
+                alt="SecureShare Logo" 
+                className="h-6 w-auto sm:h-8 md:h-10 object-contain"
+              />
+              <h1 className="text-lg sm:text-xl font-bold">SecureShare</h1>
             </div>
             
             <div className="flex items-center space-x-4">
@@ -186,8 +190,12 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <Shield className="h-6 w-6 text-primary" />
-              <span className="font-bold">SecureShare</span>
+              <img 
+                src="/Skieshare-removebg-preview.png" 
+                alt="SecureShare Logo" 
+                className="h-5 w-auto sm:h-6 object-contain"
+              />
+              <span className="text-sm sm:text-base font-bold">SecureShare</span>
             </div>
             
             <div className="text-muted-foreground text-sm">
