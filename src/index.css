@@ -107,84 +107,62 @@
     @apply border-border;
   }
 
- body {
-  background: linear-gradient(-45deg, #2563eb, #1e3a8a, #000000, #2563eb);
-  background-size: 400% 400%;
-  animation: gradientFlow 12s ease infinite;
-  color: white; /* optional: better contrast */
-  min-height: 100vh; /* ensures full coverage */
-  margin: 0;
-}
-
-@keyframes gradientFlow {
-  0% {
-    background-position: 0% 50%;
+  body {
+    @apply bg-background text-foreground;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+  /* Background gradient animation */
 @keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
-
 .animate-gradient {
   background-size: 300% 300%;
   animation: gradientMove 12s ease infinite;
 }
 
+/* Pulse glow */
 @keyframes pulseSlow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
 }
-
 .animate-pulse-slow {
   animation: pulseSlow 6s ease-in-out infinite;
 }
 
+/* Fade-in */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fadeIn {
   animation: fadeIn 1.5s ease forwards;
 }
 
+/* Slow bounce for 404 */
 @keyframes bounceSlow {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
-
 .animate-bounce-slow {
   animation: bounceSlow 3s infinite;
 }
+
+/* Floating file-sharing icons */
+@keyframes fly {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+  50% { transform: translateY(-40px) rotate(15deg); opacity: 0.5; }
+  100% { transform: translateY(0) rotate(-15deg); opacity: 0.2; }
+}
+.icon-fly {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: fly 6s ease-in-out infinite;
+}
+.icon-fly.delay-500 { animation-delay: 0.5s; }
+.icon-fly.delay-1000 { animation-delay: 1s; }
+.icon-fly.delay-1500 { animation-delay: 1.5s; }
+.icon-fly.delay-2000 { animation-delay: 2s; }
 
 }
