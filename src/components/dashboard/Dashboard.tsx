@@ -281,9 +281,4 @@ export const Dashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Teams Management Section */}
-      <div className="mt-8">
-        <TeamsManager />
-      </div>
-    </div>;
-};
+     
