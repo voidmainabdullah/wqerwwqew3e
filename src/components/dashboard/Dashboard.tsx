@@ -271,7 +271,7 @@ export const Dashboard: React.FC = () => {
                 Priority support & security
               </div>
             </div>
-            <Button className="w-full bg-gradient-to-r from-blue-400 to-black hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
+            <Button className="w-full bg-gradient-to-r from-blue-600 to-black hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105" asChild>
               <Link to="/subscription" className="">
                 <Zap className="mr-2 h-4 w-4" />
                 Get Professional !
