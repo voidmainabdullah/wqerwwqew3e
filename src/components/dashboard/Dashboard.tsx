@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Files, Share, Download, TrendingUp, Upload, Clock, Shield, Zap, Users } from 'lucide-react';
+import { Files, Share, Download, TrendingUp, Upload, Clock, Shield, Zap, Users, Cloud, FileText } from 'lucide-react';
 import TeamsManager from '@/components/teams/TeamsManager';
 interface DashboardStats {
   totalFiles: number;
