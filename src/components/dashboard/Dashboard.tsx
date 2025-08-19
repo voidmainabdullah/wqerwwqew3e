@@ -248,7 +248,7 @@ export const Dashboard: React.FC = () => {
         <Card className="relative overflow-hidden">
           <div className="absolute inset-0 bg-transparent overflow-hidden">
             {/* Animated File Sharing Icons */}
-            <div className="absolute inset-0 bg-blue-800/0">
+            <div className="absolute inset-0 bg-blue-800">
               {/* Upload Animation */}
               <div className="absolute top-4 left-4 animate-bounce-subtle">
                 <Upload className="w-6 h-6 text-blue-400/60" />
@@ -332,7 +332,7 @@ export const Dashboard: React.FC = () => {
               </svg>
             </div>
           </div>
-          <CardHeader className="relative bg-blue-800/0">
+          <CardHeader className="relative bg-blue-800">
             <CardTitle className="flex items-center font-semibold text-xl text-slate-50">
               <Zap className="mr-2 h-6 w-6  text-blue-500 bg-inherit" />
               Upgrade to Pro
