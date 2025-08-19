@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Files, Upload, Share, BarChart3, Settings, LogOut, Shield, Home, Users, FolderOpen } from 'lucide-react';
+import { Crown } from 'lucide-react';
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -52,6 +53,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     icon: BarChart3,
     label: 'Analytics',
     href: '/dashboard/analytics'
+  }, {
+    icon: Crown,
+    label: 'Subscription',
+    href: '/subscription'
   }, {
     icon: Settings,
     label: 'Settings',
