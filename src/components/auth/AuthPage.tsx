@@ -195,7 +195,6 @@ export const AuthPage: React.FC = () => {
           By signing up, you agree to our terms of service and privacy policy.
         </p>
       </div>
-      </div>
     </div>
   );
 };
