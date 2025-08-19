@@ -246,7 +246,7 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-blue-900/20 to-zinc-800 overflow-hidden">
+          <div className="absolute inset-0 bg-transparent overflow-hidden">
             {/* Animated File Sharing Icons */}
             <div className="absolute inset-0">
               {/* Upload Animation */}
