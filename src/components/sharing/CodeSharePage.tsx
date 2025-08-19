@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { Download, Lock, AlertCircle, FileText, Key } from 'lucide-react';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 interface FileData {
   id: string;
@@ -185,7 +186,12 @@ export const CodeSharePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
+      {/* Content Overlay */}
+      <div className="relative z-10">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Key className="mx-auto h-12 w-12 text-primary mb-2" />
@@ -258,6 +264,7 @@ export const CodeSharePage: React.FC = () => {
           )}
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

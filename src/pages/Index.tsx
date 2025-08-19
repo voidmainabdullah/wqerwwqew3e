@@ -15,6 +15,7 @@ import {
   Download,
   Eye
 } from 'lucide-react';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 const Index = () => {
   const { user } = useAuth();
@@ -64,7 +65,12 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
+      {/* Content Overlay */}
+      <div className="relative z-10">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -204,6 +210,7 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 };

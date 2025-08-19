@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { PriceCard } from './PriceCard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Crown, Shield, Zap, Upload, Download, Link, Clock } from 'lucide-react';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
@@ -89,7 +90,15 @@ export const SubscriptionPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative min-h-screen">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0">
+        <AnimatedBackground />
+      </div>
+      
+      {/* Content Overlay */}
+      <div className="relative z-10 bg-background/80 backdrop-blur-sm min-h-screen">
+        <div className="container mx-auto px-4 py-8">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tight">Choose Your Plan</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -241,6 +250,8 @@ export const SubscriptionPage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+        </div>
+      </div>
     </div>
   );
 };

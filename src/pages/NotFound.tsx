@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Cloud, Upload, Link as LinkIcon, File, Shield } from "lucide-react";
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 const NotFound = () => {
   const location = useLocation();
@@ -14,8 +15,11 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Enhanced Animated Background */}
+      <AnimatedBackground />
+      
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-black to-neutral-800 animate-gradient"></div>
+      <div className="absolute inset-0 animate-gradient"></div>
 
       {/* Glow Effect */}
       <div className="absolute w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-3xl animate-pulse-slow"></div>

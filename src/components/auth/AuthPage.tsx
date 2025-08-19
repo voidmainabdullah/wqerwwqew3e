@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Lock, Mail, User, Chrome } from 'lucide-react';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 export const AuthPage: React.FC = () => {
   const { user, signIn, signUp, signInWithGoogle } = useAuth();
@@ -50,8 +51,12 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
+      {/* Content Overlay */}
+      <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex flex-col items-center space-y-2">
             <img 
@@ -189,6 +194,7 @@ export const AuthPage: React.FC = () => {
         <p className="text-center text-xs text-muted-foreground mt-8">
           By signing up, you agree to our terms of service and privacy policy.
         </p>
+      </div>
       </div>
     </div>
   );
