@@ -246,7 +246,87 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-zinc-800"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-blue-900/20 to-zinc-800 overflow-hidden">
+            {/* Animated File Sharing Icons */}
+            <div className="absolute inset-0">
+              {/* Upload Animation */}
+              <div className="absolute top-4 left-4 animate-bounce-subtle">
+                <Upload className="w-6 h-6 text-blue-400/60" />
+              </div>
+              
+              {/* Download Animation */}
+              <div className="absolute top-4 right-4 animate-bounce-subtle" style={{ animationDelay: '0.5s' }}>
+                <Download className="w-6 h-6 text-green-400/60" />
+              </div>
+              
+              {/* Cloud Storage Animation */}
+              <div className="absolute bottom-4 left-4 animate-pulse">
+                <Cloud className="w-8 h-8 text-cyan-400/50" />
+              </div>
+              
+              {/* Share Link Animation */}
+              <div className="absolute bottom-4 right-4 animate-pulse" style={{ animationDelay: '1s' }}>
+                <Share className="w-6 h-6 text-purple-400/60" />
+              </div>
+              
+              {/* Floating Files */}
+              <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 animate-float">
+                <Files className="w-5 h-5 text-blue-300/40" />
+              </div>
+              
+              <div className="absolute top-1/3 right-1/3 transform translate-x-1/2 -translate-y-1/2 animate-float" style={{ animationDelay: '2s' }}>
+                <FileText className="w-4 h-4 text-green-300/40" />
+              </div>
+              
+              {/* Data Flow Lines */}
+              <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent animate-data-flow"></div>
+              <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-400/30 to-transparent animate-data-flow" style={{ animationDelay: '1.5s' }}></div>
+              
+              {/* Connection Nodes */}
+              <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-blue-500/60 rounded-full animate-ping"></div>
+              <div className="absolute top-1/3 right-1/4 w-2 h-2 bg-green-500/60 rounded-full animate-ping" style={{ animationDelay: '0.8s' }}></div>
+              <div className="absolute bottom-1/3 left-1/2 w-2 h-2 bg-purple-500/60 rounded-full animate-ping" style={{ animationDelay: '1.6s' }}></div>
+              
+              {/* Progress Indicators */}
+              <div className="absolute top-1/2 right-8 flex flex-col space-y-1">
+                <div className="w-12 h-1 bg-blue-600/30 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-400 rounded-full animate-progress-bar"></div>
+                </div>
+                <div className="w-12 h-1 bg-green-600/30 rounded-full overflow-hidden">
+                  <div className="h-full bg-green-400 rounded-full animate-progress-bar" style={{ animationDelay: '0.5s' }}></div>
+                </div>
+                <div className="w-12 h-1 bg-purple-600/30 rounded-full overflow-hidden">
+                  <div className="h-full bg-purple-400 rounded-full animate-progress-bar" style={{ animationDelay: '1s' }}></div>
+                </div>
+              </div>
+              
+              {/* Network Connections */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 200 100">
+                <defs>
+                  <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0" />
+                    <stop offset="50%" stopColor="rgb(59, 130, 246)" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="rgb(59, 130, 246)" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <path 
+                  d="M20,30 Q100,10 180,30" 
+                  stroke="url(#connectionGradient)" 
+                  strokeWidth="1" 
+                  fill="none"
+                  className="animate-draw-line"
+                />
+                <path 
+                  d="M20,70 Q100,90 180,70" 
+                  stroke="url(#connectionGradient)" 
+                  strokeWidth="1" 
+                  fill="none"
+                  className="animate-draw-line"
+                  style={{ animationDelay: '1s' }}
+                />
+              </svg>
+            </div>
+          </div>
           <CardHeader className="relative bg-neutral-800">
             <CardTitle className="flex items-center font-semibold text-xl text-slate-50">
               <Zap className="mr-2 h-6 w-6  text-blue-500 bg-inherit" />
