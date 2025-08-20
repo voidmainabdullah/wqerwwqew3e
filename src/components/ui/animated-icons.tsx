@@ -40,7 +40,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, classNam
       {/* Pulsing ring effect */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-16 h-16 border border-current rounded-full animate-ping opacity-20" 
-             style={{ animationDuration: '3s' }} />
+             style={{ animationDuration: '1s' }} />
       </div>
     </div>
   );
