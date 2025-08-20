@@ -209,11 +209,7 @@ export const Dashboard: React.FC = () => {
               <Upload className="mr-2 h-5 w-5" />
               Quick Upload
             </CardTitle>
-             {/* Pulsing ring effect */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-16 h-16 border border-current rounded-full animate-ping opacity-20" 
-             style={{ animationDuration: '1s' }} />
-      </div>
+           
             <CardDescription>
               Upload files quickly and start sharing them instantly.
             </CardDescription>
