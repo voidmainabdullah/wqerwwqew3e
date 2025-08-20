@@ -72,7 +72,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 alt="DropThrow Logo" 
                 className="h-8 w-auto sm:h-10 md:h-12 object-contain"
               />
-              <h1 className="text-lg sm:text-xl font-bold text-sidebar-foreground">DropThrow</h1>
+              <h1 className="text-lg sm:text-xl font-bold text-sidebar-foreground">SkieShare</h1>
             </div>
           </SidebarHeader>
           
