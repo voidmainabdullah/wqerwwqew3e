@@ -21,7 +21,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, classNam
 
   return (
     <div className={`absolute inset-0 flex items-center justify-center pointer-events-none animate-fade-in ${className}`}>
-      <div className="animate-bounce-subtle opacity-40">
+      <div className="animate-bounce-subtle opacity-100">
         {getIcon()}
       </div>
       
