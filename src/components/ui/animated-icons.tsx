@@ -13,8 +13,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, classNam
   const getIcon = () => {
     switch (type) {
      
-      case 'storage':
-        return <TrendingUp className="w-8 h-8 text-red-400/60" />;
+     
       default:
         return null;
     }
