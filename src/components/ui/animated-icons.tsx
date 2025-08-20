@@ -37,11 +37,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, classNam
              style={{ animationDelay: '0.5s' }} />
       </div>
       
-      {/* Pulsing ring effect */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-16 h-16 border border-current rounded-full animate-ping opacity-20" 
-             style={{ animationDuration: '1s' }} />
-      </div>
+     
     </div>
   );
 }; 
