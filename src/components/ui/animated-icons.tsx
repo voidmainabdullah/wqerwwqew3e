@@ -25,17 +25,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, classNam
         {getIcon()}
       </div>
       
-      {/* Floating particles effect */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-current rounded-full animate-float opacity-30" 
-             style={{ animationDelay: '0s' }} />
-        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-current rounded-full animate-float opacity-30" 
-             style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-current rounded-full animate-float opacity-30" 
-             style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-1/4 right-1/3 w-1 h-1 bg-current rounded-full animate-float opacity-30" 
-             style={{ animationDelay: '0.5s' }} />
-      </div>
+     
       
      
     </div>
