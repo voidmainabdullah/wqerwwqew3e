@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Files, Share, Download, TrendingUp, Upload, Clock, Shield, Zap, Users, Cloud, FileText } from 'lucide-react';
+import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 import TeamsManager from '@/components/teams/TeamsManager';
 interface DashboardStats {
   totalFiles: number;
@@ -120,12 +121,18 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Files</CardTitle>
             <Files className="h-4 w-4 text-yellow-400" />
           </CardHeader>
           <CardContent>
+            {/* Animated icon for empty state */}
+            <AnimatedIcon 
+              show={stats?.totalFiles === 0} 
+              type="files" 
+              className="z-0" 
+            />
             <div className="text-2xl font-bold">{stats?.totalFiles}</div>
             <p className="text-xs text-muted-foreground">
               Files uploaded to your account
@@ -133,12 +140,18 @@ export const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
             <Share className="h-4 w-4 text-green-400" />
           </CardHeader>
           <CardContent>
+            {/* Animated icon for empty state */}
+            <AnimatedIcon 
+              show={stats?.totalShares === 0} 
+              type="shares" 
+              className="z-0" 
+            />
             <div className="text-2xl font-bold">{stats?.totalShares}</div>
             <p className="text-xs text-muted-foreground">
               Active sharing links created
@@ -146,12 +159,18 @@ export const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Downloads</CardTitle>
             <Download className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
+            {/* Animated icon for empty state */}
+            <AnimatedIcon 
+              show={stats?.totalDownloads === 0} 
+              type="downloads" 
+              className="z-0" 
+            />
             <div className="text-2xl font-bold">{stats?.totalDownloads}</div>
             <p className="text-xs text-muted-foreground">
               Total file downloads
@@ -159,12 +178,18 @@ export const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
             <TrendingUp className="h-4 w-4 t bg-[#17d117]/0 text-red-400" />
           </CardHeader>
           <CardContent>
+            {/* Animated icon for empty state */}
+            <AnimatedIcon 
+              show={stats?.storageUsed === 0} 
+              type="storage" 
+              className="z-0" 
+            />
             <div className="text-sm font-semibold rounded-3xl text-white bg-blue-50/[0.03]">
               {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
             </div>
