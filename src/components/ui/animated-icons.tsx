@@ -12,12 +12,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, classNam
 
   const getIcon = () => {
     switch (type) {
-      case 'files':
-        return <Files className="w-8 h-8 text-yellow-400/60" />;
-      case 'shares':
-        return <Share className="w-8 h-8 text-green-400/60" />;
-      case 'downloads':
-        return <Download className="w-8 h-8 text-blue-400/60" />;
+     
       case 'storage':
         return <TrendingUp className="w-8 h-8 text-red-400/60" />;
       default:
