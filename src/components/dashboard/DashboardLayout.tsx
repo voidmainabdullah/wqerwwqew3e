@@ -49,6 +49,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     label: 'Shared Links',
     href: '/dashboard/shared'
   }, {
+    icon: Crown, 
+    label:'My Files',
+    href:'/dahboard/my-files'
+  },{
     icon: BarChart3,
     label: 'Analytics',
     href: '/dashboard/analytics'
