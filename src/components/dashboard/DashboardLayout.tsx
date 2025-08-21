@@ -63,15 +63,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   }];
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background relative overflow-hidden">
-        {/* Cloud Branding Background */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Large background clouds */}
-          <Cloud className="absolute top-10 left-10 w-32 h-32 text-blue-500/5 animate-float" />
-          <Cloud className="absolute top-20 right-20 w-24 h-24 text-blue-400/5 animate-float" style={{ animationDelay: '2s' }} />
-          <Cloud className="absolute bottom-32 left-1/4 w-40 h-40 text-blue-300/5 animate-float" style={{ animationDelay: '4s' }} />
-          <Cloud className="absolute bottom-20 right-1/3 w-28 h-28 text-blue-600/5 animate-float" style={{ animationDelay: '1s' }} />
-          <Cloud className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 text-blue-400/3 animate-float" style={{ animationDelay: '3s' }} />
-          
+        
           {/* Smaller floating clouds */}
           <Cloud className="absolute top-1/4 left-1/3 w-16 h-16 text-blue-500/8 animate-gentle-bounce" />
           <Cloud className="absolute bottom-1/4 right-1/4 w-20 h-20 text-blue-400/8 animate-gentle-bounce" style={{ animationDelay: '1.5s' }} />
