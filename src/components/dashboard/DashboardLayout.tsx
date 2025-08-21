@@ -49,10 +49,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     label: 'Shared Links',
     href: '/dashboard/shared'
   }, {
-    icon: Crown, 
-    label:'My Files',
-    href:'/dahboard/my-files'
-  },{
     icon: BarChart3,
     label: 'Analytics',
     href: '/dashboard/analytics'
@@ -69,7 +65,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="min-h-screen flex w-full bg-background relative overflow-hidden">
         {/* Cloud Branding Background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Large background clouds */} 
+          {/* Large background clouds */}
           <Cloud className="absolute top-10 left-10 w-32 h-32 text-blue-500/5 animate-float" />
           <Cloud className="absolute top-20 right-20 w-24 h-24 text-blue-400/5 animate-float" style={{ animationDelay: '2s' }} />
           <Cloud className="absolute bottom-32 left-1/4 w-40 h-40 text-blue-300/5 animate-float" style={{ animationDelay: '4s' }} />
@@ -82,7 +78,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <Cloud className="absolute top-3/4 left-1/6 w-12 h-12 text-blue-600/8 animate-gentle-bounce" style={{ animationDelay: '2.5s' }} />
           
           {/* Gradient overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/2 via-transparent to-blue-400/2" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-transparent to-blue-800" />
         </div>
         
         <Sidebar className="bg-sidebar border-sidebar-border">
