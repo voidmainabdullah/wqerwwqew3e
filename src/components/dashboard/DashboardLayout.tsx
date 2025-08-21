@@ -78,7 +78,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <Cloud className="absolute top-3/4 left-1/6 w-12 h-12 text-blue-600/8 animate-gentle-bounce" style={{ animationDelay: '2.5s' }} />
           
           {/* Gradient overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-white" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/2 via-transparent to-blue-400/2" /> 
         </div>
         
         <Sidebar className="bg-sidebar border-sidebar-border">
