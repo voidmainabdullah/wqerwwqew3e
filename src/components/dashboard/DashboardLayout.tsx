@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { Files, Upload, Share, BarChart3, Settings, LogOut, Shield, Home, Users, FolderOpen } from 'lucide-react';
-import { Crown } from 'lucide-react';
+import { Files, Upload, Share, BarChart3, Settings, LogOut, Shield, Home, Users, FolderOpen, Crown, HelpCircle, MessageSquare, DollarSign, Info, Cloud } from 'lucide-react';
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -63,7 +62,25 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     href: '/dashboard/settings'
   }];
   return <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full bg-background relative overflow-hidden">
+        {/* Cloud Branding Background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Large background clouds */}
+          <Cloud className="absolute top-10 left-10 w-32 h-32 text-blue-500/5 animate-float" />
+          <Cloud className="absolute top-20 right-20 w-24 h-24 text-blue-400/5 animate-float" style={{ animationDelay: '2s' }} />
+          <Cloud className="absolute bottom-32 left-1/4 w-40 h-40 text-blue-300/5 animate-float" style={{ animationDelay: '4s' }} />
+          <Cloud className="absolute bottom-20 right-1/3 w-28 h-28 text-blue-600/5 animate-float" style={{ animationDelay: '1s' }} />
+          <Cloud className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 text-blue-400/3 animate-float" style={{ animationDelay: '3s' }} />
+          
+          {/* Smaller floating clouds */}
+          <Cloud className="absolute top-1/4 left-1/3 w-16 h-16 text-blue-500/8 animate-gentle-bounce" />
+          <Cloud className="absolute bottom-1/4 right-1/4 w-20 h-20 text-blue-400/8 animate-gentle-bounce" style={{ animationDelay: '1.5s' }} />
+          <Cloud className="absolute top-3/4 left-1/6 w-12 h-12 text-blue-600/8 animate-gentle-bounce" style={{ animationDelay: '2.5s' }} />
+          
+          {/* Gradient overlay for depth */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/2 via-transparent to-blue-400/2" />
+        </div>
+        
         <Sidebar className="bg-sidebar border-sidebar-border">
           <SidebarHeader className="p-6 border-b border-sidebar-border">
             <div className="flex items-center space-x-2">
@@ -88,7 +105,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </SidebarContent>
         </Sidebar>
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col relative z-10">
           <header className="bg-card border-b border-border p-4">
             <div className="flex items-center justify-between">
               <SidebarTrigger className="text-foreground" />
@@ -116,6 +133,66 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  
+                  {/* Navigation Links */}
+                  <DropdownMenuItem asChild>
+                    <a href="/" className="flex items-center">
+                      <Home className="mr-2 h-4 w-4" />
+                      <span>Home</span>
+                    </a>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem asChild>
+                    <a href="/subscription" className="flex items-center">
+                      <DollarSign className="mr-2 h-4 w-4" />
+                      <span>Pricing</span>
+                    </a>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem asChild>
+                    <a href="/dashboard/settings" className="flex items-center">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </a>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  {/* Support & Info Links */}
+                  <DropdownMenuItem asChild>
+                    <a href="#" onClick={(e) => {
+                      e.preventDefault();
+                      window.open('mailto:support@skieshare.com?subject=Support Request', '_blank');
+                    }} className="flex items-center">
+                      <HelpCircle className="mr-2 h-4 w-4" />
+                      <span>Support</span>
+                    </a>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem asChild>
+                    <a href="#" onClick={(e) => {
+                      e.preventDefault();
+                      // You can replace this with your actual FAQ page
+                      window.open('https://docs.skieshare.com/faq', '_blank');
+                    }} className="flex items-center">
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      <span>FAQ</span>
+                    </a>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem asChild>
+                    <a href="#" onClick={(e) => {
+                      e.preventDefault();
+                      // You can replace this with your actual about page
+                      window.open('https://skieshare.com/about', '_blank');
+                    }} className="flex items-center">
+                      <Info className="mr-2 h-4 w-4" />
+                      <span>About</span>
+                    </a>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Sign out</span>
@@ -125,7 +202,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
           </header>
 
-          <main className="flex-1 p-6 bg-inherit">
+          <main className="flex-1 p-6 bg-inherit relative">
             {children}
           </main>
         </div>
