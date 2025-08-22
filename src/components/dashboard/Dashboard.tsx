@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Files, Share, Download, TrendingUp, Upload, Clock, Shield, Zap, Users, Cloud, FileText } from 'lucide-react';
+import { Files, ShareNetwork, Download, TrendingUp, Upload, Clock, Shield, Lightning, Users, Cloud, FileText } from 'phosphor-react';
 import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 import TeamsManager from '@/components/teams/TeamsManager';
 interface DashboardStats {
@@ -157,7 +157,7 @@ export const Dashboard: React.FC = () => {
         <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <Share className="h-4 w-4 text-green-400" />
+            <ShareNetwork className="h-4 w-4 text-green-400" />
           </CardHeader>
           <CardContent>
             {/* Animated icon for empty state */}
@@ -375,7 +375,7 @@ export const Dashboard: React.FC = () => {
           </div>
           <CardHeader className="relative bg-blue-800">
             <CardTitle className="flex items-center font-semibold text-xl text-slate-50">
-              <Zap className="mr-2 h-6 w-6  text-blue-500 bg-inherit" />
+              <Lightning className="mr-2 h-6 w-6  text-blue-500 bg-inherit" />
               Upgrade to Pro
             </CardTitle>
             <CardDescription className="text-base text-gray-200">
@@ -385,7 +385,7 @@ export const Dashboard: React.FC = () => {
           <CardContent className="bg-gradient-to-t from-blue-900 via-blue-800 bg-[#6bffa0]/5">
             <div className="space-y-2">
               <div className="flex items-center text-sm text-muted-foreground">
-                <Zap className="mr-2 h-4 w-4 text-primary" />
+                <Lightning className="mr-2 h-4 w-4 text-primary" />
                 Unlimited file storage
               </div>
               <div className="flex items-center text-sm text-muted-foreground bg-[#00ee00]/0">
@@ -399,7 +399,7 @@ export const Dashboard: React.FC = () => {
             </div>
             <Button className="w-full bg-gradient-to-r from-blue-600 to-black hover:from-blue/90 hover:to-black/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105 flex items-center justify-center gap-2" asChild>
               <Link to="/subscription" className="">
-                <Zap className="mr-2 h-4 w-4" />
+                <Lightning className="mr-2 h-4 w-4" />
                 Get Premium !
               </Link>
             </Button>

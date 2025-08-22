@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Copy, Share, Mail, QrCode, Link } from 'lucide-react';
+import { Copy, ShareNetwork, Envelope, QrCode, Link } from 'phosphor-react';
 
 export const FileReceiver: React.FC = () => {
   const { user } = useAuth();
@@ -86,7 +86,7 @@ export const FileReceiver: React.FC = () => {
             </div>
 
             <Button onClick={generateReceiveLink} className="w-full">
-              <Share className="mr-2 h-4 w-4" />
+              <ShareNetwork className="mr-2 h-4 w-4" />
               Generate Receive Link
             </Button>
           </CardContent>
@@ -117,7 +117,7 @@ export const FileReceiver: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={shareViaEmail} variant="outline" size="sm">
-                  <Mail className="mr-2 h-4 w-4" />
+                  <Envelope className="mr-2 h-4 w-4" />
                   Email
                 </Button>
                 <Button 

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { File, Share2, Download, Lock, Unlock, Users, Calendar, User } from 'lucide-react';
+import { File, ShareNetwork, Download, Lock, LockOpen, Users, Calendar, User } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
 // Utility function to format file size
 const formatFileSize = (bytes: number): string => {
@@ -241,7 +241,7 @@ const TeamFileShare: React.FC = () => {
         <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
           <DialogTrigger asChild>
             <Button className="hover:scale-105 transition-transform">
-              <Share2 className="w-4 h-4 mr-2" />
+              <ShareNetwork className="w-4 h-4 mr-2" />
               Share File
             </Button>
           </DialogTrigger>
@@ -421,13 +421,13 @@ const TeamFileShare: React.FC = () => {
                   setSelectedFile(file);
                   setShareDialogOpen(true);
                 }} disabled={file.is_locked}>
-                        <Share2 className="w-4 h-4 mr-2" />
+                        <ShareNetwork className="w-4 h-4 mr-2" />
                         Share
                       </Button>
                       
                       <Button variant="outline" size="sm" onClick={() => toggleFileLock(file.id, file.is_locked)}>
                         {file.is_locked ? <>
-                            <Unlock className="w-4 h-4 mr-2" />
+                            <LockOpen className="w-4 h-4 mr-2" />
                             Unlock
                           </> : <>
                             <Lock className="w-4 h-4 mr-2" />

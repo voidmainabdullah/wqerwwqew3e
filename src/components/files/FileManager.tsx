@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { File, Download, Share2, Trash2, Lock, Unlock, Eye, EyeOff, Calendar, Copy, Mail, Code, MoreHorizontal, Shield, Users, Send, ShieldCheck } from 'lucide-react';
+import { File, Download, ShareNetwork, Trash, Lock, LockOpen, Eye, EyeSlash, Calendar, Copy, Envelope, Code, DotsThree, Shield, Users, PaperPlaneTilt, ShieldCheck } from 'phosphor-react';
 interface FileData {
   id: string;
   original_name: string;
@@ -510,17 +510,17 @@ export const FileManager: React.FC = () => {
                     </Button>
 
                     <Button variant="ghost" size="sm" onClick={() => toggleFileVisibility(file.id, file.is_public)} className="hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-105">
-                      {file.is_public ? <Eye className="h-3 w-3 sm:h-4 sm:w-4" /> : <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" />}
+                      {file.is_public ? <Eye className="h-3 w-3 sm:h-4 sm:w-4" /> : <EyeSlash className="h-3 w-3 sm:h-4 sm:w-4" />}
                     </Button>
 
                     <Button variant="ghost" size="sm" onClick={() => toggleFileLock(file.id, file.is_locked)} className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105">
-                      {file.is_locked ? <Lock className="h-3 w-3 sm:h-4 sm:w-4" /> : <Unlock className="h-3 w-3 sm:h-4 sm:w-4" />}
+                      {file.is_locked ? <Lock className="h-3 w-3 sm:h-4 sm:w-4" /> : <LockOpen className="h-3 w-3 sm:h-4 sm:w-4" />}
                     </Button>
 
                     <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
                       <DialogTrigger asChild>
                         <Button variant="ghost" size="sm" onClick={() => setSelectedFile(file)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105">
-                          <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                          <ShareNetwork className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                       </DialogTrigger>
                       <DialogContent>
@@ -547,7 +547,7 @@ export const FileManager: React.FC = () => {
                                 </SelectItem>
                                 <SelectItem value="email">
                                   <div className="flex items-center space-x-2">
-                                    <Mail className="h-4 w-4" />
+                                    <Envelope className="h-4 w-4" />
                                     <span>Email Link</span>
                                   </div>
                                 </SelectItem>
@@ -611,7 +611,7 @@ export const FileManager: React.FC = () => {
                     </Dialog>
 
                     <Button variant="ghost" size="sm" onClick={() => deleteFile(file.id, file.storage_path)} className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all duration-300 hover:scale-105">
-                      <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <Trash className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                   </div>
                 </div>
@@ -649,7 +649,7 @@ export const FileManager: React.FC = () => {
                         const body = `Hi,\n\nI've shared a file with you: ${file.original_name}\n\nAccess it here: ${shareUrl}\n\nBest regards`;
                         window.open(`mailto:${link.recipient_email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
                       }}>
-                                    <Mail className="h-3 w-3" />
+                                    <Envelope className="h-3 w-3" />
                                   </Button>}
                               </div>
                             </div>

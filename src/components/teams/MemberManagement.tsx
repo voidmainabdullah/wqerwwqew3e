@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { UserPlus, Crown, Settings, Trash2, Shield, Users } from 'lucide-react';
+import { UserPlus, Crown, Gear, Trash, Shield, Users } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
 interface TeamMember {
   id: string;
@@ -241,7 +241,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button variant="outline" size="sm" className="text-destructive hover:text-destructive">
-                          <Trash2 className="w-4 h-4" />
+                          <Trash className="w-4 h-4" />
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>

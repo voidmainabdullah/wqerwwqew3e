@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Zap } from 'lucide-react';
+import { Check, Lightning } from 'phosphor-react';
 
 interface PriceCardProps {
   title: string;
@@ -27,7 +27,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
     <Card className={`relative ${isPopular ? 'border-primary shadow-lg' : ''}`}>
       {isPopular && (
         <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-primary">
-          <Zap className="w-3 h-3 mr-1" />
+          <Lightning className="w-3 h-3 mr-1" />
           Most Popular
         </Badge>
       )}

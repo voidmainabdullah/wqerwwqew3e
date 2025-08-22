@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Lock, Mail, User, Chrome } from 'lucide-react';
+import { Lock, Envelope, User, GoogleChromeLogo } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 
 export const AuthPage: React.FC = () => {
@@ -89,7 +89,7 @@ export const AuthPage: React.FC = () => {
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
               >
-                <Chrome className="w-4 h-4 mr-2" />
+                <GoogleChromeLogo className="w-4 h-4 mr-2" />
                 Continue with Google
               </Button>
 
@@ -107,7 +107,7 @@ export const AuthPage: React.FC = () => {
                   <div className="space-y-2">
                     <Label htmlFor="signin-email">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Envelope className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signin-email"
                         name="email"
@@ -156,7 +156,7 @@ export const AuthPage: React.FC = () => {
                   <div className="space-y-2">
                     <Label htmlFor="signup-email">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Envelope className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-email"
                         name="email"

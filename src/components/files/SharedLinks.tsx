@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Share, Copy, Download, Eye, Clock, Shield, Trash2, ExternalLink } from 'lucide-react';
+import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut } from 'phosphor-react';
 interface SharedLink {
   id: string;
   share_token: string;
@@ -168,7 +168,7 @@ export const SharedLinks: React.FC = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <CardTitle className="text-lg flex items-center">
-                        <Share className="mr-2 h-5 w-5" />
+                        <ShareNetwork className="mr-2 h-5 w-5" />
                         {link.files.original_name}
                       </CardTitle>
                       <CardDescription className="mt-1">
@@ -193,7 +193,7 @@ export const SharedLinks: React.FC = () => {
                       <Copy className="h-4 w-4" />
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300">
-                      <ExternalLink className="h-4 w-4" />
+                      <ArrowSquareOut className="h-4 w-4" />
                     </Button>
                   </div>
 
@@ -221,7 +221,7 @@ export const SharedLinks: React.FC = () => {
 
                     <div className="flex justify-end">
                       <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105">
-                        <Trash2 className="h-4 w-4" />
+                        <Trash className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>

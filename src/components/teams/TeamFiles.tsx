@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Download, Eye, Lock, Unlock, Trash2, Users, Calendar } from 'lucide-react';
+import { FileText, Download, Eye, Lock, LockOpen, Trash, Users, Calendar } from 'phosphor-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface TeamFile {
@@ -366,7 +366,7 @@ export const TeamFiles: React.FC = () => {
                           onClick={() => toggleFileLock(file.id, file.is_locked)}
                           className="hover:scale-105 transition-transform"
                         >
-                          {file.is_locked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                          {file.is_locked ? <LockOpen className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                         </Button>
                         <Button
                           variant="outline"
@@ -374,7 +374,7 @@ export const TeamFiles: React.FC = () => {
                           onClick={() => removeFileFromTeam(file.id, file.team_id, file.original_name)}
                           className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash className="w-4 h-4" />
                         </Button>
                       </>
                     )}

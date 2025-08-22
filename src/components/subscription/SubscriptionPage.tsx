@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { PriceCard } from './PriceCard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Crown, Shield, Zap, Upload, Download, Link, Clock } from 'lucide-react';
+import { Crown, Shield, Lightning, Upload, Download, Link, Clock } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 
 export const SubscriptionPage: React.FC = () => {
@@ -183,7 +183,7 @@ export const SubscriptionPage: React.FC = () => {
 
         <Card>
           <CardHeader className="text-center">
-            <Zap className="h-8 w-8 text-primary mx-auto mb-2" />
+            <Lightning className="h-8 w-8 text-primary mx-auto mb-2" />
             <CardTitle className="text-lg">Priority Support</CardTitle>
           </CardHeader>
           <CardContent>

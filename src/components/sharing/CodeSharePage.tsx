@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { Download, Lock, AlertCircle, FileText, Key } from 'lucide-react';
+import { Download, Lock, Warning, FileText, Key } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 
 interface FileData {

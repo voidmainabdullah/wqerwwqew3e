@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Download, Share, Files, TrendingUp, Users, Calendar } from 'lucide-react';
+import { ChartBar, Download, ShareNetwork, Files, TrendingUp, Users, Calendar } from 'phosphor-react';
 interface AnalyticsData {
   totalDownloads: number;
   totalShares: number;
@@ -104,7 +104,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <Share className="h-4 w-4 text-blue-400" />
+            <ShareNetwork className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalShares}</div>

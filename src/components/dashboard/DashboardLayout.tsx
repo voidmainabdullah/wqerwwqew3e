@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { Files, Upload, Share, BarChart3, Settings, LogOut, Shield, Home, Users, FolderOpen, Crown, HelpCircle, MessageSquare, DollarSign, Info, Cloud } from 'lucide-react';
+import { Files, Upload, ShareNetwork, ChartBar, Gear, SignOut, Shield, House, Users, FolderOpen, Crown, Question, ChatCircle, CurrencyDollar, Info, Cloud } from 'phosphor-react';
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -25,7 +25,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     await signOut();
   };
   const sidebarItems = [{
-    icon: Home,
+    icon: House,
     label: 'Dashboard',
     href: '/dashboard'
   }, {
@@ -45,11 +45,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     label: 'Team Files',
     href: '/dashboard/team-files'
   }, {
-    icon: Share,
+    icon: ShareNetwork,
     label: 'Shared Links',
     href: '/dashboard/shared'
   }, {
-    icon: BarChart3,
+    icon: ChartBar,
     label: 'Analytics',
     href: '/dashboard/analytics'
   }, {
@@ -57,7 +57,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     label: 'Subscription',
     href: '/subscription'
   }, {
-    icon: Settings,
+    icon: Gear,
     label: 'Settings',
     href: '/dashboard/settings'
   }];
@@ -128,21 +128,21 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   {/* Navigation Links */}
                   <DropdownMenuItem asChild>
                     <a href="/" className="flex items-center">
-                      <Home className="mr-2 h-4 w-4" />
+                      <House className="mr-2 h-4 w-4" />
                       <span>Home</span>
                     </a>
                   </DropdownMenuItem>
                   
                   <DropdownMenuItem asChild>
                     <a href="/subscription" className="flex items-center">
-                      <DollarSign className="mr-2 h-4 w-4" />
+                      <CurrencyDollar className="mr-2 h-4 w-4" />
                       <span>Pricing</span>
                     </a>
                   </DropdownMenuItem>
                   
                   <DropdownMenuItem asChild>
                     <a href="/dashboard/settings" className="flex items-center">
-                      <Settings className="mr-2 h-4 w-4" />
+                      <Gear className="mr-2 h-4 w-4" />
                       <span>Settings</span>
                     </a>
                   </DropdownMenuItem>
@@ -155,7 +155,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       e.preventDefault();
                       window.open('mailto:support@skieshare.com?subject=Support Request', '_blank');
                     }} className="flex items-center">
-                      <HelpCircle className="mr-2 h-4 w-4" />
+                      <Question className="mr-2 h-4 w-4" />
                       <span>Support</span>
                     </a>
                   </DropdownMenuItem>
@@ -166,7 +166,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       // You can replace this with your actual FAQ page
                       window.open('https://docs.skieshare.com/faq', '_blank');
                     }} className="flex items-center">
-                      <MessageSquare className="mr-2 h-4 w-4" />
+                      <ChatCircle className="mr-2 h-4 w-4" />
                       <span>FAQ</span>
                     </a>
                   </DropdownMenuItem>
@@ -185,7 +185,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <DropdownMenuSeparator />
                   
                   <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
+                    <SignOut className="mr-2 h-4 w-4" />
                     <span>Sign out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

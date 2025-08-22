@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { Download, Lock, AlertCircle, FileText } from 'lucide-react';
+import { Download, Lock, Warning, FileText } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 
 interface ShareData {
@@ -220,7 +220,7 @@ export const PublicSharePage: React.FC = () => {
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="text-center">
-              <AlertCircle className="mx-auto h-12 w-12 text-destructive mb-4" />
+              <Warning className="mx-auto h-12 w-12 text-destructive mb-4" />
               <h2 className="text-lg font-semibold mb-2">Access Denied</h2>
               <p className="text-muted-foreground">{error}</p>
             </div>
@@ -236,7 +236,7 @@ export const PublicSharePage: React.FC = () => {
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="text-center">
-              <AlertCircle className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <Warning className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <h2 className="text-lg font-semibold mb-2">Share Link Not Found</h2>
               <p className="text-muted-foreground">This share link does not exist or has been deactivated.</p>
             </div>

@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Settings as SettingsIcon, User, Shield, Trash2, Crown, AlertTriangle } from 'lucide-react';
+import { Gear, User, Shield, Trash, Crown, Warning } from 'phosphor-react';
 export const Settings: React.FC = () => {
   const {
     user,
@@ -210,7 +210,7 @@ export const Settings: React.FC = () => {
         <Card className="border-destructive">
           <CardHeader>
             <CardTitle className="flex items-center text-destructive">
-              <AlertTriangle className="mr-2 h-5 w-5" />
+              <Warning className="mr-2 h-5 w-5" />
               Danger Zone
             </CardTitle>
             <CardDescription>
@@ -225,7 +225,7 @@ export const Settings: React.FC = () => {
                 </p>
               </div>
               <Button variant="destructive" onClick={deleteAccount} className="w-full">
-                <Trash2 className="mr-2 h-4 w-4" />
+                <Trash className="mr-2 h-4 w-4" />
                 Delete Account Permanently
               </Button>
             </div>
