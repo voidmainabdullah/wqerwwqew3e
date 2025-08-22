@@ -1,5 +1,5 @@
 import React from 'react';
-import { Files, ShareNetwork, Download, TrendingUp } from 'phosphor-react';
+import { Files, ShareNetwork, Download, TrendUp } from 'phosphor-react';
 
 interface AnimatedIconProps {
   show: boolean;
@@ -60,7 +60,7 @@ export const EmptyStateIcon: React.FC<EmptyStateIconProps> = ({ type, className 
         };
       case 'storage':
         return {
-          icon: <TrendingUp className="w-6 h-6" />,
+          icon: <TrendUp className="w-6 h-6" />,
           text: 'Storage empty',
           color: 'text-red-400'
         };
