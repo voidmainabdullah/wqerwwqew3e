@@ -10,7 +10,6 @@ import {
   ShareNetwork,
   Database,
   Wifi,
-  Server,
   HardDrive,
   Globe,
   Key,
@@ -95,7 +94,7 @@ export const AnimatedBackground: React.FC = () => {
       <FloatingIcon icon={ShareNetwork} className="top-16 right-1/3" delay={1} size={26} />
       <FloatingIcon icon={FileText} className="bottom-32 left-16" delay={3} size={24} />
       <FloatingIcon icon={Database} className="bottom-20 right-16" delay={5} size={28} />
-      <FloatingIcon icon={Server} className="top-1/2 left-8" delay={2.5} size={24} />
+      <FloatingIcon icon={Database} className="top-1/2 left-8" delay={2.5} size={24} />
       <FloatingIcon icon={HardDrive} className="top-1/3 right-8" delay={4.5} size={26} />
 
       {/* Security Icons */}
