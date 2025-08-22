@@ -8,13 +8,13 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { 
-  Upload, 
-  File, 
-  X, 
-  CheckCircle, 
-  AlertCircle,
-  Loader2 
-} from 'lucide-react';
+  Upload,
+  File,
+  X,
+  CheckCircle,
+  Warning,
+  CircleNotch
+} from 'phosphor-react';
 
 interface UploadFile {
   file: File;
@@ -179,11 +179,11 @@ export const FileUpload: React.FC = () => {
       case 'pending':
         return <File className="h-4 w-4 text-muted-foreground" />;
       case 'uploading':
-        return <Loader2 className="h-4 w-4 text-primary animate-spin" />;
+        return <CircleNotch className="h-4 w-4 text-primary animate-spin" />;
       case 'success':
         return <CheckCircle className="h-4 w-4 text-success" />;
       case 'error':
-        return <AlertCircle className="h-4 w-4 text-destructive" />;
+        return <Warning className="h-4 w-4 text-destructive" />;
     }
   };
 
@@ -242,7 +242,7 @@ export const FileUpload: React.FC = () => {
                 >
                   {isUploading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <CircleNotch className="mr-2 h-4 w-4 animate-spin" />
                       <span className="animate-pulse">Uploading...</span>
                     </>
                   ) : (

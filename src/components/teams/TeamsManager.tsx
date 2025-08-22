@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Shield, Users, Crown, UserCheck, UserX, Trash2, Settings } from 'lucide-react';
+import { Plus, Shield, Users, Crown, UserCheck, UserX, Trash, Gear } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
 import MemberManagement from './MemberManagement';
 interface Team {
@@ -371,7 +371,7 @@ const TeamsManager: React.FC = () => {
                       {team.is_admin && <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={e => e.stopPropagation()}>
-                              <Trash2 className="w-4 h-4" />
+                              <Trash className="w-4 h-4" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>

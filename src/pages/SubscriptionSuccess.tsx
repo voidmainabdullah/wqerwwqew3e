@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, ArrowLeft } from 'lucide-react';
+import { CheckCircle, ArrowLeft } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 
 export const SubscriptionSuccess: React.FC = () => {

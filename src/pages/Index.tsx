@@ -4,17 +4,17 @@ import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
-  Shield, 
-  Share, 
-  Clock, 
-  BarChart3, 
-  Lock, 
-  Zap,
+  Shield,
+  ShareNetwork,
+  Clock,
+  ChartBar,
+  Lock,
+  Lightning,
   ArrowRight,
   Upload,
   Download,
   Eye
-} from 'lucide-react';
+} from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 
 const Index = () => {
@@ -32,7 +32,7 @@ const Index = () => {
       description: "Your files are protected with bank-level encryption and security measures."
     },
     {
-      icon: Share,
+      icon: ShareNetwork,
       title: "Flexible Sharing",
       description: "Share via unique codes, email links, or direct downloads with custom permissions."
     },
@@ -42,7 +42,7 @@ const Index = () => {
       description: "Set automatic expiry dates and download limits for enhanced security."
     },
     {
-      icon: BarChart3,
+      icon: ChartBar,
       title: "Detailed Analytics",
       description: "Track downloads, monitor activity, and get insights on your shared files."
     },
@@ -52,7 +52,7 @@ const Index = () => {
       description: "Lock files to prevent unauthorized re-sharing or unwanted access."
     },
     {
-      icon: Zap,
+      icon: Lightning,
       title: "Lightning Fast",
       description: "Upload and share files instantly with our optimized infrastructure."
     }

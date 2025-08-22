@@ -1,5 +1,5 @@
 import React from 'react';
-import { Files, Share, Download, TrendingUp } from 'lucide-react';
+import { Files, ShareNetwork, Download, TrendingUp } from 'phosphor-react';
 
 interface AnimatedIconProps {
   show: boolean;
@@ -48,7 +48,7 @@ export const EmptyStateIcon: React.FC<EmptyStateIconProps> = ({ type, className 
         };
       case 'shares':
         return {
-          icon: <Share className="w-6 h-6" />,
+          icon: <ShareNetwork className="w-6 h-6" />,
           text: 'No shares yet',
           color: 'text-green-400'
         };

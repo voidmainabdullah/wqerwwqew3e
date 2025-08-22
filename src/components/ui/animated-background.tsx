@@ -1,13 +1,13 @@
 import React from 'react';
 import { 
-  Upload, 
-  Download, 
-  Cloud, 
-  Shield, 
-  Lock, 
-  Zap, 
-  FileText, 
-  Share2, 
+  Upload,
+  Download,
+  Cloud,
+  Shield,
+  Lock,
+  Lightning,
+  FileText,
+  ShareNetwork,
   Database,
   Wifi,
   Server,
@@ -15,8 +15,8 @@ import {
   Globe,
   Key,
   CheckCircle,
-  ArrowUpDown
-} from 'lucide-react';
+  ArrowsDownUp
+} from 'phosphor-react';
 
 interface FloatingIconProps {
   icon: React.ElementType;
@@ -92,7 +92,7 @@ export const AnimatedBackground: React.FC = () => {
       <FloatingIcon icon={Upload} className="top-10 left-10" delay={0} size={28} />
       <FloatingIcon icon={Download} className="top-20 right-20" delay={2} size={24} />
       <FloatingIcon icon={Cloud} className="top-32 left-1/4" delay={4} size={32} />
-      <FloatingIcon icon={Share2} className="top-16 right-1/3" delay={1} size={26} />
+      <FloatingIcon icon={ShareNetwork} className="top-16 right-1/3" delay={1} size={26} />
       <FloatingIcon icon={FileText} className="bottom-32 left-16" delay={3} size={24} />
       <FloatingIcon icon={Database} className="bottom-20 right-16" delay={5} size={28} />
       <FloatingIcon icon={Server} className="top-1/2 left-8" delay={2.5} size={24} />
@@ -105,10 +105,10 @@ export const AnimatedBackground: React.FC = () => {
       <FloatingIcon icon={CheckCircle} className="bottom-16 left-1/3" delay={4} size={26} />
 
       {/* Speed and Technology Icons */}
-      <FloatingIcon icon={Zap} className="top-40 right-12" delay={2} size={28} />
+      <FloatingIcon icon={Lightning} className="top-40 right-12" delay={2} size={28} />
       <FloatingIcon icon={Wifi} className="bottom-40 left-12" delay={1} size={24} />
       <FloatingIcon icon={Globe} className="top-1/4 left-1/2" delay={3} size={26} />
-      <FloatingIcon icon={ArrowUpDown} className="bottom-1/3 right-1/3" delay={4.5} size={24} />
+      <FloatingIcon icon={ArrowsDownUp} className="bottom-1/3 right-1/3" delay={4.5} size={24} />
 
       {/* Data Flow Lines */}
       <DataFlowLine className="top-1/4 left-0 w-1/3 rotate-12" delay={0} />

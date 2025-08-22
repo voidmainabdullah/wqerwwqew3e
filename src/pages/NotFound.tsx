@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { Cloud, Upload, Link as LinkIcon, File, Shield } from "lucide-react";
+import { Cloud, Upload, Link as LinkIcon, File, Shield } from "phosphor-react";
 import { AnimatedBackground } from '@/components/ui/animated-background';
 
 const NotFound = () => {
