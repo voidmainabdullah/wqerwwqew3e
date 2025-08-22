@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ChartBar, Download, ShareNetwork, Files, TrendingUp, Users, Calendar } from 'phosphor-react';
+import { ChartBar, Download, ShareNetwork, Files, TrendUp, Users, Calendar } from 'phosphor-react';
 interface AnalyticsData {
   totalDownloads: number;
   totalShares: number;
@@ -132,7 +132,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <TrendingUp className="mr-2 h-5 w-5 text-green-600" />
+              <TrendUp className="mr-2 h-5 w-5 text-green-600" />
               Popular Files
             </CardTitle>
             <CardDescription>
