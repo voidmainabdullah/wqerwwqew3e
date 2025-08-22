@@ -112,7 +112,7 @@ export const Dashboard: React.FC = () => {
         </div>
         
         {/* Desktop Banner - positioned to the right of heading */}
-        <div className="hidden lg:block ml-6 flex-shrink-0">
+        <div className="hidden lg:block ml-2 flex-shrink-0">
           <a 
             href="/subscription" 
             className="block transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
@@ -121,7 +121,7 @@ export const Dashboard: React.FC = () => {
             <img 
               src="/one.png" 
               alt="Tech Day Sale - Up to 40% Off" 
-              className="h-12 w-auto object-contain rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 ml-9"
+              className="h-12 w-auto object-contain rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 "
             />
           </a>
         </div>
