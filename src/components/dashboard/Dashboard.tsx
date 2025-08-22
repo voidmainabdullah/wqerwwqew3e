@@ -412,7 +412,7 @@ export const Dashboard: React.FC = () => {
       {/* Teams Management Section */}
       
       {/* Mobile Banner - positioned at the bottom of dashboard */}
-      <div className="lg:hidden mt-3">
+      <div className="lg:hidden mt-10">
         <a 
           href="/subscription" 
           className="block transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
