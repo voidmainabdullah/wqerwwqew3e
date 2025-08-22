@@ -112,7 +112,7 @@ export const Dashboard: React.FC = () => {
         </div>
         
         {/* Desktop Banner - positioned to the right of heading */}
-        <div className="hidden lg:block ml-6 flex-shrink-3">
+        <div className="hidden lg:block ml-6 flex-shrink-0">
           <a 
             href="/subscription" 
             className="block transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
