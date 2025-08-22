@@ -421,7 +421,7 @@ export const Dashboard: React.FC = () => {
           <img 
             src="/one.png" 
             alt="Tech Day Sale - Up to 40% Off" 
-            className="w-full h-auto object-contain rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-h-32 sm:max-h-40"
+            className="w-full h-auto object-contain rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-h-25 sm:max-h-40"
           />
         </a>
       </div>
