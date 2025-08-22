@@ -9,7 +9,7 @@ import {
   FileText,
   ShareNetwork,
   Database,
-  Wifi,
+  WifiHigh,
   HardDrive,
   Globe,
   Key,
@@ -105,7 +105,7 @@ export const AnimatedBackground: React.FC = () => {
 
       {/* Speed and Technology Icons */}
       <FloatingIcon icon={Lightning} className="top-40 right-12" delay={2} size={28} />
-      <FloatingIcon icon={Wifi} className="bottom-40 left-12" delay={1} size={24} />
+      <FloatingIcon icon={WifiHigh} className="bottom-40 left-12" delay={1} size={24} />
       <FloatingIcon icon={Globe} className="top-1/4 left-1/2" delay={3} size={26} />
       <FloatingIcon icon={ArrowsDownUp} className="bottom-1/3 right-1/3" delay={4.5} size={24} />
 
