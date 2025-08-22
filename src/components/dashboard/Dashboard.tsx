@@ -104,12 +104,28 @@ export const Dashboard: React.FC = () => {
   const storageProgress = stats ? stats.subscriptionTier === 'pro' ? 0 : stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex-1">
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground">
             Welcome back! Here's an overview of your file sharing activity.
           </p>
         </div>
+        
+        {/* Desktop Banner - positioned to the right of heading */}
+        <div className="hidden lg:block ml-6 flex-shrink-0">
+          <a 
+            href="/subscription" 
+            className="block transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
+            aria-label="View pricing and upgrade options"
+          >
+            <img 
+              src="/Tech Day - Upto 40% Off.png" 
+              alt="Tech Day Sale - Up to 40% Off" 
+              className="h-20 w-auto object-contain rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+            />
+          </a>
+        </div>
+        
         <div className="flex items-center space-x-2">
           <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="text-white bg-blue-700">
             {stats?.subscriptionTier === 'pro' ? <>
@@ -394,6 +410,21 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Teams Management Section */}
+      
+      {/* Mobile Banner - positioned at the bottom of dashboard */}
+      <div className="lg:hidden mt-8">
+        <a 
+          href="/subscription" 
+          className="block transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
+          aria-label="View pricing and upgrade options"
+        >
+          <img 
+            src="/Tech Day - Upto 40% Off.png" 
+            alt="Tech Day Sale - Up to 40% Off" 
+            className="w-full h-auto object-contain rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-h-32 sm:max-h-40"
+          />
+        </a>
+      </div>
       
     </div>;
 };

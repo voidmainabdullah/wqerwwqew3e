@@ -313,4 +313,42 @@
   animation: fade-in-up 0.6s ease-out;
 }
 
+/* Banner-specific animations and styles */
+@keyframes banner-glow {
+  0%, 100% { 
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1); 
+  }
+  50% { 
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2); 
+  }
+}
+
+.banner-hover-effect {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.banner-hover-effect:hover {
+  animation: banner-glow 2s ease-in-out infinite;
+}
+
+/* Responsive banner positioning */
+@media (max-width: 1023px) {
+  .dashboard-banner-mobile {
+    margin-top: 2rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-banner-mobile img {
+    max-height: 120px;
+  }
+}
+
+/* Focus states for accessibility */
+.banner-link:focus {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
 }
