@@ -111,7 +111,7 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
         
-      <div className="hidden lg:block flex-shrink-0 -translate-x-8">
+      <div className="hidden lg:block flex-shrink-0 -translate-x-12">
   <a 
     href="/subscription" 
     className="block transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
