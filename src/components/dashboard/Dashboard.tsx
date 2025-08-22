@@ -415,7 +415,7 @@ export const Dashboard: React.FC = () => {
       <div className="lg:hidden mt-8">
         <a 
           href="/subscription" 
-          className="block transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
+          className="block transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-6 rounded-lg"
           aria-label="View pricing and upgrade options"
         >
           <img 
