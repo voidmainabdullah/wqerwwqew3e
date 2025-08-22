@@ -119,7 +119,7 @@ export const Dashboard: React.FC = () => {
             aria-label="View pricing and upgrade options"
           >
             <img 
-              src="/Tech Day - Upto 40% Off.png" 
+              src="/one.png" 
               alt="Tech Day Sale - Up to 40% Off" 
               className="h-20 w-auto object-contain rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
             />
