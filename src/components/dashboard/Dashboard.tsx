@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Files, ShareNetwork, Download, TrendingUp, Upload, Clock, Shield, Lightning, Users, Cloud, FileText } from 'phosphor-react';
+import { Files, ShareNetwork, Download, TrendUp, Upload, Clock, Shield, Lightning, Users, Cloud, FileText } from 'phosphor-react';
 import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 import TeamsManager from '@/components/teams/TeamsManager';
 interface DashboardStats {
@@ -195,7 +195,7 @@ export const Dashboard: React.FC = () => {
         <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
-            <TrendingUp className="h-4 w-4 t bg-[#17d117]/0 text-red-400" />
+            <TrendUp className="h-4 w-4 t bg-[#17d117]/0 text-red-400" />
           </CardHeader>
           <CardContent>
             {/* Animated icon for empty state */}
