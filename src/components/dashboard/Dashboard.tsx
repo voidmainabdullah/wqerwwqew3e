@@ -111,21 +111,19 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
         
-        {/* Desktop Banner - positioned to the right of heading */}
-        <div className="hidden lg:block ml-2 flex-shrink-0">
-          <a 
-            href="/subscription" 
-            className="block transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
-            aria-label="View pricing and upgrade options"
-          >
-            <img 
-              src="/one.png" 
-              alt="Tech Day Sale - Up to 40% Off" 
-              className="h-12 w-auto object-contain rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 "
-            />
-          </a>
-        </div>
-        
+      <div className="hidden lg:block flex-shrink-0 -translate-x-2">
+  <a 
+    href="/subscription" 
+    className="block transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
+    aria-label="View pricing and upgrade options"
+  >
+    <img 
+      src="/one.png" 
+      alt="Tech Day Sale - Up to 40% Off" 
+      className="h-12 w-auto object-contain rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+    />
+  </a>
+</div>
         <div className="flex items-center space-x-2">
           <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="text-white bg-blue-700">
             {stats?.subscriptionTier === 'pro' ? <>
