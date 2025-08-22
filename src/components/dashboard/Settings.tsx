@@ -176,7 +176,7 @@ export const Settings: React.FC = () => {
             </div>
 
             {profile?.subscription_tier !== 'pro' && <Button asChild>
-                <a href="/subscription" className="\n">
+                <a href="/subscription">
                   <Crown className="mr-2 h-4 w-4" />
                   Upgrade to Pro
                 </a>
