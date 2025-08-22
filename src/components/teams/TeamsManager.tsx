@@ -12,7 +12,7 @@ import { Plus, Shield, Users, Crown, UserCheck, UserX, Trash, Gear } from 'phosp
 import { useToast } from '@/hooks/use-toast';
 import MemberManagement from './MemberManagement';
 interface Team {
-  id: string;
+  id: string; 
   name: string;
   admin_id: string;
   created_at: string;
