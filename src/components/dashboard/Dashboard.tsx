@@ -415,14 +415,13 @@ export const Dashboard: React.FC = () => {
       <div className="lg:hidden mt-8">
         <a 
           href="/subscription" 
-          className="block transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-6 rounded-lg"
+          className="block transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
           aria-label="View pricing and upgrade options"
         >
           <img 
             src="/one.png" 
             alt="Tech Day Sale - Up to 40% Off" 
-            className="w-full h-20 object-contain rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 max-h-32 sm:max-h-40"
-          />
+            className="w-full h-5 object-contain rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"/>
         </a>
       </div>
       
