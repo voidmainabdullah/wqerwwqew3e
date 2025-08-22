@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Shield, Users, Crown, UserCheck, UserX, Trash, Gear } from 'phosphor-react';
+import { Plus, Shield, Users, Crown, CheckCircle, UserX, Trash, Gear } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
 import MemberManagement from './MemberManagement';
 interface Team {
@@ -399,7 +399,7 @@ const TeamsManager: React.FC = () => {
         {selectedTeam ? <MemberManagement team={selectedTeam} members={teamMembers} isAdmin={selectedTeam.is_admin} onAddMember={addTeamMember} onUpdateMemberRole={updateMemberRole} onRemoveMember={removeMember} onRefreshMembers={() => fetchTeamMembers(selectedTeam.id)} /> : <Card>
             <CardContent className="flex items-center justify-center h-96">
               <div className="text-center">
-                <UserCheck className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
+                <CheckCircle className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium mb-2">Select a Team</h3>
                 <p className="text-muted-foreground">Choose a team from the left to manage its members</p>
               </div>
