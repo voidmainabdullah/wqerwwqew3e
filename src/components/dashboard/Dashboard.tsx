@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Files, ShareNetwork, Download, TrendUp, Upload, Clock, Shield, Lightning, Users, Cloud, FileText } from 'phosphor-react';
+import { Share } from "phosphor-react";
 import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 import TeamsManager from '@/components/teams/TeamsManager';
 interface DashboardStats {
