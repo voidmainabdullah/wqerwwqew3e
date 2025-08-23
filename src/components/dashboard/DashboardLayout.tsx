@@ -107,7 +107,7 @@ const AppSidebar = () => {
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link to="/receive">
+                  <Link to="/dashboard/receive">
                     <PaperPlaneTilt className="h-4 w-4" />
                     <span>Request File</span>
                   </Link>
