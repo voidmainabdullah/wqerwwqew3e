@@ -103,10 +103,12 @@ const AppSidebar = () => {
                     <Code className="h-4 w-4" />
                     <span>Receive File</span>
                   </Link>
+                  <SidebarMenuButton asChild>
                   <Link to="/receive">
                     <span>Request File</span>
                   </Link>
                 </SidebarMenuButton>
+                      </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
