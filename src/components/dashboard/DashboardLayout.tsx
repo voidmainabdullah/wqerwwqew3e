@@ -133,7 +133,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 <SidebarTrigger />
                 <div className="hidden md:block">
                   <h2 className="text-lg font-semibold">
-                    Happy Sharing!, {user.user_metadata?.display_name || user.email?.split('@')[0]}
+                    Happy Sharing! | {user.user_metadata?.display_name || user.email?.split('@')[0]}
                   </h2>
                 </div>
               </div>
