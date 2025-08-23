@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Shield, Users, Crown, CheckCircle, UserX, Trash, Gear } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
 import MemberManagement from './MemberManagement';
+
 interface Team {
   id: string; 
   name: string;
@@ -20,6 +21,7 @@ interface Team {
   role: string;
   permissions: any;
 }
+
 interface TeamMember {
   id: string;
   user_id: string;
@@ -32,6 +34,7 @@ interface TeamMember {
   };
   joined_at: string;
 }
+
 const TeamsManager: React.FC = () => {
   const {
     user

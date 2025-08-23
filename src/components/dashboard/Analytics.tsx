@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ChartBar, Download, ShareNetwork, Files, TrendUp, Users, Calendar } from 'phosphor-react';
+
 interface AnalyticsData {
   totalDownloads: number;
   totalShares: number;
@@ -11,6 +12,7 @@ interface AnalyticsData {
   recentDownloads: any[];
   popularFiles: any[];
 }
+
 export const Analytics: React.FC = () => {
   const {
     user

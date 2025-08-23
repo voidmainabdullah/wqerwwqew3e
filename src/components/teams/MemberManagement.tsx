@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { UserPlus, Crown, Gear, Trash, Shield, Users } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
+
 interface TeamMember {
   id: string;
   user_id: string;
@@ -22,6 +23,7 @@ interface TeamMember {
   };
   joined_at: string;
 }
+
 interface Team {
   id: string;
   name: string;
@@ -31,6 +33,7 @@ interface Team {
   role: string;
   permissions: any;
 }
+
 interface MemberManagementProps {
   team: Team;
   members: TeamMember[];
@@ -40,6 +43,7 @@ interface MemberManagementProps {
   onRemoveMember: (memberId: string, email: string) => Promise<void>;
   onRefreshMembers: () => void;
 }
+
 const MemberManagement: React.FC<MemberManagementProps> = ({
   team,
   members,

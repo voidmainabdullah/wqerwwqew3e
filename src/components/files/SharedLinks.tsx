@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Share } from 'phosphor-react';
+
 interface SharedLink {
   id: string;
   share_token: string;
@@ -20,6 +21,7 @@ interface SharedLink {
     file_size: number;
   };
 }
+
 export const SharedLinks: React.FC = () => {
   const {
     user

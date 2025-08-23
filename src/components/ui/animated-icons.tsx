@@ -12,8 +12,14 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, classNam
 
   const getIcon = () => {
     switch (type) {
-     
-     
+      case 'files':
+        return <Files className="w-8 h-8 text-yellow-400/60" />;
+      case 'shares':
+        return <ShareNetwork className="w-8 h-8 text-green-400/60" />;
+      case 'downloads':
+        return <Download className="w-8 h-8 text-blue-400/60" />;
+      case 'storage':
+        return <TrendUp className="w-8 h-8 text-red-400/60" />;
       default:
         return null;
     }
@@ -76,10 +82,6 @@ export const EmptyStateIcon: React.FC<EmptyStateIconProps> = ({ type, className 
     <div className={`absolute inset-0 flex flex-col items-center justify-center pointer-events-none animate-fade-in ${className}`}>
       <div className={`${content.color} animate-bounce-subtle opacity-50 mb-1`}>
         {content.icon}
-      </div>
-      <span className="text-xs text-muted-foreground/60 animate-pulse">
-        {content.text}
-      </span>
     </div>
   );
 };

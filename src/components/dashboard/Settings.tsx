@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Gear, User, Shield, Trash, Crown, Warning } from 'phosphor-react';
+
 export const Settings: React.FC = () => {
   const {
     user,

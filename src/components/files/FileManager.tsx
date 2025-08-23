@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { File, Download, ShareNetwork, Trash, Lock, LockOpen, Eye, EyeSlash, Calendar, Copy, Envelope, Code, DotsThree, Shield, Users, PaperPlaneTilt, ShieldCheck } from 'phosphor-react';
+
 interface FileData {
   id: string;
   original_name: string;
@@ -26,6 +27,7 @@ interface FileData {
   created_at: string;
   updated_at: string;
 }
+
 interface ShareLinkData {
   id: string;
   share_token: string;
@@ -36,6 +38,7 @@ interface ShareLinkData {
   is_active: boolean;
   recipient_email: string | null;
 }
+
 export const FileManager: React.FC = () => {
   const {
     user
