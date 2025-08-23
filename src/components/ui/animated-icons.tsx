@@ -85,3 +85,5 @@ export const EmptyStateIcon: React.FC<EmptyStateIconProps> = ({ type, className 
     </div>
   );
 };
+  )
+}
