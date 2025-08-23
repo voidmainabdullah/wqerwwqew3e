@@ -3,14 +3,22 @@ import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
+interface Profile {
+  storage_used: number | null;
+  storage_limit: number | null;
+  subscription_tier: string | null;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  profile: Profile | null;
   loading: boolean;
   signUp: (email: string, password: string, displayName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,29 +32,50 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // Handle session + user updates safely
+  // Update user + session
   const handleAuthChange = useCallback((session: Session | null) => {
     setSession(session);
     setUser(session?.user ?? null);
     setLoading(false);
   }, []);
 
+  // Fetch user profile safely
+  const fetchProfile = useCallback(async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("storage_used, storage_limit, subscription_tier")
+        .eq("id", userId)
+        .maybeSingle();
+
+      if (error) throw error;
+      setProfile(data ?? null);
+    } catch (err: any) {
+      console.error("Error fetching profile:", err.message);
+      setProfile(null);
+    }
+  }, []);
+
+  // Allow manual refresh from UI
+  const refreshProfile = useCallback(async () => {
+    if (user?.id) await fetchProfile(user.id);
+  }, [user, fetchProfile]);
+
   useEffect(() => {
     let mounted = true;
 
-    // Get existing session once on mount
+    // Get session on mount
     supabase.auth.getSession().then(({ data, error }) => {
       if (!mounted) return;
-      if (error) {
-        console.error("Error getting session:", error.message);
-      }
+      if (error) console.error("Error getting session:", error.message);
       handleAuthChange(data?.session ?? null);
     });
 
-    // Subscribe to auth state changes
+    // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       handleAuthChange(session);
     });
@@ -56,6 +85,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       subscription.unsubscribe();
     };
   }, [handleAuthChange]);
+
+  // Fetch profile when user changes
+  useEffect(() => {
+    if (user?.id) {
+      fetchProfile(user.id);
+    } else {
+      setProfile(null);
+    }
+  }, [user, fetchProfile]);
+
+  // ---------- Auth functions ----------
 
   const signUp = async (email: string, password: string, displayName?: string) => {
     const redirectUrl =
@@ -141,14 +181,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
+  // ---------- Context value ----------
   const value: AuthContextType = {
     user,
     session,
+    profile,
     loading,
     signUp,
     signIn,
     signOut,
     signInWithGoogle,
+    refreshProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
