@@ -65,7 +65,7 @@ const AppSidebar = () => {
           <img 
             src="/Skieshare-removebg-preview.png" 
             alt="SecureShare Logo" 
-            className="h-15 w-auto object-contain"
+            className="h-10 w-auto object-contain"
           />
           <span className="font-bold text-lg">SecureShare</span>
         </div>
