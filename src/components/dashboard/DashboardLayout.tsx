@@ -61,7 +61,7 @@ const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center space-x-2 px-8 py-2">
+        <div className="flex items-center space-x-2 px-4 py-2">
           <img 
             src="/Skieshare-removebg-preview.png" 
             alt="SecureShare Logo" 
