@@ -125,17 +125,7 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
         
-             <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/dashboard/receive">
-                    <PaperPlaneTilt className="h-4 w-4" />
-                    <span>Share File</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+            
 
         {/* Extra Pages */}
         <SidebarGroup>
