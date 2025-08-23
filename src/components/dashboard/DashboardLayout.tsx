@@ -124,7 +124,7 @@ const AppSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-              <
+         <SidebarGroup>
              <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/dashboard/receive">
