@@ -48,8 +48,8 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: House },
   { name: 'Upload', href: '/dashboard/upload', icon: Upload },
   { name: 'My Files', href: '/dashboard/files', icon: Files },
-  { name: 'Receive Files', href: '/dashboard/receive', icon: PaperPlaneTilt },
   { name: 'Teams', href: '/dashboard/teams', icon: Users },
+   { name: 'Teams Files', href: '/dashboard/TeamFiles', icon: PaperPlaneTilt },
   { name: 'Shared Links', href: '/dashboard/shared', icon: ShareNetwork },
   { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBar },
   { name: 'Settings', href: '/dashboard/settings', icon: Gear },
@@ -101,8 +101,11 @@ const AppSidebar = () => {
                 <SidebarMenuButton asChild>
                   <Link to="/code">
                     <Code className="h-4 w-4" />
-                    <span>Enter Code</span>
+                    <span>Receive File</span>
                   </Link>
+                  <link to="/receive">
+                    <span>Request File</span>
+                  </link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
