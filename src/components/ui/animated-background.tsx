@@ -129,8 +129,8 @@ export const AnimatedBackground: React.FC = () => {
 
       {/* Scanning Lines Effect */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent animate-scan-horizontal" />
-        <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-blue-400/30 to-transparent animate-scan-vertical" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent animate-pulse" />
+        <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-blue-400/30 to-transparent animate-pulse" />
       </div>
 
       {/* Particle Effect */}
@@ -138,12 +138,11 @@ export const AnimatedBackground: React.FC = () => {
         {Array.from({ length: 20 }).map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-400/30 rounded-full animate-particle"
+            className="absolute w-1 h-1 bg-blue-400/30 rounded-full animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${15 + Math.random() * 10}s`
+              animationDelay: `${Math.random() * 10}s`
             }}
           />
         ))}

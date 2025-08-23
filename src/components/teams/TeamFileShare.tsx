@@ -364,7 +364,7 @@ const TeamFileShare: React.FC = () => {
                       
                       {file.can_edit && <Button variant="outline" size="sm" onClick={() => toggleFileLock(file.file_id, file.is_locked)} className="text-red-400">
                           {file.is_locked ? <>
-                              <Unlock className="w-4 h-4 mr-2" />
+                              <LockOpen className="w-4 h-4 mr-2" />
                               Unlock
                             </> : <>
                               <Lock className="w-4 h-4 mr-2" />
