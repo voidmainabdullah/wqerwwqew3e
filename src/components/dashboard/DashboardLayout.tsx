@@ -103,9 +103,9 @@ const AppSidebar = () => {
                     <Code className="h-4 w-4" />
                     <span>Receive File</span>
                   </Link>
-                  <link to="/receive">
+                  <Link to="/receive">
                     <span>Request File</span>
-                  </link>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
