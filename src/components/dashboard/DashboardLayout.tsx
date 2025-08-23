@@ -34,7 +34,14 @@ import {
   SignOut,
   Users,
   PaperPlaneTilt,
-  Code
+  Code,
+  Clock,
+  CurrencyCircleDollar,
+  Lifebuoy,
+  Info,
+  TwitterLogo,
+  InstagramLogo,
+  FacebookLogo
 } from 'phosphor-react';
 
 interface DashboardLayoutProps {
@@ -50,6 +57,7 @@ const navigation = [
   { name: 'Shared Links', href: '/dashboard/shared', icon: ShareNetwork },
   { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBar },
   { name: 'Settings', href: '/dashboard/settings', icon: Gear },
+  { name: 'History', href: '/dashboard/history', icon: Clock },
 ];
 
 const AppSidebar = () => {
@@ -116,6 +124,76 @@ const AppSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Extra Pages */}
+        <SidebarGroup>
+          <SidebarGroupLabel>More</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/pricing">
+                    <CurrencyCircleDollar className="h-4 w-4" />
+                    <span>Pricing</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/support">
+                    <Lifebuoy className="h-4 w-4" />
+                    <span>Support</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/about">
+                    <Info className="h-4 w-4" />
+                    <span>About</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Community */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Community</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                    <TwitterLogo className="h-4 w-4" />
+                    <span>Twitter</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                    <InstagramLogo className="h-4 w-4" />
+                    <span>Instagram</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                    <FacebookLogo className="h-4 w-4" />
+                    <span>Facebook</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   );
@@ -172,7 +250,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/settings">
                         <Gear className="mr-2 h-4 w-4" />
-                        Settingskk
+                        Settings
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/history">
+                        <Clock className="mr-2 h-4 w-4" />
+                        History
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
