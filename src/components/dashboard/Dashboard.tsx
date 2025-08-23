@@ -468,7 +468,7 @@ export const Dashboard: React.FC = () => {
                   <div className="text-xs text-muted-foreground">Downloads</div>
                 </div>
                 <div className="text-center p-3 rounded-lg bg-muted/50">
-                  <div className="text-2xl font-bold text-green-500">
+                  <div className="text-1xl font-bold text-green-500">
                     {stats?.totalDownloads > 0 ? '↗ Goes Up' : '— Stable' }
                   </div>
                   <div className="text-xs text-muted-foreground">Trend</div>
