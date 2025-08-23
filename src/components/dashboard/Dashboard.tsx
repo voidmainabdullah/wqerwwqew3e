@@ -12,7 +12,7 @@ import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 import TeamsManager from '@/components/teams/TeamsManager';
 import { Code, PaperPlaneTilt } from 'phosphor-react';
 interface DashboardStats {
-  totalFiles: number;
+  totalFiles: number; 
   totalShares: number;
   totalDownloads: number;
   storageUsed: number;
