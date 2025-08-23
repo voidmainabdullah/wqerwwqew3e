@@ -10,6 +10,7 @@ import { Files, ShareNetwork, Download, TrendUp, Upload, Clock, Shield, Lightnin
 import { Share } from "phosphor-react";
 import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 import TeamsManager from '@/components/teams/TeamsManager';
+import { Code, PaperPlaneTilt } from 'phosphor-react';
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -258,6 +259,26 @@ export const Dashboard: React.FC = () => {
             </Button>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Code className="mr-2 h-5 w-5" />
+              Download with Code
+            </CardTitle>
+            <CardDescription>
+              Enter a share code to download files shared with you.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button className="w-full" variant="outline" asChild>
+              <Link to="/code">
+                <Code className="mr-2 h-4 w-4" />
+                Enter Code
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -422,6 +443,30 @@ export const Dashboard: React.FC = () => {
             alt="Tech Day Sale - Up to 40% Off" 
             className="w-full h-20 object-contain rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"/>
         </a>
+      </div>
+      
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 right-6 flex flex-col space-y-3 z-50">
+        <Button
+          size="lg"
+          className="rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 bg-functions-share hover:bg-functions-shareGlow"
+          asChild
+        >
+          <Link to="/dashboard/upload" title="Share File">
+            <ShareNetwork className="h-6 w-6" />
+          </Link>
+        </Button>
+        
+        <Button
+          size="lg"
+          variant="outline"
+          className="rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 bg-functions-download/10 hover:bg-functions-download/20 border-functions-download"
+          asChild
+        >
+          <Link to="/dashboard/receive" title="Receive File">
+            <PaperPlaneTilt className="h-6 w-6 text-functions-download" />
+          </Link>
+        </Button>
       </div>
       
     </div>;

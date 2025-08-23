@@ -98,6 +98,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
         <div className="flex-1 flex flex-col relative z-10">
           <header className="bg-card border-b border-border p-4">
+          <header className="bg-card border-b border-border p-4 sticky top-0 z-40 backdrop-blur-sm bg-card/95">
             <div className="flex items-center justify-between">
               <SidebarTrigger className="text-foreground" />
               
