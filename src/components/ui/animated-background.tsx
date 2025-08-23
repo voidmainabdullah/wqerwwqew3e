@@ -72,7 +72,7 @@ const PulsingOrb: React.FC<{ className?: string; delay?: number; size?: string }
 
 export const AnimatedBackground: React.FC = () => {
   return (
-    <div className="absolute inset-0 overflow-hidden bg-gradient-to-r from-blue-900 to-black">
+    <div className="absolute inset-0 overflow-hidden bg-gradient-to-r from-black to-black">
       {/* Grid Pattern Overlay */}
       <div className="absolute inset-0 opacity-10">
         <div 
