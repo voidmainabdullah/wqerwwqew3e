@@ -3,7 +3,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +14,6 @@ import {
 import { 
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -25,7 +23,6 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-  useSidebar
 } from '@/components/ui/sidebar';
 import { 
   House,
@@ -49,7 +46,7 @@ const navigation = [
   { name: 'Upload', href: '/dashboard/upload', icon: Upload },
   { name: 'My Files', href: '/dashboard/files', icon: Files },
   { name: 'Teams', href: '/dashboard/teams', icon: Users },
-   { name: 'Teams Files', href: '/dashboard/TeamFiles', icon: PaperPlaneTilt },
+  { name: 'Teams Files', href: '/dashboard/TeamFiles', icon: PaperPlaneTilt },
   { name: 'Shared Links', href: '/dashboard/shared', icon: ShareNetwork },
   { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBar },
   { name: 'Settings', href: '/dashboard/settings', icon: Gear },
@@ -72,6 +69,7 @@ const AppSidebar = () => {
       </SidebarHeader>
       
       <SidebarContent>
+        {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -93,6 +91,7 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
         
+        {/* Quick Actions */}
         <SidebarGroup>
           <SidebarGroupLabel>Quick Actions</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -103,12 +102,16 @@ const AppSidebar = () => {
                     <Code className="h-4 w-4" />
                     <span>Receive File</span>
                   </Link>
-                  <SidebarMenuButton asChild>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
                   <Link to="/receive">
+                    <PaperPlaneTilt className="h-4 w-4" />
                     <span>Request File</span>
                   </Link>
                 </SidebarMenuButton>
-                      </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
