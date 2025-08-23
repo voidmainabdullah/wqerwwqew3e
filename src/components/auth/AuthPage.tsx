@@ -1,200 +1,171 @@
-import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import { Lock, Envelope, User, GoogleChromeLogo } from 'phosphor-react';
-import { AnimatedBackground } from '@/components/ui/animated-background';
+import TaskBoard from './TaskBoard';
+import { Files, Cloud, Shield } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+const HeroSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const {
+    scrollY
+  } = useScroll();
 
-export const AuthPage: React.FC = () => {
-  const { user, signIn, signUp, signInWithGoogle } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Redirect if already authenticated
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    
-    await signIn(email, password);
-    setIsLoading(false);
-  };
-
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const displayName = formData.get('displayName') as string;
-    
-    await signUp(email, password, displayName);
-    setIsLoading(false);
-  };
-
-  const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    await signInWithGoogle();
-    setIsLoading(false);
-  };
-
-  return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated Background */}
-      <AnimatedBackground />
+  // Transform scroll position to glow line width and opacity
+  const glowWidth = useTransform(scrollY, [0, 300], ["0%", "100%"]);
+  const glowOpacity = useTransform(scrollY, [0, 300], [0, 1]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+  return <section className="relative w-full min-h-screen px-6 md:px-12 flex items-center overflow-hidden bg-background">
+      {/* Geometric background pattern */}
+      <div className="absolute inset-0 cosmic-grid opacity-20"></div>
+      <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div className="absolute bottom-20 left-10 w-72 h-72 rounded-full bg-accent/5 blur-3xl"></div>
       
-      {/* Content Overlay */}
-      <div className="relative z-10 w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="flex flex-col items-center space-y-2">
-            <img 
-              src="/Skieshare-removebg-preview.png" 
-              alt="SecureShare Logo" 
-              className="h-12 w-auto sm:h-16 md:h-20 object-contain"
-            />
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              SecureShare
-            </h1>
+      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 mx-0 my-[120px]">
+        {/* Left Column - Content */}
+        <div className="space-y-6 md:space-y-8 px-4 md:px-0">
+          
+
+          <div className="space-y-6">
+            <motion.h1 initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.2
+          }} className="text-4xl sm:text-5xl md:text-6xl tracking-tight text-foreground leading-[1.1] xl:text-6xl font-semibold">
+              Ultimate Transfer  Globally 
+              <br />
+               Secure. Fast. In Your Control
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"></span>
+            </motion.h1>
+            
+            <motion.p initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.4
+          }} className="text-muted-foreground max-w-lg leading-relaxed text-base md:text-lg font-extralight">
+              Revolutionary file sharing platform that puts security, speed, and collaboration at the forefront of your workflow.
+            </motion.p>
           </div>
-          <p className="text-muted-foreground mt-2">
-            Secure file sharing made simple
-          </p>
+
+          <motion.div className="flex flex-col sm:flex-row gap-4 items-start" initial={{
+          opacity: 0,
+          y: 20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.6
+        }}>
+            <Button className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-zinc-100 text-black w-full sm:w-auto">Share Now</Button>
+            <Button variant="outline" className="border-2 border-border text-foreground hover:bg-accent hover:text-accent-foreground text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto">
+              Go To Dashbaord
+            </Button>
+          </motion.div>
+
+          <motion.div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4" initial={{
+          opacity: 0
+        }} animate={{
+          opacity: 1
+        }} transition={{
+          duration: 0.6,
+          delay: 0.8
+        }}>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Shield className="h-4 w-4 text-primary" />
+              </div>
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground">Military-grade encryption</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
+                <Cloud className="h-4 w-4 text-accent" />
+              </div>
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground">Unlimited bandwidth</span>
+            </div>
+          </motion.div>
         </div>
 
-        <Card className="bg-card border-border">
-          <Tabs defaultValue="signin" className="w-full">
-            <CardHeader className="space-y-1">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
-              </TabsList>
-            </CardHeader>
-
-            <CardContent className="space-y-4">
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={handleGoogleSignIn}
-                disabled={isLoading}
-              >
-                <GoogleChromeLogo className="w-4 h-4 mr-2" />
-                Continue with Google
-              </Button>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <Separator className="w-full" />
+        {/* Right Column - Interactive Demo */}
+        <motion.div className="relative px-4 md:px-0" initial={{
+        opacity: 0,
+        x: 50
+      }} animate={{
+        opacity: 1,
+        x: 0
+      }} transition={{
+        duration: 0.8,
+        delay: 0.3
+      }}>
+          {/* Floating File Cards Preview */}
+          <div className="space-y-4">
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                    <Files className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm md:text-base font-semibold text-foreground">Project Files</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">24 files • 2.3 GB</p>
+                  </div>
                 </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">Or</span>
+                <div className="flex -space-x-2">
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/30 border-2 border-card"></div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-accent/30 border-2 border-card"></div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-muted border-2 border-card flex items-center justify-center text-xs font-medium">+3</div>
                 </div>
               </div>
-
-              <TabsContent value="signin" className="space-y-4 mt-4">
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
-                    <div className="relative">
-                      <Envelope className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signin-email"
-                        name="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signin-password"
-                        name="password"
-                        type="password"
-                        placeholder="Enter your password"
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Signing in..." : "Sign In"}
-                  </Button>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="signup" className="space-y-4 mt-4">
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-displayName">Display Name</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signup-displayName"
-                        name="displayName"
-                        type="text"
-                        placeholder="Enter your name"
-                        className="pl-10"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <div className="relative">
-                      <Envelope className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signup-email"
-                        name="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signup-password"
-                        name="password"
-                        type="password"
-                        placeholder="Create a password"
-                        className="pl-10"
-                        required
-                        minLength={6}
-                      />
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Creating account..." : "Create Account"}
-                  </Button>
-                </form>
-              </TabsContent>
-            </CardContent>
-          </Tabs>
-        </Card>
-
-        <p className="text-center text-xs text-muted-foreground mt-8">
-          By signing up, you agree to our terms of service and privacy policy.
-        </p>
+              <div className="grid grid-cols-3 gap-2 md:gap-3">
+                <div className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <Files className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                </div>
+                <div className="aspect-square rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                  <Files className="h-3 w-3 md:h-4 md:w-4 text-accent" />
+                </div>
+                <div className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center">
+                  <Files className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-card border border-border rounded-2xl p-3 md:p-4 shadow-lg transform translate-x-4 md:translate-x-8 hover:translate-x-0 transition-all duration-500">
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-accent/20 flex items-center justify-center">
+                  <Shield className="h-3 w-3 md:h-4 md:w-4 text-accent" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs md:text-sm font-medium text-foreground">Secure Upload</p>
+                  <p className="text-xs text-muted-foreground">End-to-end encrypted</p>
+                </div>
+                <div className="w-8 md:w-12 h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="w-6 md:w-8 h-full bg-accent rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
-    </div>
-  );
+      
+      {/* Animated White Glow Line */}
+      <motion.div className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-white to-transparent" style={{
+      width: glowWidth,
+      opacity: glowOpacity,
+      boxShadow: "0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4)"
+    }} />
+    </section>;
 };
+export default AuthPage;
