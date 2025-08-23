@@ -53,33 +53,36 @@ const navigation = [
   { name: 'Upload', href: '/dashboard/upload', icon: Upload },
   { name: 'My Files', href: '/dashboard/files', icon: Files },
   { name: 'Teams', href: '/dashboard/teams', icon: Users },
-  { name: 'Teams Files', href: '/dashboard/TeamFiles', icon: PaperPlaneTilt },
+  { name: 'Team Files', href: '/dashboard/team-files', icon: PaperPlaneTilt },
   { name: 'Shared Links', href: '/dashboard/shared', icon: ShareNetwork },
   { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBar },
   { name: 'Settings', href: '/dashboard/settings', icon: Gear },
-  { name: 'History', href: '/dashboard/history', icon: Clock },
 ];
 
 const AppSidebar = () => {
   const location = useLocation();
   
   return (
-    <Sidebar>
+    <Sidebar className="border-r border-border/50">
       <SidebarHeader>
-        <div className="flex items-center space-x-2 px-4 py-2">
+        <div className="flex items-center space-x-3 px-6 py-4">
           <img 
             src="/Skieshare-removebg-preview.png" 
             alt="SecureShare Logo" 
-            className="h-12 w-auto object-contain"
+            className="h-10 w-auto object-contain"
           />
-          <span className="font-bold text-lg">SecureShare</span>
+          <span className="font-bold text-xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+            SecureShare
+          </span>
         </div>
       </SidebarHeader>
       
       <SidebarContent>
         {/* Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+            Navigation
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navigation.map((item) => (
@@ -87,9 +90,10 @@ const AppSidebar = () => {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.href}
+                    className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200"
                   >
                     <Link to={item.href}>
-                      <item.icon className="h-4 w-4" />
+                      <item.icon className="h-5 w-5" />
                       <span>{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -101,22 +105,24 @@ const AppSidebar = () => {
         
         {/* Quick Actions */}
         <SidebarGroup>
-          <SidebarGroupLabel>Quick Actions</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+            Quick Actions
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/code">
-                    <Code className="h-4 w-4" />
-                    <span>Share File</span>
+                    <Code className="h-5 w-5" />
+                    <span>Enter Code</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/dashboard/receive">
-                    <PaperPlaneTilt className="h-4 w-4" />
+                    <PaperPlaneTilt className="h-5 w-5" />
                     <span>Receive File</span>
                   </Link>
                 </SidebarMenuButton>
@@ -125,74 +131,23 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
         
-            
 
         {/* Extra Pages */}
         <SidebarGroup>
-          <SidebarGroupLabel>More</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+            More
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/pricing">
-                    <CurrencyCircleDollar className="h-4 w-4" />
+                <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
+                  <Link to="/subscription">
+                    <CurrencyCircleDollar className="h-5 w-5" />
                     <span>Pricing</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/support">
-                    <Lifebuoy className="h-4 w-4" />
-                    <span>Support</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/about">
-                    <Info className="h-4 w-4" />
-                    <span>About</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Community */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Community</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                    <TwitterLogo className="h-4 w-4" />
-                    <span>Twitter</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                    <InstagramLogo className="h-4 w-4" />
-                    <span>Instagram</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                    <FacebookLogo className="h-4 w-4" />
-                    <span>Facebook</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -215,22 +170,32 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
+          <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-40">
             <div className="flex items-center justify-between h-16 px-6">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
                 <div className="hidden md:block">
-                  <h2 className="text-lg font-semibold">
-                    Happy Sharing! | {user.user_metadata?.display_name || user.email?.split('@')[0]}
-                  </h2>
+                  <div className="space-y-1">
+                    <h2 className="text-lg font-semibold text-foreground">
+                      Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date().toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}
+                    </p>
+                  </div>
                 </div>
               </div>
               
               <div className="flex items-center space-x-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                      <Avatar className="h-8 w-8">
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-accent/50 transition-all duration-200">
+                      <Avatar className="h-10 w-10">
                         <AvatarFallback className="bg-primary/10 text-primary">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
@@ -255,12 +220,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                         Settings
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard/history">
-                        <Clock className="mr-2 h-4 w-4" />
-                        History
-                      </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>
                       <SignOut className="mr-2 h-4 w-4" />
@@ -273,7 +232,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-8 bg-background/50">
             {children}
           </main>
         </div>

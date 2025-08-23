@@ -57,8 +57,8 @@
     --primary-glow: 0 0% 95%;
     --gradient-primary: linear-gradient(135deg, hsl(0 0% 85%), hsl(0 0% 95%));
     --gradient-surface: linear-gradient(180deg, hsl(0 0% 12%), hsl(0 0% 8%));
-    --shadow-elegant: 0 10px 30px -10px hsl(0 0% 95% / 0.3);
-    --shadow-glow: 0 0 40px hsl(0 0% 95% / 0.4);
+    --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 8px 32px hsl(0 0% 95% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Function highlight colors - vibrant accent colors */
@@ -415,6 +415,44 @@
   animation: glow 2s ease-in-out infinite;
 }
 
+/* Professional card hover effects */
+@keyframes card-hover {
+  0% { 
+    transform: translateY(0px); 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+  }
+  100% { 
+    transform: translateY(-2px); 
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
+  }
+}
+
+.animate-card-hover {
+  animation: card-hover 0.3s ease-out forwards;
+}
+
+/* Professional gradient animations */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Smooth scale animations */
+@keyframes scale-hover {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.animate-scale-hover {
+  animation: scale-hover 0.2s ease-out forwards;
+}
+
 /* Float animation for floating action buttons */
 @keyframes float-up {
   0%, 100% { 
@@ -429,4 +467,25 @@
   animation: float-up 3s ease-in-out infinite;
 }
 
+/* Professional loading animations */
+@keyframes skeleton-wave {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-skeleton-wave {
+  animation: skeleton-wave 2s ease-in-out infinite;
+}
+
+/* Enhanced button hover effects */
+@keyframes button-glow {
+  0% { box-shadow: 0 0 0 0 currentColor; }
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.animate-button-glow {
+  animation: button-glow 1.5s ease-out;
+}
 }

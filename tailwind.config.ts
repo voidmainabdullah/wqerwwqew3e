@@ -107,13 +107,31 @@ export default {
 					processingGlow: 'hsl(var(--function-processing-glow))'
 				}
 			},
+			spacing: {
+				'18': '4.5rem',
+				'88': '22rem',
+				'128': '32rem'
+			},
+			fontSize: {
+				'2xs': ['0.625rem', { lineHeight: '0.75rem' }],
+				'3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+				'4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+				'5xl': ['3rem', { lineHeight: '1.2' }]
+			},
+			letterSpacing: {
+				'wider': '0.05em',
+				'widest': '0.1em'
+			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-surface': 'var(--gradient-surface)'
 			},
 			boxShadow: {
 				'elegant': 'var(--shadow-elegant)',
-				'glow': 'var(--shadow-glow)'
+				'glow': 'var(--shadow-glow)',
+				'professional': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+				'professional-lg': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+				'inner-glow': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.06)'
 			},
 			transitionProperty: {
 				'smooth': 'var(--transition-smooth)'
@@ -294,7 +312,12 @@ export default {
 				'fade-in-up': 'fade-in-up 0.6s ease-out',
 				'scan-horizontal': 'scan-horizontal 3s linear infinite',
 				'scan-vertical': 'scan-vertical 4s linear infinite',
-				'particle': 'particle 8s ease-in-out infinite'
+				'particle': 'particle 8s ease-in-out infinite',
+				'card-hover': 'card-hover 0.3s ease-out forwards',
+				'gradient-shift': 'gradient-shift 8s ease infinite',
+				'scale-hover': 'scale-hover 0.2s ease-out forwards',
+				'skeleton-wave': 'skeleton-wave 2s ease-in-out infinite',
+				'button-glow': 'button-glow 1.5s ease-out'
 			}
 		}
 	},

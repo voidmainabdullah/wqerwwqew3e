@@ -6,11 +6,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Files, ShareNetwork, Download, TrendUp, Upload, Clock, Shield, Lightning, Users, Cloud, FileText } from 'phosphor-react';
-import { Share } from "phosphor-react";
-import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
-import TeamsManager from '@/components/teams/TeamsManager';
-import { Code, PaperPlaneTilt } from 'phosphor-react';
+import { Separator } from '@/components/ui/separator';
+import { 
+  Files, 
+  ShareNetwork, 
+  Download, 
+  TrendUp, 
+  Upload, 
+  Shield, 
+  Lightning, 
+  Users, 
+  Cloud, 
+  FileText,
+  Crown,
+  Zap,
+  Code,
+  PaperPlaneTilt,
+  ChartLineUp,
+  Calendar,
+  Activity
+} from 'phosphor-react';
+import { AnimatedIcon } from '@/components/ui/animated-icons';
+
 interface DashboardStats {
   totalFiles: number; 
   totalShares: number;
@@ -19,59 +36,59 @@ interface DashboardStats {
   storageLimit: number;
   subscriptionTier: string;
 }
+
 export const Dashboard: React.FC = () => {
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<any>(null);
+
   useEffect(() => {
     if (user) {
       fetchDashboardStats();
     }
   }, [user]);
+
   const fetchDashboardStats = async () => {
     try {
       // Fetch user profile with storage info
-      const {
-        data: profile
-      } = await supabase.from('profiles').select('storage_used, storage_limit, subscription_tier').eq('id', user?.id).single();
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('storage_used, storage_limit, subscription_tier')
+        .eq('id', user?.id)
+        .single();
 
       // Fetch file count
-      const {
-        count: fileCount
-      } = await supabase.from('files').select('*', {
-        count: 'exact',
-        head: true
-      }).eq('user_id', user?.id);
+      const { count: fileCount } = await supabase
+        .from('files')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user?.id);
 
       // Fetch share count - Get shared links for user's files
-      const {
-        data: userFiles
-      } = await supabase.from('files').select('id').eq('user_id', user?.id);
+      const { data: userFiles } = await supabase
+        .from('files')
+        .select('id')
+        .eq('user_id', user?.id);
+      
       const fileIds = userFiles?.map(f => f.id) || [];
-      const {
-        count: shareCount
-      } = await supabase.from('shared_links').select('*', {
-        count: 'exact',
-        head: true
-      }).in('file_id', fileIds);
+      
+      const { count: shareCount } = await supabase
+        .from('shared_links')
+        .select('*', { count: 'exact', head: true })
+        .in('file_id', fileIds);
 
       // Fetch download count
-      const {
-        count: downloadCount
-      } = await supabase.from('download_logs').select('*', {
-        count: 'exact',
-        head: true
-      }).in('file_id', fileIds);
+      const { count: downloadCount } = await supabase
+        .from('download_logs')
+        .select('*', { count: 'exact', head: true })
+        .in('file_id', fileIds);
+
       setStats({
         totalFiles: fileCount || 0,
         totalShares: shareCount || 0,
         totalDownloads: downloadCount || 0,
         storageUsed: profile?.storage_used || 0,
-        storageLimit: profile?.storage_limit || 6442450944,
-        // 6GB default
+        storageLimit: profile?.storage_limit || 6442450944, // 6GB default
         subscriptionTier: profile?.subscription_tier || 'free'
       });
       setUserProfile(profile);
@@ -81,21 +98,28 @@ export const Dashboard: React.FC = () => {
       setLoading(false);
     }
   };
+
   if (loading) {
-    return <div className="space-y-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => <Card key={i} className="animate-pulse">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="h-4 bg-muted rounded w-24"></div>
-                <div className="h-4 w-4 bg-muted rounded"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-8 bg-muted rounded w-16"></div>
-              </CardContent>
-            </Card>)}
+    return (
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <div className="h-8 bg-muted rounded-lg w-48 animate-pulse"></div>
+          <div className="h-4 bg-muted rounded w-96 animate-pulse"></div>
         </div>
-      </div>;
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardHeader className="pb-3">
+                <div className="h-4 bg-muted rounded w-24"></div>
+                <div className="h-6 bg-muted rounded w-16"></div>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
   }
+
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -103,371 +127,484 @@ export const Dashboard: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-  const storageProgress = stats ? stats.subscriptionTier === 'pro' ? 0 : stats.storageUsed / stats.storageLimit * 100 : 0;
-  return <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Welcome back! Here's an overview of your file sharing activity.
+
+  const storageProgress = stats ? 
+    (stats.subscriptionTier === 'pro' ? 0 : (stats.storageUsed / stats.storageLimit) * 100) : 0;
+
+  const isPro = stats?.subscriptionTier === 'pro';
+
+  return (
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+              Dashboard
+            </h1>
+            <Badge 
+              variant={isPro ? 'default' : 'secondary'} 
+              className={`px-3 py-1 text-sm font-medium ${
+                isPro 
+                  ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-0' 
+                  : 'bg-muted text-muted-foreground'
+              }`}
+            >
+              {isPro ? (
+                <>
+                  <Crown className="w-4 h-4 mr-1" />
+                  Pro
+                </>
+              ) : (
+                'Free'
+              )}
+            </Badge>
+          </div>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Welcome back, {user?.user_metadata?.display_name || user?.email?.split('@')[0]}. 
+            Here's your file sharing overview and quick actions.
           </p>
         </div>
-        
-      <div className="hidden lg:block flex-shrink-0 -translate-x-20">
-  <a 
-    href="/subscription" 
-    className="block transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
-    aria-label="View pricing and upgrade options"
-  >
-    <img 
-      src="/one.png" 
-      alt="Tech Day Sale - Up to 40% Off" 
-      className="h-16 w-auto object-contain rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-    />
-  </a>
-</div>
-        <div className="flex items-center space-x-2">
-          <Badge variant={stats?.subscriptionTier === 'pro' ? 'default' : 'secondary'} className="text-white bg-blue-700">
-            {stats?.subscriptionTier === 'pro' ? <>
-                <Zap className="w-3 h-3 mr-1" />
-                Pro
-              </> : 'Free'}
-          </Badge>
+
+        {/* Upgrade Banner - Desktop */}
+        <div className="hidden lg:block">
+          <Link 
+            to="/subscription" 
+            className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
+          >
+            <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 p-6 shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-50"></div>
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-2">
+                  <Lightning className="w-6 h-6 text-yellow-400" />
+                  <span className="text-white font-semibold text-lg">Upgrade to Pro</span>
+                </div>
+                <p className="text-blue-100 text-sm mb-3">
+                  Unlock unlimited storage and premium features
+                </p>
+                <div className="flex items-center text-yellow-400 text-sm font-medium">
+                  <span>Learn more</span>
+                  <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="relative overflow-hidden">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Files</CardTitle>
-            <Files className="h-4 w-4 text-yellow-400" />
-          </CardHeader>
-          <CardContent>
-            {/* Animated icon for empty state */}
-            <AnimatedIcon 
-              show={stats?.totalFiles === 0} 
-              type="files" 
-              className="z-0" 
-            />
-            <div className="text-2xl font-bold">{stats?.totalFiles}</div>
-            <p className="text-xs text-muted-foreground">
-              Files uploaded to your account
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="relative overflow-hidden">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <ShareNetwork className="h-4 w-4 text-green-400" />
-          </CardHeader>
-          <CardContent>
-            {/* Animated icon for empty state */}
-            <AnimatedIcon 
-              show={stats?.totalShares === 0} 
-              type="shares" 
-              className="z-0" 
-            />
-            <div className="text-2xl font-bold">{stats?.totalShares}</div>
-            <p className="text-xs text-muted-foreground">
-              Active sharing links created
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="relative overflow-hidden">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Downloads</CardTitle>
-            <Download className="h-4 w-4 text-blue-400" />
-          </CardHeader>
-          <CardContent>
-            {/* Animated icon for empty state */}
-            <AnimatedIcon 
-              show={stats?.totalDownloads === 0} 
-              type="downloads" 
-              className="z-0" 
-            />
-            <div className="text-2xl font-bold">{stats?.totalDownloads}</div>
-            <p className="text-xs text-muted-foreground">
-              Total file downloads
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="relative overflow-hidden">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
-            <TrendUp className="h-4 w-4 t bg-[#17d117]/0 text-red-400" />
-          </CardHeader>
-          <CardContent>
-            {/* Animated icon for empty state */}
-            <AnimatedIcon 
-              show={stats?.storageUsed === 0} 
-              type="storage" 
-              className="z-0" 
-            />
-            <div className="text-sm font-semibold rounded-3xl text-white bg-blue-50/[0.03]">
-              {stats?.subscriptionTier === 'pro' ? formatFileSize(stats?.storageUsed || 0) : `${formatFileSize(stats?.storageUsed || 0)} / ${formatFileSize(stats?.storageLimit || 0)}`}
+      {/* Stats Grid */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {/* Total Files */}
+        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-orange-500/5"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
+            <div className="space-y-1">
+              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                Total Files
+              </CardTitle>
+              <div className="text-3xl font-bold text-foreground">
+                {stats?.totalFiles.toLocaleString()}
+              </div>
             </div>
-            {stats?.subscriptionTier !== 'pro' && <Progress value={storageProgress} className="mt-2" />}
-            <p className="text-xs text-muted-foreground mt-1">
-              {stats?.subscriptionTier === 'pro' ? 'Unlimited storage' : '6GB total storage limit'}
+            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Files className="h-6 w-6 text-yellow-500" />
+            </div>
+          </CardHeader>
+          <CardContent className="relative">
+            <p className="text-sm text-muted-foreground">
+              Files in your account
             </p>
-          </CardContent>
-        </Card>
-      </div>
-    
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Upload className="mr-2 h-5 w-5" />
-              Quick Upload
-            </CardTitle>
-           
-            <CardDescription>
-              Upload files quickly and start sharing them instantly.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" asChild>
-              <Link to="/dashboard/upload">
-                <Upload className="mr-2 h-4 w-4" />
-                Upload Files
-              </Link>
-            </Button>
+            {stats?.totalFiles === 0 && (
+              <AnimatedIcon show={true} type="files" className="absolute inset-0" />
+            )}
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Share className="mr-2 h-5 w-5" />
-              Request Files
-            </CardTitle>
-            <CardDescription>
-              Create secure links for others to send files to you.
-            </CardDescription>
+        {/* Shared Links */}
+        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
+            <div className="space-y-1">
+              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                Active Shares
+              </CardTitle>
+              <div className="text-3xl font-bold text-foreground">
+                {stats?.totalShares.toLocaleString()}
+              </div>
+            </div>
+            <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <ShareNetwork className="h-6 w-6 text-green-500" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline" asChild>
-              <Link to="/dashboard/receive">
-                <Share className="mr-2 h-4 w-4" />
-                Request Files
-              </Link>
-            </Button>
+          <CardContent className="relative">
+            <p className="text-sm text-muted-foreground">
+              Sharing links created
+            </p>
+            {stats?.totalShares === 0 && (
+              <AnimatedIcon show={true} type="shares" className="absolute inset-0" />
+            )}
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Code className="mr-2 h-5 w-5" />
-              Download with Code
-            </CardTitle>
-            <CardDescription>
-              Enter a share code to download files shared with you.
-            </CardDescription>
+        {/* Downloads */}
+        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
+            <div className="space-y-1">
+              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                Total Downloads
+              </CardTitle>
+              <div className="text-3xl font-bold text-foreground">
+                {stats?.totalDownloads.toLocaleString()}
+              </div>
+            </div>
+            <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Download className="h-6 w-6 text-blue-500" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline" asChild>
-              <Link to="/code">
-                <Code className="mr-2 h-4 w-4" />
-                Enter Code
-              </Link>
-            </Button>
+          <CardContent className="relative">
+            <p className="text-sm text-muted-foreground">
+              File downloads completed
+            </p>
+            {stats?.totalDownloads === 0 && (
+              <AnimatedIcon show={true} type="downloads" className="absolute inset-0" />
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Storage Usage */}
+        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
+            <div className="space-y-1">
+              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                Storage Used
+              </CardTitle>
+              <div className="text-2xl font-bold text-foreground">
+                {isPro ? (
+                  <div className="flex items-center gap-2">
+                    <span>{formatFileSize(stats?.storageUsed || 0)}</span>
+                    <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-0 text-xs">
+                      Unlimited
+                    </Badge>
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    <div>{formatFileSize(stats?.storageUsed || 0)}</div>
+                    <div className="text-sm text-muted-foreground font-normal">
+                      of {formatFileSize(stats?.storageLimit || 0)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Cloud className="h-6 w-6 text-purple-500" />
+            </div>
+          </CardHeader>
+          <CardContent className="relative">
+            {!isPro && (
+              <div className="space-y-2">
+                <Progress 
+                  value={storageProgress} 
+                  className="h-2 bg-muted"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {(100 - storageProgress).toFixed(1)}% remaining
+                </p>
+              </div>
+            )}
+            {isPro && (
+              <p className="text-sm text-muted-foreground">
+                Unlimited cloud storage
+              </p>
+            )}
+            {stats?.storageUsed === 0 && (
+              <AnimatedIcon show={true} type="storage" className="absolute inset-0" />
+            )}
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Shield className="mr-2 h-5 w-5" />
-              Security Features
-            </CardTitle>
-            <CardDescription>
-              Your files are protected with enterprise-grade security.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex items-center text-sm">
-              <Clock className="mr-2 h-4 w-4 text-success" />
-              Automatic expiry dates
-            </div>
-            <div className="flex items-center text-sm">
-              <Shield className="mr-2 h-4 w-4 text-success" />
-              Download limits
-            </div>
-            <div className="flex items-center text-sm">
-              <Files className="mr-2 h-4 w-4 text-success" />
-              File locking
-            </div>
-          </CardContent>
-        </Card>
+      <Separator className="my-8" />
 
-        <Card className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-transparent overflow-hidden">
-            {/* Animated File Sharing Icons */}
-            <div className="absolute inset-0 bg-blue-800">
-              {/* Upload Animation */}
-              <div className="absolute top-4 left-4 animate-bounce-subtle">
-                <Upload className="w-6 h-6 text-blue-400/60" />
+      {/* Quick Actions Section */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <Activity className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-semibold tracking-tight">Quick Actions</h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {/* Upload Files */}
+          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+            <CardHeader className="pb-4">
+              <div className="w-12 h-12 rounded-xl bg-functions-upload/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Upload className="w-6 h-6 text-functions-upload" />
               </div>
-              
-              {/* Download Animation */}
-              <div className="absolute top-4 right-4 animate-bounce-subtle" style={{
-              animationDelay: '0.5s'
-            }}>
-                <Download className="w-6 h-6 text-green-400/60" />
+              <CardTitle className="text-xl">Upload Files</CardTitle>
+              <CardDescription className="text-base">
+                Upload and share files instantly with advanced security options.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-xl transition-all duration-300" asChild>
+                <Link to="/dashboard/upload">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Start Upload
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Request Files */}
+          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+            <CardHeader className="pb-4">
+              <div className="w-12 h-12 rounded-xl bg-functions-download/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <PaperPlaneTilt className="w-6 h-6 text-functions-download" />
               </div>
-              
-              {/* Cloud Storage Animation */}
-              <div className="absolute bottom-4 left-4 animate-pulse">
-                <Cloud className="w-8 h-8 text-cyan-400/50" />
+              <CardTitle className="text-xl">Request Files</CardTitle>
+              <CardDescription className="text-base">
+                Create secure links for others to send files directly to you.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full" variant="outline" asChild>
+                <Link to="/dashboard/receive">
+                  <PaperPlaneTilt className="mr-2 h-4 w-4" />
+                  Create Request
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Download with Code */}
+          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+            <CardHeader className="pb-4">
+              <div className="w-12 h-12 rounded-xl bg-functions-processing/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Code className="w-6 h-6 text-functions-processing" />
               </div>
-              
-              {/* Share Link Animation */}
-              <div className="absolute bottom-4 right-4 animate-pulse" style={{
-              animationDelay: '1s'
-            }}>
-                <Share className="w-6 h-6 text-purple-400/60" />
-              </div>
-              
-              {/* Floating Files */}
-              <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 animate-float">
-                <Files className="w-5 h-5 text-blue-300/40" />
-              </div>
-              
-              <div className="absolute top-1/3 right-1/3 transform translate-x-1/2 -translate-y-1/2 animate-float" style={{
-              animationDelay: '2s'
-            }}>
-                <FileText className="w-4 h-4 text-green-300/40" />
-              </div>
-              
-              {/* Data Flow Lines */}
-              <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent animate-data-flow"></div>
-              <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-400/30 to-transparent animate-data-flow" style={{
-              animationDelay: '1.5s'
-            }}></div>
-              
-              {/* Connection Nodes */}
-              <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-blue-500/60 rounded-full animate-ping"></div>
-              <div className="absolute top-1/3 right-1/4 w-2 h-2 bg-green-500/60 rounded-full animate-ping" style={{
-              animationDelay: '0.8s'
-            }}></div>
-              <div className="absolute bottom-1/3 left-1/2 w-2 h-2 bg-purple-500/60 rounded-full animate-ping" style={{
-              animationDelay: '1.6s'
-            }}></div>
-              
-              {/* Progress Indicators */}
-              <div className="absolute top-1/2 right-8 flex flex-col space-y-1">
-                <div className="w-12 h-1 bg-blue-600/30 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-400 rounded-full animate-progress-bar"></div>
+              <CardTitle className="text-xl">Download with Code</CardTitle>
+              <CardDescription className="text-base">
+                Enter a share code to access files shared with you.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full" variant="outline" asChild>
+                <Link to="/code">
+                  <Code className="mr-2 h-4 w-4" />
+                  Enter Code
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <Separator className="my-8" />
+
+      {/* Management & Analytics Section */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <ChartLineUp className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-semibold tracking-tight">Management & Analytics</h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* File Management */}
+          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+            <CardHeader>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Files className="w-6 h-6 text-primary" />
                 </div>
-                <div className="w-12 h-1 bg-green-600/30 rounded-full overflow-hidden">
-                  <div className="h-full bg-green-400 rounded-full animate-progress-bar" style={{
-                  animationDelay: '0.5s'
-                }}></div>
-                </div>
-                <div className="w-12 h-1 bg-purple-600/30 rounded-full overflow-hidden">
-                  <div className="h-full bg-purple-400 rounded-full animate-progress-bar" style={{
-                  animationDelay: '1s'
-                }}></div>
+                <div>
+                  <CardTitle className="text-xl">File Management</CardTitle>
+                  <CardDescription className="text-base">
+                    Organize, share, and manage your uploaded files.
+                  </CardDescription>
                 </div>
               </div>
-              
-              {/* Network Connections */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 200 100">
-                <defs>
-                  <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0" />
-                    <stop offset="50%" stopColor="rgb(59, 130, 246)" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="rgb(59, 130, 246)" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path d="M20,30 Q100,10 180,30" stroke="url(#connectionGradient)" strokeWidth="1" fill="none" className="animate-draw-line" />
-                <path d="M20,70 Q100,90 180,70" stroke="url(#connectionGradient)" strokeWidth="1" fill="none" className="animate-draw-line" style={{
-                animationDelay: '1s'
-              }} />
-              </svg>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 rounded-lg bg-muted/50">
+                  <div className="text-2xl font-bold text-foreground">{stats?.totalFiles}</div>
+                  <div className="text-xs text-muted-foreground">Files</div>
+                </div>
+                <div className="text-center p-3 rounded-lg bg-muted/50">
+                  <div className="text-2xl font-bold text-foreground">{stats?.totalShares}</div>
+                  <div className="text-xs text-muted-foreground">Shares</div>
+                </div>
+              </div>
+              <Button className="w-full" variant="outline" asChild>
+                <Link to="/dashboard/files">
+                  <Files className="mr-2 h-4 w-4" />
+                  Manage Files
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Analytics */}
+          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+            <CardHeader>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <ChartLineUp className="w-6 h-6 text-blue-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Analytics</CardTitle>
+                  <CardDescription className="text-base">
+                    Track downloads and sharing performance.
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 rounded-lg bg-muted/50">
+                  <div className="text-2xl font-bold text-foreground">{stats?.totalDownloads}</div>
+                  <div className="text-xs text-muted-foreground">Downloads</div>
+                </div>
+                <div className="text-center p-3 rounded-lg bg-muted/50">
+                  <div className="text-2xl font-bold text-green-500">
+                    {stats?.totalDownloads > 0 ? '↗' : '—'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Trend</div>
+                </div>
+              </div>
+              <Button className="w-full" variant="outline" asChild>
+                <Link to="/dashboard/analytics">
+                  <ChartLineUp className="mr-2 h-4 w-4" />
+                  View Analytics
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Security & Features Section */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <Shield className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-semibold tracking-tight">Security & Features</h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Security Features */}
+          <Card className="border-0 bg-gradient-to-br from-card to-card/50 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-xl">
+                <Shield className="w-6 h-6 text-green-500" />
+                Security Features
+              </CardTitle>
+              <CardDescription className="text-base">
+                Your files are protected with enterprise-grade security.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-green-500/5 border border-green-500/20">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span className="text-sm font-medium">End-to-end encryption</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  <span className="text-sm font-medium">Automatic expiry dates</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                  <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                  <span className="text-sm font-medium">Download limits & tracking</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Team Collaboration */}
+          <Card className="border-0 bg-gradient-to-br from-card to-card/50 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-xl">
+                <Users className="w-6 h-6 text-blue-500" />
+                Team Collaboration
+              </CardTitle>
+              <CardDescription className="text-base">
+                Work together with advanced team features.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  <span className="text-sm font-medium">Team file sharing</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-green-500/5 border border-green-500/20">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span className="text-sm font-medium">Role-based permissions</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                  <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                  <span className="text-sm font-medium">Collaborative workflows</span>
+                </div>
+              </div>
+              <Button className="w-full" variant="outline" asChild>
+                <Link to="/dashboard/teams">
+                  <Users className="mr-2 h-4 w-4" />
+                  Manage Teams
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Mobile Upgrade Banner */}
+      <div className="lg:hidden">
+        <Link 
+          to="/subscription" 
+          className="block transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
+        >
+          <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 p-6 shadow-xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-50"></div>
+            <div className="relative text-center">
+              <Lightning className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
+              <h3 className="text-white font-bold text-xl mb-2">Upgrade to Pro</h3>
+              <p className="text-blue-100 mb-4">
+                Unlock unlimited storage and premium features
+              </p>
+              <div className="inline-flex items-center text-yellow-400 font-medium">
+                <span>Get Started</span>
+                <Lightning className="w-4 h-4 ml-2" />
+              </div>
             </div>
           </div>
-          <CardHeader className="relative bg-blue-800">
-            <CardTitle className="flex items-center font-semibold text-xl text-slate-50">
-              <Lightning className="mr-2 h-6 w-6  text-blue-500 bg-inherit" />
-              Upgrade to Pro
-            </CardTitle>
-            <CardDescription className="text-base text-gray-200">
-              Unlock unlimited storage and advanced team features.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="bg-gradient-to-t from-blue-900 via-blue-800 bg-[#6bffa0]/5">
-            <div className="space-y-2">
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Lightning className="mr-2 h-4 w-4 text-primary" />
-                Unlimited file storage
-              </div>
-              <div className="flex items-center text-sm text-muted-foreground bg-[#00ee00]/0">
-                <Users className="mr-2 h-4 w-4 text-primary" />
-                Advanced team collaboration
-              </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Shield className="mr-2 h-4 w-4 text-primary" />
-                Priority support & security
-              </div>
-            </div>
-            <Button className="w-full bg-gradient-to-r from-blue-600 to-black hover:from-blue/90 hover:to-black/90 text-white font-semibold py-2 px-4 rounded-lg transform transition hover:scale-105 flex items-center justify-center gap-2" asChild>
-              <Link to="/subscription" className="">
-                <Lightning className="mr-2 h-4 w-4" />
-                Get Premium !
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        </Link>
       </div>
 
-      {/* Teams Management Section */}
-      
-      {/* Mobile Banner - positioned at the bottom of dashboard */}
-      <div className="lg:hidden mt-8">
-        <a 
-          href="/subscription" 
-          className="block transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
-          aria-label="View pricing and upgrade options"
-        >
-          <img 
-            src="/one.png" 
-            alt="Tech Day Sale - Up to 40% Off" 
-            className="w-full h-20 object-contain rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"/>
-        </a>
-      </div>
-      
       {/* Floating Action Buttons */}
-      <div className="fixed bottom-6 right-6 flex flex-col space-y-3 z-50">
+      <div className="fixed bottom-8 right-8 flex flex-col gap-4 z-50">
         <Button
           size="lg"
-          className="rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 bg-functions-share hover:bg-functions-shareGlow"
+          className="w-16 h-16 rounded-full shadow-2xl hover:shadow-functions-share/30 transition-all duration-300 hover:scale-110 bg-functions-share hover:bg-functions-shareGlow border-0"
           asChild
         >
-          <Link to="/dashboard/upload" title="Share File">
-            <ShareNetwork className="h-6 w-6" />
+          <Link to="/dashboard/upload" title="Upload Files">
+            <Upload className="h-7 w-7" />
           </Link>
         </Button>
         
         <Button
           size="lg"
           variant="outline"
-          className="rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 bg-functions-download/10 hover:bg-functions-download/20 border-functions-download"
+          className="w-16 h-16 rounded-full shadow-2xl hover:shadow-functions-download/30 transition-all duration-300 hover:scale-110 bg-background/80 backdrop-blur-sm border-functions-download/30 hover:border-functions-download"
           asChild
         >
-          <Link to="/dashboard/receive" title="Receive File">
-            <PaperPlaneTilt className="h-6 w-6 text-functions-download" />
+          <Link to="/dashboard/receive" title="Request Files">
+            <PaperPlaneTilt className="h-7 w-7 text-functions-download" />
           </Link>
         </Button>
       </div>
-      
-    </div>;
+    </div>
+  );
 };
