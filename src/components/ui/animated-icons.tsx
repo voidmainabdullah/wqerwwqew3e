@@ -1,37 +1,55 @@
-import React from "react";
+import React from 'react';
 
-interface AnimatedFogProps {
+interface AnimatedIconProps {
   show: boolean;
+  type: 'files' | 'shares' | 'downloads' | 'storage';
   className?: string;
 }
 
-export const AnimatedFog: React.FC<AnimatedFogProps> = ({ show, className = "" }) => {
+export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, className = '' }) => {
   if (!show) return null;
 
   return (
     <div
       className={`absolute inset-0 flex items-center justify-center pointer-events-none animate-fade-in ${className}`}
     >
-      {/* Fog layers */}
-      <div className="absolute w-[150%] h-[150%] bg-gradient-to-r from-white/10 via-white/5 to-transparent blur-3xl animate-fog-move" />
-      <div className="absolute w-[120%] h-[120%] bg-gradient-to-l from-white/5 via-white/10 to-transparent blur-2xl animate-fog-move-delayed" />
+      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200/40 to-gray-400/20 blur-2xl animate-pulse opacity-40" />
     </div>
   );
 };
 
-interface EmptyStateFogProps {
-  text: string;
+interface EmptyStateIconProps {
+  type: 'files' | 'shares' | 'downloads' | 'storage';
   className?: string;
 }
 
-export const EmptyStateFog: React.FC<EmptyStateFogProps> = ({ text, className = "" }) => {
+export const EmptyStateIcon: React.FC<EmptyStateIconProps> = ({ type, className = '' }) => {
+  const getEmptyStateText = () => {
+    switch (type) {
+      case 'files':
+        return { text: 'No files yet', color: 'text-yellow-400' };
+      case 'shares':
+        return { text: 'No shares yet', color: 'text-green-400' };
+      case 'downloads':
+        return { text: 'No downloads yet', color: 'text-blue-400' };
+      case 'storage':
+        return { text: 'Storage empty', color: 'text-red-400' };
+      default:
+        return null;
+    }
+  };
+
+  const content = getEmptyStateText();
+  if (!content) return null;
+
   return (
     <div
       className={`absolute inset-0 flex flex-col items-center justify-center pointer-events-none animate-fade-in ${className}`}
     >
-      {/* Subtle foggy glow */}
-      <div className="absolute w-[100%] h-[100%] bg-gradient-to-b from-white/10 via-white/5 to-transparent blur-2xl animate-fog-move opacity-50" />
-      <span className="text-xs text-white/70 relative z-10">{text}</span>
+      <div
+        className={`w-12 h-12 rounded-full bg-gradient-to-br from-gray-300/40 to-gray-500/20 blur-xl animate-pulse mb-2`}
+      />
+      <span className={`text-xs ${content.color}`}>{content.text}</span>
     </div>
   );
 };
