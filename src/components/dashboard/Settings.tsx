@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Gear, User, Shield, Trash, Crown, Warning } from 'phosphor-react';
-
 export const Settings: React.FC = () => {
   const {
     user,
@@ -144,9 +143,9 @@ export const Settings: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-[#00ff00]/[0.04]">
-          <CardHeader>
-            <CardTitle className="flex items-center text-green-400">
+        <Card className="bg-blue-800">
+          <CardHeader className="bg-blue-800">
+            <CardTitle className="flex items-center text-2xl font-semibold text-amber-300">
               <Crown className="mr-2 h-5 w-5" />
               Subscription
             </CardTitle>
@@ -154,7 +153,7 @@ export const Settings: React.FC = () => {
               Your current subscription plan and usage.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-blue-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Current Plan</p>
@@ -162,7 +161,7 @@ export const Settings: React.FC = () => {
                   {profile?.subscription_tier === 'pro' ? 'Pro Plan' : 'Free Plan'}
                 </p>
               </div>
-              <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'}>
+              <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="bg-stone-800">
                 {profile?.subscription_tier === 'pro' ? 'Pro' : 'Free'}
               </Badge>
             </div>
@@ -177,7 +176,7 @@ export const Settings: React.FC = () => {
             </div>
 
             {profile?.subscription_tier !== 'pro' && <Button asChild>
-                <a href="/subscription">
+                <a href="/subscription" className="">
                   <Crown className="mr-2 h-4 w-4" />
                   Upgrade to Pro
                 </a>
