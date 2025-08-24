@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { File, Download, ShareNetwork, Trash, Lock, LockOpen, Eye, EyeSlash, Calendar, Copy, Envelope, Code, DotsThree, Shield, Users, PaperPlaneTilt, ShieldCheck } from 'phosphor-react';
+import { File, Download, ShareNetwork, Trash, Lock, LockOpen, Eye, EyeSlash, Calendar, Copy, Envelope, Code, DotsThree, Shield, Users, PaperPlaneTilt, ShieldCheck, ArrowRight } from 'phosphor-react';
 
 interface FileData {
   id: string;
@@ -465,81 +465,6 @@ export const FileManager: React.FC = () => {
           Go to My Files
           <ArrowRight size={18} />
         </a>
-      </Button>
-    </div>
-
-    {/* File list section */}
-    {files.length === 0 ? (
-      <Card>
-        <CardContent className="text-center py-12">
-          <File className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium mb-2">No files uploaded yet</h3>
-          <p className="text-muted-foreground mb-4">
-            Start by uploading your first file.
-          </p>
-          <Button asChild>
-            <a href="/dashboard/upload">Upload Files</a>
-          </Button>
-        </CardContent>
-      </Card>
-    ) : (
-      <div className="grid gap-4">
-        {files.map((file, index) => (
-          <Card
-            key={file.id}
-            className="transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center space-x-4 min-w-0 flex-1">
-                  <File className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground flex-shrink-0" />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-medium truncate">{file.original_name}</h3>
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-                      <span>{formatFileSize(file.file_size)}</span>
-                      <span className="hidden sm:inline">
-                        {file.download_count} downloads
-                      </span>
-                      <span className="hidden md:inline">
-                        Uploaded {formatDate(file.created_at)}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2">
-                      <Badge
-                        variant={file.is_public ? "default" : "secondary"}
-                        className="text-xs"
-                      >
-                        {file.is_public ? "Public" : "Private"}
-                      </Badge>
-                      {file.is_locked && (
-                        <Badge variant="destructive" className="text-xs">
-                          Locked
-                        </Badge>
-                      )}
-                      {file.expires_at &&
-                        new Date(file.expires_at) < new Date() && (
-                          <Badge variant="destructive" className="text-xs">
-                            Expired
-                          </Badge>
-                        )}
-                      {file.share_code && (
-                        <Badge variant="outline" className="text-xs">
-                          Code: {file.share_code}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    )}
-  </div>
-
-
                   <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                     <Button variant="ghost" size="sm" onClick={() => downloadFile(file)} className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105">
                       <Download className="h-3 w-3 sm:h-4 sm:w-4" />
