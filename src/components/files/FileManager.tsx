@@ -457,7 +457,14 @@ export const FileManager: React.FC = () => {
           Manage your uploaded files and sharing settings.
         </p>
       </div>
-
+ <Button asChild>
+          <a href="/FileManager" className="flex items-center gap-2">
+            Go to My Files
+            <ArrowRight size={18} />
+          </a>
+        </Button>
+      </div>
+  
       {files.length === 0 ? <Card>
           <CardContent className="text-center py-12">
             <File className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
