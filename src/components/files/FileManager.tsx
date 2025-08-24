@@ -465,184 +465,249 @@ export const FileManager: React.FC = () => {
           Go to My Files
           <ArrowRight size={18} />
         </a>
-                  <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                    <Button variant="ghost" size="sm" onClick={() => downloadFile(file)} className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105">
-                      <Download className="h-3 w-3 sm:h-4 sm:w-4" />
-                    </Button>
+      </Button>
+    </div>
 
-                    <Button variant="ghost" size="sm" onClick={() => scanForVirus(file)} disabled={virusScanning[file.id]} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105">
-                      {virusScanning[file.id] ? <div className="flex items-center">
-                          <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-functions-share border-t-transparent"></div>
-                        </div> : <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4" />}
-                    </Button>
+    {/* File list section */}
+    {files.length === 0 ? (
+      <div className="text-center py-12">
+        <File size={48} className="mx-auto text-muted-foreground mb-4" />
+        <h3 className="text-lg font-semibold mb-2">No files uploaded yet</h3>
+        <p className="text-muted-foreground mb-4">Upload your first file to get started</p>
+        <Button asChild>
+          <a href="/upload">Upload File</a>
+        </Button>
+      </div>
+    ) : (
+      <div className="grid gap-4">
+        {files.map(file => (
+          <Card key={file.id} className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <File className="h-5 w-5 text-primary flex-shrink-0" />
+                    <h3 className="font-semibold truncate text-sm sm:text-base">{file.original_name}</h3>
+                  </div>
+                  
+                  <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-3">
+                    <span>{formatFileSize(file.file_size)}</span>
+                    <span>•</span>
+                    <span>{file.file_type}</span>
+                    <span>•</span>
+                    <span className="flex items-center">
+                      <Calendar className="h-3 w-3 mr-1" />
+                      {formatDate(file.created_at)}
+                    </span>
+                  </div>
 
-                    {/* Team Share Button */}
-                    <Button variant="ghost" size="sm" onClick={() => {
-                setSelectedTeamFile(file);
-                setTeamShareDialogOpen(true);
-              }} className="hover:bg-functions-processing/10 hover:text-functions-processing transition-all duration-300 hover:scale-105">
-                      <Users className="h-3 w-3 sm:h-4 sm:w-4" />
-                    </Button>
-
-                    <Button variant="ghost" size="sm" onClick={() => toggleFileVisibility(file.id, file.is_public)} className="hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-105">
-                      {file.is_public ? <Eye className="h-3 w-3 sm:h-4 sm:w-4" /> : <EyeSlash className="h-3 w-3 sm:h-4 sm:w-4" />}
-                    </Button>
-
-                    <Button variant="ghost" size="sm" onClick={() => toggleFileLock(file.id, file.is_locked)} className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105">
-                      {file.is_locked ? <Lock className="h-3 w-3 sm:h-4 sm:w-4" /> : <LockOpen className="h-3 w-3 sm:h-4 sm:w-4" />}
-                    </Button>
-
-                    <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" size="sm" onClick={() => setSelectedFile(file)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105">
-                          <ShareNetwork className="h-3 w-3 sm:h-4 sm:w-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Share File</DialogTitle>
-                          <DialogDescription>
-                            Create a sharing link for {selectedFile?.original_name}
-                          </DialogDescription>
-                        </DialogHeader>
-
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="shareMethod">Share Method</Label>
-                            <Select value={shareMethod} onValueChange={(value: any) => setShareMethod(value)}>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select sharing method" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-stone-900">
-                                <SelectItem value="public">
-                                  <div className="flex items-center space-x-2">
-                                    <Copy className="h-4 w-4" />
-                                    <span>Direct Link</span>
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="email">
-                                  <div className="flex items-center space-x-2">
-                                    <Envelope className="h-4 w-4" />
-                                    <span>Email Link</span>
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="code">
-                                  <div className="flex items-center space-x-2">
-                                    <Code className="h-4 w-4" />
-                                    <span>Share Code</span>
-                                  </div>
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          {shareMethod === 'email' && <div>
-                              <Label htmlFor="recipientEmail">Recipient Email</Label>
-                              <Input id="recipientEmail" type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="Enter email address" />
-                            </div>}
-
-                          <div>
-                            <Label htmlFor="downloadLimit">Download Limit (optional)</Label>
-                            <Input id="downloadLimit" type="number" value={downloadLimit} onChange={e => setDownloadLimit(e.target.value)} placeholder="Unlimited" />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="sharePassword">
-                              Password Protection 
-                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro</Badge>}
-                            </Label>
-                            <Input id="sharePassword" type="password" value={sharePassword} onChange={e => setSharePassword(e.target.value)} placeholder={userProfile?.subscription_tier === 'pro' ? "Enter password to protect the link" : "Upgrade to Pro for password protection"} disabled={userProfile?.subscription_tier !== 'pro'} />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="expiryDays">
-                              Expires in (days)
-                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro for custom dates</Badge>}
-                            </Label>
-                            <Select value={expiryDays} onValueChange={setExpiryDays}>
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="1">1 day</SelectItem>}
-                                <SelectItem value="7">7 days</SelectItem>
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="30">30 days</SelectItem>}
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="90">90 days</SelectItem>}
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="never">Never</SelectItem>}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-
-                        <DialogFooter>
-                          <Button variant="outline" onClick={() => setShareDialogOpen(false)}>
-                            Cancel
-                          </Button>
-                          <Button onClick={createShareLink}>
-                            Create Share Link
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-
-                    <Button variant="ghost" size="sm" onClick={() => deleteFile(file.id, file.storage_path)} className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all duration-300 hover:scale-105">
-                      <Trash className="h-3 w-3 sm:h-4 sm:w-4" />
-                    </Button>
+                  <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-3">
+                    <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs">
+                      {file.is_public ? "Public" : "Private"}
+                    </Badge>
+                    {file.is_locked && (
+                      <Badge variant="outline" className="text-xs">
+                        <Lock className="h-3 w-3 mr-1" />
+                        Locked
+                      </Badge>
+                    )}
+                    <Badge variant="outline" className="text-xs">
+                      {file.download_count} downloads
+                    </Badge>
+                    {file.download_limit && (
+                      <Badge variant="outline" className="text-xs">
+                        Limit: {file.download_limit}
+                      </Badge>
+                    )}
+                    {file.expires_at && (
+                      <Badge variant="outline" className="text-xs">
+                        Expires: {formatDate(file.expires_at)}
+                      </Badge>
+                    )}
                   </div>
                 </div>
 
-                {/* Show existing share links */}
-                {sharedLinks[file.id] && sharedLinks[file.id].length > 0 && <div className="mt-4 pt-4 border-t">
-                    <h4 className="text-sm font-medium mb-2">Active Share Links</h4>
-                    <div className="space-y-2">
-                      {sharedLinks[file.id].map(link => {
-                const baseUrl = window.location.origin;
-                const shareUrl = link.link_type === 'code' ? `${baseUrl}/code` : `${baseUrl}/share/${link.share_token}`;
-                return <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded">
-                            <div className="flex-1">
-                              <div className="flex items-center mb-1">
-                                <Badge variant="outline" className="mr-2">
-                                  {link.link_type}
-                                </Badge>
-                                {link.recipient_email && <span className="text-muted-foreground">{link.recipient_email}</span>}
-                                <span className="ml-2">{link.download_count} downloads</span>
-                                {link.download_limit && <span> / {link.download_limit}</span>}
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <Input value={shareUrl} readOnly className="text-xs h-6 bg-background" />
-                                <Button size="sm" variant="outline" className="h-6 px-2" onClick={async () => {
-                        await navigator.clipboard.writeText(shareUrl);
-                        toast({
-                          title: "Link copied",
-                          description: "Share link copied to clipboard"
-                        });
-                      }}>
-                                  <Copy className="h-3 w-3" />
-                                </Button>
-                                {link.link_type === 'email' && <Button size="sm" variant="outline" className="h-6 px-2" onClick={() => {
-                        const subject = `File shared: ${file.original_name}`;
-                        const body = `Hi,\n\nI've shared a file with you: ${file.original_name}\n\nAccess it here: ${shareUrl}\n\nBest regards`;
-                        window.open(`mailto:${link.recipient_email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-                      }}>
-                                    <Envelope className="h-3 w-3" />
-                                  </Button>}
-                              </div>
-                            </div>
-                            <div className="flex items-center space-x-2 ml-2">
-                              {link.expires_at && <span className="text-muted-foreground">
-                                  Expires {formatDate(link.expires_at)}
-                                </span>}
-                              <Badge variant={link.is_active ? "default" : "secondary"} className="bg-lime-300">
-                                {link.is_active ? "Active" : "Inactive"}
-                              </Badge>
-                            </div>
-                          </div>;
-              })}
-                    </div>
-                  </div>}
-              </CardContent>
-            </Card>)}
-        </div>}
+                <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                  <Button variant="ghost" size="sm" onClick={() => downloadFile(file)} className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105">
+                    <Download className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
 
-    </div>;
+                  <Button variant="ghost" size="sm" onClick={() => scanForVirus(file)} disabled={virusScanning[file.id]} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105">
+                    {virusScanning[file.id] ? <div className="flex items-center">
+                        <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-functions-share border-t-transparent"></div>
+                      </div> : <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4" />}
+                  </Button>
+
+                  {/* Team Share Button */}
+                  <Button variant="ghost" size="sm" onClick={() => {
+              setSelectedTeamFile(file);
+              setTeamShareDialogOpen(true);
+            }} className="hover:bg-functions-processing/10 hover:text-functions-processing transition-all duration-300 hover:scale-105">
+                    <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+
+                  <Button variant="ghost" size="sm" onClick={() => toggleFileVisibility(file.id, file.is_public)} className="hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-105">
+                    {file.is_public ? <Eye className="h-3 w-3 sm:h-4 sm:w-4" /> : <EyeSlash className="h-3 w-3 sm:h-4 sm:w-4" />}
+                  </Button>
+
+                  <Button variant="ghost" size="sm" onClick={() => toggleFileLock(file.id, file.is_locked)} className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105">
+                    {file.is_locked ? <Lock className="h-3 w-3 sm:h-4 sm:w-4" /> : <LockOpen className="h-3 w-3 sm:h-4 sm:w-4" />}
+                  </Button>
+
+                  <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" size="sm" onClick={() => setSelectedFile(file)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105">
+                        <ShareNetwork className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Share File</DialogTitle>
+                        <DialogDescription>
+                          Create a sharing link for {selectedFile?.original_name}
+                        </DialogDescription>
+                      </DialogHeader>
+
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="shareMethod">Share Method</Label>
+                          <Select value={shareMethod} onValueChange={(value: any) => setShareMethod(value)}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select sharing method" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-stone-900">
+                              <SelectItem value="public">
+                                <div className="flex items-center space-x-2">
+                                  <Copy className="h-4 w-4" />
+                                  <span>Direct Link</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="email">
+                                <div className="flex items-center space-x-2">
+                                  <Envelope className="h-4 w-4" />
+                                  <span>Email Link</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="code">
+                                <div className="flex items-center space-x-2">
+                                  <Code className="h-4 w-4" />
+                                  <span>Share Code</span>
+                                </div>
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        {shareMethod === 'email' && <div>
+                            <Label htmlFor="recipientEmail">Recipient Email</Label>
+                            <Input id="recipientEmail" type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="Enter email address" />
+                          </div>}
+
+                        <div>
+                          <Label htmlFor="downloadLimit">Download Limit (optional)</Label>
+                          <Input id="downloadLimit" type="number" value={downloadLimit} onChange={e => setDownloadLimit(e.target.value)} placeholder="Unlimited" />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="sharePassword">
+                            Password Protection 
+                            {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro</Badge>}
+                          </Label>
+                          <Input id="sharePassword" type="password" value={sharePassword} onChange={e => setSharePassword(e.target.value)} placeholder={userProfile?.subscription_tier === 'pro' ? "Enter password to protect the link" : "Upgrade to Pro for password protection"} disabled={userProfile?.subscription_tier !== 'pro'} />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="expiryDays">
+                            Expires in (days)
+                            {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro for custom dates</Badge>}
+                          </Label>
+                          <Select value={expiryDays} onValueChange={setExpiryDays}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {userProfile?.subscription_tier === 'pro' && <SelectItem value="1">1 day</SelectItem>}
+                              <SelectItem value="7">7 days</SelectItem>
+                              {userProfile?.subscription_tier === 'pro' && <SelectItem value="30">30 days</SelectItem>}
+                              {userProfile?.subscription_tier === 'pro' && <SelectItem value="90">90 days</SelectItem>}
+                              {userProfile?.subscription_tier === 'pro' && <SelectItem value="never">Never</SelectItem>}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => setShareDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button onClick={createShareLink}>
+                          Create Share Link
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Button variant="ghost" size="sm" onClick={() => deleteFile(file.id, file.storage_path)} className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all duration-300 hover:scale-105">
+                    <Trash className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Show existing share links */}
+              {sharedLinks[file.id] && sharedLinks[file.id].length > 0 && <div className="mt-4 pt-4 border-t">
+                  <h4 className="text-sm font-medium mb-2">Active Share Links</h4>
+                  <div className="space-y-2">
+                    {sharedLinks[file.id].map(link => {
+              const baseUrl = window.location.origin;
+              const shareUrl = link.link_type === 'code' ? `${baseUrl}/code` : `${baseUrl}/share/${link.share_token}`;
+              return <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded">
+                          <div className="flex-1">
+                            <div className="flex items-center mb-1">
+                              <Badge variant="outline" className="mr-2">
+                                {link.link_type}
+                              </Badge>
+                              {link.recipient_email && <span className="text-muted-foreground">{link.recipient_email}</span>}
+                              <span className="ml-2">{link.download_count} downloads</span>
+                              {link.download_limit && <span> / {link.download_limit}</span>}
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Input value={shareUrl} readOnly className="text-xs h-6 bg-background" />
+                              <Button size="sm" variant="outline" className="h-6 px-2" onClick={async () => {
+                      await navigator.clipboard.writeText(shareUrl);
+                      toast({
+                        title: "Link copied",
+                        description: "Share link copied to clipboard"
+                      });
+                    }}>
+                                <Copy className="h-3 w-3" />
+                              </Button>
+                              {link.link_type === 'email' && <Button size="sm" variant="outline" className="h-6 px-2" onClick={() => {
+                      const subject = `File shared: ${file.original_name}`;
+                      const body = `Hi,\n\nI've shared a file with you: ${file.original_name}\n\nAccess it here: ${shareUrl}\n\nBest regards`;
+                      window.open(`mailto:${link.recipient_email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+                    }}>
+                                  <Envelope className="h-3 w-3" />
+                                </Button>}
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2 ml-2">
+                            {link.expires_at && <span className="text-muted-foreground">
+                                Expires {formatDate(link.expires_at)}
+                              </span>}
+                            <Badge variant={link.is_active ? "default" : "secondary"} className="bg-lime-300">
+                              {link.is_active ? "Active" : "Inactive"}
+                            </Badge>
+                          </div>
+                        </div>;
+            })}
+                  </div>
+                </div>}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )}
+
+  </div>
+ );
 };
