@@ -538,7 +538,6 @@ export const FileManager: React.FC = () => {
       </div>
     )}
   </div>
-);
 
 
                   <div className="flex flex-wrap items-center gap-1 sm:gap-2">
