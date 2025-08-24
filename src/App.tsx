@@ -20,6 +20,7 @@ import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import { CodeSharePage } from "@/components/sharing/CodeSharePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
 import { SubscriptionSuccess } from "./pages/SubscriptionSuccess";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
