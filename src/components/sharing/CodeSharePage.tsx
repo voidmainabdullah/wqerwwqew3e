@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { Download, Lock, Warning, FileText, Key } from 'phosphor-react';
+import { Download, Lock, FileText, Key, ArrowLeft } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
+import { useNavigate } from 'react-router-dom'; // ✅ React Router hook
 
 interface FileData {
   id: string;
@@ -21,6 +22,8 @@ interface FileData {
 
 export const CodeSharePage: React.FC = () => {
   const { toast } = useToast();
+  const navigate = useNavigate(); // ✅ React Router navigate hook
+
   const [shareCode, setShareCode] = useState('');
   const [password, setPassword] = useState('');
   const [fileData, setFileData] = useState<FileData | null>(null);
@@ -58,8 +61,7 @@ export const CodeSharePage: React.FC = () => {
       }
 
       setFileData(data);
-      
-      // Check if file is locked
+
       if (data.is_locked) {
         setPasswordRequired(true);
       }
@@ -82,7 +84,6 @@ export const CodeSharePage: React.FC = () => {
   const downloadFile = async () => {
     if (!fileData) return;
 
-    // Check if file is locked and password is required
     if (fileData.is_locked && passwordRequired && !password.trim()) {
       toast({
         variant: "destructive",
@@ -94,9 +95,7 @@ export const CodeSharePage: React.FC = () => {
 
     setDownloading(true);
     try {
-      // If file is locked, validate password first
       if (fileData.is_locked && password.trim()) {
-        // First get the file's password hash by checking if it has a share link with password
         const { data: shareLink, error: shareLinkError } = await supabase
           .from('shared_links')
           .select('password_hash, share_token')
@@ -109,7 +108,6 @@ export const CodeSharePage: React.FC = () => {
         }
 
         if (shareLink?.password_hash) {
-          // Validate password using the database function
           const { data: isValid, error: validateError } = await supabase.rpc('validate_share_password', {
             token: shareLink.share_token,
             password: password
@@ -135,7 +133,6 @@ export const CodeSharePage: React.FC = () => {
 
       if (error) throw error;
 
-      // Create download link
       const url = URL.createObjectURL(fileBlob);
       const a = document.createElement('a');
       a.href = url;
@@ -145,7 +142,6 @@ export const CodeSharePage: React.FC = () => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      // Log the download
       await supabase.from('download_logs').insert({
         file_id: fileData.id,
         shared_link_id: null,
@@ -154,7 +150,6 @@ export const CodeSharePage: React.FC = () => {
         downloader_user_agent: navigator.userAgent,
       });
 
-      // Update file download count
       await supabase
         .from('files')
         .update({ download_count: (fileData as any).download_count + 1 })
@@ -187,83 +182,93 @@ export const CodeSharePage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated Background */}
       <AnimatedBackground />
-      
-      {/* Content Overlay */}
-      <div className="relative z-10">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <Key className="mx-auto h-12 w-12 text-primary mb-2" />
-          <CardTitle>Access File with Code</CardTitle>
-          <CardDescription>
-            Enter the share code to access the file
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="shareCode">Share Code</Label>
-            <div className="flex space-x-2">
-              <Input
-                id="shareCode"
-                value={shareCode}
-                onChange={(e) => setShareCode(e.target.value.toUpperCase())}
-                placeholder="Enter 8-character code"
-                maxLength={8}
-                className="font-mono"
-                onKeyPress={(e) => e.key === 'Enter' && fetchFileByCode()}
-              />
-              <Button onClick={fetchFileByCode} disabled={loading} size="sm">
-                {loading ? 'Finding...' : 'Find'}
-              </Button>
-            </div>
-          </div>
 
-          {fileData && (
-            <div className="space-y-4">
-              <div className="text-center space-y-2 p-4 bg-muted rounded-lg">
-                <FileText className="mx-auto h-8 w-8 text-primary" />
-                <h3 className="font-medium">{fileData.original_name}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {formatFileSize(fileData.file_size)} • {fileData.file_type}
-                </p>
+      <div className="relative z-10 w-full max-w-md">
+        {/* Go Back Button */}
+        <div className="mb-4">
+          <Button 
+            variant="ghost" 
+            className="flex items-center gap-2"
+            onClick={() => navigate(-1)}   // ✅ React Router back
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Go Back
+          </Button>
+        </div>
+
+        <Card>
+          <CardHeader className="text-center">
+            <Key className="mx-auto h-12 w-12 text-primary mb-2" />
+            <CardTitle>Access File with Code</CardTitle>
+            <CardDescription>
+              Enter the share code to access the file
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="shareCode">Share Code</Label>
+              <div className="flex space-x-2">
+                <Input
+                  id="shareCode"
+                  value={shareCode}
+                  onChange={(e) => setShareCode(e.target.value.toUpperCase())}
+                  placeholder="Enter 8-character code"
+                  maxLength={8}
+                  className="font-mono"
+                  onKeyPress={(e) => e.key === 'Enter' && fetchFileByCode()}
+                />
+                <Button onClick={fetchFileByCode} disabled={loading} size="sm">
+                  {loading ? 'Finding...' : 'Find'}
+                </Button>
               </div>
-
-              {fileData.is_locked && (
-                <Alert>
-                  <Lock className="h-4 w-4" />
-                  <AlertDescription>
-                    This file is password protected
-                  </AlertDescription>
-                </Alert>
-              )}
-
-              {passwordRequired && (
-                <div className="space-y-2">
-                  <Label htmlFor="password">Enter Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter password"
-                    onKeyPress={(e) => e.key === 'Enter' && downloadFile()}
-                  />
-                </div>
-              )}
-
-              <Button 
-                onClick={downloadFile} 
-                disabled={downloading}
-                className="w-full"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                {downloading ? 'Downloading...' : 'Download File'}
-              </Button>
             </div>
-          )}
-        </CardContent>
-      </Card>
+
+            {fileData && (
+              <div className="space-y-4">
+                <div className="text-center space-y-2 p-4 bg-muted rounded-lg">
+                  <FileText className="mx-auto h-8 w-8 text-primary" />
+                  <h3 className="font-medium">{fileData.original_name}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {formatFileSize(fileData.file_size)} • {fileData.file_type}
+                  </p>
+                </div>
+
+                {fileData.is_locked && (
+                  <Alert>
+                    <Lock className="h-4 w-4" />
+                    <AlertDescription>
+                      This file is password protected
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {passwordRequired && (
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Enter Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter password"
+                      onKeyPress={(e) => e.key === 'Enter' && downloadFile()}
+                    />
+                  </div>
+                )}
+
+                <Button 
+                  onClick={downloadFile} 
+                  disabled={downloading}
+                  className="w-full"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  {downloading ? 'Downloading...' : 'Download File'}
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
