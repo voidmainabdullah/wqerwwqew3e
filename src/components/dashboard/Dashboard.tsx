@@ -152,7 +152,7 @@ export const Dashboard: React.FC = () => {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {/* Total Files */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-orange-500/5 bg-neutral-950"></div>
+          <div className="absolute inset-0 bg-gradient-to-br  bg-neutral-950"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
