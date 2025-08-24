@@ -501,7 +501,7 @@ export const Dashboard: React.FC = () => {
       {/* Mobile Upgrade Banner */}
       <div className="lg:hidden">
         <Link to="/subscription" className="block transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl">
-          <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 p-6 shadow-xl">
+          <div className="relative overflow-hidden rounded-xl rounded-xlborder-4 border-blue-400 shadow-lg  bg-gradient-to-r from-neutral-850  p-6 shadow-xl">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-50"></div>
             <div className="relative text-center">
               <Lightning className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
