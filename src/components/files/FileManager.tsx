@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { File, Download, ShareNetwork, Trash, Lock, LockOpen, Eye, EyeSlash, Calendar, Copy, Envelope, Code, DotsThree, Shield, Users, PaperPlaneTilt, ShieldCheck } from 'phosphor-react';
+import { File, Download, ShareNetwork, Trash, Lock, LockOpen, Eye, EyeSlash, Calendar, Copy, Envelope, Code, DotsThree, Shield, Users, PaperPlaneTilt, ShieldCheck, ArrowRight } from 'phosphor-react';
 
 interface FileData {
   id: string;
@@ -40,16 +40,10 @@ interface ShareLinkData {
 }
 
 export const FileManager: React.FC = () => {
-  const {
-    user
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [files, setFiles] = useState<FileData[]>([]);
-  const [sharedLinks, setSharedLinks] = useState<{
-    [fileId: string]: ShareLinkData[];
-  }>({});
+  const [sharedLinks, setSharedLinks] = useState<{ [fileId: string]: ShareLinkData[] }>({});
   const [loading, setLoading] = useState(true);
   const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
@@ -59,54 +53,58 @@ export const FileManager: React.FC = () => {
   const [expiryDays, setExpiryDays] = useState<string>('7');
   const [sharePassword, setSharePassword] = useState('');
   const [userProfile, setUserProfile] = useState<any>(null);
-  const [virusScanning, setVirusScanning] = useState<{
-    [fileId: string]: boolean;
-  }>({});
+  const [virusScanning, setVirusScanning] = useState<{ [fileId: string]: boolean }>({});
   const [teamSendDialogOpen, setTeamSendDialogOpen] = useState(false);
   const [teamShareDialogOpen, setTeamShareDialogOpen] = useState(false);
   const [selectedTeamFile, setSelectedTeamFile] = useState<FileData | null>(null);
+
   useEffect(() => {
     if (user) {
       fetchFiles();
       fetchUserProfile();
     }
   }, [user]);
+
   const fetchUserProfile = async () => {
     try {
-      const {
-        data,
-        error
-      } = await supabase.from('profiles').select('subscription_tier').eq('id', user?.id).single();
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('subscription_tier')
+        .eq('id', user?.id)
+        .single();
+      
       if (error) throw error;
       setUserProfile(data);
     } catch (error: any) {
       console.error('Error fetching user profile:', error);
     }
   };
+
   const fetchFiles = async () => {
     try {
-      const {
-        data,
-        error
-      } = await supabase.from('files').select('*').eq('user_id', user?.id).order('created_at', {
-        ascending: false
-      });
+      const { data, error } = await supabase
+        .from('files')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: false });
+
       if (error) throw error;
       setFiles(data || []);
 
       // Fetch shared links for each file
       const fileIds = data?.map(f => f.id) || [];
       if (fileIds.length > 0) {
-        const {
-          data: linksData
-        } = await supabase.from('shared_links').select('*').in('file_id', fileIds);
+        const { data: linksData } = await supabase
+          .from('shared_links')
+          .select('*')
+          .in('file_id', fileIds);
+
         const linksByFile = (linksData || []).reduce((acc, link) => {
           if (!acc[link.file_id]) acc[link.file_id] = [];
           acc[link.file_id].push(link);
           return acc;
-        }, {} as {
-          [fileId: string]: ShareLinkData[];
-        });
+        }, {} as { [fileId: string]: ShareLinkData[] });
+
         setSharedLinks(linksByFile);
       }
     } catch (error: any) {
@@ -119,6 +117,7 @@ export const FileManager: React.FC = () => {
       setLoading(false);
     }
   };
+
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -126,6 +125,7 @@ export const FileManager: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -135,21 +135,20 @@ export const FileManager: React.FC = () => {
       minute: '2-digit'
     });
   };
+
   const generateShareCode = async (fileId: string) => {
     try {
-      const {
-        data,
-        error
-      } = await supabase.rpc('generate_share_code');
+      const { data, error } = await supabase.rpc('generate_share_code');
       if (error) throw error;
 
       // Update file with share code
-      const {
-        error: updateError
-      } = await supabase.from('files').update({
-        share_code: data
-      }).eq('id', fileId);
+      const { error: updateError } = await supabase
+        .from('files')
+        .update({ share_code: data })
+        .eq('id', fileId);
+
       if (updateError) throw updateError;
+
       fetchFiles(); // Refresh files
       return data;
     } catch (error: any) {
@@ -160,6 +159,7 @@ export const FileManager: React.FC = () => {
       });
     }
   };
+
   const createShareLink = async () => {
     if (!selectedFile) return;
 
@@ -173,6 +173,7 @@ export const FileManager: React.FC = () => {
       });
       return;
     }
+
     if (expiryDays && expiryDays !== '7' && !isPro) {
       toast({
         variant: "destructive",
@@ -181,19 +182,21 @@ export const FileManager: React.FC = () => {
       });
       return;
     }
+
     try {
-      const expiresAt = expiryDays && expiryDays !== 'never' ? new Date(Date.now() + parseInt(expiryDays) * 24 * 60 * 60 * 1000).toISOString() : null;
+      const expiresAt = expiryDays && expiryDays !== 'never' 
+        ? new Date(Date.now() + parseInt(expiryDays) * 24 * 60 * 60 * 1000).toISOString() 
+        : null;
+
       let passwordHash = null;
       if (sharePassword) {
-        const {
-          data: hashedPassword,
-          error: hashError
-        } = await supabase.rpc('hash_password', {
+        const { data: hashedPassword, error: hashError } = await supabase.rpc('hash_password', {
           password: sharePassword
         });
         if (hashError) throw hashError;
         passwordHash = hashedPassword;
       }
+
       const shareData = {
         file_id: selectedFile.id,
         link_type: shareMethod,
@@ -203,23 +206,30 @@ export const FileManager: React.FC = () => {
         recipient_email: shareMethod === 'email' ? recipientEmail : null,
         password_hash: passwordHash
       };
-      const {
-        data,
-        error
-      } = await supabase.from('shared_links').insert(shareData).select().single();
+
+      const { data, error } = await supabase
+        .from('shared_links')
+        .insert(shareData)
+        .select()
+        .single();
+
       if (error) throw error;
 
       // Generate share code for code method
       if (shareMethod === 'code') {
         await generateShareCode(selectedFile.id);
       }
+
       const baseUrl = window.location.origin;
       let shareUrl = '';
       let copyText = '';
+
       if (shareMethod === 'code') {
-        const {
-          data: fileData
-        } = await supabase.from('files').select('share_code').eq('id', selectedFile.id).single();
+        const { data: fileData } = await supabase
+          .from('files')
+          .select('share_code')
+          .eq('id', selectedFile.id)
+          .single();
         copyText = `Share Code: ${fileData?.share_code}`;
         shareUrl = `Use this code: ${fileData?.share_code}`;
       } else if (shareMethod === 'email') {
@@ -228,9 +238,7 @@ export const FileManager: React.FC = () => {
 
         // Send email via edge function
         try {
-          const {
-            error: emailError
-          } = await supabase.functions.invoke('send-email', {
+          const { error: emailError } = await supabase.functions.invoke('send-email', {
             body: {
               recipientEmail,
               shareUrl,
@@ -240,11 +248,9 @@ export const FileManager: React.FC = () => {
           });
           if (emailError) {
             console.warn('Email sending failed:', emailError.message);
-            // Still continue with link creation even if email fails
           }
         } catch (emailError) {
           console.warn('Email sending failed:', emailError);
-          // Still continue with link creation even if email fails
         }
       } else {
         shareUrl = `${baseUrl}/share/${data.share_token}`;
@@ -265,10 +271,12 @@ export const FileManager: React.FC = () => {
       } else {
         successMessage = "Share link copied to clipboard";
       }
+
       toast({
         title: "Share link created",
         description: successMessage
       });
+
       setShareDialogOpen(false);
       setSharePassword('');
       setRecipientEmail('');
@@ -283,13 +291,14 @@ export const FileManager: React.FC = () => {
       });
     }
   };
+
   const toggleFileVisibility = async (fileId: string, currentStatus: boolean) => {
     try {
-      const {
-        error
-      } = await supabase.from('files').update({
-        is_public: !currentStatus
-      }).eq('id', fileId).eq('user_id', user?.id); // Ensure user can only update their own files
+      const { error } = await supabase
+        .from('files')
+        .update({ is_public: !currentStatus })
+        .eq('id', fileId)
+        .eq('user_id', user?.id);
 
       if (error) throw error;
       fetchFiles();
@@ -305,13 +314,14 @@ export const FileManager: React.FC = () => {
       });
     }
   };
+
   const toggleFileLock = async (fileId: string, currentStatus: boolean) => {
     try {
-      const {
-        error
-      } = await supabase.from('files').update({
-        is_locked: !currentStatus
-      }).eq('id', fileId);
+      const { error } = await supabase
+        .from('files')
+        .update({ is_locked: !currentStatus })
+        .eq('id', fileId);
+
       if (error) throw error;
       fetchFiles();
       toast({
@@ -326,19 +336,24 @@ export const FileManager: React.FC = () => {
       });
     }
   };
+
   const deleteFile = async (fileId: string, storagePath: string) => {
     try {
       // Delete from storage
-      const {
-        error: storageError
-      } = await supabase.storage.from('files').remove([storagePath]);
+      const { error: storageError } = await supabase.storage
+        .from('files')
+        .remove([storagePath]);
+
       if (storageError) throw storageError;
 
       // Delete from database
-      const {
-        error: dbError
-      } = await supabase.from('files').delete().eq('id', fileId);
+      const { error: dbError } = await supabase
+        .from('files')
+        .delete()
+        .eq('id', fileId);
+
       if (dbError) throw dbError;
+
       fetchFiles();
       toast({
         title: "File deleted",
@@ -352,12 +367,13 @@ export const FileManager: React.FC = () => {
       });
     }
   };
+
   const downloadFile = async (file: FileData) => {
     try {
-      const {
-        data,
-        error
-      } = await supabase.storage.from('files').download(file.storage_path);
+      const { data, error } = await supabase.storage
+        .from('files')
+        .download(file.storage_path);
+
       if (error) throw error;
 
       // Create download link
@@ -371,9 +387,11 @@ export const FileManager: React.FC = () => {
       URL.revokeObjectURL(url);
 
       // Update download count
-      await supabase.from('files').update({
-        download_count: file.download_count + 1
-      }).eq('id', file.id);
+      await supabase
+        .from('files')
+        .update({ download_count: file.download_count + 1 })
+        .eq('id', file.id);
+
       fetchFiles();
     } catch (error: any) {
       toast({
@@ -383,17 +401,17 @@ export const FileManager: React.FC = () => {
       });
     }
   };
+
   const scanForVirus = async (file: FileData) => {
-    setVirusScanning(prev => ({
-      ...prev,
-      [file.id]: true
-    }));
+    setVirusScanning(prev => ({ ...prev, [file.id]: true }));
+    
     try {
       // Simulate virus scanning with realistic delay
       await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 3000));
 
       // Simulate random results with 95% clean rate
       const isClean = Math.random() > 0.05;
+      
       if (isClean) {
         toast({
           title: "Virus scan complete",
@@ -413,14 +431,13 @@ export const FileManager: React.FC = () => {
         description: "Unable to complete virus scan"
       });
     } finally {
-      setVirusScanning(prev => ({
-        ...prev,
-        [file.id]: false
-      }));
+      setVirusScanning(prev => ({ ...prev, [file.id]: false }));
     }
   };
+
   const sendToTeamMember = async (memberId: string, memberEmail: string) => {
     if (!selectedTeamFile) return;
+    
     const isPro = userProfile?.subscription_tier === 'pro';
     if (!isPro) {
       toast({
@@ -430,13 +447,16 @@ export const FileManager: React.FC = () => {
       });
       return;
     }
+
     try {
       // Simulate sending file to team member
       await new Promise(resolve => setTimeout(resolve, 1000));
+      
       toast({
         title: "File sent to team member",
         description: `${selectedTeamFile.original_name} sent to ${memberEmail}`
       });
+      
       setTeamSendDialogOpen(false);
       setSelectedTeamFile(null);
     } catch (error: any) {
@@ -447,129 +467,166 @@ export const FileManager: React.FC = () => {
       });
     }
   };
+
   if (loading) {
     return <div className="flex items-center justify-center h-64">Loading files...</div>;
   }
- return (
-  <div className="space-y-6">
-    {/* Header section */}
-    <div className="flex items-center justify-between">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">My Files</h1>
-        <p className="text-muted-foreground">
-          Manage your uploaded files and sharing settings.
-        </p>
-      </div>
-      <Button asChild>
-        <a href="/FileManager" className="flex items-center gap-2">
-          Go to My Files
-          <ArrowRight size={18} />
-        </a>
-      </Button>
-    </div>
 
-    {/* File list section */}
-    {files.length === 0 ? (
-      <Card>
-        <CardContent className="text-center py-12">
-          <File className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium mb-2">No files uploaded yet</h3>
-          <p className="text-muted-foreground mb-4">
-            Start by uploading your first file.
+  return (
+    <div className="space-y-6">
+      {/* Header section */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">My Files</h1>
+          <p className="text-muted-foreground">
+            Manage your uploaded files and sharing settings.
           </p>
-          <Button asChild>
-            <a href="/dashboard/upload">Upload Files</a>
-          </Button>
-        </CardContent>
-      </Card>
-    ) : (
-      <div className="grid gap-4">
-        {files.map((file, index) => (
-          <Card
-            key={file.id}
-            className="transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center space-x-4 min-w-0 flex-1">
-                  <File className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground flex-shrink-0" />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-medium truncate">{file.original_name}</h3>
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-                      <span>{formatFileSize(file.file_size)}</span>
-                      <span className="hidden sm:inline">
-                        {file.download_count} downloads
-                      </span>
-                      <span className="hidden md:inline">
-                        Uploaded {formatDate(file.created_at)}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2">
-                      <Badge
-                        variant={file.is_public ? "default" : "secondary"}
-                        className="text-xs"
-                      >
-                        {file.is_public ? "Public" : "Private"}
-                      </Badge>
-                      {file.is_locked && (
-                        <Badge variant="destructive" className="text-xs">
-                          Locked
+        </div>
+        <Button asChild>
+          <a href="/dashboard/upload" className="flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            Upload Files
+            <ArrowRight size={18} />
+          </a>
+        </Button>
+      </div>
+
+      {/* File list section */}
+      {files.length === 0 ? (
+        <Card>
+          <CardContent className="text-center py-12">
+            <File className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium mb-2">No files uploaded yet</h3>
+            <p className="text-muted-foreground mb-4">
+              Start by uploading your first file.
+            </p>
+            <Button asChild>
+              <a href="/dashboard/upload">Upload Files</a>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-4">
+          {files.map((file, index) => (
+            <Card
+              key={file.id}
+              className="transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex items-center space-x-4 min-w-0 flex-1">
+                    <File className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-medium truncate">{file.original_name}</h3>
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                        <span>{formatFileSize(file.file_size)}</span>
+                        <span className="hidden sm:inline">
+                          {file.download_count} downloads
+                        </span>
+                        <span className="hidden md:inline">
+                          Uploaded {formatDate(file.created_at)}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2">
+                        <Badge
+                          variant={file.is_public ? "default" : "secondary"}
+                          className="text-xs"
+                        >
+                          {file.is_public ? "Public" : "Private"}
                         </Badge>
-                      )}
-                      {file.expires_at &&
-                        new Date(file.expires_at) < new Date() && (
+                        {file.is_locked && (
+                          <Badge variant="destructive" className="text-xs">
+                            Locked
+                          </Badge>
+                        )}
+                        {file.expires_at && new Date(file.expires_at) < new Date() && (
                           <Badge variant="destructive" className="text-xs">
                             Expired
                           </Badge>
                         )}
-                      {file.share_code && (
-                        <Badge variant="outline" className="text-xs">
-                          Code: {file.share_code}
-                        </Badge>
-                      )}
+                        {file.share_code && (
+                          <Badge variant="outline" className="text-xs">
+                            Code: {file.share_code}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    )}
-  </div>
-
 
                   <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                    <Button variant="ghost" size="sm" onClick={() => downloadFile(file)} className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => downloadFile(file)} 
+                      className="hover:bg-functions-download/10 hover:text-functions-download transition-all duration-300 hover:scale-105"
+                    >
                       <Download className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
 
-                    <Button variant="ghost" size="sm" onClick={() => scanForVirus(file)} disabled={virusScanning[file.id]} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105">
-                      {virusScanning[file.id] ? <div className="flex items-center">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => scanForVirus(file)} 
+                      disabled={virusScanning[file.id]} 
+                      className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105"
+                    >
+                      {virusScanning[file.id] ? (
+                        <div className="flex items-center">
                           <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-functions-share border-t-transparent"></div>
-                        </div> : <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4" />}
+                        </div>
+                      ) : (
+                        <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4" />
+                      )}
                     </Button>
 
                     {/* Team Share Button */}
-                    <Button variant="ghost" size="sm" onClick={() => {
-                setSelectedTeamFile(file);
-                setTeamShareDialogOpen(true);
-              }} className="hover:bg-functions-processing/10 hover:text-functions-processing transition-all duration-300 hover:scale-105">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => {
+                        setSelectedTeamFile(file);
+                        setTeamShareDialogOpen(true);
+                      }} 
+                      className="hover:bg-functions-processing/10 hover:text-functions-processing transition-all duration-300 hover:scale-105"
+                    >
                       <Users className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
 
-                    <Button variant="ghost" size="sm" onClick={() => toggleFileVisibility(file.id, file.is_public)} className="hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-105">
-                      {file.is_public ? <Eye className="h-3 w-3 sm:h-4 sm:w-4" /> : <EyeSlash className="h-3 w-3 sm:h-4 sm:w-4" />}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => toggleFileVisibility(file.id, file.is_public)} 
+                      className="hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-105"
+                    >
+                      {file.is_public ? (
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
+                      ) : (
+                        <EyeSlash className="h-3 w-3 sm:h-4 sm:w-4" />
+                      )}
                     </Button>
 
-                    <Button variant="ghost" size="sm" onClick={() => toggleFileLock(file.id, file.is_locked)} className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105">
-                      {file.is_locked ? <Lock className="h-3 w-3 sm:h-4 sm:w-4" /> : <LockOpen className="h-3 w-3 sm:h-4 sm:w-4" />}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => toggleFileLock(file.id, file.is_locked)} 
+                      className="hover:bg-warning/10 hover:text-warning transition-all duration-300 hover:scale-105"
+                    >
+                      {file.is_locked ? (
+                        <Lock className="h-3 w-3 sm:h-4 sm:w-4" />
+                      ) : (
+                        <LockOpen className="h-3 w-3 sm:h-4 sm:w-4" />
+                      )}
                     </Button>
 
                     <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
                       <DialogTrigger asChild>
-                        <Button variant="ghost" size="sm" onClick={() => setSelectedFile(file)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setSelectedFile(file)} 
+                          className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 hover:scale-105"
+                        >
                           <ShareNetwork className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                       </DialogTrigger>
@@ -611,39 +668,75 @@ export const FileManager: React.FC = () => {
                             </Select>
                           </div>
 
-                          {shareMethod === 'email' && <div>
+                          {shareMethod === 'email' && (
+                            <div>
                               <Label htmlFor="recipientEmail">Recipient Email</Label>
-                              <Input id="recipientEmail" type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="Enter email address" />
-                            </div>}
+                              <Input 
+                                id="recipientEmail" 
+                                type="email" 
+                                value={recipientEmail} 
+                                onChange={e => setRecipientEmail(e.target.value)} 
+                                placeholder="Enter email address" 
+                              />
+                            </div>
+                          )}
 
                           <div>
                             <Label htmlFor="downloadLimit">Download Limit (optional)</Label>
-                            <Input id="downloadLimit" type="number" value={downloadLimit} onChange={e => setDownloadLimit(e.target.value)} placeholder="Unlimited" />
+                            <Input 
+                              id="downloadLimit" 
+                              type="number" 
+                              value={downloadLimit} 
+                              onChange={e => setDownloadLimit(e.target.value)} 
+                              placeholder="Unlimited" 
+                            />
                           </div>
 
                           <div>
                             <Label htmlFor="sharePassword">
                               Password Protection 
-                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro</Badge>}
+                              {userProfile?.subscription_tier !== 'pro' && (
+                                <Badge variant="secondary" className="ml-2 bg-blue-600">Pro</Badge>
+                              )}
                             </Label>
-                            <Input id="sharePassword" type="password" value={sharePassword} onChange={e => setSharePassword(e.target.value)} placeholder={userProfile?.subscription_tier === 'pro' ? "Enter password to protect the link" : "Upgrade to Pro for password protection"} disabled={userProfile?.subscription_tier !== 'pro'} />
+                            <Input 
+                              id="sharePassword" 
+                              type="password" 
+                              value={sharePassword} 
+                              onChange={e => setSharePassword(e.target.value)} 
+                              placeholder={userProfile?.subscription_tier === 'pro' 
+                                ? "Enter password to protect the link" 
+                                : "Upgrade to Pro for password protection"
+                              } 
+                              disabled={userProfile?.subscription_tier !== 'pro'} 
+                            />
                           </div>
 
                           <div>
                             <Label htmlFor="expiryDays">
                               Expires in (days)
-                              {userProfile?.subscription_tier !== 'pro' && <Badge variant="secondary" className="ml-2 bg-blue-600">Pro for custom dates</Badge>}
+                              {userProfile?.subscription_tier !== 'pro' && (
+                                <Badge variant="secondary" className="ml-2 bg-blue-600">Pro for custom dates</Badge>
+                              )}
                             </Label>
                             <Select value={expiryDays} onValueChange={setExpiryDays}>
                               <SelectTrigger>
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="1">1 day</SelectItem>}
+                                {userProfile?.subscription_tier === 'pro' && (
+                                  <SelectItem value="1">1 day</SelectItem>
+                                )}
                                 <SelectItem value="7">7 days</SelectItem>
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="30">30 days</SelectItem>}
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="90">90 days</SelectItem>}
-                                {userProfile?.subscription_tier === 'pro' && <SelectItem value="never">Never</SelectItem>}
+                                {userProfile?.subscription_tier === 'pro' && (
+                                  <SelectItem value="30">30 days</SelectItem>
+                                )}
+                                {userProfile?.subscription_tier === 'pro' && (
+                                  <SelectItem value="90">90 days</SelectItem>
+                                )}
+                                {userProfile?.subscription_tier === 'pro' && (
+                                  <SelectItem value="never">Never</SelectItem>
+                                )}
                               </SelectContent>
                             </Select>
                           </div>
@@ -660,64 +753,151 @@ export const FileManager: React.FC = () => {
                       </DialogContent>
                     </Dialog>
 
-                    <Button variant="ghost" size="sm" onClick={() => deleteFile(file.id, file.storage_path)} className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all duration-300 hover:scale-105">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => deleteFile(file.id, file.storage_path)} 
+                      className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all duration-300 hover:scale-105"
+                    >
                       <Trash className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                   </div>
                 </div>
 
                 {/* Show existing share links */}
-                {sharedLinks[file.id] && sharedLinks[file.id].length > 0 && <div className="mt-4 pt-4 border-t">
+                {sharedLinks[file.id] && sharedLinks[file.id].length > 0 && (
+                  <div className="mt-4 pt-4 border-t">
                     <h4 className="text-sm font-medium mb-2">Active Share Links</h4>
                     <div className="space-y-2">
                       {sharedLinks[file.id].map(link => {
-                const baseUrl = window.location.origin;
-                const shareUrl = link.link_type === 'code' ? `${baseUrl}/code` : `${baseUrl}/share/${link.share_token}`;
-                return <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded">
+                        const baseUrl = window.location.origin;
+                        const shareUrl = link.link_type === 'code' 
+                          ? `${baseUrl}/code` 
+                          : `${baseUrl}/share/${link.share_token}`;
+                        
+                        return (
+                          <div key={link.id} className="flex items-center justify-between text-xs p-2 bg-muted rounded">
                             <div className="flex-1">
                               <div className="flex items-center mb-1">
                                 <Badge variant="outline" className="mr-2">
                                   {link.link_type}
                                 </Badge>
-                                {link.recipient_email && <span className="text-muted-foreground">{link.recipient_email}</span>}
+                                {link.recipient_email && (
+                                  <span className="text-muted-foreground">{link.recipient_email}</span>
+                                )}
                                 <span className="ml-2">{link.download_count} downloads</span>
                                 {link.download_limit && <span> / {link.download_limit}</span>}
                               </div>
                               <div className="flex items-center space-x-2">
-                                <Input value={shareUrl} readOnly className="text-xs h-6 bg-background" />
-                                <Button size="sm" variant="outline" className="h-6 px-2" onClick={async () => {
-                        await navigator.clipboard.writeText(shareUrl);
-                        toast({
-                          title: "Link copied",
-                          description: "Share link copied to clipboard"
-                        });
-                      }}>
+                                <Input 
+                                  value={shareUrl} 
+                                  readOnly 
+                                  className="text-xs h-6 bg-background" 
+                                />
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  className="h-6 px-2" 
+                                  onClick={async () => {
+                                    await navigator.clipboard.writeText(shareUrl);
+                                    toast({
+                                      title: "Link copied",
+                                      description: "Share link copied to clipboard"
+                                    });
+                                  }}
+                                >
                                   <Copy className="h-3 w-3" />
                                 </Button>
-                                {link.link_type === 'email' && <Button size="sm" variant="outline" className="h-6 px-2" onClick={() => {
-                        const subject = `File shared: ${file.original_name}`;
-                        const body = `Hi,\n\nI've shared a file with you: ${file.original_name}\n\nAccess it here: ${shareUrl}\n\nBest regards`;
-                        window.open(`mailto:${link.recipient_email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-                      }}>
+                                {link.link_type === 'email' && (
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline" 
+                                    className="h-6 px-2" 
+                                    onClick={() => {
+                                      const subject = `File shared: ${file.original_name}`;
+                                      const body = `Hi,\n\nI've shared a file with you: ${file.original_name}\n\nAccess it here: ${shareUrl}\n\nBest regards`;
+                                      window.open(`mailto:${link.recipient_email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+                                    }}
+                                  >
                                     <Envelope className="h-3 w-3" />
-                                  </Button>}
+                                  </Button>
+                                )}
                               </div>
                             </div>
                             <div className="flex items-center space-x-2 ml-2">
-                              {link.expires_at && <span className="text-muted-foreground">
+                              {link.expires_at && (
+                                <span className="text-muted-foreground">
                                   Expires {formatDate(link.expires_at)}
-                                </span>}
-                              <Badge variant={link.is_active ? "default" : "secondary"} className="bg-lime-300">
+                                </span>
+                              )}
+                              <Badge 
+                                variant={link.is_active ? "default" : "secondary"} 
+                                className="bg-lime-300"
+                              >
                                 {link.is_active ? "Active" : "Inactive"}
                               </Badge>
                             </div>
-                          </div>;
-              })}
+                          </div>
+                        );
+                      })}
                     </div>
-                  </div>}
+                  </div>
+                )}
               </CardContent>
-            </Card>)}
-        </div>}
+            </Card>
+          ))}
+        </div>
+      )}
 
-    </div>;
+      {/* Team Share Dialog */}
+      <Dialog open={teamShareDialogOpen} onOpenChange={setTeamShareDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Share with Team</DialogTitle>
+            <DialogDescription>
+              Share {selectedTeamFile?.original_name} with your team members
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Team sharing is a Pro feature. Upgrade to share files with your team members.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setTeamShareDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button asChild>
+              <a href="/subscription">Upgrade to Pro</a>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Team Send Dialog */}
+      <Dialog open={teamSendDialogOpen} onOpenChange={setTeamSendDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Send to Team Member</DialogTitle>
+            <DialogDescription>
+              Send {selectedTeamFile?.original_name} to a team member
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Team features are available with Pro subscription.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setTeamSendDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button asChild>
+              <a href="/subscription">Upgrade to Pro</a>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 };
