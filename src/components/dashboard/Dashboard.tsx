@@ -162,7 +162,7 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalFiles.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-8 rounded-xl bg-yellow-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Files className="h-6 w-6 text-yellow-500" />
             </div>
           </CardHeader>
