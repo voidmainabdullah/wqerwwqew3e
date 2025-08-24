@@ -149,7 +149,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-2 sm:grid-cols-5 lg:grid-cols-4">
         {/* Total Files */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
           <div className="absolute inset-0 bg-gradient-to-br  bg-neutral-800"></div>
