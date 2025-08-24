@@ -128,7 +128,7 @@ export const Dashboard: React.FC = () => {
         {/* Upgrade Banner - Desktop */}
         <div className="hidden lg:block">
           <Link to="/subscription" className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl">
-            <div className="relative overflow-hidden rounded-xlborder-4 border-blue-400 shadow-lg  bg-gradient-to-r from-neutral-850  p-6 shadow-xl">
+            <div className="relative overflow-hidden rounded-xl border-4 border-blue-400 shadow-lg  bg-gradient-to-r from-neutral-850  p-6 shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-r border-2 border-blue-300 shadow-sm from-neutral-700 to-black opacity-50 bg-neutral-800"></div>
               <div className="relative">
                 <div className="flex items-center gap-3 mb-2">
