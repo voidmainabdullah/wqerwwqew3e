@@ -224,7 +224,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Storage Usage */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-blue-500/5"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
