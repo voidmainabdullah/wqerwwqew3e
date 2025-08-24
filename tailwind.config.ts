@@ -319,7 +319,46 @@ export default {
 				'skeleton-wave': 'skeleton-wave 2s ease-in-out infinite',
 				'button-glow': 'button-glow 1.5s ease-out'
 			}
+		},
+		scrollbar: {
+			thin: {
+				width: '6px',
+				height: '6px'
+			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }: any) {
+			const newUtilities = {
+				'.scrollbar-thin': {
+					'scrollbar-width': 'thin',
+				},
+				'.scrollbar-track-background': {
+					'scrollbar-color': 'hsl(var(--muted)) hsl(var(--background))',
+				},
+				'.scrollbar-thumb-muted-foreground\\/30': {
+					'&::-webkit-scrollbar': {
+						width: '6px',
+						height: '6px',
+					},
+					'&::-webkit-scrollbar-track': {
+						background: 'hsl(var(--background))',
+						borderRadius: '3px',
+					},
+					'&::-webkit-scrollbar-thumb': {
+						background: 'hsl(var(--muted-foreground) / 0.3)',
+						borderRadius: '3px',
+						border: '1px solid hsl(var(--background))',
+					},
+				},
+				'.hover\\:scrollbar-thumb-muted-foreground\\/50:hover': {
+					'&::-webkit-scrollbar-thumb': {
+						background: 'hsl(var(--muted-foreground) / 0.5)',
+					},
+				},
+			}
+			addUtilities(newUtilities)
+		}
+	],
 } satisfies Config;

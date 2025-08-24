@@ -174,6 +174,20 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             <div className="flex items-center justify-between h-16 px-6">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
+                
+                {/* Mobile Logo */}
+                <div className="md:hidden flex items-center space-x-3">
+                  <img 
+                    src="/Skieshare-removebg-preview.png" 
+                    alt="SecureShare Logo" 
+                    className="h-8 w-auto object-contain"
+                  />
+                  <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+                    SecureShare
+                  </span>
+                </div>
+                
+                {/* Desktop Welcome Message */}
                 <div className="hidden md:block">
                   <div className="space-y-1">
                     <h2 className="text-lg font-semibold text-foreground">
