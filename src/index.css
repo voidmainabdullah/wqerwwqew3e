@@ -66,3 +66,548 @@
 }
 
 /* SecureShare - Gmail-inspired dark file sharing platform design system */
+
+@layer base {
+  :root {
+    /* Dark-mode-only monochromatic theme */
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 0% 85%;
+    --primary-foreground: 0 0% 15%;
+
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 0 0% 85%;
+    --accent-foreground: 0 0% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 95%;
+
+    --warning: 45 93% 58%;
+    --warning-foreground: 0 0% 15%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 95%;
+
+    --border: 0 0% 22%;
+    --input: 0 0% 18%;
+    --ring: 0 0% 85%;
+
+    --radius: 8px;
+
+    /* Sidebar colors for navigation */
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 85%;
+    --sidebar-primary-foreground: 0 0% 15%;
+    --sidebar-accent: 0 0% 18%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 22%;
+    --sidebar-ring: 0 0% 85%;
+
+    /* Custom design tokens for special effects */
+    --primary-glow: 0 0% 95%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 85%), hsl(0 0% 95%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 12%), hsl(0 0% 8%));
+    --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 8px 32px hsl(0 0% 95% / 0.15);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Function highlight colors - vibrant accent colors */
+    --function-upload: 142 71% 45%;
+    --function-upload-glow: 142 71% 55%;
+    --function-share: 217 91% 60%;
+    --function-share-glow: 217 91% 70%;
+    --function-download: 45 93% 47%;
+    --function-download-glow: 45 93% 57%;
+    --function-delete: 0 84% 60%;
+    --function-delete-glow: 0 84% 70%;
+    --function-success: 142 76% 36%;
+    --function-success-glow: 142 76% 46%;
+    --function-processing: 262 83% 58%;
+    --function-processing-glow: 262 83% 68%;
+    
+    /* Cosmic effects - monochromatic greys */
+    --cosmic-dark: 0 0% 25%;
+    --cosmic-medium: 0 0% 19%;
+    --cosmic-light: 0 0% 94%;
+    --cosmic-grey-1: 0 0% 38%;
+    --cosmic-grey-2: 0 0% 56%;
+    
+    /* Glass morphism effects */
+    --glass-border: 0 0% 95% / 0.1;
+    --glass-bg: 0 0% 95% / 0.05;
+    --glass-backdrop: blur(10px);
+    
+    /* Grid patterns */
+    --grid-color: 0 0% 95% / 0.05;
+    
+    /* File type colors - keeping some color for recognition */
+    --file-pdf: 0 84% 60%;
+    --file-image: 142 76% 36%;
+    --file-video: 262 83% 58%;
+    --file-audio: 45 93% 58%;
+    --file-document: 0 0% 85%;
+    --file-archive: 33 84% 60%;
+    --file-code: 142 76% 36%;
+    --file-default: 0 0% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* Background gradient animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  background-size: 300% 300%;
+  animation: gradientMove 12s ease infinite;
+}
+
+/* Pulse glow */
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+.animate-pulse-slow {
+  animation: pulseSlow 6s ease-in-out infinite;
+}
+
+/* Fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 1.5s ease forwards;
+}
+
+/* Slow bounce for 404 */
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-bounce-slow {
+  animation: bounceSlow 3s infinite;
+}
+
+/* Floating file-sharing icons */
+@keyframes fly {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+  50% { transform: translateY(-40px) rotate(15deg); opacity: 0.5; }
+  100% { transform: translateY(0) rotate(-15deg); opacity: 0.2; }
+}
+.icon-fly {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: fly 6s ease-in-out infinite;
+}
+.icon-fly.delay-500 { animation-delay: 0.5s; }
+.icon-fly.delay-1000 { animation-delay: 1s; }
+.icon-fly.delay-1500 { animation-delay: 1.5s; }
+.icon-fly.delay-2000 { animation-delay: 2s; }
+
+/* File Sharing Animation Keyframes */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.4; 
+  }
+  50% { 
+    transform: translateY(-10px) rotate(5deg); 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes data-flow {
+  0% { 
+    transform: translateX(-100%); 
+    opacity: 0; 
+  }
+  50% { 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+}
+
+@keyframes progress-bar {
+  0% { 
+    width: 0%; 
+  }
+  50% { 
+    width: 100%; 
+  }
+  100% { 
+    width: 0%; 
+  }
+}
+
+@keyframes draw-line {
+  0% { 
+    stroke-dasharray: 0 1000; 
+  }
+  100% { 
+    stroke-dasharray: 1000 0; 
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    opacity: 0.4; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.1); 
+  }
+}
+
+/* Animation Classes */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-data-flow {
+  animation: data-flow 3s linear infinite;
+}
+
+.animate-progress-bar {
+  animation: progress-bar 2s ease-in-out infinite;
+}
+
+.animate-draw-line {
+  stroke-dasharray: 1000;
+  animation: draw-line 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Enhanced animations for empty state icons */
+@keyframes particle-float {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px); 
+    opacity: 0.3; 
+  }
+  25% { 
+    transform: translateY(-8px) translateX(4px); 
+    opacity: 0.6; 
+  }
+  50% { 
+    transform: translateY(-4px) translateX(-4px); 
+    opacity: 0.8; 
+  }
+  75% { 
+    transform: translateY(-12px) translateX(2px); 
+    opacity: 0.4; 
+  }
+}
+
+@keyframes auth-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1); 
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3); 
+  }
+}
+
+@keyframes input-focus {
+  0% { 
+    border-color: hsl(var(--border)); 
+  }
+  100% { 
+    border-color: hsl(var(--primary)); 
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2); 
+  }
+}
+
+@keyframes button-press {
+  0% { 
+    transform: scale(1); 
+  }
+  50% { 
+    transform: scale(0.98); 
+  }
+  100% { 
+    transform: scale(1); 
+  }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { 
+    transform: translateY(0px) scale(1); 
+  }
+  50% { 
+    transform: translateY(-6px) scale(1.05); 
+  }
+}
+
+@keyframes soft-glow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 4px currentColor); 
+    opacity: 0.4; 
+  }
+  50% { 
+    filter: drop-shadow(0 0 12px currentColor); 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes fade-in-up {
+  0% { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Animation classes */
+.animate-particle-float {
+  animation: particle-float 4s ease-in-out infinite;
+}
+
+.animate-gentle-bounce {
+  animation: gentle-bounce 2s ease-in-out infinite;
+}
+
+.animate-soft-glow {
+  animation: soft-glow 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.animate-auth-glow {
+  animation: auth-glow 3s ease-in-out infinite;
+}
+
+.animate-input-focus {
+  animation: input-focus 0.3s ease-out forwards;
+}
+
+.animate-button-press {
+  animation: button-press 0.2s ease-out;
+}
+
+/* Banner-specific animations and styles */
+@keyframes banner-glow {
+  0%, 100% { 
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1); 
+  }
+  50% { 
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2); 
+  }
+}
+
+.banner-hover-effect {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.banner-hover-effect:hover {
+  animation: banner-glow 2s ease-in-out infinite;
+}
+
+/* Responsive banner positioning */
+@media (max-width: 1023px) {
+  .dashboard-banner-mobile {
+    margin-top: 2rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-banner-mobile img {
+    max-height: 120px;
+  }
+}
+
+/* Focus states for accessibility */
+.banner-link:focus {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Floating button animations */
+@keyframes float-up {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-4px); 
+  }
+}
+
+.animate-float-up {
+  animation: float-up 3s ease-in-out infinite;
+}
+
+/* Sticky header backdrop blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Additional animations for dashboard */
+@keyframes bounce-subtle {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-4px); 
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+@keyframes glow {
+  0% { 
+    filter: brightness(1); 
+  }
+  50% { 
+    filter: brightness(1.2) drop-shadow(0 0 8px currentColor); 
+  }
+  100% { 
+    filter: brightness(1); 
+  }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Professional card hover effects */
+@keyframes card-hover {
+  0% { 
+    transform: translateY(0px); 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+  }
+  100% { 
+    transform: translateY(-2px); 
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
+  }
+}
+
+.animate-card-hover {
+  animation: card-hover 0.3s ease-out forwards;
+}
+
+/* Professional gradient animations */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Smooth scale animations */
+@keyframes scale-hover {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.animate-scale-hover {
+  animation: scale-hover 0.2s ease-out forwards;
+}
+
+/* Float animation for floating action buttons */
+@keyframes float-up {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-4px); 
+  }
+}
+
+.animate-float-up {
+  animation: float-up 3s ease-in-out infinite;
+}
+
+/* Professional loading animations */
+@keyframes skeleton-wave {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-skeleton-wave {
+  animation: skeleton-wave 2s ease-in-out infinite;
+}
+
+/* Auth page specific styles */
+.auth-card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-input:focus {
+  animation: input-focus 0.3s ease-out forwards;
+}
+
+.auth-button:active {
+  animation: button-press 0.2s ease-out;
+}
+
+/* Enhanced button hover effects */
+@keyframes button-glow {
+  0% { box-shadow: 0 0 0 0 currentColor; }
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.animate-button-glow {
+  animation: button-glow 1.5s ease-out;
+}
+}
+
