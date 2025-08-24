@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { AuthPage } from "@/components/auth/AuthPage";
+import { AuthGuard } from "@/components/auth/AuthGuard";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Dashboard } from "@/components/dashboard/Dashboard";
 import { Analytics } from "@/components/dashboard/Analytics";
@@ -20,7 +22,6 @@ import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import { CodeSharePage } from "@/components/sharing/CodeSharePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
 import { SubscriptionSuccess } from "./pages/SubscriptionSuccess";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -36,59 +37,86 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="/dashboard" element={
-                <DashboardLayout>
-                  <Dashboard />
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/upload" element={
-                <DashboardLayout>
-                  <FileUpload />
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/files" element={
-                <DashboardLayout>
-                  <FileManager />
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/receive" element={
-                <DashboardLayout>
-                  <FileReceiver />
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/teams" element={
-                <DashboardLayout>
-                  <div className="space-y-8">
-                    <TeamsManager />
-                    <TeamFiles />
-                  </div>
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/team-files" element={
-                <DashboardLayout>
-                  <TeamFileShare />
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/shared" element={
-                <DashboardLayout>
-                  <SharedLinks />
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/analytics" element={
-                <DashboardLayout>
-                  <Analytics />
-                </DashboardLayout>
-              } />
-              <Route path="/dashboard/settings" element={
-                <DashboardLayout>
-                  <Settings />
-                </DashboardLayout>
+              
+              {/* Public Routes */}
+              <Route path="/auth" element={
+                <AuthGuard requireAuth={false}>
+                  <AuthPage />
+                </AuthGuard>
               } />
               <Route path="/subscription" element={<SubscriptionPage />} />
               <Route path="/subscription-success" element={<SubscriptionSuccess />} />
               <Route path="/share/:token" element={<PublicSharePage />} />
               <Route path="/code" element={<CodeSharePage />} />
+              
+              {/* Protected Dashboard Routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <Dashboard />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/upload" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <FileUpload />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/files" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <FileManager />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/receive" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <FileReceiver />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/teams" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <div className="space-y-8">
+                      <TeamsManager />
+                      <TeamFiles />
+                    </div>
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/team-files" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <TeamFileShare />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/shared" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <SharedLinks />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/analytics" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <Analytics />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/settings" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <Settings />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -70,9 +70,15 @@ const HeroSection = () => {
           duration: 0.6,
           delay: 0.6
         }}>
-            <Button className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-zinc-100 text-black w-full sm:w-auto">Share Now</Button>
-            <Button variant="outline" className="border-2 border-border text-foreground hover:bg-accent hover:text-accent-foreground text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto">
+            <Button className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-zinc-100 text-black w-full sm:w-auto" asChild>
+              <a href="/auth">
+                Get Started
+              </a>
+            </Button>
+            <Button variant="outline" className="border-2 border-border text-foreground hover:bg-accent hover:text-accent-foreground text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto" asChild>
+              <a href="/auth">
               Go To Dashbaord
+              </a>
             </Button>
           </motion.div>
 

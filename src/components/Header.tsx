@@ -113,11 +113,15 @@ const Header = () => {
               
               {/* Mobile CTA Buttons */}
               <div className="border-t border-border pt-3 mt-3 space-y-2">
-                <Button variant="ghost" className="w-full h-10 bg-neutral-700 text-slate-250 font-medium text-sm justify-center">
+                <Button variant="ghost" className="w-full h-10 bg-neutral-700 text-slate-250 font-medium text-sm justify-center" asChild>
+                  <a href="/auth">
                   Log in
+                  </a>
                 </Button>
-                <Button variant="ghost" className="w-full h-10 bg-white text-slate-950 font-medium text-sm justify-center">
+                <Button variant="ghost" className="w-full h-10 bg-white text-slate-950 font-medium text-sm justify-center" asChild>
+                  <a href="/auth">
                   Get Started
+                  </a>
                 </Button>
               </div>
             </div>
@@ -125,11 +129,15 @@ const Header = () => {
         
        <div className="hidden md:flex items-center gap-3">
   <div className="flex gap-3 rounded-xl"> 
-    <Button variant="ghost" className="h-8 px-4 bg-neutral-700 text-slate-250 font-medium text-sm text-left">
+    <Button variant="ghost" className="h-8 px-4 bg-neutral-700 text-slate-250 font-medium text-sm text-left" asChild>
+      <a href="/auth">
       Log in
+      </a>
     </Button>
-    <Button variant="ghost" className="h-8 px-3 bg-white text-slate-950 font-medium text-sm text-left">
+    <Button variant="ghost" className="h-8 px-3 bg-white text-slate-950 font-medium text-sm text-left" asChild>
+      <a href="/auth">
       Get Started
+      </a>
     </Button>
   </div>
 </div>
