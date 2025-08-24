@@ -13,7 +13,7 @@ import {
   X,
   CheckCircle,
   Warning,
-  CircleNotch,
+  CircleNotch,manager
   ArrowRight
 } from 'phosphor-react';
 
