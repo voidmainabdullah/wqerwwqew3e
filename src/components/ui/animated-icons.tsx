@@ -1,85 +1,37 @@
-import React from 'react';
-import { Files, ShareNetwork, Download, TrendUp } from 'phosphor-react';
+import React from "react";
 
-interface AnimatedIconProps {
+interface AnimatedFogProps {
   show: boolean;
-  type: 'files' | 'shares' | 'downloads' | 'storage';
   className?: string;
 }
 
-export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ show, type, className = '' }) => {
+export const AnimatedFog: React.FC<AnimatedFogProps> = ({ show, className = "" }) => {
   if (!show) return null;
 
-  const getIcon = () => {
-    switch (type) {
-      case 'files':
-        return <Files className="w-8 h-8 text-inherit" />;
-      case 'shares':
-        return <ShareNetwork className="w-8 h-8 text-green-400/60" />;
-      case 'downloads':
-        return <Download className="w-8 h-8 text-blue-400/60" />;
-      case 'storage':
-        return <TrendUp className="w-8 h-8 text-red-400/60" />;
-      default:
-        return null;
-    }
-  };
-
   return (
-    <div className={`absolute inset-0 flex items-center justify-center pointer-events-none animate-fade-in ${className}`}>
-      <div className="animate-bounce-subtle opacity-20">
-        {getIcon()}
-      </div>
+    <div
+      className={`absolute inset-0 flex items-center justify-center pointer-events-none animate-fade-in ${className}`}
+    >
+      {/* Fog layers */}
+      <div className="absolute w-[150%] h-[150%] bg-gradient-to-r from-white/10 via-white/5 to-transparent blur-3xl animate-fog-move" />
+      <div className="absolute w-[120%] h-[120%] bg-gradient-to-l from-white/5 via-white/10 to-transparent blur-2xl animate-fog-move-delayed" />
     </div>
   );
 };
 
-interface EmptyStateIconProps {
-  type: 'files' | 'shares' | 'downloads' | 'storage';
+interface EmptyStateFogProps {
+  text: string;
   className?: string;
 }
 
-export const EmptyStateIcon: React.FC<EmptyStateIconProps> = ({ type, className = '' }) => {
-  const getEmptyStateContent = () => {
-    switch (type) {
-      case 'files':
-        return {
-          icon: <Files className="w-6 h-6" />,
-          text: 'No files yet',
-          color: 'text-yellow-400',
-        };
-      case 'shares':
-        return {
-          icon: <ShareNetwork className="w-6 h-6" />,
-          text: 'No shares yet',
-          color: 'text-green-400',
-        };
-      case 'downloads':
-        return {
-          icon: <Download className="w-6 h-6" />,
-          text: 'No downloads yet',
-          color: 'text-blue-400',
-        };
-      case 'storage':
-        return {
-          icon: <TrendUp className="w-6 h-6" />,
-          text: 'Storage empty',
-          color: 'text-red-400',
-        };
-      default:
-        return null;
-    }
-  };
-
-  const content = getEmptyStateContent();
-  if (!content) return null;
-
+export const EmptyStateFog: React.FC<EmptyStateFogProps> = ({ text, className = "" }) => {
   return (
-    <div className={`absolute inset-0 flex flex-col items-center justify-center pointer-events-none animate-fade-in ${className}`}>
-      <div className={`${content.color} animate-bounce-subtle opacity-50 mb-1`}>
-        {content.icon}
-      </div>
-      <span className={`text-xs ${content.color}`}>{content.text}</span>
+    <div
+      className={`absolute inset-0 flex flex-col items-center justify-center pointer-events-none animate-fade-in ${className}`}
+    >
+      {/* Subtle foggy glow */}
+      <div className="absolute w-[100%] h-[100%] bg-gradient-to-b from-white/10 via-white/5 to-transparent blur-2xl animate-fog-move opacity-50" />
+      <span className="text-xs text-white/70 relative z-10">{text}</span>
     </div>
   );
 };
