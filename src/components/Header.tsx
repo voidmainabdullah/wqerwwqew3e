@@ -31,7 +31,7 @@ const Header = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
   return <motion.div className={`fixed top-0 left-0 right-0 z-50 pt-2 px-4 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-red-400 shadow-lg' : 'bg-transparent'}`}>
-      <header className="w-full max-w-7xl mx-auto py-2 px-6 md:px-8 flex items-center justify-between max-h-12 ">
+      <header className="w-full max-w-7xl mx-auto py-2 px-6 md:px-8 flex items-center justify-between max-h-10">
         <div className="p-3">
           <motion.div initial={{
           opacity: 0,
