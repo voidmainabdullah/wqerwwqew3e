@@ -137,7 +137,7 @@ export const Dashboard: React.FC = () => {
                 </div>
                 <p className="text-blue-100 text-sm mb-3">
                   Unlock unlimited storage and premium features
-                  Unlock Unlock Unlock UnlockUnlock Unlock Unlock
+              
                 </p>
                 <div className="flex items-center text-yellow-400 text-sm font-medium">
                   <span>Learn more</span>
