@@ -132,7 +132,7 @@ export const Dashboard: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r border-2 rounded-xl border-white shadow-sm from-neutral-700 to-black opacity-50 bg-neutral-800"></div>
               <div className="relative"> 
                 <div className="flex items-center gap-3 mb-2">
-                  <Lightning className="w-6 h-6 text-indigo-800" />
+                  <Lightning className="w-6 h-6 text-indigo-600" />
                   <span className="text-white font-semibold text-lg">Upgrade to Pro</span>
                 </div>
                 <p className="text-blue-100 text-sm mb-3">
