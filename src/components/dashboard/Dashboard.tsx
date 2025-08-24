@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Files, ShareNetwork, Download, TrendUp, Upload, Shield, Lightning, Users, Cloud, FileText, Crown, Zap, Code, PaperPlaneTilt, ChartLineUp, Calendar, Activity } from 'phosphor-react';
-
+import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -149,10 +149,10 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {/* Total Files */}
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br  bg-neutral-800"></div>
+        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-orange-500/5 bg-neutral-950"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -162,7 +162,7 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalFiles.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-8 rounded-xl bg-yellow-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Files className="h-6 w-6 text-yellow-500" />
             </div>
           </CardHeader>
@@ -176,7 +176,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Shared Links */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0  bg-neutral-800"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -200,7 +200,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Downloads */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-neutral-800"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -224,7 +224,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Storage Usage */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0  bg-neutral-800"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
