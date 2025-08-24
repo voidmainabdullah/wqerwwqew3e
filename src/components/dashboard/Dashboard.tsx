@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Files, ShareNetwork, Download, TrendUp, Upload, Shield, Lightning, Users, Cloud, FileText, Crown, Zap, Code, PaperPlaneTilt, ChartLineUp, Calendar, Activity } from 'phosphor-react';
-import { AnimatedIcon } from '@/components/ui/animated-icons';
+
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
