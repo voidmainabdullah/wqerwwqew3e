@@ -35,13 +35,7 @@ import {
   Users,
   PaperPlaneTilt,
   Code,
-  Clock,
   CurrencyCircleDollar,
-  Lifebuoy,
-  Info,
-  TwitterLogo,
-  InstagramLogo,
-  FacebookLogo
 } from 'phosphor-react';
 
 interface DashboardLayoutProps {
@@ -147,7 +141,6 @@ const AppSidebar = () => {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -170,8 +163,25 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-40">
-            <div className="flex items-center justify-between h-16 px-6">
+          <header className="relative border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-40">
+            {/* Glowing Curved Line */}
+            <svg
+              className="absolute top-0 left-0 w-full h-10"
+              viewBox="0 0 1440 100"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                d="M0,50 C360,0 1080,100 1440,50"
+                style={{
+                  filter: "drop-shadow(0 0 6px rgba(255,255,255,0.8)) drop-shadow(0 0 12px rgba(255,255,255,0.5))"
+                }}
+              />
+            </svg>
+
+            <div className="flex items-center justify-between h-16 px-6 relative z-10">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
                 
