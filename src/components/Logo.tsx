@@ -7,7 +7,7 @@ const Logo = () => {
         <img 
           src="/sky.png" 
           alt="Logo" 
-          className="h-10 w-auto sm:h-10 md:h-16 object-contain transition-all duration-300 hover:scale-105"
+          className="h-14 w-auto sm:h-10 md:h-16 object-contain transition-all duration-300 hover:scale-105"
         />
         
         {/* Glow effect */}
