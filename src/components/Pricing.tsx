@@ -21,7 +21,7 @@ const Pricing = () => {
     popular: false
   }, {
     name: "Professional",
-    price: "$12",
+    price: "$6.99",
     period: "per user/month",
     description: "Ideal for growing teams with advanced collaboration needs",
     features: ["100GB storage per user", "Advanced file sharing", "Real-time collaboration", "Team management tools", "Advanced security controls", "API access", "Priority support"],
@@ -29,8 +29,9 @@ const Pricing = () => {
     buttonVariant: "default",
     popular: true
   }, {
-    name: "Enterprise",
-    price: "Custom",
+    name: "Professional +",
+    price: "69.99$",
+    period: "per user/year"
     description: "For large organizations with complex file management needs",
     features: ["Unlimited storage", "Custom workflows", "Advanced compliance tools", "Dedicated infrastructure", "White-label solutions", "Dedicated account manager", "24/7 premium support"],
     buttonText: "Contact Sales",
