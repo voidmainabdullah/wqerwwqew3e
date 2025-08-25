@@ -141,7 +141,7 @@ export const Dashboard: React.FC = () => {
               
                 </p>
                 <div className="flex items-center text-neutral-200 text-sm font-medium">
-                  <span>Get Started — 3.99$/month</span>
+                  <span>Get Started — 6.99$/month</span>
                   <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
