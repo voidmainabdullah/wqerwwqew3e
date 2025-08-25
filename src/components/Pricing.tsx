@@ -74,7 +74,7 @@ const Pricing = () => {
           duration: 0.6,
           delay: index * 0.2
         }}>
-              {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 text-primary-foreground text-sm rounded-full font-medium bg-indigo-400">
+              {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 text-white text-sm rounded-full font-medium bg-indigo-400">
                   Most Popular
                 </div>}
               
