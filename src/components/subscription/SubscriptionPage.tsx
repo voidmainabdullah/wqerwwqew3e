@@ -127,7 +127,7 @@ export const SubscriptionPage: React.FC = () => {
 
             <PriceCard
               title="Pro Monthly"
-              price="$3.99"
+              price="$6.99"
               period="month"
               description="Full access with monthly billing"
               features={features.pro}
@@ -136,7 +136,7 @@ export const SubscriptionPage: React.FC = () => {
 
             <PriceCard
               title="Pro Yearly"
-              price="$39.99"
+              price="$69.99"
               period="year"
               description="Save 17% with annual billing"
               features={features.pro}
