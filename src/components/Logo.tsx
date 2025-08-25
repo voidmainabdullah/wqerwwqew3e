@@ -15,7 +15,7 @@ const Logo = () => {
           <img 
             src="/sky.png" 
             alt="Logo Glow" 
-            className="h-8 w-auto sm:h-10 md:h-12 object-contain"
+            className="h-20 w-auto sm:h-10 md:h-12 object-contain"
           />
         </div>
       </div>
