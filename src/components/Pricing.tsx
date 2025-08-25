@@ -31,7 +31,7 @@ const Pricing = () => {
   }, {
     name: "Professional +",
     price: "69.99$",
-    period: "per user/year"
+    period: "per user/year",
     description: "For large organizations with complex file management needs",
     features: ["Unlimited storage", "Custom workflows", "Advanced compliance tools", "Dedicated infrastructure", "White-label solutions", "Dedicated account manager", "24/7 premium support"],
     buttonText: "Contact Sales",
