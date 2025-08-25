@@ -2,7 +2,7 @@ import React from 'react';
 
 const Logo = () => {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-left gap-3">
       <div className="relative">
         <img 
           src="/sky.png" 
@@ -15,7 +15,7 @@ const Logo = () => {
           <img 
             src="/sky.png" 
             alt="Logo Glow" 
-            className="h-20 w-auto sm:h-10 md:h-12 object-contain"
+            className="h-8 w-auto sm:h-10 md:h-12 object-contain"
           />
         </div>
       </div>
