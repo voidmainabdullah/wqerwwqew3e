@@ -31,6 +31,17 @@ const Header = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
   return <motion.div className={`fixed top-0 left-0 right-0 z-50 pt-2 px-4 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-background/50 shadow-lg' : 'bg-transparent'}`}>
+      {/* Animated White Glow Line at Top */}
+      <motion.div 
+        className="absolute top-0 left-0 h-px bg-gradient-to-r from-transparent via-white to-transparent"
+        initial={{ width: "0%" }}
+        animate={{ width: "100%" }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+        style={{
+          boxShadow: "0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4)"
+        }}
+      />
+      
       <header className="w-full max-w-7xl mx-auto py-2 px-6 md:px-8 flex items-center justify-between max-h-14">
         <div className="p-3">
           <motion.div initial={{
