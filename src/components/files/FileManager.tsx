@@ -461,8 +461,8 @@ export const FileManager: React.FC = () => {
         </p>
       </div>
       <Button asChild>
-        <a href="/FileManager" className="flex items-center gap-2">
-          Go to My Files
+        <a href="/SharedLinks" className="flex items-center gap-2">
+          Go to Shared Links
           <ArrowRight size={18} />
         </a>
       </Button>
