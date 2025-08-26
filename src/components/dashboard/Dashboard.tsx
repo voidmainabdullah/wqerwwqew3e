@@ -128,19 +128,19 @@ export const Dashboard: React.FC = () => {
         {/* Upgrade Banner - Desktop */}
         <div className="hidden lg:block">
           <Link to="/subscription" className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl">
-            <div className="relative overflow-hidden rounded-xlborder-4 border-blue-400 shadow-lg  bg-gradient-to-r from-neutral-850  p-6 shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-r border-2 rounded-xl border-white shadow-sm from-neutral-700 to-black opacity-50 bg-neutral-800"></div>
+            <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg bg-gradient-to-r from-card to-card/80 p-6 shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50"></div>
               <div className="relative"> 
                 <div className="flex items-center gap-3 mb-2">
-                  <Lightning className="w-6 h-6 text-indigo-400" />
-                  <span className="text-white font-semibold text-lg">Upgrade to Pro</span>
+                  <Lightning className="w-6 h-6 text-primary" />
+                  <span className="text-foreground font-semibold text-lg">Upgrade to Pro</span>
                 </div>
-                <p className="text-blue-100 text-sm mb-3">
+                <p className="text-muted-foreground text-sm mb-3">
                   - Unlock unlimited storage and premium features
                   
               
                 </p>
-                <div className="flex items-center text-neutral-200 text-sm font-medium">
+                <div className="flex items-center text-foreground text-sm font-medium">
                   <span>Get Started — 6.99$/month</span>
                   <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -154,7 +154,7 @@ export const Dashboard: React.FC = () => {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {/* Total Files */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0  bg-neutral-850"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-card to-card/50"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -202,7 +202,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Downloads */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br bg-neutral-850"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-card to-card/50"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -288,7 +288,7 @@ export const Dashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <Button className="w-full bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-xl transition-all duration-300" asChild>
-                <Link to="/dashboard/upload" className="bg-neutral-600">
+                <Link to="/dashboard/upload">
                   <Upload className="mr-2 h-4 w-4" />
                   Start Upload
                 </Link>
@@ -501,15 +501,15 @@ export const Dashboard: React.FC = () => {
       {/* Mobile Upgrade Banner */}
       <div className="lg:hidden">
         <Link to="/subscription" className="block transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl">
-          <div className="relative overflow-hidden rounded-xlborder-4 border-blue-400 shadow-lg  bg-gradient-to-r from-neutral-850  p-6 shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-r border-2 rounded-xl border-white shadow-sm from-neutral-700 to-black opacity-50 bg-neutral-800"></div>
+          <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg bg-gradient-to-r from-card to-card/80 p-6 shadow-xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50"></div>
             <div className="relative text-center">
-              <Lightning className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
-              <h3 className="text-white font-bold text-xl mb-2">Upgrade to Pro</h3>
-              <p className="text-blue-100 mb-4">
+              <Lightning className="w-8 h-8 text-primary mx-auto mb-3" />
+              <h3 className="text-foreground font-bold text-xl mb-2">Upgrade to Pro</h3>
+              <p className="text-muted-foreground mb-4">
                 Unlock unlimited storage and premium features
               </p>
-              <div className="inline-flex items-center text-yellow-400 font-medium">
+              <div className="inline-flex items-center text-primary font-medium">
                 <span>Get Started</span>
                 <Lightning className="w-4 h-4 ml-2" />
               </div>

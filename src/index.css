@@ -70,170 +70,170 @@
 @layer base {
   :root {
     /* Light theme colors */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 3%;
 
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover-foreground: 0 0% 3%;
 
-    --primary: 213 94% 68%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 220 100% 50%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 215 20% 65%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 210 40% 90%;
+    --secondary-foreground: 0 0% 3%;
 
-    --muted: 215 20% 95%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 210 40% 95%;
+    --muted-foreground: 215 16% 35%;
 
-    --accent: 215 20% 95%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 220 100% 50%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 98%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 38 92% 45%;
+    --warning-foreground: 0 0% 98%;
 
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
+    --success: 142 76% 30%;
+    --success-foreground: 0 0% 98%;
 
-    --border: 215 20% 85%;
-    --input: 215 20% 90%;
-    --ring: 213 94% 68%;
+    --border: 210 40% 85%;
+    --input: 210 40% 92%;
+    --ring: 220 100% 50%;
 
     --radius: 8px;
 
     /* Sidebar colors for navigation */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 9%;
-    --sidebar-primary: 213 94% 68%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 20% 95%;
-    --sidebar-accent-foreground: 0 0% 9%;
-    --sidebar-border: 215 20% 85%;
-    --sidebar-ring: 213 94% 68%;
+    --sidebar-foreground: 0 0% 3%;
+    --sidebar-primary: 220 100% 50%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 210 40% 95%;
+    --sidebar-accent-foreground: 0 0% 3%;
+    --sidebar-border: 210 40% 85%;
+    --sidebar-ring: 220 100% 50%;
 
     /* Custom design tokens for special effects */
-    --primary-glow: 213 94% 68%;
-    --gradient-primary: linear-gradient(135deg, hsl(213 94% 68%), hsl(221 83% 53%));
-    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(215 20% 98%));
+    --primary-glow: 220 100% 50%;
+    --gradient-primary: linear-gradient(135deg, hsl(220 100% 50%), hsl(240 100% 40%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 98%));
     --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.1);
-    --shadow-glow: 0 8px 32px hsl(213 94% 68% / 0.15);
+    --shadow-glow: 0 8px 32px hsl(220 100% 50% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Function highlight colors - vibrant accent colors */
-    --function-upload: 142 71% 45%;
-    --function-upload-glow: 142 71% 55%;
-    --function-share: 213 94% 68%;
-    --function-share-glow: 213 94% 78%;
-    --function-download: 217 91% 60%;
-    --function-download-glow: 217 91% 70%;
-    --function-delete: 0 84% 60%;
-    --function-delete-glow: 0 84% 70%;
-    --function-success: 142 76% 36%;
-    --function-success-glow: 142 76% 46%;
-    --function-processing: 262 83% 58%;
-    --function-processing-glow: 262 83% 68%;
+    --function-upload: 142 71% 40%;
+    --function-upload-glow: 142 71% 50%;
+    --function-share: 220 100% 50%;
+    --function-share-glow: 220 100% 60%;
+    --function-download: 217 91% 50%;
+    --function-download-glow: 217 91% 60%;
+    --function-delete: 0 84% 50%;
+    --function-delete-glow: 0 84% 60%;
+    --function-success: 142 76% 30%;
+    --function-success-glow: 142 76% 40%;
+    --function-processing: 262 83% 50%;
+    --function-processing-glow: 262 83% 60%;
     
     /* Cosmic effects - monochromatic greys */
-    --cosmic-dark: 215 16% 47%;
-    --cosmic-medium: 215 20% 96%;
-    --cosmic-light: 0 0% 100%;
-    --cosmic-grey-1: 215 16% 47%;
-    --cosmic-grey-2: 215 16% 57%;
+    --cosmic-dark: 215 16% 35%;
+    --cosmic-medium: 210 40% 95%;
+    --cosmic-light: 0 0% 98%;
+    --cosmic-grey-1: 215 16% 35%;
+    --cosmic-grey-2: 215 16% 45%;
     
     /* Glass morphism effects */
-    --glass-border: 213 94% 68% / 0.1;
-    --glass-bg: 213 94% 68% / 0.05;
+    --glass-border: 220 100% 50% / 0.1;
+    --glass-bg: 220 100% 50% / 0.05;
     --glass-backdrop: blur(10px);
     
     /* Grid patterns */
-    --grid-color: 213 94% 68% / 0.05;
+    --grid-color: 220 100% 50% / 0.05;
     
     /* File type colors - keeping some color for recognition */
-    --file-pdf: 0 84% 60%;
-    --file-image: 142 76% 36%;
-    --file-video: 262 83% 58%;
-    --file-audio: 45 93% 58%;
-    --file-document: 213 94% 68%;
-    --file-archive: 33 84% 60%;
-    --file-code: 142 76% 36%;
-    --file-default: 215 16% 47%;
+    --file-pdf: 0 84% 50%;
+    --file-image: 142 76% 30%;
+    --file-video: 262 83% 50%;
+    --file-audio: 45 93% 50%;
+    --file-document: 220 100% 50%;
+    --file-archive: 33 84% 50%;
+    --file-code: 142 76% 30%;
+    --file-default: 215 16% 35%;
   }
 
   .dark {
     /* Dark theme colors */
-    --background: 0 0% 3%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 213 94% 68%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 220 100% 60%;
+    --primary-foreground: 0 0% 5%;
 
-    --secondary: 215 20% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 215 20% 20%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 215 20% 12%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 215 20% 15%;
+    --muted-foreground: 0 0% 75%;
 
-    --accent: 213 94% 68%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 220 100% 60%;
+    --accent-foreground: 0 0% 5%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 0 0% 98%;
 
-    --warning: 45 93% 58%;
-    --warning-foreground: 0 0% 9%;
+    --warning: 45 93% 65%;
+    --warning-foreground: 0 0% 5%;
 
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 95%;
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 98%;
 
-    --border: 215 20% 20%;
-    --input: 215 20% 15%;
-    --ring: 213 94% 68%;
+    --border: 215 20% 25%;
+    --input: 215 20% 18%;
+    --ring: 220 100% 60%;
 
     /* Sidebar colors for navigation */
-    --sidebar-background: 0 0% 3%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 213 94% 68%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 215 20% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 215 20% 20%;
-    --sidebar-ring: 213 94% 68%;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 220 100% 60%;
+    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-accent: 215 20% 15%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 215 20% 25%;
+    --sidebar-ring: 220 100% 60%;
 
     /* Custom design tokens for special effects */
-    --primary-glow: 213 94% 68%;
-    --gradient-primary: linear-gradient(135deg, hsl(213 94% 68%), hsl(221 83% 53%));
-    --gradient-surface: linear-gradient(180deg, hsl(0 0% 8%), hsl(0 0% 3%));
+    --primary-glow: 220 100% 60%;
+    --gradient-primary: linear-gradient(135deg, hsl(220 100% 60%), hsl(240 100% 50%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 10%), hsl(0 0% 5%));
     --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.4);
     --shadow-glow: 0 8px 32px hsl(213 94% 68% / 0.15);
     
     /* Cosmic effects - monochromatic greys */
-    --cosmic-dark: 215 20% 25%;
-    --cosmic-medium: 215 20% 15%;
-    --cosmic-light: 0 0% 94%;
-    --cosmic-grey-1: 215 16% 38%;
-    --cosmic-grey-2: 215 16% 56%;
+    --cosmic-dark: 215 20% 30%;
+    --cosmic-medium: 215 20% 18%;
+    --cosmic-light: 0 0% 98%;
+    --cosmic-grey-1: 215 16% 45%;
+    --cosmic-grey-2: 215 16% 65%;
     
     /* Glass morphism effects */
-    --glass-border: 213 94% 68% / 0.1;
-    --glass-bg: 213 94% 68% / 0.05;
+    --glass-border: 220 100% 60% / 0.1;
+    --glass-bg: 220 100% 60% / 0.05;
     
     /* Grid patterns */
-    --grid-color: 213 94% 68% / 0.05;
+    --grid-color: 220 100% 60% / 0.05;
     
     /* File type colors - keeping some color for recognition */
-    --file-document: 213 94% 68%;
-    --file-default: 215 16% 47%;
+    --file-document: 220 100% 60%;
+    --file-default: 215 16% 45%;
   }
 }
 
