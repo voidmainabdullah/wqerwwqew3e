@@ -5,7 +5,7 @@ const Logo = () => {
     <div className="flex items-left gap-3">
       <div className="relative">
         <img 
-          src="/sky.png" 
+          src="/sky.png"
           alt="Logo" 
           className="h-14 w-auto sm:h-15 md:h-16 object-contain transition-all duration-300 hover:scale-105"
         />

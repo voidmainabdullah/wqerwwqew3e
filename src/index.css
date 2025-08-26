@@ -69,7 +69,103 @@
 
 @layer base {
   :root {
-    /* Dark-mode-only monochromatic theme */
+    /* Light theme colors */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 355.7 100% 97.3%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 8px;
+
+    /* Sidebar colors for navigation */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 3.9%;
+    --sidebar-primary: 221.2 83.2% 53.3%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222.2 84% 4.9%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 221.2 83.2% 53.3%;
+
+    /* Custom design tokens for special effects */
+    --primary-glow: 221.2 83.2% 53.3%;
+    --gradient-primary: linear-gradient(135deg, hsl(221.2 83.2% 53.3%), hsl(221.2 83.2% 63.3%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 98%));
+    --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.1);
+    --shadow-glow: 0 8px 32px hsl(221.2 83.2% 53.3% / 0.15);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Function highlight colors - vibrant accent colors */
+    --function-upload: 142 71% 45%;
+    --function-upload-glow: 142 71% 55%;
+    --function-share: 221.2 83.2% 53.3%;
+    --function-share-glow: 221.2 83.2% 63.3%;
+    --function-download: 217 91% 60%;
+    --function-download-glow: 217 91% 70%;
+    --function-delete: 0 84% 60%;
+    --function-delete-glow: 0 84% 70%;
+    --function-success: 142 76% 36%;
+    --function-success-glow: 142 76% 46%;
+    --function-processing: 262 83% 58%;
+    --function-processing-glow: 262 83% 68%;
+    
+    /* Cosmic effects - monochromatic greys */
+    --cosmic-dark: 215.4 16.3% 46.9%;
+    --cosmic-medium: 210 40% 96%;
+    --cosmic-light: 0 0% 100%;
+    --cosmic-grey-1: 215.4 16.3% 46.9%;
+    --cosmic-grey-2: 215.4 16.3% 56.9%;
+    
+    /* Glass morphism effects */
+    --glass-border: 221.2 83.2% 53.3% / 0.1;
+    --glass-bg: 221.2 83.2% 53.3% / 0.05;
+    --glass-backdrop: blur(10px);
+    
+    /* Grid patterns */
+    --grid-color: 221.2 83.2% 53.3% / 0.05;
+    
+    /* File type colors - keeping some color for recognition */
+    --file-pdf: 0 84% 60%;
+    --file-image: 142 76% 36%;
+    --file-video: 262 83% 58%;
+    --file-audio: 45 93% 58%;
+    --file-document: 221.2 83.2% 53.3%;
+    --file-archive: 33 84% 60%;
+    --file-code: 142 76% 36%;
+    --file-default: 215.4 16.3% 46.9%;
+  }
+
+  .dark {
+    /* Dark theme colors */
     --background: 0 0% 8%;
     --foreground: 0 0% 95%;
 
@@ -104,8 +200,6 @@
     --input: 0 0% 18%;
     --ring: 0 0% 85%;
 
-    --radius: 8px;
-
     /* Sidebar colors for navigation */
     --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 95%;
@@ -122,21 +216,6 @@
     --gradient-surface: linear-gradient(180deg, hsl(0 0% 12%), hsl(0 0% 8%));
     --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.4);
     --shadow-glow: 0 8px 32px hsl(0 0% 95% / 0.15);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Function highlight colors - vibrant accent colors */
-    --function-upload: 142 71% 45%;
-    --function-upload-glow: 142 71% 55%;
-    --function-share: 217 91% 60%;
-    --function-share-glow: 217 91% 70%;
-    --function-download: 45 93% 47%;
-    --function-download-glow: 45 93% 57%;
-    --function-delete: 0 84% 60%;
-    --function-delete-glow: 0 84% 70%;
-    --function-success: 142 76% 36%;
-    --function-success-glow: 142 76% 46%;
-    --function-processing: 262 83% 58%;
-    --function-processing-glow: 262 83% 68%;
     
     /* Cosmic effects - monochromatic greys */
     --cosmic-dark: 0 0% 25%;
@@ -148,19 +227,12 @@
     /* Glass morphism effects */
     --glass-border: 0 0% 95% / 0.1;
     --glass-bg: 0 0% 95% / 0.05;
-    --glass-backdrop: blur(10px);
     
     /* Grid patterns */
     --grid-color: 0 0% 95% / 0.05;
     
     /* File type colors - keeping some color for recognition */
-    --file-pdf: 0 84% 60%;
-    --file-image: 142 76% 36%;
-    --file-video: 262 83% 58%;
-    --file-audio: 45 93% 58%;
     --file-document: 0 0% 85%;
-    --file-archive: 33 84% 60%;
-    --file-code: 142 76% 36%;
     --file-default: 0 0% 70%;
   }
 }
