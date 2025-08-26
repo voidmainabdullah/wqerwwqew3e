@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { Files, ShareNetwork, Download, TrendUp, Upload, Shield, Lightning, Users, Cloud, FileText, Crown, Zap, Code, PaperPlaneTilt, ChartLineUp, Calendar, Activity } from 'phosphor-react';
+import { Files, ShareNetwork, Download, TrendUp, Upload, Shield, Lightning, Users, Cloud, FileText, Crown, Zap, Code, PaperPlaneTilt, ChartLineUp, Calendar, Activity, CheckCircle, Warning } from 'phosphor-react';
 import { AnimatedIcon, EmptyStateIcon } from '@/components/ui/animated-icons';
 interface DashboardStats {
   totalFiles: number;
@@ -164,8 +164,8 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalFiles.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Files className="h-6 w-6 text-black dark:text-neutral-800" />
+            <div className="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Files className="h-6 w-6 analytics-icon analytics-icon-yellow" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -188,8 +188,8 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalShares.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <ShareNetwork className="h-6 w-6 text-black dark:text-neutral-800" />
+            <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <ShareNetwork className="h-6 w-6 analytics-icon analytics-icon-purple" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -212,8 +212,8 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalDownloads.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Download className="h-6 w-6 text-black dark:text-neutral-800" />
+            <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Download className="h-6 w-6 analytics-icon analytics-icon-green" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -246,8 +246,8 @@ export const Dashboard: React.FC = () => {
                   </div>}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Cloud className="h-6 w-6 text-black dark:text-neutral-800" />
+            <div className="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Cloud className="h-6 w-6 analytics-icon analytics-icon-red" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -300,237 +300,4 @@ export const Dashboard: React.FC = () => {
           <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
             <CardHeader className="pb-4">
               <div className="w-12 h-12 rounded-xl bg-functions-download/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                <PaperPlaneTilt className="w-6 h-6 text-functions-download" />
-              </div>
-              <CardTitle className="text-xl">Request Files</CardTitle>
-              <CardDescription className="text-base">
-                Create secure links for others to send files directly to you.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" variant="outline" asChild>
-                <Link to="/dashboard/receive">
-                  <PaperPlaneTilt className="mr-2 h-4 w-4" />
-                  Create Request
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Download with Code */}
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
-            <CardHeader className="pb-4">
-              <div className="w-12 h-12 rounded-xl bg-functions-processing/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Code className="w-6 h-6 text-functions-processing" />
-              </div>
-              <CardTitle className="text-xl">Download with Code</CardTitle>
-              <CardDescription className="text-base">
-                Enter a share code to access files shared with you.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" variant="outline" asChild>
-                <Link to="/code">
-                  <Code className="mr-2 h-4 w-4" />
-                  Enter Code
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      <Separator className="my-8" />
-
-      {/* Management & Analytics Section */}
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <ChartLineUp className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-semibold tracking-tight">Management & Analytics</h2>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* File Management */}
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
-            <CardHeader>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Files className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl">File Management</CardTitle>
-                  <CardDescription className="text-base">
-                    Organize, share, and manage your uploaded files.
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-3 rounded-lg bg-muted/50">
-                  <div className="text-2xl font-bold text-foreground">{stats?.totalFiles}</div>
-                  <div className="text-xs text-muted-foreground">Files</div>
-                </div>
-                <div className="text-center p-3 rounded-lg bg-muted/50">
-                  <div className="text-2xl font-bold text-foreground">{stats?.totalShares}</div>
-                  <div className="text-xs text-muted-foreground">Shares</div>
-                </div>
-              </div>
-              <Button className="w-full" variant="outline" asChild>
-                <Link to="/dashboard/files">
-                  <Files className="mr-2 h-4 w-4" />
-                  Manage Files
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Analytics */}
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
-            <CardHeader>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <ChartLineUp className="w-6 h-6 text-black dark:text-neutral-800" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl">Analytics</CardTitle>
-                  <CardDescription className="text-base">
-                    Track downloads and sharing performance.
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-3 rounded-lg bg-muted/50">
-                  <div className="text-2xl font-bold text-foreground">{stats?.totalDownloads}</div>
-                  <div className="text-xs text-muted-foreground">Downloads</div>
-                </div>
-                <div className="text-center p-3 rounded-lg bg-muted/50">
-                  <div className="text-1xl font-bold text-black dark:text-neutral-800">
-                    {stats?.totalDownloads > 0 ? '↗ Goes Up' : '— Stable'}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Trend</div>
-                </div>
-              </div>
-              <Button className="w-full" variant="outline" asChild>
-                <Link to="/dashboard/analytics">
-                  <ChartLineUp className="mr-2 h-4 w-4" />
-                  View Analytics
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Security & Features Section */}
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <Shield className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-semibold tracking-tight">Security & Features</h2>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Security Features */}
-          <Card className="border-0 bg-gradient-to-br from-card to-card/50 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-xl">
-                <Shield className="w-6 h-6 text-black dark:text-neutral-800" />
-                Security Features
-              </CardTitle>
-              <CardDescription className="text-base">
-                Your files are protected with enterprise-grade security.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-black/5 dark:bg-neutral-800/5 border border-black/20 dark:border-neutral-800/20">
-                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
-                  <span className="text-sm font-medium">End-to-end encryption</span>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-black/5 dark:bg-neutral-800/5 border border-black/20 dark:border-neutral-800/20">
-                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
-                  <span className="text-sm font-medium">Automatic expiry dates</span>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-black/5 dark:bg-neutral-800/5 border border-black/20 dark:border-neutral-800/20">
-                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
-                  <span className="text-sm font-medium">Download limits & tracking</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Team Collaboration */}
-          <Card className="border-0 bg-gradient-to-br from-card to-card/50 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-xl">
-                <Users className="w-6 h-6 text-black dark:text-neutral-800" />
-                Team Collaboration
-              </CardTitle>
-              <CardDescription className="text-base">
-                Work together with advanced team features.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-black/20 dark:border-neutral-800/20 bg-inherit">
-                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
-                  <span className="text-sm font-medium">Team file sharing</span>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-black/20 dark:border-neutral-800/20 bg-transparent">
-                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
-                  <span className="text-sm font-medium">Role-based permissions</span>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-black/20 dark:border-neutral-800/20 bg-transparent">
-                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
-                  <span className="text-sm font-medium">Collaborative workflows</span>
-                </div>
-              </div>
-              <Button className="w-full" variant="outline" asChild>
-                <Link to="/dashboard/teams">
-                  <Users className="mr-2 h-4 w-4" />
-                  Manage Teams
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Mobile Upgrade Banner */}
-      <div className="lg:hidden">
-        <Link to="/subscription" className="block transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl">
-          <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg bg-gradient-to-r from-card to-card/80 p-6 shadow-xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50"></div>
-            <div className="relative text-center">
-              <Lightning className="w-8 h-8 text-primary mx-auto mb-3" />
-              <h3 className="text-foreground font-bold text-xl mb-2">Upgrade to Pro</h3>
-              <p className="text-muted-foreground mb-4">
-                Unlock unlimited storage and premium features
-              </p>
-              <div className="inline-flex items-center text-primary font-medium">
-                <span>Get Started</span>
-                <Lightning className="w-4 h-4 ml-2" />
-              </div>
-            </div>
-          </div>
-        </Link>
-      </div>
-
-      {/* Floating Action Buttons */}
-      <div className="fixed bottom-8 right-8 flex flex-col gap-4 z-50">
-        <Button size="lg" className="w-16 h-16 rounded-full shadow-2xl hover:shadow-functions-share/30 transition-all duration-300 hover:scale-110 bg-functions-share hover:bg-functions-shareGlow border-0" asChild>
-          <Link to="/dashboard/upload" title="Upload Files" className="bg-white">
-            <Upload className="h-7 w-7" />
-          </Link>
-        </Button>
-        
-        <Button size="lg" variant="outline" className="w-16 h-16 rounded-full shadow-2xl hover:shadow-functions-download/30 transition-all duration-300 hover:scale-110 bg-background/80 backdrop-blur-sm border-functions-download/30 hover:border-functions-download" asChild>
-          <Link to="/dashboard/receive" title="Request Files" className="bg-blue-600">
-            <PaperPlaneTilt className="h-7 w-7 text-functions-download" />
-          </Link>
-        </Button>
-      </div>
-    </div>;
-};
+                

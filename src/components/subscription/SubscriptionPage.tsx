@@ -205,7 +205,7 @@ export const SubscriptionPage: React.FC = () => {
               </CardTitle>
               <CardDescription>
                 Unlock premium features to supercharge your file sharing
-                experience.
+              <Upload className="h-8 w-8 analytics-icon analytics-icon-green mx-auto mb-2" />
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-6 md:grid-cols-2">
@@ -232,7 +232,7 @@ export const SubscriptionPage: React.FC = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-start space-x-3">
+              <ChartLineUp className="h-8 w-8 analytics-icon analytics-icon-purple mx-auto mb-2" />
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
                     <h4 className="font-medium">Password Protection</h4>
@@ -244,7 +244,7 @@ export const SubscriptionPage: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
-                    <h4 className="font-medium">Download Analytics</h4>
+              <Lightning className="h-8 w-8 analytics-icon analytics-icon-yellow mx-auto mb-2" />
                     <p className="text-sm text-muted-foreground">
                       Know when and how your files are accessed.
                     </p>
@@ -256,5 +256,5 @@ export const SubscriptionPage: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+              <Shield className="h-8 w-8 analytics-icon analytics-icon-red mx-auto mb-2" />
 };
