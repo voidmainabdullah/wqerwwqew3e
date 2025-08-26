@@ -339,7 +339,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full bg-white hover:bg-functions-downloadGlow text-gray/20" asChild>
+              <Button className="w-full bg-white hover:bg-functions-downloadGlow text-black" asChild>
                 <Link to="/dashboard/request">
                   <PaperPlaneTilt className="mr-2 h-4 w-4" />
                   Request Files
