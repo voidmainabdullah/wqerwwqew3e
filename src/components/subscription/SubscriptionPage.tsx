@@ -15,8 +15,6 @@ import {
   Shield,
   Lightning,
   Upload,
-  Download,
-  ShareNetwork,
   ChartLineUp,
 } from "phosphor-react";
 import { AnimatedBackground } from "@/components/ui/animated-background";
@@ -34,7 +32,6 @@ export const SubscriptionPage: React.FC = () => {
       });
       return;
     }
-
     try {
       const {
         data: { session },
@@ -90,15 +87,11 @@ export const SubscriptionPage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen">
-      {/* Animated Background */}
       <div className="fixed inset-0 z-0">
         <AnimatedBackground />
       </div>
-
-      {/* Overlay Content */}
       <div className="relative z-10 bg-background/70 backdrop-blur-sm min-h-screen">
         <div className="container mx-auto px-4 py-12 space-y-16">
-          {/* Hero */}
           <div className="text-center space-y-4">
             <h1 className="text-5xl font-bold tracking-tight">
               Simple Pricing for Everyone
@@ -108,8 +101,6 @@ export const SubscriptionPage: React.FC = () => {
               plan that fits you.
             </p>
           </div>
-
-          {/* Pricing Cards */}
           <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
             <PriceCard
               title="Free"
@@ -124,7 +115,6 @@ export const SubscriptionPage: React.FC = () => {
                 })
               }
             />
-
             <PriceCard
               title="Pro Monthly"
               price="$6.99"
@@ -133,7 +123,6 @@ export const SubscriptionPage: React.FC = () => {
               features={features.pro}
               onSubscribe={() => handleSubscribe("monthly")}
             />
-
             <PriceCard
               title="Pro Yearly"
               price="$69.99"
@@ -144,8 +133,6 @@ export const SubscriptionPage: React.FC = () => {
               onSubscribe={() => handleSubscribe("yearly")}
             />
           </div>
-
-          {/* Feature Highlights */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
             <Card className="analytics-card analytics-card-green">
               <CardHeader className="text-center">
@@ -160,7 +147,6 @@ export const SubscriptionPage: React.FC = () => {
                 </p>
               </CardContent>
             </Card>
-
             <Card className="analytics-card analytics-card-red">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-red mx-auto mb-4">
@@ -174,7 +160,6 @@ export const SubscriptionPage: React.FC = () => {
                 </p>
               </CardContent>
             </Card>
-
             <Card className="analytics-card analytics-card-purple">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-purple mx-auto mb-4">
@@ -188,7 +173,6 @@ export const SubscriptionPage: React.FC = () => {
                 </p>
               </CardContent>
             </Card>
-
             <Card className="analytics-card analytics-card-yellow">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-yellow mx-auto mb-4">
@@ -203,8 +187,6 @@ export const SubscriptionPage: React.FC = () => {
               </CardContent>
             </Card>
           </div>
-
-          {/* Why Choose Pro */}
           <Card className="max-w-4xl mx-auto brand-card border-brand-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center text-xl">
@@ -239,8 +221,8 @@ export const SubscriptionPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-
               <div className="space-y-4">
+                <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
                     <h4 className="font-medium">Password Protection</h4>
@@ -252,6 +234,7 @@ export const SubscriptionPage: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
+                    <h4 className="font-medium">Download Analytics</h4>
                     <p className="text-sm text-muted-foreground">
                       Know when and how your files are accessed.
                     </p>
@@ -263,5 +246,5 @@ export const SubscriptionPage: React.FC = () => {
         </div>
       </div>
     </div>
-  )
+  );
 };
