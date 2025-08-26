@@ -230,7 +230,7 @@ export const AuthPage: React.FC = () => {
                     {/* Pulsing glow */}
                     <motion.div
                       className="absolute inset-0 rounded-full bg-primary/10"
-                      animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+                      animate={{ scale: [1, 1.3, 1], opacity: [0, 0, 0] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
                   </div>
