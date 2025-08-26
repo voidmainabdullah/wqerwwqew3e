@@ -65,7 +65,7 @@ const Testimonials = () => {
           delay: index * 0.2
         }}>
               <div className="mb-6">
-                {[...Array(5)].map((_, i) => <span key={i} className="inline-block mr-1 text-black dark:text-neutral-800">★</span>)}
+                {[...Array(5)].map((_, i) => <span key={i} className="inline-block mr-1 text-amber-200">★</span>)}
               </div>
               <p className="text-lg mb-8 text-foreground/90 italic">"{testimonial.quote}"</p>
               <div className="flex items-center gap-4">
