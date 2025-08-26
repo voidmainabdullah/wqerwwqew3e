@@ -446,8 +446,8 @@ export const AuthPage: React.FC = () => {
                       type="submit"
                       className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${
                         actualTheme === 'light' 
-                          ? 'bg-gradient-to-r from-black to-neutral-800 hover:from-neutral-900 hover:to-neutral-700 text-white hover:shadow-black/20' 
-                          : 'bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary hover:shadow-primary/20'
+                          ? 'bg-black hover:bg-neutral-800 text-white hover:shadow-black/20' 
+                          : 'bg-white hover:bg-neutral-200 text-black hover:shadow-white/20'
                       }`}
                       disabled={loading}
                     >

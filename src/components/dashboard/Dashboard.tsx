@@ -319,7 +319,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full bg-functions-upload hover:bg-functions-uploadGlow text-white" asChild>
+              <Button variant="default" className="w-full" asChild>
                 <Link to="/dashboard/upload">
                   <Upload className="mr-2 h-4 w-4" />
                   Start Upload
@@ -339,7 +339,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full bg-black hover:bg-functions-downloadGlow text-black" asChild>
+              <Button variant="default" className="w-full" asChild>
                 <Link to="/dashboard/request">
                   <PaperPlaneTilt className="mr-2 h-4 w-4" />
                   Request Files
