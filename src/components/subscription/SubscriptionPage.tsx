@@ -147,9 +147,11 @@ export const SubscriptionPage: React.FC = () => {
 
           {/* Feature Highlights */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="analytics-card analytics-card-green">
               <CardHeader className="text-center">
-                <Upload className="h-8 w-8 text-primary mx-auto mb-2" />
+                <div className="icon-container icon-container-green mx-auto mb-4">
+                  <Upload className="h-6 w-6 analytics-icon analytics-icon-green" />
+                </div>
                 <CardTitle className="text-lg">Unlimited Uploads</CardTitle>
               </CardHeader>
               <CardContent>
@@ -159,9 +161,11 @@ export const SubscriptionPage: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="analytics-card analytics-card-red">
               <CardHeader className="text-center">
-                <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
+                <div className="icon-container icon-container-red mx-auto mb-4">
+                  <Shield className="h-6 w-6 analytics-icon analytics-icon-red" />
+                </div>
                 <CardTitle className="text-lg">Advanced Security</CardTitle>
               </CardHeader>
               <CardContent>
@@ -171,9 +175,11 @@ export const SubscriptionPage: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="analytics-card analytics-card-purple">
               <CardHeader className="text-center">
-                <ChartLineUp className="h-8 w-8 text-primary mx-auto mb-2" />
+                <div className="icon-container icon-container-purple mx-auto mb-4">
+                  <ChartLineUp className="h-6 w-6 analytics-icon analytics-icon-purple" />
+                </div>
                 <CardTitle className="text-lg">Analytics</CardTitle>
               </CardHeader>
               <CardContent>
@@ -183,9 +189,11 @@ export const SubscriptionPage: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="analytics-card analytics-card-yellow">
               <CardHeader className="text-center">
-                <Lightning className="h-8 w-8 text-primary mx-auto mb-2" />
+                <div className="icon-container icon-container-yellow mx-auto mb-4">
+                  <Lightning className="h-6 w-6 analytics-icon analytics-icon-yellow" />
+                </div>
                 <CardTitle className="text-lg">Priority Support</CardTitle>
               </CardHeader>
               <CardContent>
@@ -197,15 +205,16 @@ export const SubscriptionPage: React.FC = () => {
           </div>
 
           {/* Why Choose Pro */}
-          <Card className="max-w-4xl mx-auto shadow-lg border-primary/20">
+          <Card className="max-w-4xl mx-auto brand-card border-brand-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center text-xl">
-                <Crown className="mr-2 h-6 w-6 text-primary" />
+                <div className="icon-container icon-container-yellow mr-3">
+                  <Crown className="h-5 w-5 analytics-icon analytics-icon-yellow" />
+                </div>
                 Why Upgrade to Pro?
               </CardTitle>
               <CardDescription>
                 Unlock premium features to supercharge your file sharing
-              <Upload className="h-8 w-8 analytics-icon analytics-icon-green mx-auto mb-2" />
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-6 md:grid-cols-2">
@@ -232,7 +241,6 @@ export const SubscriptionPage: React.FC = () => {
               </div>
 
               <div className="space-y-4">
-              <ChartLineUp className="h-8 w-8 analytics-icon analytics-icon-purple mx-auto mb-2" />
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
                     <h4 className="font-medium">Password Protection</h4>
@@ -244,7 +252,6 @@ export const SubscriptionPage: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
-              <Lightning className="h-8 w-8 analytics-icon analytics-icon-yellow mx-auto mb-2" />
                     <p className="text-sm text-muted-foreground">
                       Know when and how your files are accessed.
                     </p>
@@ -256,5 +263,4 @@ export const SubscriptionPage: React.FC = () => {
         </div>
       </div>
     </div>
-              <Shield className="h-8 w-8 analytics-icon analytics-icon-red mx-auto mb-2" />
 };

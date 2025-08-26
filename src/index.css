@@ -6,62 +6,93 @@
 @layer base {
   :root {
     /* Analytics Color Palette - Light Theme */
-    --analytics-red: 220 38% 46%;
-    --analytics-red-hover: 220 38% 56%;
-    --analytics-yellow: 45 93% 47%;
-    --analytics-yellow-hover: 45 93% 57%;
-    --analytics-green: 142 69% 58%;
-    --analytics-green-hover: 142 69% 68%;
-    --analytics-purple: 262 83% 58%;
-    --analytics-purple-hover: 262 83% 68%;
+    /* Analytics Color Palette - Light Theme (Professional & Accessible) */
+    --analytics-red: 0 65% 51%;
+    --analytics-red-hover: 0 65% 45%;
+    --analytics-red-bg: 0 65% 51% / 0.1;
+    --analytics-yellow: 45 85% 47%;
+    --analytics-yellow-hover: 45 85% 42%;
+    --analytics-yellow-bg: 45 85% 47% / 0.1;
+    --analytics-green: 142 71% 45%;
+    --analytics-green-hover: 142 71% 40%;
+    --analytics-green-bg: 142 71% 45% / 0.1;
+    --analytics-purple: 262 80% 50%;
+    --analytics-purple-hover: 262 80% 45%;
+    --analytics-purple-bg: 262 80% 50% / 0.1;
     
-    /* Enhanced Brand Colors - Light Theme */
+    /* Enhanced Brand Colors - Light Theme (Modern & Professional) */
     --brand-primary: 0 0% 9%;
-    --brand-primary-hover: 0 0% 19%;
-    --brand-secondary: 210 40% 98%;
+    --brand-primary-hover: 0 0% 15%;
+    --brand-primary-light: 0 0% 25%;
+    --brand-secondary: 210 20% 96%;
+    --brand-secondary-hover: 210 20% 92%;
     --brand-accent: 217 91% 60%;
-    --brand-accent-hover: 217 91% 70%;
+    --brand-accent-hover: 217 91% 55%;
+    --brand-accent-light: 217 91% 70%;
+    --brand-neutral: 220 14% 96%;
+    --brand-neutral-hover: 220 14% 92%;
     
-    /* Status Colors - Light Theme */
-    --status-success: 142 76% 36%;
-    --status-warning: 38 92% 50%;
-    --status-error: 0 84% 60%;
-    --status-info: 199 89% 48%;
+    /* Status Colors - Light Theme (Enhanced Contrast) */
+    --status-success: 142 71% 45%;
+    --status-success-bg: 142 71% 45% / 0.1;
+    --status-warning: 45 85% 47%;
+    --status-warning-bg: 45 85% 47% / 0.1;
+    --status-error: 0 65% 51%;
+    --status-error-bg: 0 65% 51% / 0.1;
+    --status-info: 217 91% 60%;
+    --status-info-bg: 217 91% 60% / 0.1;
     
-    /* Interactive States */
-    --hover-overlay: 0 0% 0% / 0.05;
-    --focus-ring: 217 91% 60% / 0.3;
-    --active-state: 0 0% 0% / 0.1;
+    /* Interactive States (Enhanced) */
+    --hover-overlay: 0 0% 0% / 0.04;
+    --hover-scale: 1.02;
+    --focus-ring: 217 91% 60% / 0.25;
+    --focus-ring-offset: 2px;
+    --active-state: 0 0% 0% / 0.08;
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    /* Analytics Color Palette - Dark Theme */
-    --analytics-red: 0 84% 65%;
-    --analytics-red-hover: 0 84% 75%;
-    --analytics-yellow: 48 96% 53%;
-    --analytics-yellow-hover: 48 96% 63%;
-    --analytics-green: 142 76% 36%;
-    --analytics-green-hover: 142 76% 46%;
-    --analytics-purple: 262 83% 58%;
-    --analytics-purple-hover: 262 83% 68%;
+    /* Analytics Color Palette - Dark Theme (Vibrant & Accessible) */
+    --analytics-red: 0 75% 65%;
+    --analytics-red-hover: 0 75% 70%;
+    --analytics-red-bg: 0 75% 65% / 0.15;
+    --analytics-yellow: 48 95% 65%;
+    --analytics-yellow-hover: 48 95% 70%;
+    --analytics-yellow-bg: 48 95% 65% / 0.15;
+    --analytics-green: 142 69% 58%;
+    --analytics-green-hover: 142 69% 63%;
+    --analytics-green-bg: 142 69% 58% / 0.15;
+    --analytics-purple: 262 83% 68%;
+    --analytics-purple-hover: 262 83% 73%;
+    --analytics-purple-bg: 262 83% 68% / 0.15;
     
-    /* Enhanced Brand Colors - Dark Theme */
-    --brand-primary: 0 0% 98%;
-    --brand-primary-hover: 0 0% 88%;
-    --brand-secondary: 0 0% 14%;
-    --brand-accent: 217 91% 60%;
+    /* Enhanced Brand Colors - Dark Theme (Refined & Modern) */
+    --brand-primary: 0 0% 95%;
+    --brand-primary-hover: 0 0% 85%;
+    --brand-primary-light: 0 0% 75%;
+    --brand-secondary: 0 0% 12%;
+    --brand-secondary-hover: 0 0% 16%;
+    --brand-accent: 217 91% 65%;
     --brand-accent-hover: 217 91% 70%;
+    --brand-accent-light: 217 91% 75%;
+    --brand-neutral: 220 14% 15%;
+    --brand-neutral-hover: 220 14% 20%;
     
-    /* Status Colors - Dark Theme */
-    --status-success: 142 76% 36%;
-    --status-warning: 38 92% 50%;
-    --status-error: 0 84% 60%;
-    --status-info: 199 89% 48%;
+    /* Status Colors - Dark Theme (Enhanced Visibility) */
+    --status-success: 142 69% 58%;
+    --status-success-bg: 142 69% 58% / 0.15;
+    --status-warning: 48 95% 65%;
+    --status-warning-bg: 48 95% 65% / 0.15;
+    --status-error: 0 75% 65%;
+    --status-error-bg: 0 75% 65% / 0.15;
+    --status-info: 217 91% 65%;
+    --status-info-bg: 217 91% 65% / 0.15;
     
-    /* Interactive States */
-    --hover-overlay: 255 255% 100% / 0.05;
-    --focus-ring: 217 91% 60% / 0.3;
-    --active-state: 255 255% 100% / 0.1;
+    /* Interactive States (Enhanced for Dark Mode) */
+    --hover-overlay: 255 255% 100% / 0.06;
+    --focus-ring: 217 91% 65% / 0.3;
+    --active-state: 255 255% 100% / 0.12;
   }
 }
 
@@ -760,88 +791,290 @@
 
 /* Analytics Icon Styles */
 .analytics-icon {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-smooth);
+  filter: drop-shadow(0 1px 2px hsl(0 0% 0% / 0.1));
 }
 
 .analytics-icon:hover {
-  animation: icon-glow 0.6s ease-out;
+  transform: scale(1.05);
+  filter: drop-shadow(0 2px 4px hsl(0 0% 0% / 0.15));
 }
 
 .analytics-icon-red {
   color: hsl(var(--analytics-red));
+  background-color: hsl(var(--analytics-red-bg));
+  border-radius: 8px;
+  padding: 8px;
 }
 
 .analytics-icon-red:hover {
   color: hsl(var(--analytics-red-hover));
+  background-color: hsl(var(--analytics-red) / 0.15);
+  transform: scale(var(--hover-scale));
 }
 
 .analytics-icon-yellow {
   color: hsl(var(--analytics-yellow));
+  background-color: hsl(var(--analytics-yellow-bg));
+  border-radius: 8px;
+  padding: 8px;
 }
 
 .analytics-icon-yellow:hover {
   color: hsl(var(--analytics-yellow-hover));
+  background-color: hsl(var(--analytics-yellow) / 0.15);
+  transform: scale(var(--hover-scale));
 }
 
 .analytics-icon-green {
   color: hsl(var(--analytics-green));
+  background-color: hsl(var(--analytics-green-bg));
+  border-radius: 8px;
+  padding: 8px;
 }
 
 .analytics-icon-green:hover {
   color: hsl(var(--analytics-green-hover));
+  background-color: hsl(var(--analytics-green) / 0.15);
+  transform: scale(var(--hover-scale));
 }
 
 .analytics-icon-purple {
   color: hsl(var(--analytics-purple));
+  background-color: hsl(var(--analytics-purple-bg));
+  border-radius: 8px;
+  padding: 8px;
 }
 
 .analytics-icon-purple:hover {
   color: hsl(var(--analytics-purple-hover));
+  background-color: hsl(var(--analytics-purple) / 0.15);
+  transform: scale(var(--hover-scale));
 }
 
-/* Enhanced Brand Components */
+/* Enhanced Brand Components (Modernized) */
 .brand-card {
-  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card) / 0.8));
+  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--brand-neutral)));
   border: 1px solid hsl(var(--border));
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 1px 3px hsl(0 0% 0% / 0.1);
 }
 
 .brand-card:hover {
-  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--brand-accent) / 0.05));
-  border-color: hsl(var(--brand-accent) / 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px hsl(var(--brand-accent) / 0.15);
+  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--brand-accent) / 0.08));
+  border-color: hsl(var(--brand-accent) / 0.4);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 32px hsl(var(--brand-accent) / 0.2);
 }
 
 .brand-button-primary {
-  background: linear-gradient(135deg, hsl(var(--brand-primary)), hsl(var(--brand-primary-hover)));
+  background: linear-gradient(135deg, hsl(var(--brand-primary)), hsl(var(--brand-primary-light)));
   color: hsl(var(--primary-foreground));
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 2px 8px hsl(var(--brand-primary) / 0.2);
 }
 
 .brand-button-primary:hover {
   background: linear-gradient(135deg, hsl(var(--brand-primary-hover)), hsl(var(--brand-primary)));
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px hsl(var(--brand-primary) / 0.3);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px hsl(var(--brand-primary) / 0.35);
 }
 
-/* Status Indicator Styles */
+/* Enhanced Status Indicator Styles */
 .status-success {
   color: hsl(var(--status-success));
+  background-color: hsl(var(--status-success-bg));
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-weight: 500;
 }
 
 .status-warning {
   color: hsl(var(--status-warning));
+  background-color: hsl(var(--status-warning-bg));
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-weight: 500;
 }
 
 .status-error {
   color: hsl(var(--status-error));
+  background-color: hsl(var(--status-error-bg));
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-weight: 500;
 }
 
 .status-info {
   color: hsl(var(--status-info));
+  background-color: hsl(var(--status-info-bg));
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-weight: 500;
 }
 
+/* Modern Card Hover Effects */
+.analytics-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 16px;
+  padding: 24px;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 1px 3px hsl(0 0% 0% / 0.1);
+}
+
+.analytics-card:hover {
+  border-color: hsl(var(--brand-accent) / 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px hsl(0 0% 0% / 0.1);
+}
+
+.analytics-card-red:hover {
+  border-color: hsl(var(--analytics-red) / 0.4);
+  box-shadow: 0 8px 25px hsl(var(--analytics-red) / 0.15);
+}
+
+.analytics-card-yellow:hover {
+  border-color: hsl(var(--analytics-yellow) / 0.4);
+  box-shadow: 0 8px 25px hsl(var(--analytics-yellow) / 0.15);
+}
+
+.analytics-card-green:hover {
+  border-color: hsl(var(--analytics-green) / 0.4);
+  box-shadow: 0 8px 25px hsl(var(--analytics-green) / 0.15);
+}
+
+.analytics-card-purple:hover {
+  border-color: hsl(var(--analytics-purple) / 0.4);
+  box-shadow: 0 8px 25px hsl(var(--analytics-purple) / 0.15);
+}
+
+/* Icon Container Styles */
+.icon-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-smooth);
+}
+
+.icon-container-red {
+  background: hsl(var(--analytics-red-bg));
+  border: 1px solid hsl(var(--analytics-red) / 0.2);
+}
+
+.icon-container-yellow {
+  background: hsl(var(--analytics-yellow-bg));
+  border: 1px solid hsl(var(--analytics-yellow) / 0.2);
+}
+
+.icon-container-green {
+  background: hsl(var(--analytics-green-bg));
+  border: 1px solid hsl(var(--analytics-green) / 0.2);
+}
+
+.icon-container-purple {
+  background: hsl(var(--analytics-purple-bg));
+  border: 1px solid hsl(var(--analytics-purple) / 0.2);
+}
+
+/* Enhanced Button Styles */
+.btn-analytics-red {
+  background: hsl(var(--analytics-red));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-analytics-red:hover {
+  background: hsl(var(--analytics-red-hover));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--analytics-red) / 0.3);
+}
+
+.btn-analytics-green {
+  background: hsl(var(--analytics-green));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-analytics-green:hover {
+  background: hsl(var(--analytics-green-hover));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--analytics-green) / 0.3);
+}
+
+/* Focus States for Accessibility */
+.analytics-icon:focus,
+.brand-card:focus,
+.analytics-card:focus {
+  outline: 2px solid hsl(var(--focus-ring));
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Responsive Icon Sizing */
+@media (max-width: 768px) {
+  .analytics-icon {
+    padding: 6px;
+  }
+  
+  .icon-container {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .analytics-icon-red {
+    color: hsl(0 100% 50%);
+    background-color: hsl(0 100% 95%);
+  }
+  
+  .analytics-icon-green {
+    color: hsl(120 100% 25%);
+    background-color: hsl(120 100% 95%);
+  }
+  
+  .analytics-icon-yellow {
+    color: hsl(45 100% 35%);
+    background-color: hsl(45 100% 95%);
+  }
+  
+  .analytics-icon-purple {
+    color: hsl(270 100% 40%);
+    background-color: hsl(270 100% 95%);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .analytics-icon,
+  .brand-card,
+  .analytics-card {
+    transition: none;
+  }
+  
+  .analytics-icon:hover,
+  .brand-card:hover,
+  .analytics-card:hover {
+    transform: none;
+    animation: none;
+  }
+}
 /* Auth page specific styles */
 .auth-card {
   backdrop-filter: blur(10px);

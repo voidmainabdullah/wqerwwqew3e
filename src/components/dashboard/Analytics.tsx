@@ -90,39 +90,45 @@ export const Analytics: React.FC = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+        <Card className="analytics-card analytics-card-green hover:shadow-lg transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Downloads</CardTitle>
-            <Download className="h-5 w-5 analytics-icon analytics-icon-green" />
+            <div className="icon-container icon-container-green">
+              <Download className="h-5 w-5 analytics-icon analytics-icon-green" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.totalDownloads}</div>
+            <div className="text-3xl font-bold text-foreground">{data?.totalDownloads}</div>
             <p className="text-xs text-muted-foreground">
               All-time file downloads
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="analytics-card analytics-card-purple hover:shadow-lg transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <ShareNetwork className="h-5 w-5 analytics-icon analytics-icon-purple" />
+            <div className="icon-container icon-container-purple">
+              <ShareNetwork className="h-5 w-5 analytics-icon analytics-icon-purple" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.totalShares}</div>
+            <div className="text-3xl font-bold text-foreground">{data?.totalShares}</div>
             <p className="text-xs text-muted-foreground">
               Active sharing links
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="analytics-card analytics-card-yellow hover:shadow-lg transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Files</CardTitle>
-            <Files className="h-5 w-5 analytics-icon analytics-icon-yellow" />
+            <div className="icon-container icon-container-yellow">
+              <Files className="h-5 w-5 analytics-icon analytics-icon-yellow" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.totalFiles}</div>
+            <div className="text-3xl font-bold text-foreground">{data?.totalFiles}</div>
             <p className="text-xs text-muted-foreground">
               Files in your account
             </p>
@@ -131,10 +137,12 @@ export const Analytics: React.FC = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="analytics-card hover:shadow-lg transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <TrendUp className="mr-2 h-5 w-5 analytics-icon analytics-icon-green" />
+              <div className="icon-container icon-container-green mr-3">
+                <TrendUp className="h-5 w-5 analytics-icon analytics-icon-green" />
+              </div>
               Popular Files
             </CardTitle>
             <CardDescription>
@@ -145,12 +153,14 @@ export const Analytics: React.FC = () => {
             {data?.popularFiles.length ? <div className="space-y-3">
                 {data.popularFiles.map((file: any, index: number) => <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Files className="h-4 w-4 analytics-icon analytics-icon-yellow" />
+                      <div className="icon-container icon-container-yellow" style={{ width: '32px', height: '32px' }}>
+                        <Files className="h-4 w-4 analytics-icon analytics-icon-yellow" />
+                      </div>
                       <span className="text-sm font-medium truncate max-w-[200px]">
                         {file.name}
                       </span>
                     </div>
-                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                    <Badge className="status-success">
                       {file.downloads} downloads
                     </Badge>
                   </div>)}
@@ -158,10 +168,12 @@ export const Analytics: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="analytics-card hover:shadow-lg transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Calendar className="mr-2 h-5 w-5 analytics-icon analytics-icon-purple" />
+              <div className="icon-container icon-container-purple mr-3">
+                <Calendar className="h-5 w-5 analytics-icon analytics-icon-purple" />
+              </div>
               Recent Downloads
             </CardTitle>
             <CardDescription>
@@ -172,14 +184,16 @@ export const Analytics: React.FC = () => {
             {data?.recentDownloads.length ? <div className="space-y-3">
                 {data.recentDownloads.map((download: any, index: number) => <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Download className="h-4 w-4 analytics-icon analytics-icon-green" />
+                      <div className="icon-container icon-container-green" style={{ width: '32px', height: '32px' }}>
+                        <Download className="h-4 w-4 analytics-icon analytics-icon-green" />
+                      </div>
                       <span className="text-sm truncate max-w-[200px]">
                         {download.files?.original_name || 'Unknown file'}
                       </span>
                     </div>
-                    <span className="text-xs text-muted-foreground">
+                    <Badge variant="outline" className="text-xs">
                       {new Date(download.downloaded_at).toLocaleDateString()}
-                    </span>
+                    </Badge>
                   </div>)}
               </div> : <p className="text-sm text-muted-foreground">No downloads yet</p>}
           </CardContent>

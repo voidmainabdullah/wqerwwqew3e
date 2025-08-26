@@ -153,18 +153,17 @@ export const Dashboard: React.FC = () => {
       {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {/* Total Files */}
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-card to-card/50"></div>
+        <Card className="analytics-card analytics-card-yellow group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Total Files
               </CardTitle>
-              <div className="text-3xl font-bold text-foreground">
+              <div className="text-4xl font-bold text-foreground">
                 {stats?.totalFiles.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="icon-container icon-container-yellow group-hover:scale-110 transition-transform duration-300">
               <Files className="h-6 w-6 analytics-icon analytics-icon-yellow" />
             </div>
           </CardHeader>
@@ -177,18 +176,17 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         {/* Shared Links */}
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-neutral-850 to-black/5 dark:to-neutral-800/5"></div>
+        <Card className="analytics-card analytics-card-purple group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Active Shares
               </CardTitle>
-              <div className="text-3xl font-bold text-foreground">
+              <div className="text-4xl font-bold text-foreground">
                 {stats?.totalShares.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="icon-container icon-container-purple group-hover:scale-110 transition-transform duration-300">
               <ShareNetwork className="h-6 w-6 analytics-icon analytics-icon-purple" />
             </div>
           </CardHeader>
@@ -201,18 +199,17 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         {/* Downloads */}
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-card to-card/50"></div>
+        <Card className="analytics-card analytics-card-green group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Total Downloads
               </CardTitle>
-              <div className="text-3xl font-bold text-foreground">
+              <div className="text-4xl font-bold text-foreground">
                 {stats?.totalDownloads.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="icon-container icon-container-green group-hover:scale-110 transition-transform duration-300">
               <Download className="h-6 w-6 analytics-icon analytics-icon-green" />
             </div>
           </CardHeader>
@@ -225,17 +222,16 @@ export const Dashboard: React.FC = () => {
         </Card>
 
         {/* Storage Usage */}
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-black/5 dark:to-neutral-800/5"></div>
+        <Card className="analytics-card analytics-card-red group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Storage Used
               </CardTitle>
-              <div className="text-2xl font-bold text-foreground">
+              <div className="text-3xl font-bold text-foreground">
                 {isPro ? <div className="flex items-center gap-2">
                     <span>{formatFileSize(stats?.storageUsed || 0)}</span>
-                    <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-0 text-xs">
+                    <Badge className="status-success text-xs">
                       Unlimited
                     </Badge>
                   </div> : <div className="space-y-1">
@@ -246,7 +242,7 @@ export const Dashboard: React.FC = () => {
                   </div>}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="icon-container icon-container-red group-hover:scale-110 transition-transform duration-300">
               <Cloud className="h-6 w-6 analytics-icon analytics-icon-red" />
             </div>
           </CardHeader>
@@ -276,10 +272,10 @@ export const Dashboard: React.FC = () => {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Upload Files */}
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+          <Card className="brand-card group">
             <CardHeader className="pb-4">
-              <div className="w-12 h-12 rounded-xl bg-functions-upload/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Upload className="w-6 h-6 text-functions-upload" />
+              <div className="icon-container icon-container-green mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Upload className="w-6 h-6 analytics-icon analytics-icon-green" />
               </div>
               <CardTitle className="text-xl">Upload Files</CardTitle>
               <CardDescription className="text-base">
@@ -287,7 +283,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-xl transition-all duration-300" asChild>
+              <Button className="w-full btn-analytics-green" asChild>
                 <Link to="/dashboard/upload">
                   <Upload className="mr-2 h-4 w-4" />
                   Start Upload
@@ -297,7 +293,89 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           {/* Request Files */}
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+          <Card className="brand-card group">
             <CardHeader className="pb-4">
-              <div className="w-12 h-12 rounded-xl bg-functions-download/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                
+              <div className="icon-container icon-container-purple mb-4 group-hover:scale-110 transition-transform duration-300">
+                <PaperPlaneTilt className="w-6 h-6 analytics-icon analytics-icon-purple" />
+              </div>
+              <CardTitle className="text-xl">Request Files</CardTitle>
+              <CardDescription className="text-base">
+                Create secure links for others to send files directly to you.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full btn-analytics-green" asChild>
+                <Link to="/dashboard/receive">
+                  <PaperPlaneTilt className="mr-2 h-4 w-4" />
+                  Create Request
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Analytics */}
+          <Card className="brand-card group">
+            <CardHeader className="pb-4">
+              <div className="icon-container icon-container-red mb-4 group-hover:scale-110 transition-transform duration-300">
+                <ChartLineUp className="w-6 h-6 analytics-icon analytics-icon-red" />
+              </div>
+              <CardTitle className="text-xl">View Analytics</CardTitle>
+              <CardDescription className="text-base">
+                Track downloads, shares, and file performance metrics.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full" variant="outline" asChild>
+                <Link to="/dashboard/analytics">
+                  <ChartLineUp className="mr-2 h-4 w-4" />
+                  View Reports
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Pro Features Showcase */}
+      {!isPro && (
+        <Card className="brand-card border-2 border-brand-accent/20 bg-gradient-to-r from-card to-brand-accent/5">
+          <CardHeader>
+            <CardTitle className="flex items-center text-2xl">
+              <Crown className="mr-3 h-6 w-6 text-yellow-500" />
+              Unlock Pro Features
+            </CardTitle>
+            <CardDescription className="text-lg">
+              Get unlimited storage, advanced analytics, and premium security features
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="icon-container icon-container-green">
+                  <CheckCircle className="h-5 w-5 analytics-icon analytics-icon-green" />
+                </div>
+                <span className="text-sm font-medium">Unlimited Storage</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="icon-container icon-container-purple">
+                  <Shield className="h-5 w-5 analytics-icon analytics-icon-purple" />
+                </div>
+                <span className="text-sm font-medium">Password Protection</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="icon-container icon-container-yellow">
+                  <Lightning className="h-5 w-5 analytics-icon analytics-icon-yellow" />
+                </div>
+                <span className="text-sm font-medium">Priority Support</span>
+              </div>
+            </div>
+            <Button className="brand-button-primary" asChild>
+              <Link to="/subscription">
+                <Crown className="mr-2 h-4 w-4" />
+                Upgrade to Pro
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+    </div>;

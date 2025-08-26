@@ -86,20 +86,20 @@ const Features = () => {
               <div className="h-full bg-card border border-border rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:border-primary/40 hover:-translate-y-2 cosmic-glass">
                 {/* Feature Icon */}
                 <div className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl border flex items-center justify-center shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300 ${
-                  index === 0 ? 'bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 border-green-300 dark:border-green-700' :
-                  index === 1 ? 'bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 border-purple-300 dark:border-purple-700' :
-                  index === 2 ? 'bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30 border-yellow-300 dark:border-yellow-700' :
-                  index === 3 ? 'bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/30 dark:to-red-800/30 border-red-300 dark:border-red-700' :
-                  index === 4 ? 'bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 border-blue-300 dark:border-blue-700' :
-                  'bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 border-indigo-300 dark:border-indigo-700'
+                  index === 0 ? 'icon-container-green border-analytics-green/20' :
+                  index === 1 ? 'icon-container-purple border-analytics-purple/20' :
+                  index === 2 ? 'icon-container-yellow border-analytics-yellow/20' :
+                  index === 3 ? 'icon-container-red border-analytics-red/20' :
+                  index === 4 ? 'icon-container-purple border-analytics-purple/20' :
+                  'icon-container-green border-analytics-green/20'
                 }`}>
                   <div className={`analytics-icon transition-colors duration-300 ${
                     index === 0 ? 'analytics-icon-green' :
                     index === 1 ? 'analytics-icon-purple' :
                     index === 2 ? 'analytics-icon-yellow' :
                     index === 3 ? 'analytics-icon-red' :
-                    index === 4 ? 'text-blue-600 dark:text-blue-400' :
-                    'text-indigo-600 dark:text-indigo-400'
+                    index === 4 ? 'analytics-icon-purple' :
+                    'analytics-icon-green'
                   }`}>
                     {React.cloneElement(feature.icon, { size: window.innerWidth >= 768 ? 32 : 24 })}
                   </div>

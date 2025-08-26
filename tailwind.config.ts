@@ -62,31 +62,44 @@ const config: Config = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Enhanced Analytics Color System
+        // Enhanced Analytics Color System (4-Color Palette)
         analytics: {
           red: "hsl(var(--analytics-red))",
           "red-hover": "hsl(var(--analytics-red-hover))",
+          "red-bg": "hsl(var(--analytics-red-bg))",
           yellow: "hsl(var(--analytics-yellow))",
           "yellow-hover": "hsl(var(--analytics-yellow-hover))",
+          "yellow-bg": "hsl(var(--analytics-yellow-bg))",
           green: "hsl(var(--analytics-green))",
           "green-hover": "hsl(var(--analytics-green-hover))",
+          "green-bg": "hsl(var(--analytics-green-bg))",
           purple: "hsl(var(--analytics-purple))",
           "purple-hover": "hsl(var(--analytics-purple-hover))",
+          "purple-bg": "hsl(var(--analytics-purple-bg))",
         },
-        // Enhanced Brand Colors
+        // Enhanced Brand Colors (Extended Palette)
         brand: {
           primary: "hsl(var(--brand-primary))",
           "primary-hover": "hsl(var(--brand-primary-hover))",
+          "primary-light": "hsl(var(--brand-primary-light))",
           secondary: "hsl(var(--brand-secondary))",
+          "secondary-hover": "hsl(var(--brand-secondary-hover))",
           accent: "hsl(var(--brand-accent))",
           "accent-hover": "hsl(var(--brand-accent-hover))",
+          "accent-light": "hsl(var(--brand-accent-light))",
+          neutral: "hsl(var(--brand-neutral))",
+          "neutral-hover": "hsl(var(--brand-neutral-hover))",
         },
-        // Status Colors
+        // Status Colors (With Background Variants)
         status: {
           success: "hsl(var(--status-success))",
+          "success-bg": "hsl(var(--status-success-bg))",
           warning: "hsl(var(--status-warning))",
+          "warning-bg": "hsl(var(--status-warning-bg))",
           error: "hsl(var(--status-error))",
+          "error-bg": "hsl(var(--status-error-bg))",
           info: "hsl(var(--status-info))",
+          "info-bg": "hsl(var(--status-info-bg))",
         },
       },
       borderRadius: {
@@ -97,6 +110,10 @@ const config: Config = {
       boxShadow: {
         'brand': '0 4px 14px 0 hsl(var(--brand-accent) / 0.15)',
         'brand-lg': '0 10px 40px -12px hsl(var(--brand-accent) / 0.25)',
+        'analytics-red': '0 4px 14px 0 hsl(var(--analytics-red) / 0.15)',
+        'analytics-yellow': '0 4px 14px 0 hsl(var(--analytics-yellow) / 0.15)',
+        'analytics-green': '0 4px 14px 0 hsl(var(--analytics-green) / 0.15)',
+        'analytics-purple': '0 4px 14px 0 hsl(var(--analytics-purple) / 0.15)',
         'analytics': '0 2px 8px 0 currentColor / 0.1',
       },
       backdropBlur: {
@@ -133,6 +150,18 @@ const config: Config = {
             boxShadow: "0 0 20px 5px currentColor / 0.3" 
           },
         },
+        "icon-bounce": {
+          "0%, 100%": { 
+            transform: "scale(1)" 
+          },
+          "50%": { 
+            transform: "scale(1.1)" 
+          },
+        },
+        "card-lift": {
+          "0%": { transform: "translateY(0) scale(1)" },
+          "100%": { transform: "translateY(-4px) scale(1.01)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -140,6 +169,8 @@ const config: Config = {
         "gradient-shift": "gradient-shift 3s ease infinite",
         "icon-pulse": "icon-pulse 2s ease-in-out infinite",
         "brand-glow": "brand-glow 3s ease-in-out infinite",
+        "icon-bounce": "icon-bounce 0.6s ease-out",
+        "card-lift": "card-lift 0.3s ease-out forwards",
       },
     },
   },
