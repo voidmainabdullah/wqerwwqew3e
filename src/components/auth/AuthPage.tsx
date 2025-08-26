@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { AnimatedBackground } from '@/components/ui/animated-background';
+import { useTheme } from '@/contexts/ThemeContext';
 import { 
   Eye, 
   EyeSlash, 
@@ -23,6 +24,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 export const AuthPage: React.FC = () => {
   const { user, signIn, signUp, signInWithGoogle } = useAuth();
   const { toast } = useToast();
+  const { actualTheme } = useTheme();
   const { scrollY } = useScroll();
   
   const [isSignUp, setIsSignUp] = useState(false);
@@ -215,21 +217,21 @@ export const AuthPage: React.FC = () => {
                 >
                   <div className="relative w-20 h-20 mx-auto">
                     <img 
-                      src="/sky.png" 
+                      src="/sky.png"
                       alt="SkieShare Logo" 
                       className="w-20 h-20 object-contain transition-all duration-500 filter hover:brightness-110"
                     />
                     
                     {/* Rotating glow ring */}
                     <motion.div
-                      className="absolute inset-0 rounded-xl border-2 border-primary/30"
+                      className={`absolute inset-0 rounded-xl border-2 ${actualTheme === 'light' ? 'border-indigo-400/50' : 'border-primary/30'}`}
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: 1, ease: "linear" }}
                     />
                     
                     {/* Pulsing glow */}
                     <motion.div
-                      className="absolute inset-0 rounded-full bg-primary/10"
+                      className={`absolute inset-0 rounded-full ${actualTheme === 'light' ? 'bg-indigo-400/20' : 'bg-primary/10'}`}
                       animate={{ scale: [1, 1.3, 1], opacity: [0, 0, 0] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
@@ -255,7 +257,7 @@ export const AuthPage: React.FC = () => {
                 {/* Floating sparkles */}
                 <div className="absolute top-8 left-8">
                   <motion.div
-                    className="w-1 h-1 bg-primary rounded-full"
+                    className={`w-1 h-1 rounded-full ${actualTheme === 'light' ? 'bg-indigo-400' : 'bg-primary'}`}
                     animate={{ 
                       scale: [0, 1, 0],
                       opacity: [0, 1, 0],
@@ -266,7 +268,7 @@ export const AuthPage: React.FC = () => {
                 </div>
                 <div className="absolute top-12 right-12">
                   <motion.div
-                    className="w-1.5 h-1.5 bg-accent rounded-full"
+                    className={`w-1.5 h-1.5 rounded-full ${actualTheme === 'light' ? 'bg-blue-600' : 'bg-accent'}`}
                     animate={{ 
                       scale: [0, 1, 0],
                       opacity: [0, 1, 0],
@@ -286,11 +288,17 @@ export const AuthPage: React.FC = () => {
                 >
                   <Button
                     variant="outline"
-                    className="w-full h-14 text-base font-medium border-2 hover:bg-accent/50 transition-all duration-300 relative overflow-hidden group"
+                    className={`w-full h-14 text-base font-medium border-2 transition-all duration-300 relative overflow-hidden group ${
+                      actualTheme === 'light' 
+                        ? 'border-slate-300 hover:bg-slate-50 hover:border-indigo-400' 
+                        : 'hover:bg-accent/50'
+                    }`}
                     onClick={handleGoogleSignIn}
                     disabled={loading}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                    <div className={`absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ${
+                      actualTheme === 'light' ? 'via-indigo-400/10' : 'via-primary/5'
+                    }`}></div>
                     <svg className="w-6 h-6 mr-3 relative z-10" viewBox="0 0 24 24">
                       <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                       <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -436,16 +444,24 @@ export const AuthPage: React.FC = () => {
                   >
                     <Button
                       type="submit"
-                      className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/20 relative overflow-hidden group"
+                      className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${
+                        actualTheme === 'light' 
+                          ? 'bg-gradient-to-r from-indigo-400 to-blue-600 hover:from-indigo-500 hover:to-blue-700 text-white hover:shadow-indigo-400/20' 
+                          : 'bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary hover:shadow-primary/20'
+                      }`}
                       disabled={loading}
                     >
                       {/* Button shimmer effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                      <div className={`absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ${
+                        actualTheme === 'light' ? 'via-white/20' : 'via-white/10'
+                      }`}></div>
                       
                       {loading ? (
                         <div className="flex items-center gap-3">
                           <motion.div 
-                            className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full"
+                            className={`w-5 h-5 border-2 border-t-transparent rounded-full ${
+                              actualTheme === 'light' ? 'border-white' : 'border-primary-foreground'
+                            }`}
                             animate={{ rotate: 360 }}
                             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                           />
@@ -502,7 +518,11 @@ export const AuthPage: React.FC = () => {
 
                 {/* Enhanced Security Notice */}
                 <motion.div 
-                  className="bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 p-6 rounded-xl border border-border/50 relative overflow-hidden"
+                  className={`p-6 rounded-xl border relative overflow-hidden ${
+                    actualTheme === 'light' 
+                      ? 'bg-gradient-to-r from-slate-50 via-slate-25 to-slate-50 border-slate-200' 
+                      : 'bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 border-border/50'
+                  }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1 }}
@@ -510,7 +530,7 @@ export const AuthPage: React.FC = () => {
                   {/* Security badge animation */}
                   <div className="absolute top-2 right-2">
                     <motion.div
-                      className="w-2 h-2 bg-green-400 rounded-full"
+                      className={`w-2 h-2 rounded-full ${actualTheme === 'light' ? 'bg-green-500' : 'bg-green-400'}`}
                       animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
@@ -521,7 +541,7 @@ export const AuthPage: React.FC = () => {
                       animate={{ rotate: [0, 5, -5, 0] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                     >
-                      <Shield className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                      <Shield className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
                     </motion.div>
                     <div className="text-sm space-y-2">
                       <p className="font-medium text-foreground">Your data is secure</p>
@@ -540,12 +560,14 @@ export const AuthPage: React.FC = () => {
                         ].map((feature, index) => (
                           <motion.div
                             key={index}
-                            className="flex items-center gap-2 text-xs text-muted-foreground bg-background/50 px-2 py-1 rounded-md"
+                            className={`flex items-center gap-2 text-xs text-muted-foreground px-2 py-1 rounded-md ${
+                              actualTheme === 'light' ? 'bg-white/80' : 'bg-background/50'
+                            }`}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
                           >
-                            <feature.icon className="w-3 h-3 text-primary" />
+                            <feature.icon className={`w-3 h-3 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
                             <span>{feature.text}</span>
                           </motion.div>
                         ))}
@@ -570,7 +592,7 @@ export const AuthPage: React.FC = () => {
       >
         <motion.path
           d="M0,100 Q250,150 500,100 T1000,100"
-          stroke="rgba(255,255,255,0.3)"
+          stroke={actualTheme === 'light' ? "rgba(99,102,241,0.3)" : "rgba(255,255,255,0.3)"}
           strokeWidth="2"
           fill="none"
           initial={{ pathLength: 0 }}
@@ -579,7 +601,7 @@ export const AuthPage: React.FC = () => {
         />
         <motion.path
           d="M0,80 Q400,130 800,80 T1000,80"
-          stroke="rgba(59,130,246,0.2)"
+          stroke={actualTheme === 'light' ? "rgba(37,99,235,0.2)" : "rgba(59,130,246,0.2)"}
           strokeWidth="1"
           fill="none"
           initial={{ pathLength: 0 }}
@@ -590,11 +612,15 @@ export const AuthPage: React.FC = () => {
 
       {/* Bottom Animated Glow Line */}
       <motion.div 
-        className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-white to-transparent"
+        className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${
+          actualTheme === 'light' ? 'via-indigo-400' : 'via-white'
+        }`}
         style={{
           width: bottomLineWidth,
           opacity: bottomLineOpacity,
-          boxShadow: "0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.3)"
+          boxShadow: actualTheme === 'light' 
+            ? "0 0 20px rgba(99, 102, 241, 0.6), 0 0 40px rgba(99, 102, 241, 0.3)"
+            : "0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.3)"
         }}
       />
 
@@ -603,7 +629,9 @@ export const AuthPage: React.FC = () => {
         {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-primary/20 rounded-full"
+            className={`absolute w-1 h-1 rounded-full ${
+              actualTheme === 'light' ? 'bg-indigo-400/30' : 'bg-primary/20'
+            }`}
             style={{
               left: `${10 + (i * 8)}%`,
               top: `${20 + (i * 5)}%`,

@@ -8,12 +8,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Gear, User, Shield, Trash, Crown, Warning } from 'phosphor-react';
+import { Gear, User, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'phosphor-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 export const Settings: React.FC = () => {
   const {
     user,
     signOut
   } = useAuth();
+  const { theme, setTheme, actualTheme } = useTheme();
   const {
     toast
   } = useToast();
@@ -138,6 +141,73 @@ export const Settings: React.FC = () => {
                 <Button onClick={updateDisplayName} disabled={loading}>
                   Update
                 </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              {actualTheme === 'dark' ? (
+                <Moon className="mr-2 h-5 w-5" />
+              ) : (
+                <Sun className="mr-2 h-5 w-5" />
+              )}
+              Appearance
+            </CardTitle>
+            <CardDescription>
+              Customize the appearance of the application.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="theme">Theme</Label>
+              <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select theme" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light">
+                    <div className="flex items-center gap-2">
+                      <Sun className="h-4 w-4" />
+                      <span>Light</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="dark">
+                    <div className="flex items-center gap-2">
+                      <Moon className="h-4 w-4" />
+                      <span>Dark</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="system">
+                    <div className="flex items-center gap-2">
+                      <Monitor className="h-4 w-4" />
+                      <span>System</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Choose your preferred theme or use system setting.
+              </p>
+            </div>
+            
+            <div className="p-4 bg-muted/50 rounded-lg">
+              <p className="text-sm font-medium mb-2">Current theme: {actualTheme}</p>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-background border-2 border-border"></div>
+                  <span className="text-xs">Background</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-primary"></div>
+                  <span className="text-xs">Primary</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-muted"></div>
+                  <span className="text-xs">Muted</span>
+                </div>
               </div>
             </div>
           </CardContent>

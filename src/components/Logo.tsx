@@ -1,17 +1,24 @@
 import React from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const Logo = () => {
+  const { actualTheme } = useTheme();
+  
   return (
     <div className="flex items-left gap-3">
       <div className="relative">
         <img 
           src="/sky.png"
           alt="Logo" 
-          className="h-14 w-auto sm:h-15 md:h-16 object-contain transition-all duration-300 hover:scale-105"
+          className={`h-14 w-auto sm:h-15 md:h-16 object-contain transition-all duration-300 hover:scale-105 ${
+            actualTheme === 'light' ? 'filter brightness-110 contrast-110' : ''
+          }`}
         />
         
         {/* Glow effect */}
-        <div className="absolute inset-0 blur-sm opacity-30 hover:opacity-50 transition-opacity duration-300">
+        <div className={`absolute inset-0 blur-sm transition-opacity duration-300 ${
+          actualTheme === 'light' ? 'opacity-20 hover:opacity-40' : 'opacity-30 hover:opacity-50'
+        }`}>
           <img 
             src="/sky.png" 
             alt="Logo Glow" 

@@ -5,7 +5,9 @@ import { Menu, X, CircleDot, LayoutDashboard, DollarSign } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { motion } from 'framer-motion';
+import { useTheme } from '@/contexts/ThemeContext';
 const Header = () => {
+  const { actualTheme } = useTheme();
   const [activePage, setActivePage] = useState('features');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,12 +35,16 @@ const Header = () => {
   return <motion.div className={`fixed top-0 left-0 right-0 z-50 pt-2 px-4 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-background/50 shadow-lg' : 'bg-transparent'}`}>
       {/* Animated White Glow Line at Top */}
       <motion.div 
-        className="absolute top-0 left-0 h-px bg-gradient-to-r from-transparent via-white to-transparent"
+        className={`absolute top-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${
+          actualTheme === 'light' ? 'via-indigo-400' : 'via-white'
+        }`}
         initial={{ width: "0%" }}
         animate={{ width: "100%" }}
         transition={{ duration: 2, ease: "easeInOut" }}
         style={{
-          boxShadow: "0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4)"
+          boxShadow: actualTheme === 'light' 
+            ? "0 0 20px rgba(99, 102, 241, 0.8), 0 0 40px rgba(99, 102, 241, 0.4)"
+            : "0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4)"
         }}
       />
       

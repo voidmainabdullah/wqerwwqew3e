@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import TaskBoard from './TaskBoard';
 import { Files, Cloud, Shield } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTheme } from '@/contexts/ThemeContext';
 const HeroSection = () => {
+  const { actualTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   const {
     scrollY
@@ -168,8 +170,12 @@ const HeroSection = () => {
       
       {/* Animated White Glow Line */}
       <motion.div className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-white to-transparent" style={{
-      width: glowWidth,
-      opacity: glowOpacity,
+        className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${
+          actualTheme === 'light' ? 'via-indigo-400' : 'via-white'
+        }`}
+          boxShadow: actualTheme === 'light' 
+            ? "0 0 20px rgba(99, 102, 241, 0.8), 0 0 40px rgba(99, 102, 241, 0.4)"
+            : "0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4)"
       boxShadow: "0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4)"
     }} />
     </section>;
