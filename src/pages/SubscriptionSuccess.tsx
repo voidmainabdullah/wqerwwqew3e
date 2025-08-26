@@ -3,12 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, ArrowLeft } from 'phosphor-react';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 export const SubscriptionSuccess: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-white">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
+      {/* Content Overlay */}
+      <div className="relative z-10">
       <Card className="w-full max-w-md text-center">
         <CardHeader>
           <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
@@ -38,6 +44,7 @@ export const SubscriptionSuccess: React.FC = () => {
           </Button>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

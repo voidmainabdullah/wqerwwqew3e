@@ -74,27 +74,6 @@ const config: Config = {
           "outline-hover": "hsl(var(--button-outline-hover))",
           "ghost-hover": "hsl(var(--button-ghost-hover))",
         },
-        // Google Blue Colors for Light Theme
-        google: {
-          blue: "hsl(var(--google-blue))",
-          "blue-hover": "hsl(var(--google-blue-hover))",
-          "blue-light": "hsl(var(--google-blue-light))",
-        },
-        // Function Colors
-        functions: {
-          upload: "hsl(var(--functions-upload))",
-          uploadGlow: "hsl(var(--functions-uploadGlow))",
-          share: "hsl(var(--functions-share))",
-          shareGlow: "hsl(var(--functions-shareGlow))",
-          download: "hsl(var(--functions-download))",
-          downloadGlow: "hsl(var(--functions-downloadGlow))",
-          delete: "hsl(var(--functions-delete))",
-          deleteGlow: "hsl(var(--functions-deleteGlow))",
-          success: "hsl(var(--functions-success))",
-          successGlow: "hsl(var(--functions-successGlow))",
-          processing: "hsl(var(--functions-processing))",
-          processingGlow: "hsl(var(--functions-processingGlow))",
-        },
         // Enhanced Analytics Color System (4-Color Palette)
         analytics: {
           red: "hsl(var(--analytics-red))",

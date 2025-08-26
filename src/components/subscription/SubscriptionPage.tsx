@@ -17,6 +17,7 @@ import {
   Upload,
   ChartLineUp,
 } from "phosphor-react";
+import { AnimatedBackground } from "@/components/ui/animated-background";
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
@@ -85,7 +86,11 @@ export const SubscriptionPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="relative min-h-screen">
+      <div className="fixed inset-0 z-0">
+        <AnimatedBackground />
+      </div>
+      <div className="relative z-10 bg-background/70 backdrop-blur-sm min-h-screen">
         <div className="container mx-auto px-4 py-12 space-y-16">
           <div className="text-center space-y-4">
             <h1 className="text-5xl font-bold tracking-tight">
@@ -239,6 +244,7 @@ export const SubscriptionPage: React.FC = () => {
             </CardContent>
           </Card>
         </div>
+      </div>
     </div>
   );
 };
