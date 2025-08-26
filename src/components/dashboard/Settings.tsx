@@ -270,7 +270,7 @@ export const Settings: React.FC = () => {
               <p className="text-sm text-muted-foreground mb-4">
                 Your account is secured with email authentication. All file uploads and shares are encrypted.
               </p>
-              <Button variant="outline" onClick={() => signOut()} className="bg-black">
+              <Button variant="outline" onClick={() => signOut()}>
                 Sign Out
               </Button>
             </div>

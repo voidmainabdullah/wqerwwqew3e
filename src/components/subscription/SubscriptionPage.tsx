@@ -104,7 +104,7 @@ export const SubscriptionPage: React.FC = () => {
               Simple Pricing for Everyone
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Whether you’re just starting or need power features — we’ve got a
+              Whether you're just starting or need power features — we've got a
               plan that fits you.
             </p>
           </div>

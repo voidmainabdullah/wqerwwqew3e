@@ -215,7 +215,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
                     <div className="flex items-center gap-2">
                       <p className="font-medium">{member.email}</p>
                       <Badge variant={getRoleBadgeVariant(member.role)} className="text-xs">
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 text-xs">
                           {getRoleIcon(member.role)}
                           {member.role}
                         </span>
@@ -267,6 +267,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({
                   </div>}
                 
                 {member.role === 'admin' && <Badge variant="default" className="text-xs bg-lime-300">
+                {member.role === 'admin' && <Badge variant="default" className="text-xs">
                     <Crown className="w-3 h-3 mr-1" />
                     Team Admin
                   </Badge>}

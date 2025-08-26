@@ -695,6 +695,7 @@ export const FileManager: React.FC = () => {
                                 Expires {formatDate(link.expires_at)}
                               </span>}
                             <Badge variant={link.is_active ? "default" : "secondary"} className="bg-lime-300">
+                            <Badge variant={link.is_active ? "default" : "secondary"}>
                               {link.is_active ? "Active" : "Inactive"}
                             </Badge>
                           </div>

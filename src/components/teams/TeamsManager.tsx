@@ -366,6 +366,7 @@ const TeamsManager: React.FC = () => {
                           <h3 className="font-semibold">{team.name}</h3>
                           <div className="flex items-center space-x-2">
                             <Badge variant={team.is_admin ? 'default' : 'secondary'} className="text-xs bg-lime-100">
+                            <Badge variant={team.is_admin ? 'default' : 'secondary'} className="text-xs">
                               {team.is_admin ? 'Admin' : team.role}
                             </Badge>
                           </div>
