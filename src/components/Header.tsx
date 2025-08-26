@@ -130,12 +130,20 @@ const Header = () => {
               
               {/* Mobile CTA Buttons */}
               <div className="border-t border-border pt-3 mt-3 space-y-2">
-                <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" asChild>
+                <Button variant="ghost" className={`w-full h-10 font-medium text-sm justify-center transition-all duration-300 ${
+                  actualTheme === 'light'
+                    ? 'bg-gray-100 text-black hover:bg-gray-200'
+                    : 'bg-white text-black hover:bg-gray-100 border border-gray-200'
+                }`} asChild>
                   <a href="/auth">
                   Log in
                   </a>
                 </Button>
-                <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
+                <Button variant="default" className={`w-full h-10 font-medium text-sm justify-center ${
+                  actualTheme === 'light'
+                    ? 'bg-black text-white hover:bg-gray-800'
+                    : 'bg-white text-black hover:bg-gray-100 border border-gray-300'
+                }`} asChild>
                   <a href="/auth">
                   Get Started
                   </a>

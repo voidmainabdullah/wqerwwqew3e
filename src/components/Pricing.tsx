@@ -102,6 +102,14 @@ const Pricing = () => {
               
               <div className="mt-6">
                 <Button className={plan.buttonVariant === "default" ? "w-full" : "w-full border-neutral-300 text-foreground hover:bg-neutral-100 dark:border-neutral-600 dark:hover:bg-neutral-800"} variant={plan.buttonVariant as "default" | "outline"}>
+                <Button 
+                  className={
+                    plan.buttonVariant === "default" 
+                      ? "w-full bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-100" 
+                      : "w-full border-gray-300 text-black hover:bg-gray-100 dark:border-gray-300 dark:bg-white dark:text-black dark:hover:bg-gray-100"
+                  } 
+                  variant={plan.buttonVariant as "default" | "outline"}
+                >
                   {plan.buttonText}
                 </Button>
               </div>
