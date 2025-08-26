@@ -263,4 +263,5 @@ export const SubscriptionPage: React.FC = () => {
         </div>
       </div>
     </div>
+  )
 };
