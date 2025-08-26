@@ -116,7 +116,7 @@ export function FileManager() {
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-neutral-800"
           >
             <option value="all">All Types</option>
             <option value="image">Images</option>
@@ -148,8 +148,8 @@ export function FileManager() {
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <span className="text-blue-600 font-medium text-sm">
+                    <div className="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
+                      <span className="text-black dark:text-neutral-200 font-medium text-sm">
                         {file.name.split('.').pop()?.toUpperCase() || 'FILE'}
                       </span>
                     </div>

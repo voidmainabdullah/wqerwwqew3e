@@ -164,8 +164,8 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalFiles.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Files className="h-6 w-6 text-yellow-500" />
+            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Files className="h-6 w-6 text-black dark:text-neutral-800" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -178,7 +178,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Shared Links */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-neutral-850 to-emerald-500/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-850 to-black/5 dark:to-neutral-800/5"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -188,8 +188,8 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalShares.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <ShareNetwork className="h-6 w-6 text-green-500" />
+            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <ShareNetwork className="h-6 w-6 text-black dark:text-neutral-800" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -212,8 +212,8 @@ export const Dashboard: React.FC = () => {
                 {stats?.totalDownloads.toLocaleString()}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Download className="h-6 w-6 text-blue-500" />
+            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Download className="h-6 w-6 text-black dark:text-neutral-800" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -226,7 +226,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Storage Usage */}
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-blue-500/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-black/5 dark:to-neutral-800/5"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
             <div className="space-y-1">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -246,8 +246,8 @@ export const Dashboard: React.FC = () => {
                   </div>}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Cloud className="h-6 w-6 text-purple-500" />
+            <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Cloud className="h-6 w-6 text-black dark:text-neutral-800" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -389,8 +389,8 @@ export const Dashboard: React.FC = () => {
           <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
             <CardHeader>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <ChartLineUp className="w-6 h-6 text-blue-500" />
+                <div className="w-12 h-12 rounded-xl bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <ChartLineUp className="w-6 h-6 text-black dark:text-neutral-800" />
                 </div>
                 <div>
                   <CardTitle className="text-xl">Analytics</CardTitle>
@@ -407,7 +407,7 @@ export const Dashboard: React.FC = () => {
                   <div className="text-xs text-muted-foreground">Downloads</div>
                 </div>
                 <div className="text-center p-3 rounded-lg bg-muted/50">
-                  <div className="text-1xl font-bold text-green-500">
+                  <div className="text-1xl font-bold text-black dark:text-neutral-800">
                     {stats?.totalDownloads > 0 ? '↗ Goes Up' : '— Stable'}
                   </div>
                   <div className="text-xs text-muted-foreground">Trend</div>
@@ -436,7 +436,7 @@ export const Dashboard: React.FC = () => {
           <Card className="border-0 bg-gradient-to-br from-card to-card/50 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-xl">
-                <Shield className="w-6 h-6 text-green-500" />
+                <Shield className="w-6 h-6 text-black dark:text-neutral-800" />
                 Security Features
               </CardTitle>
               <CardDescription className="text-base">
@@ -445,16 +445,16 @@ export const Dashboard: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-green-500/5 border border-green-500/20">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-black/5 dark:bg-neutral-800/5 border border-black/20 dark:border-neutral-800/20">
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
                   <span className="text-sm font-medium">End-to-end encryption</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-black/5 dark:bg-neutral-800/5 border border-black/20 dark:border-neutral-800/20">
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
                   <span className="text-sm font-medium">Automatic expiry dates</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-500/5 border border-purple-500/20">
-                  <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-black/5 dark:bg-neutral-800/5 border border-black/20 dark:border-neutral-800/20">
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
                   <span className="text-sm font-medium">Download limits & tracking</span>
                 </div>
               </div>
@@ -465,7 +465,7 @@ export const Dashboard: React.FC = () => {
           <Card className="border-0 bg-gradient-to-br from-card to-card/50 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-xl">
-                <Users className="w-6 h-6 text-blue-500" />
+                <Users className="w-6 h-6 text-black dark:text-neutral-800" />
                 Team Collaboration
               </CardTitle>
               <CardDescription className="text-base">
@@ -474,16 +474,16 @@ export const Dashboard: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-blue-500/20 bg-inherit">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <div className="flex items-center gap-3 p-3 rounded-lg border border-black/20 dark:border-neutral-800/20 bg-inherit">
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
                   <span className="text-sm font-medium">Team file sharing</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-green-500/20 bg-transparent">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <div className="flex items-center gap-3 p-3 rounded-lg border border-black/20 dark:border-neutral-800/20 bg-transparent">
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
                   <span className="text-sm font-medium">Role-based permissions</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-purple-500/20 bg-transparent">
-                  <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                <div className="flex items-center gap-3 p-3 rounded-lg border border-black/20 dark:border-neutral-800/20 bg-transparent">
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-neutral-800"></div>
                   <span className="text-sm font-medium">Collaborative workflows</span>
                 </div>
               </div>

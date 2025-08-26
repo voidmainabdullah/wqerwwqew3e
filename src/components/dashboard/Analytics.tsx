@@ -93,7 +93,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Downloads</CardTitle>
-            <Download className="h-4 w-4 text-green-400" />
+            <Download className="h-4 w-4 text-black dark:text-neutral-800" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalDownloads}</div>
@@ -106,7 +106,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <ShareNetwork className="h-4 w-4 text-blue-400" />
+            <ShareNetwork className="h-4 w-4 text-black dark:text-neutral-800" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalShares}</div>
@@ -119,7 +119,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Files</CardTitle>
-            <Files className="h-4 w-4 text-yellow-400" />
+            <Files className="h-4 w-4 text-black dark:text-neutral-800" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalFiles}</div>
@@ -134,7 +134,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <TrendUp className="mr-2 h-5 w-5 text-green-600" />
+              <TrendUp className="mr-2 h-5 w-5 text-black dark:text-neutral-800" />
               Popular Files
             </CardTitle>
             <CardDescription>
@@ -161,7 +161,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Calendar className="mr-2 h-5 w-5 text-red-500" />
+              <Calendar className="mr-2 h-5 w-5 text-black dark:text-neutral-800" />
               Recent Downloads
             </CardTitle>
             <CardDescription>

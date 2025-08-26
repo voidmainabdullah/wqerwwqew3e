@@ -11,13 +11,13 @@ const Logo = () => {
           src="/sky.png"
           alt="Logo" 
           className={`h-14 w-auto sm:h-15 md:h-16 object-contain transition-all duration-300 hover:scale-105 ${
-            actualTheme === 'light' ? 'filter brightness-110 contrast-110' : ''
+            actualTheme === 'light' ? 'filter brightness-90 contrast-110' : ''
           }`}
         />
         
         {/* Glow effect */}
         <div className={`absolute inset-0 blur-sm transition-opacity duration-300 ${
-          actualTheme === 'light' ? 'opacity-20 hover:opacity-40' : 'opacity-30 hover:opacity-50'
+          actualTheme === 'light' ? 'opacity-10 hover:opacity-20' : 'opacity-20 hover:opacity-30'
         }`}>
           <img 
             src="/sky.png" 

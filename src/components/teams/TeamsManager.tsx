@@ -235,8 +235,8 @@ export function TeamsManager() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Users className="h-5 w-5 text-blue-600" />
+                    <div className="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
+                      <span className="text-black dark:text-neutral-200 font-medium text-sm">
                     </div>
                     <div>
                       <CardTitle className="text-lg">{team.name}</CardTitle>

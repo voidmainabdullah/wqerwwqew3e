@@ -79,16 +79,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3%;
 
-    --primary: 220 100% 50%;
+    --primary: 0 0% 0%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 210 40% 90%;
     --secondary-foreground: 0 0% 3%;
 
-    --muted: 210 40% 95%;
-    --muted-foreground: 215 16% 35%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 35%;
 
-    --accent: 220 100% 50%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84% 50%;
@@ -100,68 +100,68 @@
     --success: 142 76% 30%;
     --success-foreground: 0 0% 98%;
 
-    --border: 210 40% 85%;
-    --input: 210 40% 92%;
-    --ring: 220 100% 50%;
+    --border: 0 0% 85%;
+    --input: 0 0% 92%;
+    --ring: 0 0% 0%;
 
     --radius: 8px;
 
     /* Sidebar colors for navigation */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 3%;
-    --sidebar-primary: 220 100% 50%;
+    --sidebar-primary: 0 0% 0%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 210 40% 95%;
+    --sidebar-accent: 0 0% 95%;
     --sidebar-accent-foreground: 0 0% 3%;
-    --sidebar-border: 210 40% 85%;
-    --sidebar-ring: 220 100% 50%;
+    --sidebar-border: 0 0% 85%;
+    --sidebar-ring: 0 0% 0%;
 
     /* Custom design tokens for special effects */
-    --primary-glow: 220 100% 50%;
-    --gradient-primary: linear-gradient(135deg, hsl(220 100% 50%), hsl(240 100% 40%));
-    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 98%));
+    --primary-glow: 0 0% 0%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 20%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
     --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.1);
-    --shadow-glow: 0 8px 32px hsl(220 100% 50% / 0.15);
+    --shadow-glow: 0 8px 32px hsl(0 0% 0% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Function highlight colors - vibrant accent colors */
-    --function-upload: 142 71% 40%;
-    --function-upload-glow: 142 71% 50%;
-    --function-share: 220 100% 50%;
-    --function-share-glow: 220 100% 60%;
-    --function-download: 217 91% 50%;
-    --function-download-glow: 217 91% 60%;
+    --function-upload: 0 0% 0%;
+    --function-upload-glow: 0 0% 20%;
+    --function-share: 0 0% 0%;
+    --function-share-glow: 0 0% 20%;
+    --function-download: 0 0% 20%;
+    --function-download-glow: 0 0% 30%;
     --function-delete: 0 84% 50%;
     --function-delete-glow: 0 84% 60%;
-    --function-success: 142 76% 30%;
-    --function-success-glow: 142 76% 40%;
-    --function-processing: 262 83% 50%;
-    --function-processing-glow: 262 83% 60%;
+    --function-success: 0 0% 0%;
+    --function-success-glow: 0 0% 20%;
+    --function-processing: 0 0% 30%;
+    --function-processing-glow: 0 0% 40%;
     
     /* Cosmic effects - monochromatic greys */
-    --cosmic-dark: 215 16% 35%;
-    --cosmic-medium: 210 40% 95%;
+    --cosmic-dark: 0 0% 35%;
+    --cosmic-medium: 0 0% 95%;
     --cosmic-light: 0 0% 98%;
-    --cosmic-grey-1: 215 16% 35%;
-    --cosmic-grey-2: 215 16% 45%;
+    --cosmic-grey-1: 0 0% 35%;
+    --cosmic-grey-2: 0 0% 45%;
     
     /* Glass morphism effects */
-    --glass-border: 220 100% 50% / 0.1;
-    --glass-bg: 220 100% 50% / 0.05;
+    --glass-border: 0 0% 0% / 0.1;
+    --glass-bg: 0 0% 0% / 0.05;
     --glass-backdrop: blur(10px);
     
     /* Grid patterns */
-    --grid-color: 220 100% 50% / 0.05;
+    --grid-color: 0 0% 0% / 0.05;
     
     /* File type colors - keeping some color for recognition */
     --file-pdf: 0 84% 50%;
-    --file-image: 142 76% 30%;
-    --file-video: 262 83% 50%;
+    --file-image: 0 0% 30%;
+    --file-video: 0 0% 50%;
     --file-audio: 45 93% 50%;
-    --file-document: 220 100% 50%;
+    --file-document: 0 0% 0%;
     --file-archive: 33 84% 50%;
-    --file-code: 142 76% 30%;
-    --file-default: 215 16% 35%;
+    --file-code: 0 0% 30%;
+    --file-default: 0 0% 35%;
   }
 
   .dark {
@@ -175,16 +175,16 @@
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 220 100% 60%;
+    --primary: 0 0% 80%;
     --primary-foreground: 0 0% 5%;
 
-    --secondary: 215 20% 20%;
+    --secondary: 0 0% 20%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 215 20% 15%;
+    --muted: 0 0% 15%;
     --muted-foreground: 0 0% 75%;
 
-    --accent: 220 100% 60%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84% 65%;
@@ -196,44 +196,44 @@
     --success: 142 76% 45%;
     --success-foreground: 0 0% 98%;
 
-    --border: 215 20% 25%;
-    --input: 215 20% 18%;
-    --ring: 220 100% 60%;
+    --border: 0 0% 25%;
+    --input: 0 0% 18%;
+    --ring: 0 0% 80%;
 
     /* Sidebar colors for navigation */
     --sidebar-background: 0 0% 5%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 220 100% 60%;
+    --sidebar-primary: 0 0% 80%;
     --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 215 20% 15%;
+    --sidebar-accent: 0 0% 15%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 215 20% 25%;
-    --sidebar-ring: 220 100% 60%;
+    --sidebar-border: 0 0% 25%;
+    --sidebar-ring: 0 0% 80%;
 
     /* Custom design tokens for special effects */
-    --primary-glow: 220 100% 60%;
-    --gradient-primary: linear-gradient(135deg, hsl(220 100% 60%), hsl(240 100% 50%));
+    --primary-glow: 0 0% 80%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 80%), hsl(0 0% 60%));
     --gradient-surface: linear-gradient(180deg, hsl(0 0% 10%), hsl(0 0% 5%));
     --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.4);
-    --shadow-glow: 0 8px 32px hsl(213 94% 68% / 0.15);
+    --shadow-glow: 0 8px 32px hsl(0 0% 80% / 0.15);
     
     /* Cosmic effects - monochromatic greys */
-    --cosmic-dark: 215 20% 30%;
-    --cosmic-medium: 215 20% 18%;
+    --cosmic-dark: 0 0% 30%;
+    --cosmic-medium: 0 0% 18%;
     --cosmic-light: 0 0% 98%;
-    --cosmic-grey-1: 215 16% 45%;
-    --cosmic-grey-2: 215 16% 65%;
+    --cosmic-grey-1: 0 0% 45%;
+    --cosmic-grey-2: 0 0% 65%;
     
     /* Glass morphism effects */
-    --glass-border: 220 100% 60% / 0.1;
-    --glass-bg: 220 100% 60% / 0.05;
+    --glass-border: 0 0% 80% / 0.1;
+    --glass-bg: 0 0% 80% / 0.05;
     
     /* Grid patterns */
-    --grid-color: 220 100% 60% / 0.05;
+    --grid-color: 0 0% 80% / 0.05;
     
     /* File type colors - keeping some color for recognition */
-    --file-document: 220 100% 60%;
-    --file-default: 215 16% 45%;
+    --file-document: 0 0% 80%;
+    --file-default: 0 0% 45%;
   }
 }
 

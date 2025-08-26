@@ -231,7 +231,7 @@ export const AuthPage: React.FC = () => {
                     
                     {/* Pulsing glow */}
                     <motion.div
-                      className={`absolute inset-0 rounded-full ${actualTheme === 'light' ? 'bg-indigo-400/20' : 'bg-primary/10'}`}
+                      className={`absolute inset-0 rounded-full ${actualTheme === 'light' ? 'bg-black/20' : 'bg-primary/10'}`}
                       animate={{ scale: [1, 1.3, 1], opacity: [0, 0, 0] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
@@ -398,7 +398,7 @@ export const AuthPage: React.FC = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110"
                       >
-                        {showPassword ? <EyeSlash className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        <Shield className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`} />
                       </button>
                       <div className="absolute inset-0 rounded-md bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                     </div>
@@ -446,7 +446,7 @@ export const AuthPage: React.FC = () => {
                       type="submit"
                       className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${
                         actualTheme === 'light' 
-                          ? 'bg-gradient-to-r from-indigo-400 to-blue-600 hover:from-indigo-500 hover:to-blue-700 text-white hover:shadow-indigo-400/20' 
+                          ? 'bg-gradient-to-r from-black to-neutral-800 hover:from-neutral-900 hover:to-neutral-700 text-white hover:shadow-black/20' 
                           : 'bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary hover:shadow-primary/20'
                       }`}
                       disabled={loading}
@@ -520,7 +520,7 @@ export const AuthPage: React.FC = () => {
                 <motion.div 
                   className={`p-6 rounded-xl border relative overflow-hidden ${
                     actualTheme === 'light' 
-                      ? 'bg-gradient-to-r from-slate-50 via-slate-25 to-slate-50 border-slate-200' 
+                      ? 'bg-gradient-to-r from-neutral-50 via-neutral-25 to-neutral-50 border-neutral-200' 
                       : 'bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 border-border/50'
                   }`}
                   initial={{ opacity: 0, y: 20 }}
@@ -530,7 +530,7 @@ export const AuthPage: React.FC = () => {
                   {/* Security badge animation */}
                   <div className="absolute top-2 right-2">
                     <motion.div
-                      className={`w-2 h-2 rounded-full ${actualTheme === 'light' ? 'bg-green-500' : 'bg-green-400'}`}
+                      className={`w-2 h-2 rounded-full ${actualTheme === 'light' ? 'bg-black' : 'bg-neutral-800'}`}
                       animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
@@ -561,7 +561,7 @@ export const AuthPage: React.FC = () => {
                           <motion.div
                             key={index}
                             className={`flex items-center gap-2 text-xs text-muted-foreground px-2 py-1 rounded-md ${
-                              actualTheme === 'light' ? 'bg-white/80' : 'bg-background/50'
+                              actualTheme === 'light' ? 'bg-neutral-50/80' : 'bg-background/50'
                             }`}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -591,8 +591,8 @@ export const AuthPage: React.FC = () => {
         preserveAspectRatio="none"
       >
         <motion.path
-          d="M0,100 Q250,150 500,100 T1000,100"
-          stroke={actualTheme === 'light' ? "rgba(99,102,241,0.3)" : "rgba(255,255,255,0.3)"}
+          d="M0,100 Q250,150 500,100 T1000,100" 
+          stroke={actualTheme === 'light' ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.3)"}
           strokeWidth="2"
           fill="none"
           initial={{ pathLength: 0 }}
@@ -601,7 +601,7 @@ export const AuthPage: React.FC = () => {
         />
         <motion.path
           d="M0,80 Q400,130 800,80 T1000,80"
-          stroke={actualTheme === 'light' ? "rgba(37,99,235,0.2)" : "rgba(59,130,246,0.2)"}
+          stroke={actualTheme === 'light' ? "rgba(0,0,0,0.2)" : "rgba(64,64,64,0.2)"}
           strokeWidth="1"
           fill="none"
           initial={{ pathLength: 0 }}
@@ -613,13 +613,13 @@ export const AuthPage: React.FC = () => {
       {/* Bottom Animated Glow Line */}
       <motion.div 
         className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${
-          actualTheme === 'light' ? 'via-indigo-400' : 'via-white'
+          actualTheme === 'light' ? 'via-black' : 'via-white'
         }`}
         style={{
           width: bottomLineWidth,
           opacity: bottomLineOpacity,
           boxShadow: actualTheme === 'light' 
-            ? "0 0 20px rgba(99, 102, 241, 0.6), 0 0 40px rgba(99, 102, 241, 0.3)"
+            ? "0 0 20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 0, 0, 0.3)"
             : "0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.3)"
         }}
       />
@@ -630,7 +630,7 @@ export const AuthPage: React.FC = () => {
           <motion.div
             key={i}
             className={`absolute w-1 h-1 rounded-full ${
-              actualTheme === 'light' ? 'bg-indigo-400/30' : 'bg-primary/20'
+              actualTheme === 'light' ? 'bg-black/30' : 'bg-primary/20'
             }`}
             style={{
               left: `${10 + (i * 8)}%`,
