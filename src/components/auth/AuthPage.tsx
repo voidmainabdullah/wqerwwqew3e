@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { AnimatedBackground } from '@/components/ui/animated-background';
 import { useTheme } from '@/contexts/ThemeContext';
 import { 
   Eye, 
@@ -124,54 +123,20 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-background">
-      {/* Top Animated Curved Line */}
-      <motion.div 
-        className="absolute top-0 left-0 h-px bg-gradient-to-r from-transparent via-white to-transparent z-10"
-        initial={{ width: "0%" }}
-        animate={{ width: "100%" }}
-        transition={{ duration: 2, ease: "easeInOut" }}
-        style={{
-          boxShadow: "0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4)"
-        }}
-      />
-
-      {/* Curved decorative lines */}
-      <motion.svg 
-        className="absolute top-0 left-0 w-full h-32 z-5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.3 }}
-        transition={{ duration: 3, delay: 0.5 }}
-        viewBox="0 0 1000 200"
-        preserveAspectRatio="none"
-      >
-        <motion.path
-          d="M0,100 Q250,50 500,100 T1000,100"
-          stroke="rgba(255,255,255,0.2)"
-          strokeWidth="2"
-          fill="none"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 4, ease: "easeInOut" }}
-        />
-        <motion.path
-          d="M0,120 Q300,70 600,120 T1000,120"
-          stroke="rgba(59,130,246,0.3)"
-          strokeWidth="1"
-          fill="none"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 5, delay: 1, ease: "easeInOut" }}
-        />
-      </motion.svg>
-
-      {/* Animated Background */}
-      <div className="absolute inset-0">
-        <AnimatedBackground />
-      </div>
+    <div className={`min-h-screen flex flex-col relative ${
+      actualTheme === 'light' 
+        ? 'bg-white' 
+        : 'bg-white'
+    }`}>
+      {/* Simple gradient background - no animations */}
+      <div className={`absolute inset-0 ${
+        actualTheme === 'light'
+          ? 'bg-gradient-to-br from-white via-blue-50/30 to-white'
+          : 'bg-gradient-to-br from-white via-gray-50 to-white'
+      }`} />
       
       {/* Content Container */}
-      <div className="relative z-20 flex-1 flex items-center justify-center p-4">
+      <div className="relative z-10 flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           {/* Back to Home Button */}
           <motion.div 
@@ -182,7 +147,11 @@ export const AuthPage: React.FC = () => {
           >
             <Button 
               variant="ghost" 
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground group transition-all duration-300 hover:scale-105"
+              className={`flex items-center gap-2 group transition-all duration-300 hover:scale-105 ${
+                actualTheme === 'light'
+                  ? 'text-gray-600 hover:text-black hover:bg-blue-50'
+                  : 'text-gray-600 hover:text-black hover:bg-gray-100'
+              }`}
               onClick={() => window.location.href = '/'}
             >
               <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform duration-300" />
@@ -198,13 +167,7 @@ export const AuthPage: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
           >
-            <Card className="backdrop-blur-md bg-card/90 border border-border/60 shadow-2xl relative overflow-hidden">
-              {/* Card Glow Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 animate-gradient-shift"></div>
-              
-              {/* Floating decorative elements */}
-              <div className="absolute top-4 right-4 w-2 h-2 bg-primary/40 rounded-full animate-pulse"></div>
-              <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <Card className="bg-white border border-gray-200 shadow-xl relative">
               
               <CardHeader className="text-center space-y-6 relative z-10">
                 {/* Logo with enhanced effects */}
@@ -222,19 +185,10 @@ export const AuthPage: React.FC = () => {
                       className="w-20 h-20 object-contain transition-all duration-500 filter hover:brightness-110"
                     />
                     
-                    {/* Rotating glow ring */}
-                    <motion.div
-                      className={`absolute inset-0 rounded-xl border-2 ${actualTheme === 'light' ? 'border-indigo-400/50' : 'border-primary/30'}`}
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: 1, ease: "linear" }}
-                    />
-                    
-                    {/* Pulsing glow */}
-                    <motion.div
-                      className={`absolute inset-0 rounded-full ${actualTheme === 'light' ? 'bg-black/20' : 'bg-primary/10'}`}
-                      animate={{ scale: [1, 1.3, 1], opacity: [0, 0, 0] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    />
+                    {/* Simple border ring */}
+                    <div className={`absolute inset-0 rounded-xl border-2 ${
+                      actualTheme === 'light' ? 'border-blue-200' : 'border-gray-200'
+                    }`} />
                   </div>
                 </motion.div>
                 
@@ -243,40 +197,16 @@ export const AuthPage: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                 >
-                  <CardTitle className="text-3xl font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+                  <CardTitle className="text-3xl font-bold text-black">
                     {isSignUp ? 'Join SkieShare' : 'Welcome Back'}
                   </CardTitle>
-                  <CardDescription className="text-lg mt-3 text-muted-foreground">
+                  <CardDescription className="text-lg mt-3 text-gray-600">
                     {isSignUp 
                       ? 'Create your account and start sharing files securely' 
                       : 'Sign in to access your secure file sharing dashboard'
                     }
                   </CardDescription>
                 </motion.div>
-
-                {/* Floating sparkles */}
-                <div className="absolute top-8 left-8">
-                  <motion.div
-                    className={`w-1 h-1 rounded-full ${actualTheme === 'light' ? 'bg-indigo-400' : 'bg-primary'}`}
-                    animate={{ 
-                      scale: [0, 1, 0],
-                      opacity: [0, 1, 0],
-                      rotate: [0, 180, 360]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                  />
-                </div>
-                <div className="absolute top-12 right-12">
-                  <motion.div
-                    className={`w-1.5 h-1.5 rounded-full ${actualTheme === 'light' ? 'bg-blue-600' : 'bg-accent'}`}
-                    animate={{ 
-                      scale: [0, 1, 0],
-                      opacity: [0, 1, 0],
-                      rotate: [360, 180, 0]
-                    }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: 1 }}
-                  />
-                </div>
               </CardHeader>
 
               <CardContent className="space-y-6 relative z-10">
@@ -288,17 +218,14 @@ export const AuthPage: React.FC = () => {
                 >
                   <Button
                     variant="outline"
-                    className={`w-full h-14 text-base font-medium border-2 transition-all duration-300 relative overflow-hidden group ${
+                    className={`w-full h-14 text-base font-medium border-2 transition-all duration-300 relative group ${
                       actualTheme === 'light' 
-                        ? 'border-slate-300 hover:bg-slate-50 hover:border-indigo-400' 
-                        : 'hover:bg-accent/50'
+                        ? 'border-blue-200 hover:bg-blue-50 hover:border-blue-400 text-black' 
+                        : 'border-gray-200 hover:bg-gray-50 hover:border-gray-400 text-black bg-white'
                     }`}
                     onClick={handleGoogleSignIn}
                     disabled={loading}
                   >
-                    <div className={`absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ${
-                      actualTheme === 'light' ? 'via-indigo-400/10' : 'via-primary/5'
-                    }`}></div>
                     <svg className="w-6 h-6 mr-3 relative z-10" viewBox="0 0 24 24">
                       <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                       <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -364,17 +291,24 @@ export const AuthPage: React.FC = () => {
                       Email Address
                     </Label>
                     <div className="relative group">
-                      <Envelope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300" />
+                      <Envelope className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                        actualTheme === 'light'
+                          ? 'text-gray-500 group-focus-within:text-blue-600'
+                          : 'text-gray-500 group-focus-within:text-black'
+                      }`} />
                       <Input
                         id="email"
                         type="email"
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-11 h-14 text-base transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary hover:border-primary/50"
+                        className={`pl-11 h-14 text-base transition-all duration-300 focus:ring-2 hover:border-opacity-70 text-black bg-white border-gray-200 ${
+                          actualTheme === 'light'
+                            ? 'focus:ring-blue-500/20 focus:border-blue-500 hover:border-blue-400'
+                            : 'focus:ring-gray-500/20 focus:border-gray-500 hover:border-gray-400'
+                        }`}
                         required
                       />
-                      <div className="absolute inset-0 rounded-md bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                     </div>
                   </div>
 
@@ -383,24 +317,31 @@ export const AuthPage: React.FC = () => {
                       Password
                     </Label>
                     <div className="relative group">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300" />
+                      <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                        actualTheme === 'light'
+                          ? 'text-gray-500 group-focus-within:text-blue-600'
+                          : 'text-gray-500 group-focus-within:text-black'
+                      }`} />
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-11 pr-11 h-14 text-base transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary hover:border-primary/50"
+                        className={`pl-11 pr-11 h-14 text-base transition-all duration-300 focus:ring-2 hover:border-opacity-70 text-black bg-white border-gray-200 ${
+                          actualTheme === 'light'
+                            ? 'focus:ring-blue-500/20 focus:border-blue-500 hover:border-blue-400'
+                            : 'focus:ring-gray-500/20 focus:border-gray-500 hover:border-gray-400'
+                        }`}
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-black transition-all duration-300 hover:scale-110"
                       >
-                        <Shield className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`} />
+                        <Shield className="h-6 w-6 flex-shrink-0 mt-1 text-gray-500" />
                       </button>
-                      <div className="absolute inset-0 rounded-md bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                     </div>
                   </div>
 
@@ -416,24 +357,31 @@ export const AuthPage: React.FC = () => {
                         Confirm Password
                       </Label>
                       <div className="relative group">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300" />
+                        <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                          actualTheme === 'light'
+                            ? 'text-gray-500 group-focus-within:text-blue-600'
+                            : 'text-gray-500 group-focus-within:text-black'
+                        }`} />
                         <Input
                           id="confirmPassword"
                           type={showConfirmPassword ? "text" : "password"}
                           placeholder="Confirm your password"
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
-                          className="pl-11 pr-11 h-14 text-base transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary hover:border-primary/50"
+                          className={`pl-11 pr-11 h-14 text-base transition-all duration-300 focus:ring-2 hover:border-opacity-70 text-black bg-white border-gray-200 ${
+                            actualTheme === 'light'
+                              ? 'focus:ring-blue-500/20 focus:border-blue-500 hover:border-blue-400'
+                              : 'focus:ring-gray-500/20 focus:border-gray-500 hover:border-gray-400'
+                          }`}
                           required
                         />
                         <button
                           type="button"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110"
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-black transition-all duration-300 hover:scale-110"
                         >
                           {showConfirmPassword ? <EyeSlash className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                         </button>
-                        <div className="absolute inset-0 rounded-md bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                       </div>
                     </motion.div>
                   )}
@@ -444,24 +392,17 @@ export const AuthPage: React.FC = () => {
                   >
                     <Button
                       type="submit"
-                      className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${
+                      className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative group ${
                         actualTheme === 'light' 
-                          ? 'bg-black hover:bg-neutral-800 text-white hover:shadow-black/20' 
-                          : 'bg-white hover:bg-neutral-200 text-black hover:shadow-white/20'
+                          ? 'bg-black hover:bg-gray-800 text-white hover:shadow-black/20' 
+                          : 'bg-white hover:bg-gray-100 text-black hover:shadow-gray/20 border border-gray-300'
                       }`}
                       disabled={loading}
                     >
-                      {/* Button shimmer effect */}
-                      <div className={`absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ${
-                        actualTheme === 'light' ? 'via-white/20' : 'via-white/10'
-                      }`}></div>
-                      
                       {loading ? (
                         <div className="flex items-center gap-3">
                           <motion.div 
-                            className={`w-5 h-5 border-2 border-t-transparent rounded-full ${
-                              actualTheme === 'light' ? 'border-white' : 'border-primary-foreground'
-                            }`}
+                            className="w-5 h-5 border-2 border-t-transparent rounded-full border-current"
                             animate={{ rotate: 360 }}
                             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                           />
@@ -494,22 +435,38 @@ export const AuthPage: React.FC = () => {
                       setConfirmPassword('');
                       setDisplayName('');
                     }}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-all duration-300 group relative"
+                    className={`text-sm transition-all duration-300 group relative ${
+                      actualTheme === 'light'
+                        ? 'text-gray-600 hover:text-blue-600'
+                        : 'text-gray-600 hover:text-black'
+                    }`}
                   >
                     {isSignUp ? (
                       <>
                         Already have an account?{' '}
-                        <span className="text-primary font-medium group-hover:text-primary/80 relative">
+                        <span className={`font-medium relative ${
+                          actualTheme === 'light'
+                            ? 'text-blue-600 group-hover:text-blue-700'
+                            : 'text-black group-hover:text-gray-800'
+                        }`}>
                           Sign in
-                          <span className="absolute bottom-0 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300"></span>
+                          <span className={`absolute bottom-0 left-0 w-0 h-px group-hover:w-full transition-all duration-300 ${
+                            actualTheme === 'light' ? 'bg-blue-600' : 'bg-black'
+                          }`}></span>
                         </span>
                       </>
                     ) : (
                       <>
                         Don't have an account?{' '}
-                        <span className="text-primary font-medium group-hover:text-primary/80 relative">
+                        <span className={`font-medium relative ${
+                          actualTheme === 'light'
+                            ? 'text-blue-600 group-hover:text-blue-700'
+                            : 'text-black group-hover:text-gray-800'
+                        }`}>
                           Sign up
-                          <span className="absolute bottom-0 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300"></span>
+                          <span className={`absolute bottom-0 left-0 w-0 h-px group-hover:w-full transition-all duration-300 ${
+                            actualTheme === 'light' ? 'bg-blue-600' : 'bg-black'
+                          }`}></span>
                         </span>
                       </>
                     )}
@@ -518,34 +475,22 @@ export const AuthPage: React.FC = () => {
 
                 {/* Enhanced Security Notice */}
                 <motion.div 
-                  className={`p-6 rounded-xl border relative overflow-hidden ${
+                  className={`p-6 rounded-xl border relative ${
                     actualTheme === 'light' 
-                      ? 'bg-gradient-to-r from-neutral-50 via-neutral-25 to-neutral-50 border-neutral-200' 
-                      : 'bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 border-border/50'
+                      ? 'bg-blue-50/50 border-blue-200' 
+                      : 'bg-gray-50 border-gray-200'
                   }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1 }}
                 >
-                  {/* Security badge animation */}
-                  <div className="absolute top-2 right-2">
-                    <motion.div
-                      className={`w-2 h-2 rounded-full ${actualTheme === 'light' ? 'bg-black' : 'bg-neutral-800'}`}
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  </div>
-                  
                   <div className="flex items-start gap-4">
-                    <motion.div
-                      animate={{ rotate: [0, 5, -5, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      <Shield className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
-                    </motion.div>
+                    <Shield className={`h-6 w-6 flex-shrink-0 mt-1 ${
+                      actualTheme === 'light' ? 'text-blue-600' : 'text-black'
+                    }`} />
                     <div className="text-sm space-y-2">
-                      <p className="font-medium text-foreground">Your data is secure</p>
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="font-medium text-black">Your data is secure</p>
+                      <p className="text-gray-600 leading-relaxed">
                         We use industry-standard encryption to protect your account and files. 
                         All transfers are secured with end-to-end encryption.
                       </p>
@@ -560,14 +505,20 @@ export const AuthPage: React.FC = () => {
                         ].map((feature, index) => (
                           <motion.div
                             key={index}
-                            className={`flex items-center gap-2 text-xs text-muted-foreground px-2 py-1 rounded-md ${
-                              actualTheme === 'light' ? 'bg-neutral-50/80' : 'bg-background/50'
+                            className={`flex items-center gap-2 text-xs px-2 py-1 rounded-md ${
+                              actualTheme === 'light' 
+                                ? 'bg-blue-50 text-gray-700' 
+                                : 'bg-gray-100 text-gray-700'
                             }`}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
                           >
-                            <feature.icon className={`w-3 h-3 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
+                            <feature.icon className={`w-3 h-3 ${
+                              actualTheme === 'light' 
+                                ? 'text-blue-600' 
+                                : 'text-black'
+                            }`} />
                             <span>{feature.text}</span>
                           </motion.div>
                         ))}
@@ -579,76 +530,6 @@ export const AuthPage: React.FC = () => {
             </Card>
           </motion.div>
         </div>
-      </div>
-
-      {/* Bottom Curved Lines */}
-      <motion.svg 
-        className="absolute bottom-0 left-0 w-full h-32 z-5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.2 }}
-        transition={{ duration: 3, delay: 1 }}
-        viewBox="0 0 1000 200"
-        preserveAspectRatio="none"
-      >
-        <motion.path
-          d="M0,100 Q250,150 500,100 T1000,100" 
-          stroke={actualTheme === 'light' ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.3)"}
-          strokeWidth="2"
-          fill="none"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 4, delay: 1.5, ease: "easeInOut" }}
-        />
-        <motion.path
-          d="M0,80 Q400,130 800,80 T1000,80"
-          stroke={actualTheme === 'light' ? "rgba(0,0,0,0.2)" : "rgba(64,64,64,0.2)"}
-          strokeWidth="1"
-          fill="none"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 5, delay: 2, ease: "easeInOut" }}
-        />
-      </motion.svg>
-
-      {/* Bottom Animated Glow Line */}
-      <motion.div 
-        className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${
-          actualTheme === 'light' ? 'via-black' : 'via-white'
-        }`}
-        style={{
-          width: bottomLineWidth,
-          opacity: bottomLineOpacity,
-          boxShadow: actualTheme === 'light' 
-            ? "0 0 20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 0, 0, 0.3)"
-            : "0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.3)"
-        }}
-      />
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full ${
-              actualTheme === 'light' ? 'bg-black/30' : 'bg-primary/20'
-            }`}
-            style={{
-              left: `${10 + (i * 8)}%`,
-              top: `${20 + (i * 5)}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.2, 0.8, 0.2],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{
-              duration: 4 + Math.random() * 2,
-              repeat: Infinity,
-              delay: i * 0.3,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { Download, Lock, FileText, Key, ArrowLeft } from 'phosphor-react';
-import { AnimatedBackground } from '@/components/ui/animated-background';
 import { useNavigate } from 'react-router-dom'; // ✅ React Router hook
 
 interface FileData {
@@ -181,10 +180,8 @@ export const CodeSharePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      <AnimatedBackground />
-
-      <div className="relative z-10 w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-white">
+      <div className="w-full max-w-md">
         {/* Go Back Button */}
         <div className="mb-4">
           <Button 
