@@ -224,7 +224,7 @@ export const AuthPage: React.FC = () => {
                     <motion.div
                       className="absolute inset-0 rounded-xl border-2 border-primary/30"
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     />
                     
                     {/* Pulsing glow */}
