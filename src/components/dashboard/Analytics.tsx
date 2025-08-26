@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ChartBar, Download, ShareNetwork, Files, TrendUp, Users, Calendar } from 'phosphor-react';
+import { ChartBar, Download, ShareNetwork, Files, TrendUp, Users, Calendar, Warning, CheckCircle } from 'phosphor-react';
 
 interface AnalyticsData {
   totalDownloads: number;
@@ -93,7 +93,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Downloads</CardTitle>
-            <Download className="h-4 w-4 text-black dark:text-neutral-800" />
+            <Download className="h-5 w-5 analytics-icon analytics-icon-green" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalDownloads}</div>
@@ -106,7 +106,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
-            <ShareNetwork className="h-4 w-4 text-black dark:text-neutral-800" />
+            <ShareNetwork className="h-5 w-5 analytics-icon analytics-icon-purple" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalShares}</div>
@@ -119,7 +119,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Files</CardTitle>
-            <Files className="h-4 w-4 text-black dark:text-neutral-800" />
+            <Files className="h-5 w-5 analytics-icon analytics-icon-yellow" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.totalFiles}</div>
@@ -134,7 +134,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <TrendUp className="mr-2 h-5 w-5 text-black dark:text-neutral-800" />
+              <TrendUp className="mr-2 h-5 w-5 analytics-icon analytics-icon-green" />
               Popular Files
             </CardTitle>
             <CardDescription>
@@ -145,12 +145,12 @@ export const Analytics: React.FC = () => {
             {data?.popularFiles.length ? <div className="space-y-3">
                 {data.popularFiles.map((file: any, index: number) => <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Files className="h-4 w-4 text-muted-foreground" />
+                      <Files className="h-4 w-4 analytics-icon analytics-icon-yellow" />
                       <span className="text-sm font-medium truncate max-w-[200px]">
                         {file.name}
                       </span>
                     </div>
-                    <Badge variant="secondary">
+                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
                       {file.downloads} downloads
                     </Badge>
                   </div>)}
@@ -161,7 +161,7 @@ export const Analytics: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Calendar className="mr-2 h-5 w-5 text-black dark:text-neutral-800" />
+              <Calendar className="mr-2 h-5 w-5 analytics-icon analytics-icon-purple" />
               Recent Downloads
             </CardTitle>
             <CardDescription>
@@ -172,7 +172,7 @@ export const Analytics: React.FC = () => {
             {data?.recentDownloads.length ? <div className="space-y-3">
                 {data.recentDownloads.map((download: any, index: number) => <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Download className="h-4 w-4 text-muted-foreground" />
+                      <Download className="h-4 w-4 analytics-icon analytics-icon-green" />
                       <span className="text-sm truncate max-w-[200px]">
                         {download.files?.original_name || 'Unknown file'}
                       </span>

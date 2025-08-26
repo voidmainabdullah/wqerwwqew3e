@@ -2,6 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enhanced Color System for Analytics and Branding */
+@layer base {
+  :root {
+    /* Analytics Color Palette - Light Theme */
+    --analytics-red: 220 38% 46%;
+    --analytics-red-hover: 220 38% 56%;
+    --analytics-yellow: 45 93% 47%;
+    --analytics-yellow-hover: 45 93% 57%;
+    --analytics-green: 142 69% 58%;
+    --analytics-green-hover: 142 69% 68%;
+    --analytics-purple: 262 83% 58%;
+    --analytics-purple-hover: 262 83% 68%;
+    
+    /* Enhanced Brand Colors - Light Theme */
+    --brand-primary: 0 0% 9%;
+    --brand-primary-hover: 0 0% 19%;
+    --brand-secondary: 210 40% 98%;
+    --brand-accent: 217 91% 60%;
+    --brand-accent-hover: 217 91% 70%;
+    
+    /* Status Colors - Light Theme */
+    --status-success: 142 76% 36%;
+    --status-warning: 38 92% 50%;
+    --status-error: 0 84% 60%;
+    --status-info: 199 89% 48%;
+    
+    /* Interactive States */
+    --hover-overlay: 0 0% 0% / 0.05;
+    --focus-ring: 217 91% 60% / 0.3;
+    --active-state: 0 0% 0% / 0.1;
+  }
+
+  .dark {
+    /* Analytics Color Palette - Dark Theme */
+    --analytics-red: 0 84% 65%;
+    --analytics-red-hover: 0 84% 75%;
+    --analytics-yellow: 48 96% 53%;
+    --analytics-yellow-hover: 48 96% 63%;
+    --analytics-green: 142 76% 36%;
+    --analytics-green-hover: 142 76% 46%;
+    --analytics-purple: 262 83% 58%;
+    --analytics-purple-hover: 262 83% 68%;
+    
+    /* Enhanced Brand Colors - Dark Theme */
+    --brand-primary: 0 0% 98%;
+    --brand-primary-hover: 0 0% 88%;
+    --brand-secondary: 0 0% 14%;
+    --brand-accent: 217 91% 60%;
+    --brand-accent-hover: 217 91% 70%;
+    
+    /* Status Colors - Dark Theme */
+    --status-success: 142 76% 36%;
+    --status-warning: 38 92% 50%;
+    --status-error: 0 84% 60%;
+    --status-info: 199 89% 48%;
+    
+    /* Interactive States */
+    --hover-overlay: 255 255% 100% / 0.05;
+    --focus-ring: 217 91% 60% / 0.3;
+    --active-state: 255 255% 100% / 0.1;
+  }
+}
+
 /* Custom Scrollbar Styling */
 @layer base {
   /* Webkit browsers (Chrome, Safari, Edge) */
@@ -400,6 +463,33 @@
   }
 }
 
+/* Enhanced hover animations for analytics icons */
+@keyframes icon-glow {
+  0% { 
+    filter: drop-shadow(0 0 0px currentColor); 
+    transform: scale(1); 
+  }
+  50% { 
+    filter: drop-shadow(0 0 8px currentColor); 
+    transform: scale(1.05); 
+  }
+  100% { 
+    filter: drop-shadow(0 0 0px currentColor); 
+    transform: scale(1); 
+  }
+}
+
+@keyframes color-shift {
+  0% { opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+@keyframes subtle-bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+}
+
 @keyframes auth-glow {
   0%, 100% { 
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.1); 
@@ -473,6 +563,18 @@
 
 .animate-soft-glow {
   animation: soft-glow 3s ease-in-out infinite;
+}
+
+.animate-icon-glow {
+  animation: icon-glow 2s ease-in-out infinite;
+}
+
+.animate-color-shift {
+  animation: color-shift 3s ease-in-out infinite;
+}
+
+.animate-subtle-bounce {
+  animation: subtle-bounce 2s ease-in-out infinite;
 }
 
 .animate-fade-in-up {
@@ -654,6 +756,90 @@
 
 .animate-skeleton-wave {
   animation: skeleton-wave 2s ease-in-out infinite;
+}
+
+/* Analytics Icon Styles */
+.analytics-icon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.analytics-icon:hover {
+  animation: icon-glow 0.6s ease-out;
+}
+
+.analytics-icon-red {
+  color: hsl(var(--analytics-red));
+}
+
+.analytics-icon-red:hover {
+  color: hsl(var(--analytics-red-hover));
+}
+
+.analytics-icon-yellow {
+  color: hsl(var(--analytics-yellow));
+}
+
+.analytics-icon-yellow:hover {
+  color: hsl(var(--analytics-yellow-hover));
+}
+
+.analytics-icon-green {
+  color: hsl(var(--analytics-green));
+}
+
+.analytics-icon-green:hover {
+  color: hsl(var(--analytics-green-hover));
+}
+
+.analytics-icon-purple {
+  color: hsl(var(--analytics-purple));
+}
+
+.analytics-icon-purple:hover {
+  color: hsl(var(--analytics-purple-hover));
+}
+
+/* Enhanced Brand Components */
+.brand-card {
+  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card) / 0.8));
+  border: 1px solid hsl(var(--border));
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-card:hover {
+  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--brand-accent) / 0.05));
+  border-color: hsl(var(--brand-accent) / 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px hsl(var(--brand-accent) / 0.15);
+}
+
+.brand-button-primary {
+  background: linear-gradient(135deg, hsl(var(--brand-primary)), hsl(var(--brand-primary-hover)));
+  color: hsl(var(--primary-foreground));
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-button-primary:hover {
+  background: linear-gradient(135deg, hsl(var(--brand-primary-hover)), hsl(var(--brand-primary)));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--brand-primary) / 0.3);
+}
+
+/* Status Indicator Styles */
+.status-success {
+  color: hsl(var(--status-success));
+}
+
+.status-warning {
+  color: hsl(var(--status-warning));
+}
+
+.status-error {
+  color: hsl(var(--status-error));
+}
+
+.status-info {
+  color: hsl(var(--status-info));
 }
 
 /* Auth page specific styles */
