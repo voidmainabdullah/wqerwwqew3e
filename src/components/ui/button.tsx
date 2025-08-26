@@ -10,16 +10,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all duration-300",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-neutral-600 dark:hover:bg-neutral-800",
-        secondary:
-          "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 dark:bg-red-200 dark:text-neutral-100 dark:hover:bg-neutral-700 transition-all duration-300",
-        ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-neutral-800 transition-all duration-300",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
+       default: "bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all duration-300",
+destructive:
+  "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+outline:
+  "border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-neutral-600 dark:hover:bg-neutral-800",
+secondary:
+  "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 dark:bg-neutral-200 dark:text-black dark:hover:bg-neutral-300 transition-all duration-300",
+ghost:
+  "hover:bg-accent hover:text-accent-foreground dark:hover:bg-neutral-200 transition-all duration-300",
+link: "text-primary underline-offset-4 hover:underline",
+   },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
