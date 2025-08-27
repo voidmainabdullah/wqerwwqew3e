@@ -179,7 +179,7 @@ export const Dashboard: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-2">
-                    <Lightning className="w-6 h-6 text-primary" />
+                    <Lightning className="w-6 h-6 text-white" />
                     <span className="text-white font-semibold text-lg">
                       Upgrade to Pro
                     </span>
