@@ -18,12 +18,11 @@ import {
   ShareNetwork,
   Download,
   Upload,
-  Shield,
-  Lightning,
   Cloud,
   Crown,
   Activity,
   PaperPlaneTilt,
+  Lightning,
 } from "phosphor-react";
 import { AnimatedIcon } from "@/components/ui/animated-icons";
 
@@ -36,16 +35,27 @@ interface DashboardStats {
   subscriptionTier: string;
 }
 
+interface UserProfile {
+  storage_used: number;
+  storage_limit: number;
+  subscription_tier: string;
+}
+
+const formatFileSize = (bytes: number): string => {
+  if (!bytes) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
+
 export const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState<any>(null);
 
   useEffect(() => {
-    if (user) {
-      fetchDashboardStats();
-    }
+    if (user?.id) fetchDashboardStats();
   }, [user]);
 
   const fetchDashboardStats = async () => {
@@ -54,9 +64,9 @@ export const Dashboard: React.FC = () => {
         .from("profiles")
         .select("storage_used, storage_limit, subscription_tier")
         .eq("id", user?.id)
-        .single();
+        .maybeSingle<UserProfile>();
 
-      const { count: fileCount } = await supabase
+      const { count: totalFiles = 0 } = await supabase
         .from("files")
         .select("*", { count: "exact", head: true })
         .eq("user_id", user?.id);
@@ -68,26 +78,24 @@ export const Dashboard: React.FC = () => {
 
       const fileIds = userFiles?.map((f) => f.id) || [];
 
-      const { count: shareCount } = await supabase
+      const { count: totalShares = 0 } = await supabase
         .from("shared_links")
         .select("*", { count: "exact", head: true })
-        .in("file_id", fileIds);
+        .in("file_id", fileIds.length ? fileIds : [""]);
 
-      const { count: downloadCount } = await supabase
+      const { count: totalDownloads = 0 } = await supabase
         .from("download_logs")
         .select("*", { count: "exact", head: true })
-        .in("file_id", fileIds);
+        .in("file_id", fileIds.length ? fileIds : [""]);
 
       setStats({
-        totalFiles: fileCount || 0,
-        totalShares: shareCount || 0,
-        totalDownloads: downloadCount || 0,
+        totalFiles,
+        totalShares,
+        totalDownloads,
         storageUsed: profile?.storage_used || 0,
-        storageLimit: profile?.storage_limit || 6442450944,
+        storageLimit: profile?.storage_limit || 6_442_450_944, // default 6GB
         subscriptionTier: profile?.subscription_tier || "free",
       });
-
-      setUserProfile(profile);
     } catch (error) {
       console.error("Error fetching dashboard stats:", error);
     } finally {
@@ -116,26 +124,15 @@ export const Dashboard: React.FC = () => {
     );
   }
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return (
-      parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-    );
-  };
-
-  const storageProgress = stats
-    ? stats.subscriptionTier === "pro"
-      ? 0
-      : (stats.storageUsed / stats.storageLimit) * 100
-    : 0;
-
   const isPro = stats?.subscriptionTier === "pro";
+  const storageProgress =
+    stats && !isPro
+      ? (stats.storageUsed / stats.storageLimit) * 100
+      : 0;
 
   return (
     <div className="space-y-8">
+      {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
@@ -167,101 +164,78 @@ export const Dashboard: React.FC = () => {
             . Here's your file sharing overview and quick actions.
           </p>
         </div>
-       <div className="hidden lg:block">
-  <Link
-    to="/subscription"
-    className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
-  >
-    <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg 
-      bg-gradient-to-r from-neutral-100 via-white to-neutral-200 
-      dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-800 
-      p-6 shadow-xl">
-      
-      {/* Overlay accent gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
 
-      <div className="relative">
-        <div className="flex items-center gap-3 mb-2">
-          <Lightning className="w-6 h-6 text-primary" />
-          <span className="text-foreground font-semibold text-lg">
-            Upgrade to Pro
-          </span>
-        </div>
-        <p className="text-muted-foreground text-sm mb-3">
-          Unlock unlimited storage and premium features
-        </p>
-        <div className="flex items-center text-foreground text-sm font-medium">
-          <span>Get Started — $6.99/month</span>
-          <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-        </div>
+        {/* Upgrade CTA */}
+        {!isPro && (
+          <div className="hidden lg:block">
+            <Link
+              to="/subscription"
+              className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
+            >
+              <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg 
+                bg-gradient-to-r from-neutral-100 via-white to-neutral-200 
+                dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-800 
+                p-6 shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Lightning className="w-6 h-6 text-primary" />
+                    <span className="text-foreground font-semibold text-lg">
+                      Upgrade to Pro
+                    </span>
+                  </div>
+                  <p className="text-muted-foreground text-sm mb-3">
+                    Unlock unlimited storage and premium features
+                  </p>
+                  <div className="flex items-center text-foreground text-sm font-medium">
+                    <span>Get Started — $6.99/month</span>
+                    <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        )}
       </div>
-    </div>
-  </Link>
-</div>
 
+      {/* Stats Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
-            <div>
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                Total Files
-              </CardTitle>
-              <div className="text-3xl font-bold text-foreground">
-                {stats?.totalFiles.toLocaleString()}
-              </div>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
-              <Files className="h-6 w-6 text-yellow-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">Files in your account</p>
-            {stats?.totalFiles === 0 && <AnimatedIcon show type="files" />}
-          </CardContent>
-        </Card>
+        {/* Files */}
+        <DashboardCard
+          title="Total Files"
+          value={stats?.totalFiles}
+          icon={<Files className="h-6 w-6 text-yellow-600" />}
+          iconBg="bg-yellow-100"
+          description="Files in your account"
+          showIcon={stats?.totalFiles === 0}
+          type="files"
+        />
 
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
-            <div>
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                Active Shares
-              </CardTitle>
-              <div className="text-3xl font-bold text-foreground">
-                {stats?.totalShares.toLocaleString()}
-              </div>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-              <ShareNetwork className="h-6 w-6 text-purple-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">Sharing links created</p>
-            {stats?.totalShares === 0 && <AnimatedIcon show type="shares" />}
-          </CardContent>
-        </Card>
+        {/* Shares */}
+        <DashboardCard
+          title="Active Shares"
+          value={stats?.totalShares}
+          icon={<ShareNetwork className="h-6 w-6 text-purple-600" />}
+          iconBg="bg-purple-100"
+          description="Sharing links created"
+          showIcon={stats?.totalShares === 0}
+          type="shares"
+        />
 
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
-            <div>
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                Total Downloads
-              </CardTitle>
-              <div className="text-3xl font-bold text-foreground">
-                {stats?.totalDownloads.toLocaleString()}
-              </div>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-              <Download className="h-6 w-6 text-green-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">File downloads completed</p>
-            {stats?.totalDownloads === 0 && <AnimatedIcon show type="downloads" />}
-          </CardContent>
-        </Card>
+        {/* Downloads */}
+        <DashboardCard
+          title="Total Downloads"
+          value={stats?.totalDownloads}
+          icon={<Download className="h-6 w-6 text-green-600" />}
+          iconBg="bg-green-100"
+          description="File downloads completed"
+          showIcon={stats?.totalDownloads === 0}
+          type="downloads"
+        />
 
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative">
+        {/* Storage */}
+        <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
             <div>
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Storage Used
@@ -297,7 +271,9 @@ export const Dashboard: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">Unlimited cloud storage</p>
+              <p className="text-sm text-muted-foreground">
+                Unlimited cloud storage
+              </p>
             )}
             {stats?.storageUsed === 0 && <AnimatedIcon show type="storage" />}
           </CardContent>
@@ -306,54 +282,102 @@ export const Dashboard: React.FC = () => {
 
       <Separator className="my-8" />
 
+      {/* Quick Actions */}
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <Activity className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-semibold tracking-tight">Quick Actions</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Quick Actions
+          </h2>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
-            <CardHeader className="pb-4">
-              <div className="w-12 h-12 rounded-xl bg-functions-upload/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Upload className="w-6 h-6 text-functions-upload" />
-              </div>
-              <CardTitle className="text-xl">Upload Files</CardTitle>
-              <CardDescription>
-                Upload and share files instantly with advanced security.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="default" className="w-full" asChild>
-                <Link to="/dashboard/upload">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Start Upload
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <QuickActionCard
+            title="Upload Files"
+            description="Upload and share files instantly with advanced security."
+            icon={<Upload className="w-6 h-6 text-functions-upload" />}
+            to="/dashboard/upload"
+            buttonText="Start Upload"
+          />
 
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
-            <CardHeader className="pb-4">
-              <div className="w-12 h-12 rounded-xl bg-functions-download/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <PaperPlaneTilt className="w-6 h-6 text-functions-download" />
-              </div>
-              <CardTitle className="text-xl">Request Files</CardTitle>
-              <CardDescription>
-                Collect files securely from others with unique request links.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="default" className="w-full" asChild>
-                <Link to="/dashboard/request">
-                  <PaperPlaneTilt className="mr-2 h-4 w-4" />
-                  Request Files
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <QuickActionCard
+            title="Request Files"
+            description="Collect files securely from others with unique request links."
+            icon={<PaperPlaneTilt className="w-6 h-6 text-functions-download" />}
+            to="/dashboard/request"
+            buttonText="Request Files"
+          />
         </div>
       </div>
     </div>
   );
 };
+
+/* ---------- Reusable Components ---------- */
+
+const DashboardCard = ({
+  title,
+  value,
+  icon,
+  iconBg,
+  description,
+  showIcon,
+  type,
+}: {
+  title: string;
+  value?: number;
+  icon: React.ReactNode;
+  iconBg: string;
+  description: string;
+  showIcon: boolean;
+  type: "files" | "shares" | "downloads" | "storage";
+}) => (
+  <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+    <CardHeader className="flex flex-row items-center justify-between pb-3">
+      <div>
+        <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+          {title}
+        </CardTitle>
+        <div className="text-3xl font-bold text-foreground">
+          {value?.toLocaleString()}
+        </div>
+      </div>
+      <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center`}>
+        {icon}
+      </div>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">{description}</p>
+      {showIcon && <AnimatedIcon show type={type} />}
+    </CardContent>
+  </Card>
+);
+
+const QuickActionCard = ({
+  title,
+  description,
+  icon,
+  to,
+  buttonText,
+}: {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  to: string;
+  buttonText: string;
+}) => (
+  <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+    <CardHeader className="pb-4">
+      <div className="w-12 h-12 rounded-xl bg-functions-upload/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        {icon}
+      </div>
+      <CardTitle className="text-xl">{title}</CardTitle>
+      <CardDescription>{description}</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button variant="default" className="w-full" asChild>
+        <Link to={to}>{buttonText}</Link>
+      </Button>
+    </CardContent>
+  </Card>
+);
