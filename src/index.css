@@ -294,7 +294,7 @@
     --primary: 0 0% 80%;
     --primary-foreground: 0 0% 5%;
 
-    --secondary: 120 60% 45%;
+    --secondary: 0 0% 20%;
     --secondary-foreground: 0 0% 98%;
 
     --muted: 0 0% 15%;
@@ -303,7 +303,7 @@
     --accent:0 0 100%;
     --accent-foreground: 0 0% 5%; 
 
-    --destructive: 0 84% 65%;
+    --destructive:120 60% 45%;
     --destructive-foreground: 0 0% 98%;
 
     --warning: 45 93% 65%;
