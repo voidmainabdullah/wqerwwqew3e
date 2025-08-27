@@ -174,7 +174,7 @@ export const Dashboard: React.FC = () => {
             >
               <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg 
                 bg-gradient-to-r from-red-100 via-white to-green-200 
-                dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-800 
+                dark:from-red-800 dark:via-neutral-900 dark:to-neutral-800 
                 p-6 shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
                 <div className="relative">
