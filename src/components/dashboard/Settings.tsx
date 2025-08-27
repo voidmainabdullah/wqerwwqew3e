@@ -214,7 +214,7 @@ export const Settings: React.FC = () => {
         </Card>
 
         <Card className="bg-blue-800">
-          <CardHeader className="bg-blue-800">
+          <CardHeader className="bg-neutral-800">
             <CardTitle className="flex items-center text-2xl font-semibold text-amber-300">
               <Crown className="mr-2 h-5 w-5" />
               Subscription
