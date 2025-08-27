@@ -323,8 +323,8 @@
     --sidebar-primary-foreground: 0 0% 5%;
     --sidebar-accent: 0 0% 15%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 120 60% 45%;
-    --sidebar-ring: 0 0% 80%;
+    --sidebar-border: 0 0% 25%; 
+    --sidebar-ring: 120 60% 45%;
 
     /* Custom design tokens for special effects */
     --primary-glow: 0 0% 80%;
