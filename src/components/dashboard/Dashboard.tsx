@@ -173,7 +173,7 @@ export const Dashboard: React.FC = () => {
               className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
             >
               <div className="relative overflow-hidden rounded-xl  border-primary shadow-lg 
-                bg-gradient-to-r from-black via-neutral-900 to-blue-500  border-r border-blue-600 rounded-xl p-4 "
+                bg-gradient-to-r from-black via-neutral-900 to-blue-500  border-r border-blue-600 rounded-xl p-4 "></div>
                
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
                 <div className="relative">
