@@ -318,8 +318,8 @@
 
     /* Sidebar colors for navigation */
     --sidebar-background: 0 0% 5%;
-    --sidebar-foreground: 120 60% 45%;
-    --sidebar-primary: 0 0% 80%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 120 60% 45%;
     --sidebar-primary-foreground: 0 0% 5%;
     --sidebar-accent: 0 0% 15%;
     --sidebar-accent-foreground: 0 0% 98%;
