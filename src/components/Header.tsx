@@ -111,7 +111,7 @@ const Header = () => {
                 </div>
               </div>
 
-              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'pricing' ? 'text-blue-600 bg-green-300' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
+              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'pricing' ? 'text-blue-600 bg-green-300' : 'text-red-300 bg-red-600 hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
                 <DollarSign size={14} className="inline-block mr-1" /> Pricing
               </ToggleGroupItem>
 
