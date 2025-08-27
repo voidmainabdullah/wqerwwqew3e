@@ -317,8 +317,8 @@
     --ring: 0 0% 80%;
 
     /* Sidebar colors for navigation */
-    --sidebar-background: 120 60% 45%;
-    --sidebar-foreground: 0 0% 98%;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 120 60% 45%;
     --sidebar-primary: 0 0% 80%;
     --sidebar-primary-foreground: 0 0% 5%;
     --sidebar-accent: 0 0% 15%;
