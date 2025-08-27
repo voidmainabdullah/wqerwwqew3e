@@ -48,6 +48,26 @@ const Header = () => {
         }}
       />
       
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating boxes with low opacity */}
+        <div className={`absolute top-4 left-20 w-8 h-8 rounded-lg rotate-12 ${
+          actualTheme === 'light' ? 'bg-neutral-800/5' : 'bg-white/5'
+        } animate-float`} style={{ animationDelay: '0s' }} />
+        <div className={`absolute top-6 right-32 w-6 h-6 rounded-md rotate-45 ${
+          actualTheme === 'light' ? 'bg-neutral-700/8' : 'bg-white/8'
+        } animate-float`} style={{ animationDelay: '2s' }} />
+        <div className={`absolute top-8 left-1/3 w-4 h-4 rounded-full ${
+          actualTheme === 'light' ? 'bg-neutral-600/6' : 'bg-white/6'
+        } animate-float`} style={{ animationDelay: '1s' }} />
+        <div className={`absolute top-5 right-1/4 w-5 h-5 rounded-lg rotate-30 ${
+          actualTheme === 'light' ? 'bg-neutral-800/7' : 'bg-white/7'
+        } animate-float`} style={{ animationDelay: '3s' }} />
+        <div className={`absolute top-7 left-2/3 w-3 h-3 rounded-md rotate-60 ${
+          actualTheme === 'light' ? 'bg-neutral-700/5' : 'bg-white/5'
+        } animate-float`} style={{ animationDelay: '1.5s' }} />
+      </div>
+      
       <header className="w-full max-w-7xl mx-auto py-2 px-6 md:px-8 flex items-center justify-between max-h-14">
         <div className="p-3">
           <motion.div initial={{
