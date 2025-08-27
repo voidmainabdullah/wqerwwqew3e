@@ -98,7 +98,7 @@ const Header = () => {
               
               {/* Products Dropdown */}
               <div className="relative group">
-                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full bg-red-200 transition-colors relative text-sm", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
                   <LayoutDashboard size={14} className="inline-block mr-1" /> Products
                 </ToggleGroupItem>
                 <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
