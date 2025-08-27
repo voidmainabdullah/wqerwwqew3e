@@ -34,7 +34,7 @@
     /* Enhanced Brand Colors - Light Theme (Modern & Professional) */
     --brand-primary: 0 0% 9%; 
     --brand-primary-hover: 0 0% 15%;
-    --brand-primary-light:0 0% 9%;
+    --brand-primary-light:0, 100%, 9%;
     --brand-secondary: 210 20% 96%;
     --brand-secondary-hover: 210 20% 92%;
     --brand-accent: 217 91% 60%;
