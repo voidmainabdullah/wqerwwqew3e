@@ -305,7 +305,7 @@ export const Dashboard: React.FC = () => {
             title="Recieve File"
             description="Receive files rapidly Fast with advanced security and ease."
             icon={<Download className="w-6 h-6 text-functions-upload" />}
-            to="/dashboard/code"
+            to="/code"
             buttonText="Recieve Now"
           />
 
