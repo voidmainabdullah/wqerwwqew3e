@@ -32,7 +32,7 @@
     --analytics-purple-bg: 262 80% 50% / 0.1;
     
     /* Enhanced Brand Colors - Light Theme (Modern & Professional) */
-    --brand-primary: 0 100% 9%;
+    --brand-primary: 0 0% 9%; 
     --brand-primary-hover: 0 0% 15%;
     --brand-primary-light: 0 0% 25%;
     --brand-secondary: 210 20% 96%;
