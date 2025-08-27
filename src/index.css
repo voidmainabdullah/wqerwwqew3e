@@ -11,7 +11,7 @@
     --button-primary-hover: 0 0% 20%;
     --button-secondary-bg: 0 0% 96%;
     --button-secondary-text: 0 0% 10%;
-    --button-secondary-hover: 0 0% 90%;
+    --button-secondary-hover: 0 0% 90%; 
     --button-outline-border: 0 0% 80%;
     --button-outline-hover: 0 0% 96%;
     --button-ghost-hover: 0 0% 96%;
@@ -34,7 +34,7 @@
     /* Enhanced Brand Colors - Light Theme (Modern & Professional) */
     --brand-primary: 0 0% 9%;
     --brand-primary-hover: 0 0% 15%;
-    --brand-primary-light: 120 60% 45%;
+    --brand-primary-light: 0 0% 25%;
     --brand-secondary: 210 20% 96%;
     --brand-secondary-hover: 210 20% 92%;
     --brand-accent: 217 91% 60%;
@@ -68,7 +68,7 @@
     --button-primary-bg: 0 0% 100%;
     --button-primary-text: 0 0% 0%;
     --button-primary-hover: 0 0% 85%;
-    --button-secondary-bg: 120 60% 45%;
+    --button-secondary-bg: 0 0% 20%;
     --button-secondary-text: 0 0% 90%;
     --button-secondary-hover: 0 0% 25%;
     --button-outline-border: 0 0% 40%;
@@ -95,7 +95,7 @@
     --brand-primary-light: 0 0% 75%;
     --brand-secondary: 0 0% 12%;
     --brand-secondary-hover: 0 0% 16%;
-    --brand-accent: 120 60% 45%;
+    --brand-accent: 217 91% 65%;
     --brand-accent-hover: 217 91% 70%;
     --brand-accent-light: 217 91% 75%;
     --brand-neutral: 220 14% 15%;
