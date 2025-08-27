@@ -204,7 +204,7 @@
     --muted: 0 0% 95%;
     --muted-foreground: 0 0% 35%;
 
-    --accent: 0 0% 0%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84% 50%;
@@ -283,7 +283,7 @@
   .dark {
     /* Dark theme colors */
     --background: 0 0% 5%;
-    --foreground: 0 0% 98%;
+    --foreground: 120 60% 45%;
 
     --card: 0 0% 10%;
     --card-foreground: 0 0% 98%;
