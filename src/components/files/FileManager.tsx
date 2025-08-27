@@ -116,7 +116,7 @@ export function FileManager() {
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-neutral-800"
+            className="px-3 py-2 border border-gray-300 rounded-xl bg-red-300 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-neutral-800"
           >
             <option value="all">All Types</option>
             <option value="image">Images</option>
