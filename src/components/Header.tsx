@@ -90,9 +90,9 @@ const Header = () => {
         
         {/* Desktop navigation with dropdowns */}
         <nav className="hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2">
-          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-2xl">
+          <div className="px-1 py-1 backdrop-blur-md bg-blue-600 border border-border shadow-lg rounded-2xl">
             <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
-              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
+              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'features' ? 'text-accent-foreground bg-green-400' : 'text-muted-foreground hover:text-foreground hover:bg-red-400')} onClick={handleNavClick('features')}>
                 <CircleDot size={14} className="inline-block mr-1" /> Features
               </ToggleGroupItem>
               
