@@ -174,7 +174,7 @@ export const Dashboard: React.FC = () => {
             >
               <div className="relative overflow-hidden rounded-xl  border-primary shadow-lg 
                 bg-gradient-to-r from-black via-neutral-900 to-blue-500  border-r border-blue-500 rounded-xl p-4
-                dark: bg-gradient-to-r from-blue-900 via-blue-600 to-neutral-900 
+                dark: bg-gradient-to-r from-neutral-900 via-neutral-600 to-neutral-900 
                 p-6 shadow-xl border-r border-blue-500 rounded-xl p-4">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
                 <div className="relative">
@@ -224,6 +224,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Downloads */}
         <DashboardCard
+      
           title="Total Downloads"
           value={stats?.totalDownloads}
           icon={<Download className="h-6 w-6 text-green-600" />}
