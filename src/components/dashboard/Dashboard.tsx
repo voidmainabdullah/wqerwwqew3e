@@ -301,6 +301,14 @@ export const Dashboard: React.FC = () => {
             buttonText="Start Upload"
           />
 
+           <QuickActionCard
+            title="Recieve File"
+            description="Upload and share files instantly with advanced security."
+            icon={<Upload className="w-6 h-6 text-functions-upload" />}
+            to="/dashboard/upload"
+            buttonText="Start Upload"
+          />
+
           <QuickActionCard
             title="Request Files"
             description="Collect files securely from others with unique request links."
@@ -310,6 +318,7 @@ export const Dashboard: React.FC = () => {
           />
         </div>
       </div>
+    </div>
     </div>
   );
 };
