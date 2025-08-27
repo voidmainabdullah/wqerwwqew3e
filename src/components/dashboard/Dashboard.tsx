@@ -167,32 +167,38 @@ export const Dashboard: React.FC = () => {
             . Here's your file sharing overview and quick actions.
           </p>
         </div>
-        <div className="hidden lg:block">
-          <Link
-            to="/subscription"
-            className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
-          >
-            <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg bg-gradient-to-r from-card to-card/80 p-6 shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50"></div>
-              <div className="relative">
-                <div className="flex items-center gap-3 mb-2">
-                  <Lightning className="w-6 h-6 text-primary" />
-                  <span className="text-foreground font-semibold text-lg">
-                    Upgrade to Pro
-                  </span>
-                </div>
-                <p className="text-muted-foreground text-sm mb-3">
-                  Unlock unlimited storage and premium features
-                </p>
-                <div className="flex items-center text-foreground text-sm font-medium">
-                  <span>Get Started — $6.99/month</span>
-                  <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </div>
-          </Link>
+      <div className="hidden lg:block">
+  <Link
+    to="/subscription"
+    className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
+  >
+    <div className="relative overflow-hidden rounded-xl border-2 border-primary shadow-lg 
+      bg-gradient-to-r from-neutral-100 via-white to-neutral-200 
+      dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-800 
+      p-6 shadow-xl">
+      
+      {/* Overlay accent gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
+
+      <div className="relative">
+        <div className="flex items-center gap-3 mb-2">
+          <Lightning className="w-6 h-6 text-primary" />
+          <span className="text-foreground font-semibold text-lg">
+            Upgrade to Pro
+          </span>
+        </div>
+        <p className="text-muted-foreground text-sm mb-3">
+          Unlock unlimited storage and premium features
+        </p>
+        <div className="flex items-center text-foreground text-sm font-medium">
+          <span>Get Started — $6.99/month</span>
+          <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
         </div>
       </div>
+    </div>
+  </Link>
+</div>
+
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
