@@ -180,7 +180,7 @@ export const Dashboard: React.FC = () => {
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-2">
                     <Lightning className="w-6 h-6 text-primary" />
-                    <span className="text-foreground font-semibold text-lg">
+                    <span className="text-white font-semibold text-lg">
                       Upgrade to Pro
                     </span>
                   </div>
