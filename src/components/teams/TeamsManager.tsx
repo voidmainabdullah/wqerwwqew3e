@@ -163,8 +163,8 @@ export function TeamsManager() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Teams</h2>
-          <p className="text-gray-600">Manage your teams and collaborate with others</p>
+          <h2 className="text-2xl font-bold text-gray-200">Teams</h2>
+          <p className="text-gray-400">Manage your teams and collaborate with others</p>
         </div>
         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
           <DialogTrigger asChild>
