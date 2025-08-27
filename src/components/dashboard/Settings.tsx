@@ -223,7 +223,7 @@ export const Settings: React.FC = () => {
               Your current subscription plan and usage.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 bg-blue-800">
+          <CardContent className="space-y-4 bg-neutral-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Current Plan</p>
