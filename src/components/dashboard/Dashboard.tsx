@@ -303,7 +303,7 @@ export const Dashboard: React.FC = () => {
 
            <QuickActionCard
             title="Recieve File"
-            description="Receive files instantly with advanced security and ease."
+            description="Receive files rapidly Fast with advanced security and ease."
             icon={<Download className="w-6 h-6 text-functions-upload" />}
             to="/dashboard/upload"
             buttonText="Recieve Now"
