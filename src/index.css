@@ -312,7 +312,7 @@
     --success: 142 76% 45%;
     --success-foreground: 0 0% 98%;
 
-    --border: 0 0% 25%; 
+    --border: 0 0% 25%;
     --input: 0 0% 18%;
     --ring: 0 0% 80%;
 
@@ -323,8 +323,8 @@
     --sidebar-primary-foreground: 0 0% 5%;
     --sidebar-accent: 0 0% 15%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 25%; 
-    --sidebar-ring: 120 60% 45%;
+    --sidebar-border: 0 0% 25%;
+    --sidebar-ring: 0 0% 80%;
 
     /* Custom design tokens for special effects */
     --primary-glow: 0 0% 80%;
@@ -363,7 +363,7 @@
   }
   /* Background gradient animation */
 @keyframes gradientMove {
-  0% { background-position: 0% 50%; }
+  0% { background-position: 120 60% 45%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
