@@ -234,7 +234,7 @@ export const Dashboard: React.FC = () => {
         />
 
         {/* Storage */}
-        <Card className="relative overflow-hidden  shadow-lg hover:shadow-xl transition-all duration-300 group border-r border-gray-100 rounded-xl ">
+        <Card className="relative overflow-hidden  shadow-lg hover:shadow-xl transition-all duration-300 group border-r border-gray-200 rounded-xl ">
           <CardHeader className="flex flex-row items-center justify-between pb-3">
             <div>
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
