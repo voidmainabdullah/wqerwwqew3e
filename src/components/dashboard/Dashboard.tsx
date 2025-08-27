@@ -184,7 +184,7 @@ export const Dashboard: React.FC = () => {
                       Upgrade to Pro
                     </span>
                   </div>
-                  <p className="text-muted-foreground text-sm mb-3">
+                  <p className="text-gray-300 text-sm mb-3">
                     Unlock unlimited storage and premium features
                   </p>
                   <div className="flex items-center text-foreground text-sm font-medium">
