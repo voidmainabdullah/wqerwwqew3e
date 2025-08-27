@@ -306,7 +306,7 @@ export const Dashboard: React.FC = () => {
             description="Upload and share files instantly with advanced security."
             icon={<Upload className="w-6 h-6 text-functions-upload" />}
             to="/dashboard/upload"
-            buttonText="Start Upload"
+            buttonText="Recieve Now"
           />
 
           <QuickActionCard
