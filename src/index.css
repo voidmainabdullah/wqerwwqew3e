@@ -309,10 +309,10 @@
     --warning: 45 93% 65%;
     --warning-foreground: 0 0% 5%;
 
-    --success:120 60% 45%;
-    --success-foreground: 120 60% 45%;
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 98%;
 
-    --border: 0 0% 25%;
+    --border: 0 0% 25%; 
     --input: 0 0% 18%;
     --ring: 0 0% 80%;
 
