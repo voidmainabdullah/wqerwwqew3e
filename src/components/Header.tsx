@@ -10,7 +10,7 @@ const Header = () => {
   const { actualTheme } = useTheme();
   const [activePage, setActivePage] = useState('features');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -90,15 +90,15 @@ const Header = () => {
         
         {/* Desktop navigation with dropdowns */}
         <nav className="hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2">
-          <div className="px-1 py-1 backdrop-blur-md bg-blue-600 border border-border shadow-lg rounded-2xl">
+          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-2xl">
             <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
-              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'features' ? 'text-accent-foreground bg-green-400' : 'text-muted-foreground hover:text-foreground hover:bg-red-400')} onClick={handleNavClick('features')}>
+              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
                 <CircleDot size={14} className="inline-block mr-1" /> Features
               </ToggleGroupItem>
               
               {/* Products Dropdown */}
               <div className="relative group">
-                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full bg-red-200 transition-colors relative text-sm", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
                   <LayoutDashboard size={14} className="inline-block mr-1" /> Products
                 </ToggleGroupItem>
                 <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -111,7 +111,7 @@ const Header = () => {
                 </div>
               </div>
 
-              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'pricing' ? 'text-blue-600 bg-green-300' : 'text-red-300 bg-red-600 hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
+              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'pricing' ? 'text-accent-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
                 <DollarSign size={14} className="inline-block mr-1" /> Pricing
               </ToggleGroupItem>
 
