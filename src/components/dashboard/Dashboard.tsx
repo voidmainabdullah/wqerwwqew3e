@@ -172,7 +172,7 @@ export const Dashboard: React.FC = () => {
               to="/subscription"
               className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
             >
-              <div className="relative overflow-hidden rounded-xl  border-primary shadow-lg 
+              <div className="relative overflow-hidden rounded-xl border-l border-blue-500 rounded-xl p-4 shadow-lg 
                 bg-gradient-to-r from-black via-neutral-900 to-blue-500 
                 dark: bg-gradient-to-r from-blue-900 via-blue-600 to-neutral-900 
                 p-6 shadow-xl border-r border-blue-500 rounded-xl p-4">
