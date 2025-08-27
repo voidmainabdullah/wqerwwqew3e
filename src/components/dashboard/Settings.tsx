@@ -114,7 +114,7 @@ export const Settings: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 w-60 h-10"> 
+      <div className="grid gap-4 w-80 h-10"> 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
