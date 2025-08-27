@@ -282,8 +282,8 @@
 
   .dark {
     /* Dark theme colors */
-    --background: 0 0% 5%;
-    --foreground: 120 60% 45%;
+    --background: 120 60% 45%;
+    --foreground: 0 0% 98%;
 
     --card: 0 0% 10%;
     --card-foreground: 0 0% 98%;
