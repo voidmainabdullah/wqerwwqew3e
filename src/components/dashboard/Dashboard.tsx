@@ -167,7 +167,7 @@ export const Dashboard: React.FC = () => {
             . Here's your file sharing overview and quick actions.
           </p>
         </div>
-      <div className="hidden lg:block">
+       <div className="hidden lg:block">
   <Link
     to="/subscription"
     className="group block transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
@@ -198,7 +198,6 @@ export const Dashboard: React.FC = () => {
     </div>
   </Link>
 </div>
-
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="relative overflow-hidden border-0 bg-gradient-to-br shadow-lg hover:shadow-xl transition-all duration-300 group">
