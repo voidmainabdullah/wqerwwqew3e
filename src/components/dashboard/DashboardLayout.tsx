@@ -114,7 +114,7 @@ const AppSidebar = () => {
                 <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/code">
                     <Code className="h-5 w-5" />
-                    <span>Enter Code</span>
+                    <span>Recieve Now</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
