@@ -92,7 +92,7 @@ export function FileManager() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">File Manager</h2>
+          <h2 className="text-2xl font-bold text-white">File Manager</h2>
           <p className="text-gray-600">Manage your uploaded files</p>
         </div>
         <Button className="flex items-center gap-2">
