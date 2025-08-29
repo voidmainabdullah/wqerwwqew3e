@@ -1209,30 +1209,30 @@
 /* Light box grid background */
 /* Light box grid background */
 /* Light theme box grid */
+/* Light theme box grid */
 .light .light-box-grid {
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    linear-gradient(#0000000D 1px, transparent 1px), /* rgba(0,0,0,0.05) ≈ #0000000D */
+    linear-gradient(90deg, #0000000D 1px, transparent 1px);
   background-size: 60px 60px;
   background-position: 0 0, 0 0;
 }
 
-/* Dark theme box grid */
-/* Light/Dark Box Grid Background */
+/* Balanced Light Box Grid */
 .light-box-grid {
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px), /* Light theme darker lines */
-    linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    linear-gradient(#00000012 1px, transparent 1px), /* rgba(0,0,0,0.07) ≈ #00000012 */
+    linear-gradient(90deg, #00000012 1px, transparent 1px);
   background-size: 60px 60px;
   background-position: 0 0, 0 0;
 }
- 
+
 /* Dark mode adjustment */
 @media (prefers-color-scheme: dark) {
   .light-box-grid {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px), /* Dark theme lighter lines */
-      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      linear-gradient(#FFFFFF12 1px, transparent 1px), /* rgba(255,255,255,0.07) ≈ #FFFFFF12 */
+      linear-gradient(90deg, #FFFFFF12 1px, transparent 1px);
   }
 }
 
