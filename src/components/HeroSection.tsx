@@ -77,7 +77,7 @@ const HeroSection = () => {
                 Get Started
               </a>
             </Button>
-            <Button variant="default" className="border-2 border-neutral-300 bg-transparent text-foreground  hover:text-white dark:border-neutral-600 dark:hover: text-white md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto" asChild>
+            <Button variant="default" className="border-2 border-neutral-300 bg-transparent text-foreground  hover:text-neutral-200 dark:border-neutral-600 dark:hover: text-white md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto" asChild>
               <a href="/auth">
               Go To Dashboard
               </a>
