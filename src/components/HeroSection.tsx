@@ -183,6 +183,6 @@ const HeroSection = () => {
             ? "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
             : "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
         }} />
-    </section>;
+  
 };
 export default HeroSection;
