@@ -1218,12 +1218,22 @@
 }
 
 /* Dark theme box grid */
-.dark .light-box-grid {
+/* Light/Dark Box Grid Background */
+.light-box-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px), /* Light theme darker lines */
+    linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
   background-size: 60px 60px;
   background-position: 0 0, 0 0;
+}
+
+/* Dark mode adjustment */
+@media (prefers-color-scheme: dark) {
+  .light-box-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px), /* Dark theme lighter lines */
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  }
 }
 
 
