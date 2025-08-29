@@ -24,7 +24,7 @@ const HeroSection = () => {
     <section className="relative overflow-hidden">
       {/* Professional Cosmic Grid Background */}
       <div className="absolute inset-0 cosmic-grid-hero"></div>
-      <div className="absolute inset-0 cosmic-grid-depth"></div>
+      <div className="absolute inset-0 cosmic-grid-depth"></div> 
       <div className="absolute inset-0 cosmic-grid-overlay"></div>
 
       {/* Subtle ambient lighting */}
