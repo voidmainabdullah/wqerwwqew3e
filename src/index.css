@@ -1208,13 +1208,24 @@
 }
 /* Light box grid background */
 /* Light box grid background */
-.light-box-grid {
+/* Light theme box grid */
+.light .light-box-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-  background-size: 60px 60px; /* box size */
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
   background-position: 0 0, 0 0;
 }
+
+/* Dark theme box grid */
+.dark .light-box-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: 0 0, 0 0;
+}
+
 
 .btn-theme-secondary:active,
 .btn-theme-outline:active,
