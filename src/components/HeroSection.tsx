@@ -72,7 +72,7 @@ const HeroSection = () => {
           duration: 0.6,
           delay: 0.6
         }}>
-            <Button variant="default" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl dark: bg-neutral-400 hover:bg-white/50 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto" asChild>
+            <Button variant="default" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl dark:bg-neutral-400 dark:hover:bg-white/50 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto" asChild>
               <a href="/auth">
                 Get Started
               </a>
