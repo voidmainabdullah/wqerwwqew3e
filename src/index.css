@@ -1210,10 +1210,12 @@
 /* Light box grid background */
 /* Light theme box grid */
 /* Light theme box grid */
+/* Light theme box grid */
+/* Light theme box grid */
 .light .light-box-grid {
   background-image:
-    linear-gradient(#0000000D 1px, transparent 1px), /* rgba(0,0,0,0.05) ≈ #0000000D */
-    linear-gradient(90deg, #0000000D 1px, transparent 1px);
+    linear-gradient(#00000022 1px, transparent 1px), /* rgba(0,0,0,0.05) ≈ #0000000D */
+    linear-gradient(90deg, #00000025 1px, transparent 1px);
   background-size: 60px 60px;
   background-position: 0 0, 0 0;
 }
@@ -1221,8 +1223,8 @@
 /* Balanced Light Box Grid */
 .light-box-grid {
   background-image:
-    linear-gradient(#00000012 1px, transparent 1px), /* rgba(0,0,0,0.07) ≈ #00000012 */
-    linear-gradient(90deg, #00000012 1px, transparent 1px);
+    linear-gradient(#00000032 1px, transparent 1px), /* rgba(0,0,0,0.07) ≈ #00000012 */
+    linear-gradient(90deg, #00000038 1px, transparent 1px);
   background-size: 60px 60px;
   background-position: 0 0, 0 0;
 }
@@ -1231,10 +1233,11 @@
 @media (prefers-color-scheme: dark) {
   .light-box-grid {
     background-image:
-      linear-gradient(#FFFFFF12 1px, transparent 1px), /* rgba(255,255,255,0.07) ≈ #FFFFFF12 */
-      linear-gradient(90deg, #FFFFFF12 1px, transparent 1px);
+      linear-gradient(#b4b4b44b 1px, transparent 1px), /* rgba(255,255,255,0.07) ≈ #FFFFFF12 */
+      linear-gradient(90deg, #9492924b 1px, transparent 1px);
   }
 }
+
 
 
 .btn-theme-secondary:active,
