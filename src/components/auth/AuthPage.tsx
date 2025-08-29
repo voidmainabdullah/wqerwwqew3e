@@ -362,7 +362,7 @@ export const AuthPage: React.FC = () => {
                   
                   <div className="flex items-start gap-4">
                     <div>
-                      <EyeOff className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
+                      <EyeSlash className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
                     </div>
                     <div className="text-sm space-y-2">
                       <p className="font-medium text-foreground">Your data is secure</p>
