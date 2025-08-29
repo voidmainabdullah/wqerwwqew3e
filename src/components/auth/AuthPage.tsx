@@ -15,6 +15,7 @@ import {
   Envelope, 
   Lock, 
   User, 
+  ArrowRight,
   Shield,
   Lightning,
   ArrowLeft
@@ -313,7 +314,7 @@ export const AuthPage: React.FC = () => {
                         </div>
                       ) : (
                         <div className="flex items-center gap-3">
-                          <Lightning className="h-5 w-5" />
+                          <ArrowRight className="h-5 w-5" />
                           <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
                         </div>
                       )}
