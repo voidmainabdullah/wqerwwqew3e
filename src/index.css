@@ -1206,6 +1206,14 @@
   transform: translateY(0);
   box-shadow: 0 1px 2px hsl(0 0% 0% / 0.1);
 }
+/* Light box grid background */
+.light-box-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px; /* box size */
+  background-position: 0 0, 0 0;
+}
 
 .btn-theme-secondary:active,
 .btn-theme-outline:active,
