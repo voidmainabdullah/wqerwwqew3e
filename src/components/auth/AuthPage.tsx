@@ -16,7 +16,6 @@ import {
   Lock, 
   User, 
   ArrowRight,
-  Eye,
   EyeOff,
   Shield,
   Lightning,
