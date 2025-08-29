@@ -20,11 +20,16 @@ const HeroSection = () => {
     }, 300);
     return () => clearTimeout(timer);
   }, []);
-  return <section className="relative w-full min-h-screen px-6 md:px-12 flex items-center overflow-hidden bg-background">
-      {/* Geometric background pattern */}
-      <div className="absolute inset-0 cosmic-grid opacity-20"></div>
-      <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
-      <div className="absolute bottom-20 left-10 w-72 h-72 rounded-full bg-accent/5 blur-3xl"></div>
+      {/* Professional Cosmic Grid Background */}
+      <div className="absolute inset-0 cosmic-grid-hero"></div>
+      
+      {/* Depth layers for professional look */}
+      <div className="absolute inset-0 cosmic-grid-depth"></div>
+      <div className="absolute inset-0 cosmic-grid-overlay"></div>
+      
+      {/* Subtle ambient lighting */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 cosmic-ambient-light opacity-30"></div>
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 cosmic-ambient-light opacity-20"></div>
       
       <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 mx-0 my-[120px]">
         {/* Left Column - Content */}
