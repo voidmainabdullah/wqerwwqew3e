@@ -16,6 +16,8 @@ import {
   Lock, 
   User, 
   ArrowRight,
+  Eye,
+  EyeOff,
   Shield,
   Lightning,
   ArrowLeft
@@ -261,7 +263,7 @@ export const AuthPage: React.FC = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
-                        <Shield className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`} />
+                        <Eye className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`} />
                       </button>
                     </div>
                   </div>
@@ -361,7 +363,7 @@ export const AuthPage: React.FC = () => {
                   
                   <div className="flex items-start gap-4">
                     <div>
-                      <Shield className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
+                      <EyeOff className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
                     </div>
                     <div className="text-sm space-y-2">
                       <p className="font-medium text-foreground">Your data is secure</p>
