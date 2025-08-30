@@ -173,7 +173,7 @@ export const Dashboard: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                  <span className="text-emerald-400 text-sm">+5.2%</span>
+                  <span className="text-emerald-400 text-sm">Uploaded this Month : 287</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
