@@ -5,7 +5,9 @@ import { Files, Cloud, Shield } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 const HeroSection = () => {
-  const { actualTheme } = useTheme();
+  const {
+    actualTheme
+  } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   const {
     scrollY
@@ -78,7 +80,7 @@ const HeroSection = () => {
               </a>
             </Button>
             <Button variant="outline" className="border-2 border-neutral-300 text-foreground hover:bg-neutral-100 hover:text-foreground dark:border-neutral-600 dark:hover:bg-neutral-800 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto" asChild>
-              <a href="/auth">
+              <a href="/auth" className="bg-white">
               Go To Dashbaord
               </a>
             </Button>
@@ -169,15 +171,11 @@ const HeroSection = () => {
       </div>
       
       {/* Animated White Glow Line */}
-      <motion.div className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${
-          actualTheme === 'light' ? 'via-neutral-800' : 'via-neutral-800'
-        }`} style={{
-          width: glowWidth,
-          opacity: glowOpacity,
-          boxShadow: actualTheme === 'light' 
-            ? "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
-            : "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
-        }} />
+      <motion.div className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${actualTheme === 'light' ? 'via-neutral-800' : 'via-neutral-800'}`} style={{
+      width: glowWidth,
+      opacity: glowOpacity,
+      boxShadow: actualTheme === 'light' ? "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)" : "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
+    }} />
     </section>;
 };
 export default HeroSection;
