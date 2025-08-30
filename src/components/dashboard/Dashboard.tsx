@@ -402,7 +402,7 @@ export const Dashboard: React.FC = () => {
             <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
-                  <Database className="w-5 h-5 text-lime-600" />
+                  <Database className="w-5 h-5 text-lime-400" />
                   Storage Overview
                 </CardTitle>
               </CardHeader>
