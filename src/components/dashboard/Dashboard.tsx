@@ -214,7 +214,7 @@ export const Dashboard: React.FC = () => {
         {/* Main Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Files Card */}
-          <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-neutral-800 to--neutral-700 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
                 <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
