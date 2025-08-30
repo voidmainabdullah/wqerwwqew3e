@@ -187,7 +187,7 @@ export const Dashboard: React.FC = () => {
                     Unlock unlimited storage and premium features
                   </p>
                   <div className="flex items-center text-gray-200 text-sm font-medium bg-white text-black rounded-xl">
-                    <span>Get Started — $6.99/month</span>
+                    <span>Get Started</span>
                     <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
