@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -46,9 +46,9 @@ import {
   Sun,
   Monitor,
 } from 'phosphor-react';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'; // Assuming these components are defined
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'; // Assuming this component is defined
-import { Label } from '@/components/ui/label'; // Importing the Label component
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'; 
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'; 
+import { Label } from '@/components/ui/label'; 
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -108,7 +108,7 @@ const AppSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        
+
         {/* Quick Actions */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
@@ -136,7 +136,6 @@ const AppSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        
 
         {/* Extra Pages */}
         <SidebarGroup>
@@ -153,7 +152,6 @@ const AppSidebar = () => {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -166,6 +164,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
   const { user, signOut } = useAuth();
   const [theme, setTheme] = React.useState<'light' | 'dark' | 'system'>('light'); // Default to light theme
   const actualTheme = theme;
+  const [isHovering, setIsHovering] = useState(false); // Hover state for theme switcher
 
   if (!user) {
     return <Navigate to="/auth" replace />;
@@ -230,91 +229,93 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                         <p className="text-sm font-medium leading-none text-white">
                           {user.user_metadata?.display_name || 'User'}
                         </p>
-                        <p className="text-xs leading-none text-slate-400">
+                                               <p className="text-xs leading-none text-slate-400">
                           {user.email}
                         </p>
                       </div>
                     </DropdownMenuLabel>
-                    
-     {/* Theme Switcher */}
-          <DropdownMenu>
-            <DropdownMenuTrigger 
-              className="cursor-pointer p-2 bg-gray-200 rounded" 
-              onMouseEnter={() => setIsHovering(true)} 
-              onMouseLeave={() => setIsHovering(false)}
-            >
-              Theme
-            </DropdownMenuTrigger>
 
-            {/* Only show dropdown when hovering */}
-            {isHovering && (
-              <DropdownMenuContent className="bg-white border border-gray-300 p-2 rounded mt-2 shadow-lg">
-                {/* System Theme */}
-                <DropdownMenuItem 
-                  onClick={() => setTheme('system')}
-                  className={actualTheme === 'system' ? 'bg-neutral-300' : ''} // Active style for system theme
-                >
-                  <div className="flex items-center gap-2">
-                    <Monitor className="h-4 w-4" />
-                    <span>System</span>
-                  </div>
-                </DropdownMenuItem>
+                    {/* Theme Switcher */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger 
+                        className="cursor-pointer p-2 bg-gray-200 rounded" 
+                        onMouseEnter={() => setIsHovering(true)} 
+                        onMouseLeave={() => setIsHovering(false)}
+                      >
+                        Theme
+                      </DropdownMenuTrigger>
 
-                {/* Light Theme */}
-                <DropdownMenuItem 
-                  onClick={() => setTheme('light')}
-                  className={actualTheme === 'light' ? 'bg-neutral-300' : ''} // Active style for light theme
-                >
-                  <div className="flex items-center gap-2">
-                    <Sun className="h-4 w-4" />
-                    <span>Light</span>
-                  </div>
-                </DropdownMenuItem>
+                      {/* Only show dropdown when hovering */}
+                      {isHovering && (
+                        <DropdownMenuContent className="bg-white border border-gray-300 p-2 rounded mt-2 shadow-lg">
+                          {/* System Theme */}
+                          <DropdownMenuItem 
+                            onClick={() => setTheme('system')}
+                            className={actualTheme === 'system' ? 'bg-neutral-300' : ''} // Active style for system theme
+                          >
+                            <div className="flex items-center gap-2">
+                              <Monitor className="h-4 w-4" />
+                              <span>System</span>
+                            </div>
+                          </DropdownMenuItem>
 
-                {/* Dark Theme */}
-                <DropdownMenuItem 
-                  onClick={() => setTheme('dark')}
-                  className={actualTheme === 'dark' ? 'bg-neutral-300' : ''} // Active style for dark theme
-                >
-                  <div className="flex items-center gap-2">
-                    <Moon className="h-4 w-4" />
-                    <span>Dark</span>
-                  </div>
-                </DropdownMenuItem>
+                          {/* Light Theme */}
+                          <DropdownMenuItem 
+                            onClick={() => setTheme('light')}
+                            className={actualTheme === 'light' ? 'bg-neutral-300' : ''} // Active style for light theme
+                          >
+                            <div className="flex items-center gap-2">
+                              <Sun className="h-4 w-4" />
+                              <span>Light</span>
+                            </div>
+                          </DropdownMenuItem>
 
-                <DropdownMenuSeparator />
+                          {/* Dark Theme */}
+                          <DropdownMenuItem 
+                            onClick={() => setTheme('dark')}
+                            className={actualTheme === 'dark' ? 'bg-neutral-300' : ''} // Active style for dark theme
+                          >
+                            <div className="flex items-center gap-2">
+                              <Moon className="h-4 w-4" />
+                              <span>Dark</span>
+                            </div>
+                          </DropdownMenuItem>
 
-                {/* Settings Link */}
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard/settings">
-                    <Gear className="mr-2 h-4 w-4" />
-                    Settings
-                  </Link>
-                </DropdownMenuItem>
+                          <DropdownMenuSeparator />
 
-                <DropdownMenuSeparator />
+                          {/* Settings Link */}
+                          <DropdownMenuItem asChild>
+                            <Link to="/dashboard/settings">
+                              <Gear className="mr-2 h-4 w-4" />
+                              Settings
+                            </Link>
+                          </DropdownMenuItem>
 
-                {/* Pricing Link */}
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard/pricing">
-                    <CurrencyCircleDollar className="mr-2 h-4 w-4" />
-                    Pricing
-                  </Link>
-                </DropdownMenuItem>
+                          <DropdownMenuSeparator />
 
-                <DropdownMenuSeparator />
+                          {/* Pricing Link */}
+                          <DropdownMenuItem asChild>
+                            <Link to="/dashboard/pricing">
+                              <CurrencyCircleDollar className="mr-2 h-4 w-4" />
+                              Pricing
+                            </Link>
+                          </DropdownMenuItem>
 
-                {/* Sign Out */}
-                <DropdownMenuItem onClick={() => signOut()}>
-                  <SignOut className="mr-2 h-4 w-4" />
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            )}
-          </DropdownMenu>
-        </div>
-      </div>
-    </header>
+                          <DropdownMenuSeparator />
+
+                          {/* Sign Out */}
+                          <DropdownMenuItem onClick={() => signOut()}>
+                            <SignOut className="mr-2 h-4 w-4" />
+                            Sign out
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      )}
+                    </DropdownMenu>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          </header>
 
           {/* Main Content */}
           <main className="flex-1">
@@ -325,4 +326,3 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
     </SidebarProvider>
   );
 };
- 
