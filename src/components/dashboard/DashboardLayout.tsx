@@ -165,12 +165,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <AppSidebar />
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-40">
+          <header className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
             <div className="flex items-center justify-between h-16 px-6">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
@@ -190,10 +190,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 {/* Desktop Welcome Message */}
                 <div className="hidden md:block">
                   <div className="space-y-1">
-                    <h2 className="text-lg font-semibold text-foreground">
+                    <h2 className="text-lg font-semibold text-white">
                       Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-slate-400">
                       {new Date().toLocaleDateString('en-US', { 
                         weekday: 'long', 
                         year: 'numeric', 
@@ -210,7 +210,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-accent/50 transition-all duration-200">
                       <Avatar className="h-10 w-10">
-                        <AvatarFallback className="bg-primary/10 text-primary">
+                        <AvatarFallback className="bg-slate-700 text-white">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -219,10 +219,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">
+                        <p className="text-sm font-medium leading-none text-white">
                           {user.user_metadata?.display_name || 'User'}
                         </p>
-                        <p className="text-xs leading-none text-muted-foreground">
+                        <p className="text-xs leading-none text-slate-400">
                           {user.email}
                         </p>
                       </div>
@@ -246,7 +246,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-8 bg-background/50">
+          <main className="flex-1">
             {children}
           </main>
         </div>
