@@ -546,7 +546,7 @@ export const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
 
-           
+           </Activity>
         </div>
       </div>
     </div>
