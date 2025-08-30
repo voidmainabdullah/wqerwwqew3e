@@ -161,7 +161,7 @@ export const Dashboard: React.FC = () => {
   const storageProgress = stats && !isPro ? (stats.storageUsed / stats.storageLimit) * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-900/80 via-neutral-800/80 to-neutral-900/80 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-900/80 via-neutral-900/80 to-neutral-900/80 text-white">
       {/* Professional Header */}
       <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm">
         <div className="px-8 py-6">
