@@ -188,7 +188,7 @@ export const Dashboard: React.FC = () => {
                   </p>
                   <div class="bg-white text-black shadow-sm rounded-xl">
   <span>Get Started</span>
-  <Lightning className="w-2 h-2 ml-1 group-hover:translate-x-1 transition-transform" />
+  <Lightning className="w-2 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
 </div>
 
                 </div>
