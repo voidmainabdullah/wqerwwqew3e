@@ -242,7 +242,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
     <SelectTrigger className="w-full">
       <SelectValue placeholder="Select theme" />
     </SelectTrigger>
-    <SelectContent className="bg-neutral-200"> {/* Apply neutral background here */}
+    <SelectContent className="bg-neutral-800"> {/* Apply neutral background here */}
       <SelectItem value="light">
         <div className="flex items-center gap-2">
           <Sun className="h-4 w-4" />
