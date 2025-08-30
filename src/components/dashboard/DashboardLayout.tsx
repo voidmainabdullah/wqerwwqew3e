@@ -246,7 +246,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                             ) : (
                               <Sun className="mr-2 h-5 w-5" />
                             )}
-                         
+                         Theme
                           </CardTitle>
                           <CardDescription>
                            
