@@ -263,7 +263,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
       </SelectItem>
       <SelectItem 
         value="system" 
-        className={theme === 'system' ? 'bg-neutral-300' : ''} // Highlight selected item with neutral bg
+        className={theme === 'system' ? 'bg-red-300' : ''} // Highlight selected item with neutral bg
       >
         <div className="flex items-center gap-2">
           <Monitor className="h-4 w-4" />
