@@ -262,7 +262,6 @@ export const Dashboard: React.FC = () => {
   </div>
 </div>
 
-
         {/* Main Content Grid */}
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Left Column - Charts and Analytics */}
