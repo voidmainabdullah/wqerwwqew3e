@@ -90,7 +90,7 @@ const AppSidebar = () => {
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton 
                     asChild 
-                    isActive={location.pathname === item.href}
+                    isActive={location.pathname.startsWith(item.href)} // Updated to check for sub-paths as well
                     className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200"
                   >
                     <Link to={item.href}>
@@ -234,7 +234,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                         <Gear className="mr-2 h-4 w-4" />
                         Settings
                       </Link>
-                       </DropdownMenuLabel>
+                    </DropdownMenuItem> {/* Fixed missing closing tag */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/pricing">
@@ -262,4 +262,3 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
     </SidebarProvider>
   );
 };
- 
