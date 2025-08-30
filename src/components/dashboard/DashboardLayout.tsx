@@ -238,35 +238,31 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                     
                    {/* Theme Switcher */}
 <DropdownMenuItem>
-  <Card className="p-2"> {/* Small padding to reduce size */}
-    <CardContent className="space-y-2">
-      <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select theme" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="light">
-            <div className="flex items-center gap-2">
-              <Sun className="h-4 w-4" />
-              <span>Light</span>
-            </div>
-          </SelectItem>
-          <SelectItem value="dark">
-            <div className="flex items-center gap-2">
-              <Moon className="h-4 w-4" />
-              <span>Dark</span>
-            </div>
-          </SelectItem>
-          <SelectItem value="system">
-            <div className="flex items-center gap-2">
-              <Monitor className="h-4 w-4" />
-              <span>System</span>
-            </div>
-          </SelectItem>
-        </SelectContent>
-      </Select>
-    </CardContent>
-  </Card>
+  <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
+    <SelectTrigger className="w-full">
+      <SelectValue placeholder="Select theme" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="light">
+        <div className="flex items-center gap-2">
+          <Sun className="h-4 w-4" />
+          <span>Light</span>
+        </div>
+      </SelectItem>
+      <SelectItem value="dark">
+        <div className="flex items-center gap-2">
+          <Moon className="h-4 w-4" />
+          <span>Dark</span>
+        </div>
+      </SelectItem>
+      <SelectItem value="system">
+        <div className="flex items-center gap-2">
+          <Monitor className="h-4 w-4" />
+          <span>System</span>
+        </div>
+      </SelectItem>
+    </SelectContent>
+  </Select>
 </DropdownMenuItem>
 
                     <DropdownMenuSeparator />
