@@ -434,7 +434,7 @@ export const Dashboard: React.FC = () => {
           {/* Right Column - Activity and Actions */}
           <div className="space-y-8">
             {/* Quick Actions */}
-            <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
+            <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Lightning className="w-5 h-5 text-amber-400" />
