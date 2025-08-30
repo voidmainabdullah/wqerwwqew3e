@@ -165,7 +165,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-neutral-900">
+      <div className="min-h-screen flex w-full bg-neutral-800">
         <AppSidebar />
         
         <div className="flex-1 flex flex-col">
