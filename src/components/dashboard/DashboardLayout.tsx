@@ -35,13 +35,9 @@ import {
   Users,
   PaperPlaneTilt,
   Code,
-  Clock,
   CurrencyCircleDollar,
   Lifebuoy,
   Info,
-  TwitterLogo,
-  InstagramLogo,
-  FacebookLogo
 } from 'phosphor-react';
 
 interface DashboardLayoutProps {
@@ -228,6 +224,36 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
+                    {/* New Links */}
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/analytics">
+                        <ChartBar className="mr-2 h-4 w-4" />
+                        Analytics
+                      </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/pricing">
+                        <CurrencyCircleDollar className="mr-2 h-4 w-4" />
+                        Pricing
+                      </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/support">
+                        <Lifebuoy className="mr-2 h-4 w-4" />
+                        Support
+                      </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/docs">
+                        <Info className="mr-2 h-4 w-4" />
+                        Documentation
+                      </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/settings">
                         <Gear className="mr-2 h-4 w-4" />
@@ -254,4 +280,3 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
     </SidebarProvider>
   );
 };
- 
