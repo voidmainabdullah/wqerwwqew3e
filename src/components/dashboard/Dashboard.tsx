@@ -213,7 +213,7 @@ export const Dashboard: React.FC = () => {
         <DashboardCard
           title="Active Shares"
           value={stats?.totalShares}
-          icon={<ShareNetwork className="h-6 w-6 text-purple-600" />}
+          icon={<ShareNetwork className="h-6 w-6 text-blue-600" />}
           iconBg="bg-blue-100"
           description="Sharing links created"
           showIcon={stats?.totalShares === 0}
