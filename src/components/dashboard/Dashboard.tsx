@@ -356,7 +356,7 @@ export const Dashboard: React.FC = () => {
                     {[65, 45, 78, 92, 67, 89, 76, 95, 82, 88, 94, 87].map((height, i) => (
                       <div key={i} className="flex flex-col items-center gap-2">
                         <div 
-                          className="w-6 bg-gradient-to-t from-blue-500 to-blue-400 rounded-t-sm transition-all duration-1000"
+                          className="w-6 bg-gradient-to-t from-neutral-500 to-neutral-400 rounded-t-sm transition-all duration-1000"
                           style={{ height: `${height}%` }}
                         />
                         <span className="text-xs text-slate-500">{i + 1}</span>
