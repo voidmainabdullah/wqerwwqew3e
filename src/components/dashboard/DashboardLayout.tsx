@@ -312,7 +312,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
     </DropdownMenuContent>
   )}
 </DropdownMenu>
-
+                  </div>
+                </div>
+              </div>
+            </header>
 
           {/* Main Content */}
           <main className="flex-1">
