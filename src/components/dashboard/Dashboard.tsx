@@ -366,7 +366,7 @@ export const Dashboard: React.FC = () => {
                   
                   {/* Chart Stats Overlay */}
                   <div className="absolute top-4 left-4">
-                    <div className="bg-slate-800/80 backdrop-blur-sm rounded-lg p-3 border border-slate-600/50">
+                    <div className="bg-neutral-800/80 backdrop-blur-sm rounded-lg p-3 border border-slate-600/50">
                       <div className="flex items-center gap-2 mb-1">
                         <div className="w-3 h-3 rounded-full bg-blue-400"></div>
                         <span className="text-white text-sm font-medium">Downloads</span>
