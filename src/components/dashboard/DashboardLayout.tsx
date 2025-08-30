@@ -233,20 +233,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                         <Gear className="mr-2 h-4 w-4" />
                         Settings
                       </Link>
-                       </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard/settings">
-                        <Gear className="mr-2 h-4 w-4" />
-                        Settings
-                      </Link>
-                       </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard/settings">
-                        <Gear className="mr-2 h-4 w-4" />
-                        Settings
-                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>
@@ -257,7 +243,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 </DropdownMenu>
               </div>
             </div>
-          
           </header>
 
           {/* Main Content */}
