@@ -158,109 +158,102 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-     <div className="p-8 space-y-8">
-  {/* Main Stats Grid */}
-  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-    {/* Total Files Card */}
-    <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300 hover:shadow-lg">
-      <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <div>
-          <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
-            Total Files
-          </CardTitle>
-          <div className="text-3xl font-bold text-white mt-2">
-            {stats?.totalFiles?.toLocaleString() || 0}
-          </div>
-          <div className="flex items-center gap-2 mt-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-            <span className="text-emerald-400 text-sm">This Month: 287</span>
-          </div>
-        </div>
-        <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-          <Files className="h-6 w-6 text-blue-400" />
-        </div>
-      </CardHeader>
-    </Card>
-
-    {/* Active Shares Card */}
-    <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300 hover:shadow-lg">
-      <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <div>
-          <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
-            Active Shares
-          </CardTitle>
-          <div className="text-3xl font-bold text-white mt-2">
-            {stats?.totalShares?.toLocaleString() || 0}
-          </div>
-          <div className="flex items-center gap-2 mt-2">
-            <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-            <span className="text-purple-400 text-sm">+8.1%</span>
-          </div>
-        </div>
-        <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-          <ShareNetwork className="h-6 w-6 text-purple-400" />
-        </div>
-      </CardHeader>
-    </Card>
-
-    {/* Downloads Card */}
-    <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300 hover:shadow-lg">
-      <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <div>
-          <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
-            Downloads
-          </CardTitle>
-          <div className="text-3xl font-bold text-white mt-2">
-            {stats?.totalDownloads?.toLocaleString() || 0}
-          </div>
-          <div className="flex items-center gap-2 mt-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-            <span className="text-emerald-400 text-sm">+15.3%</span>
-          </div>
-        </div>
-        <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-          <Download className="h-6 w-6 text-emerald-400" />
-        </div>
-      </CardHeader>
-    </Card>
-
-    {/* Storage Card */}
-    <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300 hover:shadow-lg">
-      <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <div>
-          <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
-            Storage Used
-          </CardTitle>
-          <div className="text-3xl font-bold text-white mt-2">
-            {isPro ? (
-              <div className="flex items-center gap-2">
-                <span>{formatFileSize(stats?.storageUsed || 0)}</span>
-                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 text-xs">
-                  ∞
-                </Badge>
-              </div>
-            ) : (
+      <div className="p-8 space-y-8">
+        {/* Main Stats Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {/* Files Card */}
+          <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
-                <div>{formatFileSize(stats?.storageUsed || 0)}</div>
-                <div className="text-sm text-slate-400">
-                  of {formatFileSize(stats?.storageLimit || 0)}
+                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                  Total Files
+                </CardTitle>
+                <div className="text-3xl font-bold text-white mt-2">
+                  {stats?.totalFiles?.toLocaleString() || 0}
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                  <span className="text-emerald-400 text-sm"> This Month : 287</span>
                 </div>
               </div>
-            )}
-          </div>
-          {!isPro && (
-            <div className="mt-2">
-              <Progress value={storageProgress} className="h-2 bg-slate-600" />
-            </div>
-          )}
-        </div>
-        <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
-          <Cloud className="h-6 w-6 text-orange-400" />
-        </div>
-      </CardHeader>
-    </Card>
-  </div>
-</div>
+              <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                <Files className="h-6 w-6 text-blue-400" />
+              </div>
+            </CardHeader>
+          </Card>
+
+          {/* Shares Card */}
+          <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <div>
+                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                  Active Shares
+                </CardTitle>
+                <div className="text-3xl font-bold text-white mt-2">
+                  {stats?.totalShares?.toLocaleString() || 0}
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+                  <span className="text-purple-400 text-sm">+8.1%</span>
+                </div>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                <ShareNetwork className="h-6 w-6 text-purple-400" />
+              </div>
+            </CardHeader>
+          </Card>
+
+          {/* Downloads Card */}
+          <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <div>
+                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                  Downloads
+                </CardTitle>
+                <div className="text-3xl font-bold text-white mt-2">
+                  {stats?.totalDownloads?.toLocaleString() || 0}
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                  <span className="text-emerald-400 text-sm">+15.3%</span>
+                </div>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                <Download className="h-6 w-6 text-emerald-400" />
+              </div>
+            </CardHeader>
+          </Card>
+
+          {/* Storage Card */}
+          <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <div>
+                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                  Storage Used
+                </CardTitle>
+                <div className="text-3xl font-bold text-white mt-2">
+                  {isPro ? <div className="flex items-center gap-2">
+                      <span>{formatFileSize(stats?.storageUsed || 0)}</span>
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 text-xs">
+                        ∞
+                      </Badge>
+                    </div> : <div>
+                      <div>{formatFileSize(stats?.storageUsed || 0)}</div>
+                      <div className="text-sm text-slate-400">
+                        of {formatFileSize(stats?.storageLimit || 0)}
+                      </div>
+                    </div>}
+                </div>
+                {!isPro && <div className="mt-2">
+                    <Progress value={storageProgress} className="h-2 bg-slate-600" />
+                  </div>}
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
+                <Cloud className="h-6 w-6 text-orange-400" />
+              </div>
+            </CardHeader>
+          </Card>
+        </div> 
 
         {/* Main Content Grid */}
         <div className="grid gap-8 lg:grid-cols-3">
