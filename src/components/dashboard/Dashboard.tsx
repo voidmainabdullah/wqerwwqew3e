@@ -163,7 +163,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Professional Header */}
-      <div className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-sm">
+      <div className="border-b border-neutral-700/50 bg-slate-900/80 backdrop-blur-sm">
         <div className="px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
