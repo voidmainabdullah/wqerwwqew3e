@@ -398,44 +398,43 @@ export const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
 
-           {/* Storage Overview */}
-<Card className="bg-gradient-to-br from-white via-slate-100 to-slate-200 border-slate-300 shadow-lg text-black">
-  <CardHeader>
-    <CardTitle className="text-black flex items-center gap-2 font-semibold">
-      <Database className="w-5 h-5 text-blue-500" />
-      Storage Overview
-    </CardTitle>
-  </CardHeader>
-  <CardContent className="space-y-6">
-    <div className="space-y-3">
-      <div className="flex justify-between text-sm">
-        <span className="text-slate-500">Used</span>
-        <span className="text-black font-semibold">
-          {formatFileSize(stats?.storageUsed || 0)}
-        </span>
-      </div>
-      {!isPro && (
-        <>
-          <Progress value={storageProgress} className="h-2 bg-gradient-to-r from-blue-400 to-blue-600" />
-          <div className="flex justify-between text-xs text-slate-500">
-            <span>{storageProgress.toFixed(1)}% used</span>
-            <span>{formatFileSize(stats?.storageLimit || 0)} total</span>
-          </div>
-        </>
-      )}
-    </div>
-
-    {!isPro && (
-      <Button asChild className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-800 border-0 rounded-lg py-3 shadow-md transition-all">
-        <Link to="/subscription" className="flex items-center gap-2 justify-center font-medium">
-          <Crown className="w-5 h-5 text-yellow-300" />
-          Upgrade to Pro
-        </Link>
-      </Button>
-    )}
-  </CardContent>
-</Card>
-
+            {/* Storage Overview */}
+            <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50 text-white">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Database className="w-5 h-5 text-blue-400" />
+                  Storage Overview
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-400">Used</span>
+                    <span className="text-white font-medium">
+                      {formatFileSize(stats?.storageUsed || 0)}
+                    </span>
+                  </div>
+                  {!isPro && <>
+                      <Progress value={storageProgress} className="h-2 bg-slate-600" />
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-500">
+                          {storageProgress.toFixed(1)}% used
+                        </span>
+                        <span className="text-slate-500">
+                          {formatFileSize(stats?.storageLimit || 0)} total
+                        </span>
+                      </div>
+                    </>}
+                </div>
+                
+                {!isPro && <Button asChild className="w-full bg-gradient-to-br from-blue-600 to-blue-400 text-white hover:from-blue-400 hover:to-blue-800 text-white border-0">
+                    <Link to="/subscription" className="flex items-center gap-2 ">
+                      <Crown className="w-4 h-4 text-amber-300" />
+                      Upgrade to Pro 
+                    </Link>
+                  </Button>}
+              </CardContent>
+            </Card>
 
             {/* Recent Activity */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
