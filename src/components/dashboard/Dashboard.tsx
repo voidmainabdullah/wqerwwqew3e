@@ -318,7 +318,7 @@ export const Dashboard: React.FC = () => {
           {/* Left Column - Charts and Analytics */}
           <div className="lg:col-span-2 space-y-8">
             {/* Performance Chart */}
-            <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
+            <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
