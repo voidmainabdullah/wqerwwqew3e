@@ -236,54 +236,38 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                       </div>
                     </DropdownMenuLabel>
                     
-                    {/* Theme Switcher */}
-                    <DropdownMenuItem>
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="flex items-center text-red">
-                            {actualTheme === 'dark' ? (
-                              <Moon className="mr-2 h-5 w-5" />
-                            ) : (
-                              <Sun className="mr-2 h-5 w-5" />
-                            )}
-                         Theme
-                          </CardTitle>
-                          <CardDescription>
-                           
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="theme">Theme</Label>
-                            <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select theme" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="light">
-                                  <div className="flex items-center gap-2">
-                                    <Sun className="h-4 w-4" />
-                                    <span>Light</span>
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="dark">
-                                  <div className="flex items-center gap-2">
-                                    <Moon className="h-4 w-4" />
-                                    <span>Dark</span>
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="system">
-                                  <div className="flex items-center gap-2">
-                                    <Monitor className="h-4 w-4" />
-                                    <span>System</span>
-                                  </div>
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </DropdownMenuItem>
+                   {/* Theme Switcher */}
+<DropdownMenuItem>
+  <Card className="p-2"> {/* Small padding to reduce size */}
+    <CardContent className="space-y-2">
+      <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select theme" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="light">
+            <div className="flex items-center gap-2">
+              <Sun className="h-4 w-4" />
+              <span>Light</span>
+            </div>
+          </SelectItem>
+          <SelectItem value="dark">
+            <div className="flex items-center gap-2">
+              <Moon className="h-4 w-4" />
+              <span>Dark</span>
+            </div>
+          </SelectItem>
+          <SelectItem value="system">
+            <div className="flex items-center gap-2">
+              <Monitor className="h-4 w-4" />
+              <span>System</span>
+            </div>
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </CardContent>
+  </Card>
+</DropdownMenuItem>
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
