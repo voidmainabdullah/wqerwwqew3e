@@ -132,8 +132,8 @@ export const Dashboard: React.FC = () => {
                 <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0" : "bg-slate-700 text-slate-300 border-slate-600"}`}>
                   {isPro ? <>
                       <Crown className="w-4 h-4 mr-1" />
-                      Pro Account
-                    </> : "Free"}
+                      Pro + 
+                    </> : "Basic"}
                 </Badge>
               </div>
               <p className="text-slate-400">
