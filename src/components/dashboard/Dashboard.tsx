@@ -174,7 +174,7 @@ export const Dashboard: React.FC = () => {
             >
               <div className="relative overflow-hidden rounded-xl  shadow-lg 
                   rounded-xl p-4 bg-gradient-to-br from-neutral-800 via-neutral-800 to-yellow-200/30 p-4 shadow-sm rounded-xl">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-10"></div>
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-2">
                     <Lightning className="w-6 h-6 text-white" />
