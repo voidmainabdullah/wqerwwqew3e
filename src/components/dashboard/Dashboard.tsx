@@ -133,7 +133,7 @@ export const Dashboard: React.FC = () => {
                   {isPro ? <>
                       <Crown className="w-4 h-4 mr-1" />
                       Pro Account
-                    </> : "Free Account"}
+                    </> : "Free"}
                 </Badge>
               </div>
               <p className="text-slate-400">
