@@ -48,6 +48,7 @@ import {
 } from 'phosphor-react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'; // Assuming these components are defined
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'; // Assuming this component is defined
+import { Label } from '@/components/ui/label'; // Importing the Label component
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
