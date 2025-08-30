@@ -236,68 +236,59 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                       </div>
                     </DropdownMenuLabel>
                     
-                   {/* Theme Switcher */}
-<DropdownMenuItem>
-  <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
-    <SelectTrigger className="w-full">
-      <SelectValue placeholder="Select theme" />
-    </SelectTrigger>
-    <SelectContent className="bg-neutral-200"> {/* Apply neutral background here */}
-      <SelectItem 
-        value="light" 
-        className={theme === 'light' ? 'bg-neutral-300' : ''} // Highlight selected item with neutral bg
-      >
-        <div className="flex items-center gap-2">
-          <Sun className="h-4 w-4" />
-          <span>Light</span>
-        </div>
-      </SelectItem>
-      <SelectItem 
-        value="dark" 
-        className={theme === 'dark' ? 'bg-neutral-300' : ''} // Highlight selected item with neutral bg
-      >
-        <div className="flex items-center gap-2">
-          <Moon className="h-4 w-4" />
-          <span>Dark</span>
-        </div>
-      </SelectItem>
-      <SelectItem 
-        value="system" 
-        className={theme === 'system' ? 'bg-red-300' : ''} // Highlight selected item with neutral bg
-      >
-        <div className="flex items-center gap-2">
-          <Monitor className="h-4 w-4" />
-          <span>System</span>
-        </div>
-      </SelectItem>
-    </SelectContent>
-  </Select>
-</DropdownMenuItem>
-
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard/settings">
-                        <Gear className="mr-2 h-4 w-4" />
-                        Settings
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard/pricing">
-                        <CurrencyCircleDollar className="mr-2 h-4 w-4" />
-                        Pricing
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => signOut()}>
-                      <SignOut className="mr-2 h-4 w-4" />
-                      Sign out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+        {/* Theme Switcher */}
+                  <DropdownMenuItem 
+                    onClick={() => setTheme('system')}
+                    className={actualTheme === 'system' ? 'bg-neutral-300' : ''}  // Add active style for system theme
+                  >
+                    <div className="flex items-center gap-2">
+                      <Monitor className="h-4 w-4" />
+                      <span>System</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => setTheme('light')}
+                    className={actualTheme === 'light' ? 'bg-neutral-300' : ''} // Add active style for light theme
+                  >
+                    <div className="flex items-center gap-2">
+                      <Sun className="h-4 w-4" />
+                      <span>Light</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => setTheme('dark')}
+                    className={actualTheme === 'dark' ? 'bg-neutral-300' : ''} // Add active style for dark theme
+                  >
+                    <div className="flex items-center gap-2">
+                      <Moon className="h-4 w-4" />
+                      <span>Dark</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard/settings">
+                      <Gear className="mr-2 h-4 w-4" />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard/pricing">
+                      <CurrencyCircleDollar className="mr-2 h-4 w-4" />
+                      Pricing
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => signOut()}>
+                    <SignOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-          </header>
+          </div>
+        </header>
+
 
           {/* Main Content */}
           <main className="flex-1">
