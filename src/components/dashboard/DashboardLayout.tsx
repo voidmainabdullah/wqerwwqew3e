@@ -170,7 +170,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="border-b border-white/30 bg-neutral-900 backdrop-filter:md sticky top-0 z-40">
+          <header className="border-b border-white/30 bg-neutral-900 backdrop-blur-lg sticky top-0 z-40">
             <div className="flex items-center justify-between h-16 px-6">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
