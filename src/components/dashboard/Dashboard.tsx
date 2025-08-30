@@ -174,7 +174,7 @@ export const Dashboard: React.FC = () => {
             >
               <div className="relative overflow-hidden rounded-xl  border-primary shadow-lg 
                 bg-gradient-to-r from-red-400 via-neutral-900 to-blue-500  border-r border-blue-500 rounded-xl p-4
-                dark:bg-gradient-to-br from-neutral-800 via-neutral-800 to-amber-200/50 p-12  shadow-sm rounded-xl">
+                dark:bg-gradient-to-br from-neutral-800 via-neutral-800 to-amber-200/50 p-9 shadow-sm rounded-xl">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-40"></div>
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-2">
