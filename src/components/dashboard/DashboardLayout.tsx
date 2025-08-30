@@ -39,7 +39,7 @@ import {
   CurrencyCircleDollar,
   Lifebuoy,
   Info,
-  Dollar,
+  CurrencyCircleDollar,
   TwitterLogo,
   InstagramLogo,
   FacebookLogo
@@ -238,7 +238,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/pricing">
-                        <Dollar className="mr-2 h-4 w-4" />
+                        <CurrencyCircleDollar className="mr-2 h-4 w-4" />
                         Pricing
                       </Link>
                     </DropdownMenuItem>
