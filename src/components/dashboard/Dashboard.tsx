@@ -186,7 +186,7 @@ export const Dashboard: React.FC = () => {
                   <p className="text-gray-300 text-sm mb-3">
                     Unlock unlimited storage and premium features
                   </p>
-                  <div class="bg-white text-black p-6 shadow-sm rounded-xl">
+                  <div class="bg-white text-black p-1 shadow-sm rounded-xl">
   <span>Get Started</span>
   <Lightning className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
 </div>
