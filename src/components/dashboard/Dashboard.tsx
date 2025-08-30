@@ -214,7 +214,7 @@ export const Dashboard: React.FC = () => {
           title="Active Shares"
           value={stats?.totalShares}
           icon={<ShareNetwork className="h-6 w-6 text-purple-600" />}
-          iconBg="bg-purple-100"
+          iconBg="bg-blue-100"
           description="Sharing links created"
           showIcon={stats?.totalShares === 0}
           type="shares"
