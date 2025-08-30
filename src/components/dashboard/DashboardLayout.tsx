@@ -41,8 +41,13 @@ import {
   Info,
   TwitterLogo,
   InstagramLogo,
-  FacebookLogo
+  FacebookLogo,
+  Moon,
+  Sun,
+  Monitor,
 } from 'phosphor-react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'; // Assuming these components are defined
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'; // Assuming this component is defined
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -158,6 +163,8 @@ const AppSidebar = () => {
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const { user, signOut } = useAuth();
+  const [theme, setTheme] = React.useState<'light' | 'dark' | 'system'>('light'); // Default to light theme
+  const actualTheme = theme;
 
   if (!user) {
     return <Navigate to="/auth" replace />;
@@ -227,13 +234,63 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                         </p>
                       </div>
                     </DropdownMenuLabel>
+                    
+                    {/* Theme Switcher */}
+                    <DropdownMenuItem>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            {actualTheme === 'dark' ? (
+                              <Moon className="mr-2 h-5 w-5" />
+                            ) : (
+                              <Sun className="mr-2 h-5 w-5" />
+                            )}
+                            Appearance
+                          </CardTitle>
+                          <CardDescription>
+                            Customize the appearance of the application.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="theme">Theme</Label>
+                            <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select theme" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="light">
+                                  <div className="flex items-center gap-2">
+                                    <Sun className="h-4 w-4" />
+                                    <span>Light</span>
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="dark">
+                                  <div className="flex items-center gap-2">
+                                    <Moon className="h-4 w-4" />
+                                    <span>Dark</span>
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="system">
+                                  <div className="flex items-center gap-2">
+                                    <Monitor className="h-4 w-4" />
+                                    <span>System</span>
+                                  </div>
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </DropdownMenuItem>
+
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/settings">
                         <Gear className="mr-2 h-4 w-4" />
                         Settings
                       </Link>
-                    </DropdownMenuItem> {/* Fixed missing closing tag */}
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/pricing">
