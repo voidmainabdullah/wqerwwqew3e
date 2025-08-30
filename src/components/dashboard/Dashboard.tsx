@@ -2,38 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import {
-  Files,
-  ShareNetwork,
-  Download,
-  Upload,
-  Cloud,
-  Crown,
-  Activity,
-  PaperPlaneTilt,
-  Lightning,
-  TrendUp,
-  Users,
-  Calendar,
-  Eye,
-  Shield,
-  ChartLineUp,
-  Database,
-  Globe,
-  Zap
-} from "phosphor-react";
-
+import { Files, ShareNetwork, Download, Upload, Cloud, Crown, Activity, PaperPlaneTilt, Lightning, TrendUp, Users, Calendar, Eye, Shield, ChartLineUp, Database, Globe, Zap } from "phosphor-react";
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -44,13 +18,11 @@ interface DashboardStats {
   recentActivity: any[];
   popularFiles: any[];
 }
-
 interface UserProfile {
   storage_used: number;
   storage_limit: number;
   subscription_tier: string;
 }
-
 const formatFileSize = (bytes: number): string => {
   if (!bytes) return "0 Bytes";
   const k = 1024;
@@ -58,67 +30,61 @@ const formatFileSize = (bytes: number): string => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 };
-
 const formatCurrency = (amount: number): string => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 2
   }).format(amount);
 };
-
 export const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (user?.id) fetchDashboardStats();
   }, [user]);
-
   const fetchDashboardStats = async () => {
     try {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("storage_used, storage_limit, subscription_tier")
-        .eq("id", user?.id)
-        .maybeSingle<UserProfile>();
-
-      const { count: totalFiles = 0 } = await supabase
-        .from("files")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", user?.id);
-
-      const { data: userFiles } = await supabase
-        .from("files")
-        .select("id, original_name, download_count, created_at")
-        .eq("user_id", user?.id)
-        .order('download_count', { ascending: false })
-        .limit(5);
-
-      const fileIds = userFiles?.map((f) => f.id) || [];
-
-      const { count: totalShares = 0 } = await supabase
-        .from("shared_links")
-        .select("*", { count: "exact", head: true })
-        .in("file_id", fileIds.length ? fileIds : [""]);
-
-      const { count: totalDownloads = 0 } = await supabase
-        .from("download_logs")
-        .select("*", { count: "exact", head: true })
-        .in("file_id", fileIds.length ? fileIds : [""]);
+      const {
+        data: profile
+      } = await supabase.from("profiles").select("storage_used, storage_limit, subscription_tier").eq("id", user?.id).maybeSingle<UserProfile>();
+      const {
+        count: totalFiles = 0
+      } = await supabase.from("files").select("*", {
+        count: "exact",
+        head: true
+      }).eq("user_id", user?.id);
+      const {
+        data: userFiles
+      } = await supabase.from("files").select("id, original_name, download_count, created_at").eq("user_id", user?.id).order('download_count', {
+        ascending: false
+      }).limit(5);
+      const fileIds = userFiles?.map(f => f.id) || [];
+      const {
+        count: totalShares = 0
+      } = await supabase.from("shared_links").select("*", {
+        count: "exact",
+        head: true
+      }).in("file_id", fileIds.length ? fileIds : [""]);
+      const {
+        count: totalDownloads = 0
+      } = await supabase.from("download_logs").select("*", {
+        count: "exact",
+        head: true
+      }).in("file_id", fileIds.length ? fileIds : [""]);
 
       // Get recent activity
-      const { data: recentActivity } = await supabase
-        .from("download_logs")
-        .select(`
+      const {
+        data: recentActivity
+      } = await supabase.from("download_logs").select(`
           *,
           files!inner(original_name)
-        `)
-        .in("file_id", fileIds.length ? fileIds : [""])
-        .order('downloaded_at', { ascending: false })
-        .limit(5);
-
+        `).in("file_id", fileIds.length ? fileIds : [""]).order('downloaded_at', {
+        ascending: false
+      }).limit(5);
       setStats({
         totalFiles,
         totalShares,
@@ -127,7 +93,7 @@ export const Dashboard: React.FC = () => {
         storageLimit: profile?.storage_limit || 6_442_450_944,
         subscriptionTier: profile?.subscription_tier || "free",
         recentActivity: recentActivity || [],
-        popularFiles: userFiles || [],
+        popularFiles: userFiles || []
       });
     } catch (error) {
       console.error("Error fetching dashboard stats:", error);
@@ -135,33 +101,25 @@ export const Dashboard: React.FC = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
-    return (
-      <div className="space-y-8">
+    return <div className="space-y-8">
         <div className="space-y-2">
           <div className="h-8 bg-muted rounded-lg w-48 animate-pulse"></div>
           <div className="h-4 bg-muted rounded w-96 animate-pulse"></div>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
+          {[...Array(4)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader className="pb-3">
                 <div className="h-4 bg-muted rounded w-24"></div>
                 <div className="h-6 bg-muted rounded w-16"></div>
               </CardHeader>
-            </Card>
-          ))}
+            </Card>)}
         </div>
-      </div>
-    );
+      </div>;
   }
-
   const isPro = stats?.subscriptionTier === "pro";
-  const storageProgress = stats && !isPro ? (stats.storageUsed / stats.storageLimit) * 100 : 0;
-
-  return (
-    <div className="min-h-screen bg-neutral-900/80 text-white">
+  const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
+  return <div className="min-h-screen bg-neutral-900/80 text-white">
       {/* Professional Header */}
       <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm">
         <div className="px-8 py-6">
@@ -171,21 +129,11 @@ export const Dashboard: React.FC = () => {
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                   Dashboard
                 </h1>
-                <Badge
-                  className={`px-3 py-1 text-sm font-medium ${
-                    isPro
-                      ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0"
-                      : "bg-slate-700 text-slate-300 border-slate-600"
-                  }`}
-                >
-                  {isPro ? (
-                    <>
+                <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0" : "bg-slate-700 text-slate-300 border-slate-600"}`}>
+                  {isPro ? <>
                       <Crown className="w-4 h-4 mr-1" />
                       Pro Account
-                    </>
-                  ) : (
-                    "Free Account"
-                  )}
+                    </> : "Free Account"}
                 </Badge>
               </div>
               <p className="text-slate-400">
@@ -284,27 +232,21 @@ export const Dashboard: React.FC = () => {
                   Storage Used
                 </CardTitle>
                 <div className="text-3xl font-bold text-white mt-2">
-                  {isPro ? (
-                    <div className="flex items-center gap-2">
+                  {isPro ? <div className="flex items-center gap-2">
                       <span>{formatFileSize(stats?.storageUsed || 0)}</span>
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 text-xs">
                         ∞
                       </Badge>
-                    </div>
-                  ) : (
-                    <div>
+                    </div> : <div>
                       <div>{formatFileSize(stats?.storageUsed || 0)}</div>
                       <div className="text-sm text-slate-400">
                         of {formatFileSize(stats?.storageLimit || 0)}
                       </div>
-                    </div>
-                  )}
+                    </div>}
                 </div>
-                {!isPro && (
-                  <div className="mt-2">
+                {!isPro && <div className="mt-2">
                     <Progress value={storageProgress} className="h-2 bg-slate-600" />
-                  </div>
-                )}
+                  </div>}
               </div>
               <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
                 <Cloud className="h-6 w-6 text-orange-400" />
@@ -343,25 +285,22 @@ export const Dashboard: React.FC = () => {
                   {/* Chart Background Grid */}
                   <div className="absolute inset-0 opacity-20">
                     <div className="w-full h-full" style={{
-                      backgroundImage: `
+                    backgroundImage: `
                         linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px)
                       `,
-                      backgroundSize: '40px 40px'
-                    }} />
+                    backgroundSize: '40px 40px'
+                  }} />
                   </div>
                   
                   {/* Simulated Chart Line */}
                   <div className="relative h-full flex items-end justify-between px-4">
-                    {[65, 45, 78, 92, 67, 89, 76, 95, 82, 88, 94, 87].map((height, i) => (
-                      <div key={i} className="flex flex-col items-center gap-2">
-                        <div 
-                          className="w-6 bg-gradient-to-t from-neutral-500 to-neutral-400 rounded-t-sm transition-all duration-1000"
-                          style={{ height: `${height}%` }}
-                        />
+                    {[65, 45, 78, 92, 67, 89, 76, 95, 82, 88, 94, 87].map((height, i) => <div key={i} className="flex flex-col items-center gap-2">
+                        <div className="w-6 bg-gradient-to-t from-neutral-500 to-neutral-400 rounded-t-sm transition-all duration-1000" style={{
+                      height: `${height}%`
+                    }} />
                         <span className="text-xs text-slate-500">{i + 1}</span>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                   
                   {/* Chart Stats Overlay */}
@@ -397,9 +336,7 @@ export const Dashboard: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {stats?.popularFiles.length ? (
-                    stats.popularFiles.map((file, index) => (
-                      <div key={file.id} className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-600/30">
+                  {stats?.popularFiles.length ? stats.popularFiles.map((file, index) => <div key={file.id} className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-600/30">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
                             <Files className="w-4 h-4 text-blue-400" />
@@ -418,14 +355,10 @@ export const Dashboard: React.FC = () => {
                             #{index + 1}
                           </Badge>
                         </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8 text-slate-400">
+                      </div>) : <div className="text-center py-8 text-slate-400">
                       <Files className="w-12 h-12 mx-auto mb-4 opacity-50" />
                       <p>No files uploaded yet</p>
-                    </div>
-                  )}
+                    </div>}
                 </div>
               </CardContent>
             </Card>
@@ -481,12 +414,8 @@ export const Dashboard: React.FC = () => {
                       {formatFileSize(stats?.storageUsed || 0)}
                     </span>
                   </div>
-                  {!isPro && (
-                    <>
-                      <Progress 
-                        value={storageProgress} 
-                        className="h-2 bg-slate-600"
-                      />
+                  {!isPro && <>
+                      <Progress value={storageProgress} className="h-2 bg-slate-600" />
                       <div className="flex justify-between text-xs">
                         <span className="text-slate-500">
                           {storageProgress.toFixed(1)}% used
@@ -495,18 +424,15 @@ export const Dashboard: React.FC = () => {
                           {formatFileSize(stats?.storageLimit || 0)} total
                         </span>
                       </div>
-                    </>
-                  )}
+                    </>}
                 </div>
                 
-                {!isPro && (
-                  <Button asChild className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0">
+                {!isPro && <Button asChild className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0">
                     <Link to="/subscription" className="flex items-center gap-2">
                       <Crown className="w-4 h-4" />
                       Upgrade to Pro
                     </Link>
-                  </Button>
-                )}
+                  </Button>}
               </CardContent>
             </Card>
 
@@ -520,9 +446,7 @@ export const Dashboard: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {stats?.recentActivity.length ? (
-                    stats.recentActivity.map((activity, index) => (
-                      <div key={index} className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg">
+                  {stats?.recentActivity.length ? stats.recentActivity.map((activity, index) => <div key={index} className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg">
                         <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                           <Download className="w-4 h-4 text-emerald-400" />
                         </div>
@@ -534,64 +458,18 @@ export const Dashboard: React.FC = () => {
                             {new Date(activity.downloaded_at).toLocaleDateString()}
                           </p>
                         </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-6 text-slate-400">
+                      </div>) : <div className="text-center py-6 text-slate-400">
                       <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
                       <p className="text-sm">No recent activity</p>
-                    </div>
-                  )}
+                    </div>}
                 </div>
               </CardContent>
             </Card>
 
             {/* System Status */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-blue-400" />
-                  System Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                    <span className="text-slate-300 text-sm">Upload Service</span>
-                  </div>
-                  <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-                    Operational
-                  </Badge>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                    <span className="text-slate-300 text-sm">Download Service</span>
-                  </div>
-                  <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-                    Operational
-                  </Badge>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                    <span className="text-slate-300 text-sm">Security Systems</span>
-                  </div>
-                  <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-                    Operational
-                  </Badge>
-                </div>
-
-                <Separator className="bg-slate-600/50" />
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400 text-sm">Uptime</span>
-                  <span className="text-emerald-400 font-medium">99.9%</span>
-                </div>
-              </CardContent>
+              
+              
             </Card>
           </div>
         </div>
@@ -656,6 +534,5 @@ export const Dashboard: React.FC = () => {
           </Card>
         </div>
       </div>
-    </div>
-  );
-}; 
+    </div>;
+};
