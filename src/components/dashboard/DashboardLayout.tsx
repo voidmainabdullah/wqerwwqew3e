@@ -39,7 +39,6 @@ import {
   CurrencyCircleDollar,
   Lifebuoy,
   Info,
-  CurrencyCircleDollar,
   TwitterLogo,
   InstagramLogo,
   FacebookLogo
