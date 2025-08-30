@@ -230,7 +230,7 @@ const FileTransferDemo = () => {
           delay: 0.1
         }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
             <div className="text-center space-y-4">
-              <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-indigo-700">
+              <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-zinc-800">
                 <motion.div animate={{
                 rotate: [0, 360]
               }} transition={{
@@ -251,7 +251,7 @@ const FileTransferDemo = () => {
                 duration: 2,
                 repeat: Infinity,
                 delay: i * 0.2
-              }} className="w-2 h-1 rounded-full bg-gray-200" />)}
+              }} className="w-2 h-1 rounded-full bg-green-300" />)}
               </div>
             </div>
           </motion.div>
@@ -268,7 +268,7 @@ const FileTransferDemo = () => {
           delay: 0.2
         }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
             <div className="text-center space-y-4">
-              <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-slate-50">
+              <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-zinc-700">
                 <motion.div animate={{
                 scale: [1, 1.1, 1]
               }} transition={{
@@ -303,7 +303,7 @@ const FileTransferDemo = () => {
                 duration: 1.5,
                 repeat: Infinity,
                 delay: 0.2
-              }} className="w-1 h-4 rounded-full bg-blue-700" />
+              }} className="w-1 h-4 rounded-full bg-green-300" />
                 <motion.div animate={{
                 y: [0, -4, 0]
               }} transition={{
@@ -335,7 +335,7 @@ const FileTransferDemo = () => {
               }} transition={{
                 duration: 2,
                 repeat: Infinity
-              }} className="absolute inset-0 rounded-full border-2 border-black/30 dark:border-neutral-800/30 bg-[#1a77f0]/25" />
+              }} className="absolute inset-0 rounded-full border-2 border-black/30 dark:border-neutral-800/30 bg-zinc-800" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Live Monitoring</h3>
@@ -380,7 +380,7 @@ const FileTransferDemo = () => {
           delay: 0.4
         }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
             <div className="text-center space-y-4">
-               <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-zinc-200">
+               <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-zinc-800 text-white">
                 <motion.div animate={{
                 rotate: [0, 360],
                 scale: [1, 1.2, 1]
@@ -388,7 +388,7 @@ const FileTransferDemo = () => {
                 duration: 1.5,
                 repeat: Infinity
               }}>
-                  <Zap className="h-6 w-6 text-black dark:text-neutral-800" />
+                  <Zap className="h-6 w-6 text-black dark:text-neutral-800 bg-transparent" />
                 </motion.div>
               </div>
               <div>
@@ -448,7 +448,7 @@ const FileTransferDemo = () => {
 
             {/* Access Control */}
             <div className="text-center space-y-4">
-              <div className="relative mx-auto w-20 h-20 rounded-full flex items-center justify-center bg-blue-600">
+              <div className="relative mx-auto w-20 h-20 rounded-full flex items-center justify-center bg-zinc-800">
                 <UserCheck className="h-8 w-8 text-accent" />
                 <motion.div animate={{
                 rotate: [0, -360]
@@ -456,7 +456,7 @@ const FileTransferDemo = () => {
                 duration: 8,
                 repeat: Infinity,
                 ease: "linear"
-              }} className="absolute inset-2 border border-accent/40 border-dotted rounded-full bg-transparent" />
+              }} className="absolute inset-2 border border-accent/40 border-dotted rounded-full bg-[#1bb428]/[0.08]" />
               </div>
               <div>
                 <h4 className="font-semibold text-foreground">Secure Verified +</h4>
@@ -480,7 +480,7 @@ const FileTransferDemo = () => {
                 duration: 4,
                 repeat: Infinity,
                 delay: 1
-              }} className="absolute inset-1 border border-black/20 dark:border-neutral-800/20 rounded-full bg-[#0d0dc8]/[0.08]" />
+              }} className="absolute inset-1 border border-black/20 dark:border-neutral-800/20 rounded-full bg-zinc-800" />
               </div>
               <div>
                 <h4 className="font-semibold text-foreground">Global Infrastructure</h4>
