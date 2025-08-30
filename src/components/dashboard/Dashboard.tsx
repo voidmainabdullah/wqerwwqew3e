@@ -476,9 +476,9 @@ export const Dashboard: React.FC = () => {
 
         {/* Bottom Action Cards */}
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="bg-gradient-to-br from-blue-900/50 to-blue-800/50 border-blue-600/50 hover:border-blue-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-blue-500/50 transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-blue-400" />
               </div>
               <CardTitle className="text-white">Enhanced Security</CardTitle>
@@ -487,7 +487,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button asChild variant="outline" className="w-full bg-blue-700/50 border-blue-600 text-blue-300 hover:bg-blue-600/50">
+              <Button asChild variant="outline" className="w-full bg-neutral-700/50 border-blue-600 text-blue-300 hover:bg-blue-600/50">
                 <Link to="/dashboard/settings">
                   Configure Security
                 </Link>
@@ -495,9 +495,9 @@ export const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-900/50 to-purple-800/50 border-purple-600/50 hover:border-purple-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-purple-500/50 transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-purple-400" />
               </div>
               <CardTitle className="text-white">Team Collaboration</CardTitle>
@@ -506,7 +506,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button asChild variant="outline" className="w-full bg-purple-700/50 border-purple-600 text-purple-300 hover:bg-purple-600/50">
+              <Button asChild variant="outline" className="w-full bg-neutral-700/50 border-purple-600 text-purple-300 hover:bg-neutral-600/50">
                 <Link to="/dashboard/teams">
                   Manage Teams
                 </Link>
@@ -514,9 +514,9 @@ export const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-emerald-900/50 to-emerald-800/50 border-emerald-600/50 hover:border-emerald-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
                 <ChartLineUp className="w-6 h-6 text-emerald-400" />
               </div>
               <CardTitle className="text-white">Analytics & Insights</CardTitle>
