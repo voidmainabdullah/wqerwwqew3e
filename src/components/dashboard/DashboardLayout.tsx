@@ -240,7 +240,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                     <DropdownMenuItem>
                       <Card>
                         <CardHeader>
-                          <CardTitle className="flex items-center">
+                          <CardTitle className="flex items-center text-red">
                             {actualTheme === 'dark' ? (
                               <Moon className="mr-2 h-5 w-5" />
                             ) : (
