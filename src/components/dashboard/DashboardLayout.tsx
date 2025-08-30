@@ -67,7 +67,7 @@ const AppSidebar = () => {
       <SidebarHeader>
         <div className="flex items-center space-x-3 px-6 py-4">
           <img 
-            src="/Skieshare-removebg-preview.png" 
+            src="/sky.png" 
             alt="SecureShare Logo" 
             className="h-10 w-auto object-contain"
           />
@@ -178,7 +178,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 {/* Mobile Logo */}
                 <div className="md:hidden flex items-center space-x-3">
                   <img 
-                    src="/Skieshare-removebg-preview.png" 
+                    src="/sky.png" 
                     alt="SecureShare Logo" 
                     className="h-8 w-auto object-contain"
                   />
