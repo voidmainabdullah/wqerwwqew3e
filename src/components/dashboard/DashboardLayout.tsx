@@ -249,7 +249,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                             Appearance
                           </CardTitle>
                           <CardDescription>
-                            Customize the appearance of the application.
+                           
                           </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
