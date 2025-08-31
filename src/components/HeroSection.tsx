@@ -90,7 +90,7 @@ const HeroSection = () => {
   <Button 
     variant="ghost" 
     className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed"
-    asChild
+  
   >
     <a href="/code" className="flex items-center gap-3">
       <div className="relative">
