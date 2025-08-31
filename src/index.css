@@ -1256,5 +1256,82 @@
   transform: none;
   box-shadow: none;
 }
+
+/* Anonymous Share Button - Professional Styling */
+.anonymous-share-btn {
+  /* Light theme styling */
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  border-color: rgba(99, 102, 241, 0.3);
+  color: rgb(99, 102, 241);
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+.anonymous-share-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.anonymous-share-btn:hover::before {
+  opacity: 1;
+}
+
+.anonymous-share-btn:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  color: rgb(79, 70, 229);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+}
+
+/* Dark theme overrides */
+.dark .anonymous-share-btn {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.15));
+  border-color: rgba(139, 92, 246, 0.4);
+  color: rgb(196, 181, 253);
+}
+
+.dark .anonymous-share-btn::before {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
+}
+
+.dark .anonymous-share-btn:hover {
+  border-color: rgba(139, 92, 246, 0.6);
+  color: rgb(221, 214, 254);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.25);
+}
+
+/* Anonymous button pulse animation */
+@keyframes anonymous-pulse {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.1); 
+  }
+}
+
+.anonymous-share-btn .animate-pulse {
+  animation: anonymous-pulse 2s ease-in-out infinite;
+}
+
+.anonymous-share-btn .animate-ping {
+  animation: anonymous-pulse 2s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .anonymous-share-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
 }
 
