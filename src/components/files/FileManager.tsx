@@ -10,11 +10,13 @@ import { toast } from 'sonner';
 
 interface FileItem {
   id: string;
-  name: string;
-  size: number;
-  type: string;
+  original_name: string;
+  file_size: number;
+  file_type: string;
   created_at: string;
-  url?: string;
+  download_count: number;
+  is_public: boolean;
+  user_id: string;
 }
 
 export function FileManager() {
@@ -75,8 +77,8 @@ export function FileManager() {
   };
 
   const filteredFiles = files.filter(file => {
-    const matchesSearch = file.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterType === 'all' || file.type.includes(filterType);
+    const matchesSearch = file.original_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterType === 'all' || file.file_type.includes(filterType);
     return matchesSearch && matchesFilter;
   });
 
@@ -150,17 +152,17 @@ export function FileManager() {
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
                       <span className="text-black dark:text-neutral-200 font-medium text-sm">
-                        {file.name.split('.').pop()?.toUpperCase() || 'FILE'}
+                        {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                       </span>
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">
-                      {file.name}
+                      {file.original_name}
                     </p>
                     <div className="flex items-center space-x-2 mt-1">
                       <Badge variant="secondary" className="text-xs">
-                        {formatFileSize(file.size)}
+                        {formatFileSize(file.file_size)}
                       </Badge>
                       <span className="text-xs text-gray-500">
                         {new Date(file.created_at).toLocaleDateString()}

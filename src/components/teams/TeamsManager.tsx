@@ -12,21 +12,18 @@ import { toast } from 'sonner';
 interface Team {
   id: string;
   name: string;
-  description: string;
+  admin_id: string;
   created_at: string;
-  owner_id: string;
   member_count: number;
 }
 
 interface TeamMember {
   id: string;
   user_id: string;
-  team_id: string;
-  role: 'owner' | 'admin' | 'member';
+  email: string;
+  display_name?: string;
+  role: 'admin' | 'member';
   joined_at: string;
-  user: {
-    email: string;
-  };
 }
 
 export function TeamsManager() {
@@ -48,17 +45,42 @@ export function TeamsManager() {
   const fetchTeams = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      
+      // Get teams where user is admin
+      const { data: adminTeams, error: adminError } = await supabase
         .from('teams')
         .select(`
           *,
           team_members(count)
         `)
-        .or(`owner_id.eq.${user?.id},team_members.user_id.eq.${user?.id}`);
+        .eq('admin_id', user?.id);
 
-      if (error) throw error;
+      if (adminError) throw adminError;
+
+      // Get teams where user is a member
+      const { data: memberTeams, error: memberError } = await supabase
+        .from('teams')
+        .select(`
+          *,
+          team_members(count)
+        `)
+        .in('id', 
+          await supabase
+            .from('team_members')
+            .select('team_id')
+            .eq('user_id', user?.id)
+            .then(({ data }) => data?.map(tm => tm.team_id) || [])
+        );
+
+      if (memberError) throw memberError;
+
+      // Combine and deduplicate teams
+      const allTeams = [...(adminTeams || []), ...(memberTeams || [])];
+      const uniqueTeams = allTeams.filter((team, index, self) => 
+        index === self.findIndex(t => t.id === team.id)
+      );
       
-      const teamsWithCount = data?.map(team => ({
+      const teamsWithCount = uniqueTeams?.map(team => ({
         ...team,
         member_count: team.team_members?.[0]?.count || 0
       })) || [];
@@ -83,21 +105,26 @@ export function TeamsManager() {
         .from('teams')
         .insert({
           name: newTeamName,
-          description: newTeamDescription,
-          owner_id: user?.id
+          admin_id: user?.id
         })
         .select()
         .single();
 
       if (error) throw error;
 
-      // Add the creator as a team member with owner role
+      // Add the creator as a team member with admin role
       await supabase
         .from('team_members')
         .insert({
           team_id: data.id,
           user_id: user?.id,
-          role: 'owner'
+          role: 'admin',
+          permissions: {
+            can_view: true,
+            can_edit: true,
+            can_share: true
+          },
+          added_by: user?.id
         });
 
       setTeams([...teams, { ...data, member_count: 1 }]);
@@ -114,25 +141,24 @@ export function TeamsManager() {
   const fetchTeamMembers = async (teamId: string) => {
     try {
       const { data, error } = await supabase
-        .from('team_members')
-        .select(`
-          *,
-          user:profiles(email)
-        `)
-        .eq('team_id', teamId);
+        .rpc('get_team_members', { p_team_id: teamId });
 
       if (error) throw error;
-      setTeamMembers(data || []);
+      setTeamMembers((data || []).map(member => ({
+        ...member,
+        role: member.role as 'admin' | 'member'
+      })));
     } catch (error) {
       console.error('Error fetching team members:', error);
       toast.error('Failed to load team members');
     }
   };
 
-  const getRoleIcon = (role: string) => {
+  const getRoleIcon = (role: string, isOwner: boolean = false) => {
+    if (isOwner) {
+      return <Crown className="h-4 w-4 text-yellow-500" />;
+    }
     switch (role) {
-      case 'owner':
-        return <Crown className="h-4 w-4 text-yellow-500" />;
       case 'admin':
         return <Shield className="h-4 w-4 text-blue-500" />;
       default:
@@ -140,15 +166,9 @@ export function TeamsManager() {
     }
   };
 
-  const getRoleBadgeVariant = (role: string) => {
-    switch (role) {
-      case 'owner':
-        return 'default';
-      case 'admin':
-        return 'secondary';
-      default:
-        return 'outline';
-    }
+  const getRoleBadgeVariant = (isOwner: boolean, role: string) => {
+    if (isOwner) return 'default';
+    return role === 'admin' ? 'secondary' : 'outline';
   };
 
   if (loading) {
@@ -247,7 +267,7 @@ export function TeamsManager() {
                       </CardDescription>
                     </div>
                   </div>
-                  {team.owner_id === user?.id && (
+                  {team.admin_id === user?.id && (
                     <Button variant="ghost" size="sm">
                       <Settings className="h-4 w-4" />
                     </Button>
@@ -255,12 +275,9 @@ export function TeamsManager() {
                 </div>
               </CardHeader>
               <CardContent>
-                {team.description && (
-                  <p className="text-sm text-gray-600 mb-4">{team.description}</p>
-                )}
                 <div className="flex items-center justify-between">
-                  <Badge variant={team.owner_id === user?.id ? 'default' : 'secondary'}>
-                    {team.owner_id === user?.id ? 'Owner' : 'Member'}
+                  <Badge variant={getRoleBadgeVariant(team.admin_id === user?.id, team.admin_id === user?.id ? 'admin' : 'member')}>
+                    {team.admin_id === user?.id ? 'Owner' : 'Member'}
                   </Badge>
                   <div className="flex space-x-2">
                     <Button
@@ -273,7 +290,7 @@ export function TeamsManager() {
                     >
                       View Members
                     </Button>
-                    {team.owner_id === user?.id && (
+                    {team.admin_id === user?.id && (
                       <Button variant="outline" size="sm">
                         <UserPlus className="h-4 w-4" />
                       </Button>
@@ -303,16 +320,16 @@ export function TeamsManager() {
                       <User className="h-4 w-4 text-gray-600" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{member.user.email}</p>
+                      <p className="font-medium text-gray-900">{member.email}</p>
                       <p className="text-sm text-gray-500">
                         Joined {new Date(member.joined_at).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    {getRoleIcon(member.role)}
-                    <Badge variant={getRoleBadgeVariant(member.role)}>
-                      {member.role}
+                    {getRoleIcon(member.role, member.user_id === selectedTeam.admin_id)}
+                    <Badge variant={getRoleBadgeVariant(member.user_id === selectedTeam.admin_id, member.role)}>
+                      {member.user_id === selectedTeam.admin_id ? 'Owner' : member.role}
                     </Badge>
                   </div>
                 </div>

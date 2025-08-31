@@ -67,11 +67,11 @@ export const FileUpload: React.FC = () => {
       if (quotaError) throw quotaError;
 
       if (!canUpload) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('storage_used, storage_limit, subscription_tier')
-          .eq('id', user.id)
-          .single();
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('storage_used, storage_limit, subscription_tier')
+        .eq('id', user.id)
+        .maybeSingle();
 
         const formatFileSize = (bytes: number): string => {
           if (bytes === 0) return '0 Bytes';

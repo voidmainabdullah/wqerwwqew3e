@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Files, ShareNetwork, Download, Upload, Cloud, Crown, Activity, PaperPlaneTilt, Lightning, TrendUp, Users, Calendar, Eye, Shield, ChartLineUp, Database, Globe, Zap } from "phosphor-react";
+import { Files, ShareNetwork, Download, Upload, Cloud, Crown, Activity, PaperPlaneTilt, Lightning, TrendUp, Users, Calendar, Eye, Shield, ChartLineUp, Database, Globe } from "phosphor-react";
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -323,45 +323,10 @@ export const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Popular Files */}
-            <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <ChartLineUp className="w-5 h-5 text-blue-400" />
-                  Popular Files
-                </CardTitle>
-                <CardDescription className="text-slate-400">
-                  Your most downloaded files this month
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {stats?.popularFiles.length ? stats.popularFiles.map((file, index) => <div key={file.id} className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-600/30">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                            <Files className="w-4 h-4 text-blue-400" />
-                          </div>
-                          <div>
-                            <p className="text-white font-medium text-sm truncate max-w-[200px]">
-                              {file.original_name}
-                            </p>
-                            <p className="text-slate-400 text-xs">
-                              {file.download_count} downloads
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-                            #{index + 1}
-                          </Badge>
-                        </div>
-                      </div>) : <div className="text-center py-8 text-slate-400">
-                      <Files className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>No files uploaded yet</p>
-                    </div>}
-                </div>
-              </CardContent>
-            </Card>
+            {/* Replace the simulated analytics with real-time component */}
+            <RealTimeAnalytics />
+            
+            {/* Rest of existing dashboard content */}
           </div>
 
           {/* Right Column - Activity and Actions */}
