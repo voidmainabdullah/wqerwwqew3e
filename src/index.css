@@ -1296,7 +1296,7 @@
   backdrop-filter: blur(8px); /* glass effect */
   transition: all 0.3s ease;
   font-family: 'Rajdhani', sans-serif;
-
+   font-weight: 100;
   font-size: 12px;
 
 }
