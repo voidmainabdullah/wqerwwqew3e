@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -325,7 +325,7 @@ export type Database = {
     }
     Functions: {
       check_storage_quota: {
-        Args: { p_user_id: string; p_file_size: number }
+        Args: { p_file_size: number; p_user_id: string }
         Returns: boolean
       }
       generate_share_code: {
@@ -335,50 +335,50 @@ export type Database = {
       get_my_team_files: {
         Args: { p_user_id: string }
         Returns: {
+          can_download: boolean
+          can_edit: boolean
+          created_at: string
+          download_count: number
           file_id: string
           file_name: string
           file_size: number
           file_type: string
-          created_at: string
           is_locked: boolean
-          download_count: number
+          is_team_admin: boolean
+          shared_at: string
+          shared_by: string
+          sharer_email: string
           team_id: string
           team_name: string
-          shared_by: string
-          shared_at: string
-          sharer_email: string
-          can_download: boolean
-          can_edit: boolean
-          is_team_admin: boolean
         }[]
       }
       get_team_members: {
         Args: { p_team_id: string }
         Returns: {
-          id: string
-          user_id: string
-          email: string
           display_name: string
-          role: string
-          permissions: Json
+          email: string
+          id: string
           joined_at: string
+          permissions: Json
+          role: string
+          user_id: string
         }[]
       }
       get_user_by_email: {
         Args: { email_input: string }
         Returns: {
-          user_id: string
           email: string
+          user_id: string
         }[]
       }
       get_user_teams: {
         Args: { p_user_id: string }
         Returns: {
+          is_admin: boolean
+          permissions: Json
+          role: string
           team_id: string
           team_name: string
-          is_admin: boolean
-          role: string
-          permissions: Json
         }[]
       }
       hash_password: {
@@ -398,7 +398,7 @@ export type Database = {
         Returns: boolean
       }
       validate_share_password: {
-        Args: { token: string; password: string }
+        Args: { password: string; token: string }
         Returns: boolean
       }
     }
