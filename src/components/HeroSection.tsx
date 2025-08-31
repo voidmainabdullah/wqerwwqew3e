@@ -85,7 +85,7 @@ const HeroSection = () => {
               </a>
             </Button>
             
-          {/* Anonymous Share Button - Distinctive Design */}
+           {/* Anonymous Share Button - Distinctive Design */}
 <motion.div>
   <Button 
     variant="ghost" 
