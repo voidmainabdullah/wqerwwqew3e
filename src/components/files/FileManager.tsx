@@ -17,6 +17,7 @@ interface FileItem {
   download_count: number;
   is_public: boolean;
   user_id: string;
+  storage_path: string;
 }
 
 export function FileManager() {
@@ -51,29 +52,68 @@ export function FileManager() {
     }
   };
 
-  const deleteFile = async (fileId: string) => {
+  const downloadFile = async (fileId: string, storagePath: string, fileName: string) => {
     try {
-      const { error } = await supabase
+      const { data } = await supabase.storage
         .from('files')
-        .delete()
-        .eq('id', fileId);
-
-      if (error) throw error;
+        .createSignedUrl(storagePath, 60);
       
-      setFiles(files.filter(file => file.id !== fileId));
-      toast.success('File deleted successfully');
+      if (data) {
+        // Create download link and trigger download
+        const link = document.createElement('a');
+        link.href = data.signedUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Log the download
+        await supabase
+          .from('download_logs')
+          .insert({
+            file_id: fileId,
+            download_method: 'direct'
+          });
+      }
     } catch (error) {
-      console.error('Error deleting file:', error);
-      toast.error('Failed to delete file');
+      console.error('Download error:', error);
+      toast.error('Failed to download file');
     }
   };
 
-  const formatFileSize = (bytes: number) => {
+  const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const deleteFile = async (fileId: string, storagePath: string) => {
+    if (!confirm('Are you sure you want to delete this file?')) return;
+
+    try {
+      // Delete from storage
+      const { error: storageError } = await supabase.storage
+        .from('files')
+        .remove([storagePath]);
+
+      if (storageError) throw storageError;
+
+      // Delete from database
+      const { error: dbError } = await supabase
+        .from('files')
+        .delete()
+        .eq('id', fileId);
+
+      if (dbError) throw dbError;
+
+      toast.success('File deleted successfully');
+      fetchFiles(); // Refresh the list
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Failed to delete file');
+    }
   };
 
   const filteredFiles = files.filter(file => {
@@ -85,107 +125,122 @@ export function FileManager() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+      <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">File Manager</h2>
-          <p className="text-gray-400">Manage your uploaded files</p>
+          <h1 className="text-3xl font-bold tracking-tight">My Files</h1>
+          <p className="text-muted-foreground">
+            Manage your uploaded files and shared content.
+          </p>
         </div>
-        <Button className="flex items-center gap-2">
-          <Upload className="h-4 w-4" />
-          Upload Files
+        <Button asChild>
+          <a href="/dashboard/upload" className="flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            Upload Files
+          </a>
         </Button>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          <Input
-            placeholder="Search files..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-gray-400" />
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-            className="px-3 py-2  rounded-xl bg-neutral-400 text-white focus:outline-none focus:ring-2 focus:ring-black dark:bg-neutral-600 dark:text-white dark:focus:ring-neutral-800"
-          >
-            <option value="all">All Types</option>
-            <option value="image">Images</option>
-            <option value="document">Documents</option>
-            <option value="video">Videos</option>
-            <option value="audio">Audio</option>
-          </select>
-        </div>
-      </div>
+      {/* Search and Filter */}
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search files..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8"
+              />
+            </div>
+            <div className="w-full sm:w-48">
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+                className="w-full p-2 border border-input bg-background rounded-md"
+              >
+                <option value="all">All Files</option>
+                <option value="image">Images</option>
+                <option value="video">Videos</option>
+                <option value="audio">Audio</option>
+                <option value="pdf">PDFs</option>
+                <option value="text">Documents</option>
+              </select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
+      {/* Files Grid */}
       {filteredFiles.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <div className="text-gray-400 mb-4">
+            <div className="text-muted-foreground mb-4">
               <Upload className="h-12 w-12" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No files found</h3>
-            <p className="text-gray-600 text-center">
-              {searchTerm || filterType !== 'all' 
-                ? 'No files match your search criteria' 
-                : 'Upload your first file to get started'}
+            <h3 className="text-lg font-medium mb-2">No files found</h3>
+            <p className="text-muted-foreground text-center mb-4">
+              {searchTerm ? 'No files match your search criteria.' : 'Start by uploading your first file.'}
             </p>
+            <Button asChild>
+              <a href="/dashboard/upload">
+                Upload Your First File
+              </a>
+            </Button>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredFiles.map((file) => (
-            <Card key={file.id}>
-              <CardContent className="flex items-center justify-between p-4">
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
-                      <span className="text-black dark:text-neutral-200 font-medium text-sm">
-                        {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
-                      </span>
-                    </div>
+            <Card key={file.id} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <span className="text-primary font-medium text-sm">
+                      {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
+                    </span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {file.original_name}
-                    </p>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <Badge variant="secondary" className="text-xs">
-                        {formatFileSize(file.file_size)}
-                      </Badge>
-                      <span className="text-xs text-gray-500">
-                        {new Date(file.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
+                  <Badge variant="outline" className="text-xs">
+                    {file.download_count} downloads
+                  </Badge>
+                </div>
+                
+                <div className="mb-3">
+                  <h4 className="font-medium text-sm mb-1 truncate" title={file.original_name}>
+                    {file.original_name}
+                  </h4>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span>{formatFileSize(file.file_size)}</span>
+                    <span>•</span>
+                    <span>{new Date(file.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+
+                <div className="flex items-center gap-2">
                   <Button
-                    variant="outline"
                     size="sm"
-                    onClick={() => window.open(file.url, '_blank')}
-                    disabled={!file.url}
+                    variant="outline"
+                    onClick={() => downloadFile(file.id, file.storage_path, file.original_name)}
+                    className="flex-1"
                   >
-                    <Download className="h-4 w-4" />
+                    <Download className="h-3 w-3 mr-1" />
+                    Download
                   </Button>
+                  
                   <Button
-                    variant="outline"
                     size="sm"
-                    onClick={() => deleteFile(file.id)}
-                    className="text-red-600 hover:text-red-700"
+                    variant="ghost"
+                    onClick={() => deleteFile(file.id, file.storage_path)}
+                    className="text-destructive hover:text-destructive"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3 w-3" />
                   </Button>
                 </div>
               </CardContent>

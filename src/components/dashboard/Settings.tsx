@@ -164,7 +164,7 @@ export const Settings: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="theme">Theme</Label>
-              <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)} className="w-full">
+              <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
                 <SelectTrigger className="w-full bg-muted">
                   <SelectValue placeholder="Select theme" />
                 </SelectTrigger>
