@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
 import Logo from './Logo';
-import { Menu, X, CircleDot, LayoutDashboard, DollarSign } from 'lucide-react';
+import { Menu, X, CircleDot, LayoutDashboard, DollarSign, User, Settings, LogOut, Crown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 const Header = () => {
   const {
+  const { user, profile, signOut } = useAuth();
     actualTheme
   } = useTheme();
   const [activePage, setActivePage] = useState('features');
@@ -33,6 +46,25 @@ const Header = () => {
   };
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    setMobileMenuOpen(false);
+  };
+
+  const getUserInitials = () => {
+    if (user?.user_metadata?.display_name) {
+      return user.user_metadata.display_name.charAt(0).toUpperCase();
+    }
+    if (user?.email) {
+      return user.email.charAt(0).toUpperCase();
+    }
+    return 'U';
+  };
+
+  const getUserDisplayName = () => {
+    return user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
   };
   return <motion.div className={`fixed top-0 left-0 right-0 z-50 pt-2 px-4 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-background/50 shadow-lg' : 'bg-transparent'}`}>
       {/* Animated White Glow Line at Top */}
@@ -149,34 +181,138 @@ const Header = () => {
               
               {/* Mobile CTA Buttons */}
               <div className="border-t border-border pt-3 mt-3 space-y-2">
-                <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" asChild>
-                  <a href="/auth">
-                  Log in
-                  </a>
-                </Button>
-                <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
-                  <a href="/auth">
-                  Get Started
-                  </a>
-                </Button>
+                {user ? (
+                  <>
+                    <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                          {getUserInitials()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{getUserDisplayName()}</p>
+                        <div className="flex items-center space-x-2">
+                          <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
+                            {profile?.subscription_tier === 'pro' ? (
+                              <>
+                                <Crown className="w-3 h-3 mr-1" />
+                                Pro
+                              </>
+                            ) : 'Free'}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
+                      <Link to="/dashboard">
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        Dashboard
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" onClick={handleSignOut}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" asChild>
+                      <a href="/auth">
+                        Log in
+                      </a>
+                    </Button>
+                    <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
+                      <a href="/auth">
+                        Get Started
+                      </a>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>}
         
-       <div className="hidden md:flex items-center gap-3">
-  <div className="flex gap-3 rounded-xl"> 
-    <Button variant="ghost" className="h-8 px-4 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm text-left transition-all duration-300" asChild>
-      <a href="/auth" className="bg-neutral-300">
-      Log in
-      </a>
-    </Button>
-    <Button variant="default" className="h-8 px-3 font-medium text-sm text-left" asChild>
-      <a href="/auth">
-      Get Started
-      </a>
-    </Button>
-  </div>
-      </div>
+        <div className="hidden md:flex items-center gap-3">
+          {user ? (
+            <div className="flex items-center gap-3">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-accent/50 transition-all duration-200">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-primary text-primary-foreground">
+                        {getUserInitials()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm font-medium">{getUserDisplayName()}</span>
+                      <div className="flex items-center">
+                        <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
+                          {profile?.subscription_tier === 'pro' ? (
+                            <>
+                              <Crown className="w-3 h-3 mr-1" />
+                              Pro
+                            </>
+                          ) : 'Free'}
+                        </Badge>
+                      </div>
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {getUserDisplayName()}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard">
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard/settings">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  {profile?.subscription_tier !== 'pro' && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/subscription">
+                        <Crown className="mr-2 h-4 w-4" />
+                        Upgrade to Pro
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ) : (
+            <div className="flex gap-3 rounded-xl"> 
+              <Button variant="ghost" className="h-8 px-4 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm text-left transition-all duration-300" asChild>
+                <a href="/auth" className="bg-neutral-300">
+                  Log in
+                </a>
+              </Button>
+              <Button variant="default" className="h-8 px-3 font-medium text-sm text-left" asChild>
+                <a href="/auth">
+                  Get Started
+                </a>
+              </Button>
+            </div>
+          )}
+        </div>
 
       </header>
     </motion.div>;
