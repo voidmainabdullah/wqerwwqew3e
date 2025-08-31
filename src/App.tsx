@@ -20,7 +20,7 @@ import { TeamsManager } from "./components/teams/TeamsManager";
 import TeamFileShare from "./components/teams/TeamFileShare";
 import { TeamFiles } from "@/components/teams/TeamFiles";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
-import { CodeSharePage } from "@/components/sharing/CodeSharePage";
+import CodePage from "./pages/CodePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
 import { SubscriptionSuccess } from "./pages/SubscriptionSuccess";
 import Index from "./pages/Index";
@@ -48,7 +48,7 @@ const App = () => (
               <Route path="/subscription" element={<SubscriptionPage />} />
               <Route path="/subscription-success" element={<SubscriptionSuccess />} />
               <Route path="/share/:token" element={<PublicSharePage />} />
-              <Route path="/code" element={<CodeSharePage />} />
+              <Route path="/code" element={<CodePage />} />
               
               {/* Protected Dashboard Routes */}
               <Route path="/dashboard" element={

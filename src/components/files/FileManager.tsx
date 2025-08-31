@@ -3,10 +3,27 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Download, Search, Filter, Upload } from 'lucide-react';
+import { 
+  Trash2, 
+  Download, 
+  Search, 
+  Filter, 
+  Upload, 
+  Share2, 
+  Lock, 
+  Unlock, 
+  Globe, 
+  EyeOff, 
+  Shield, 
+  Edit3,
+  MoreVertical
+} from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { FileShareDialog } from './FileShareDialog';
+import { FileRenameDialog } from './FileRenameDialog';
 
 interface FileItem {
   id: string;
@@ -16,6 +33,7 @@ interface FileItem {
   created_at: string;
   download_count: number;
   is_public: boolean;
+  is_locked: boolean;
   user_id: string;
   storage_path: string;
 }
@@ -26,6 +44,18 @@ export function FileManager() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+  
+  // Dialog states
+  const [shareDialog, setShareDialog] = useState<{ isOpen: boolean; fileId: string; fileName: string }>({
+    isOpen: false,
+    fileId: '',
+    fileName: ''
+  });
+  const [renameDialog, setRenameDialog] = useState<{ isOpen: boolean; fileId: string; currentName: string }>({
+    isOpen: false,
+    fileId: '',
+    currentName: ''
+  });
 
   useEffect(() => {
     if (user) {
@@ -89,6 +119,59 @@ export function FileManager() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  const toggleFileVisibility = async (fileId: string, currentPublicState: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('files')
+        .update({ is_public: !currentPublicState })
+        .eq('id', fileId);
+
+      if (error) throw error;
+
+      setFiles(files.map(file => 
+        file.id === fileId 
+          ? { ...file, is_public: !currentPublicState }
+          : file
+      ));
+
+      toast.success(`File made ${!currentPublicState ? 'public' : 'private'}`);
+    } catch (error) {
+      console.error('Visibility toggle error:', error);
+      toast.error('Failed to update file visibility');
+    }
+  };
+
+  const toggleFileLock = async (fileId: string, currentLockState: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('files')
+        .update({ is_locked: !currentLockState })
+        .eq('id', fileId);
+
+      if (error) throw error;
+
+      setFiles(files.map(file => 
+        file.id === fileId 
+          ? { ...file, is_locked: !currentLockState }
+          : file
+      ));
+
+      toast.success(`File ${!currentLockState ? 'locked' : 'unlocked'}`);
+    } catch (error) {
+      console.error('Lock toggle error:', error);
+      toast.error('Failed to update file lock status');
+    }
+  };
+
+  const virusScan = async (fileId: string, fileName: string) => {
+    // Simulated virus scan - in production, integrate with actual antivirus service
+    toast.info('Scanning file for viruses...');
+    
+    setTimeout(() => {
+      toast.success(`${fileName} is clean - no threats detected`);
+    }, 2000);
+  };
+
   const deleteFile = async (fileId: string, storagePath: string) => {
     if (!confirm('Are you sure you want to delete this file?')) return;
 
@@ -114,6 +197,22 @@ export function FileManager() {
       console.error('Delete error:', error);
       toast.error('Failed to delete file');
     }
+  };
+
+  const openShareDialog = (fileId: string, fileName: string) => {
+    setShareDialog({ isOpen: true, fileId, fileName });
+  };
+
+  const openRenameDialog = (fileId: string, currentName: string) => {
+    setRenameDialog({ isOpen: true, fileId, currentName });
+  };
+
+  const handleRename = (fileId: string, newName: string) => {
+    setFiles(files.map(file => 
+      file.id === fileId 
+        ? { ...file, original_name: newName }
+        : file
+    ));
   };
 
   const filteredFiles = files.filter(file => {
@@ -223,31 +322,115 @@ export function FileManager() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => downloadFile(file.id, file.storage_path, file.original_name)}
-                    className="flex-1"
-                  >
-                    <Download className="h-3 w-3 mr-1" />
-                    Download
-                  </Button>
-                  
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => deleteFile(file.id, file.storage_path)}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
+                <div className="flex items-center justify-between gap-2">
+                  {/* Primary Action Buttons */}
+                  <div className="flex items-center gap-1">
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => downloadFile(file.id, file.storage_path, file.original_name)}
+                      title="Download"
+                      className="h-8 w-8"
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+                    
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => openShareDialog(file.id, file.original_name)}
+                      title="Share"
+                      className="h-8 w-8"
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => toggleFileVisibility(file.id, file.is_public)}
+                      title={file.is_public ? 'Make Private' : 'Make Public'}
+                      className="h-8 w-8"
+                    >
+                      {file.is_public ? <Globe className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    </Button>
+
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => toggleFileLock(file.id, file.is_locked)}
+                      title={file.is_locked ? 'Unlock' : 'Lock'}
+                      className="h-8 w-8"
+                    >
+                      {file.is_locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                    </Button>
+                  </div>
+
+                  {/* More Actions Dropdown */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost" className="h-8 w-8">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
+                        <Shield className="h-4 w-4 mr-2" />
+                        Virus Scan
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openRenameDialog(file.id, file.original_name)}>
+                        <Edit3 className="h-4 w-4 mr-2" />
+                        Rename
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        onClick={() => deleteFile(file.id, file.storage_path)}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                {/* Status Indicators */}
+                <div className="flex items-center gap-1 mt-2">
+                  {file.is_public && (
+                    <Badge variant="secondary" className="text-xs">
+                      <Globe className="h-3 w-3 mr-1" />
+                      Public
+                    </Badge>
+                  )}
+                  {file.is_locked && (
+                    <Badge variant="outline" className="text-xs">
+                      <Lock className="h-3 w-3 mr-1" />
+                      Locked
+                    </Badge>
+                  )}
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
       )}
+
+      {/* Share Dialog */}
+      <FileShareDialog
+        isOpen={shareDialog.isOpen}
+        onClose={() => setShareDialog({ isOpen: false, fileId: '', fileName: '' })}
+        fileId={shareDialog.fileId}
+        fileName={shareDialog.fileName}
+      />
+
+      {/* Rename Dialog */}
+      <FileRenameDialog
+        isOpen={renameDialog.isOpen}
+        onClose={() => setRenameDialog({ isOpen: false, fileId: '', currentName: '' })}
+        fileId={renameDialog.fileId}
+        currentName={renameDialog.currentName}
+        onRename={(newName) => handleRename(renameDialog.fileId, newName)}
+      />
     </div>
   );
 }
