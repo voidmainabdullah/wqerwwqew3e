@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { RealTimeAnalytics } from '@/components/analytics/RealTimeAnalytics';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -324,10 +323,83 @@ export const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Replace the simulated analytics with real-time component */}
-            <RealTimeAnalytics />
-            
-            {/* Rest of existing dashboard content */}
+            {/* Real-time Analytics Component */}
+            <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50 rounded-xl p-6">
+              <div className="space-y-6">
+                {/* Analytics Header */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-white text-xl font-semibold">Live Analytics</h3>
+                    <p className="text-slate-400">Real-time file sharing performance</p>
+                  </div>
+                  <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+                </div>
+                
+                {/* Analytics Cards Grid */}
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                        <Download className="w-5 h-5 text-emerald-400" />
+                      </div>
+                      <div>
+                        <p className="text-slate-400 text-sm">Total Downloads</p>
+                        <p className="text-white text-2xl font-bold">{stats?.totalDownloads || 0}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                        <ShareNetwork className="w-5 h-5 text-purple-400" />
+                      </div>
+                      <div>
+                        <p className="text-slate-400 text-sm">Active Shares</p>
+                        <p className="text-white text-2xl font-bold">{stats?.totalShares || 0}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                        <Files className="w-5 h-5 text-blue-400" />
+                      </div>
+                      <div>
+                        <p className="text-slate-400 text-sm">Total Files</p>
+                        <p className="text-white text-2xl font-bold">{stats?.totalFiles || 0}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Popular Files */}
+                <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                  <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                    <TrendUp className="w-4 h-4 text-emerald-400" />
+                    Popular Files
+                  </h4>
+                  <div className="space-y-2">
+                    {stats?.popularFiles.length ? stats.popularFiles.slice(0, 3).map((file, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded bg-blue-500/20 flex items-center justify-center">
+                            <Files className="w-3 h-3 text-blue-400" />
+                          </div>
+                          <span className="text-slate-300 text-sm truncate max-w-[150px]">
+                            {file.original_name}
+                          </span>
+                        </div>
+                        <span className="text-emerald-400 text-sm">{file.download_count} downloads</span>
+                      </div>
+                    )) : (
+                      <p className="text-slate-400 text-sm">No files uploaded yet</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Right Column - Activity and Actions */}
