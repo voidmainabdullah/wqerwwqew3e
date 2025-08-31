@@ -1296,7 +1296,7 @@
 }
 
 .dark .anonymous-share-btn::before {
-  background: #000000;
+  background: purple;
 }
 
 .dark .anonymous-share-btn:hover {
