@@ -97,7 +97,7 @@ const HeroSection = () => {
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-current animate-ping opacity-75"></div>
                 </div>
                 <span>Share Anonymous</span>
-                <div className="text-xs opacity-75 font-normal">No signup</div>
+                <div className="text-xs opacity-75 font-normal"> - No signup</div>
               </a>
             </Button>
           </motion.div>
