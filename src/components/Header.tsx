@@ -19,10 +19,9 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
 const Header = () => {
-  const {
-  const { user, profile, signOut } = useAuth();
-    actualTheme
-  } = useTheme();
+ const { actualTheme } = useTheme();
+const { user, profile, signOut } = useAuth();
+
   const [activePage, setActivePage] = useState('features');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
