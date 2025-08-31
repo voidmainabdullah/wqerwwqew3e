@@ -10,7 +10,7 @@ const Logo = () => {
         <img 
           src="/sky.png"
           alt="Logo" 
-          className={`h-20 w-auto sm:h-15 md:h-16 object-contain transition-all duration-300 hover:scale-105 ${
+          className={`h-22 w-auto sm:h-15 md:h-16 object-contain transition-all duration-300 hover:scale-105 ${
             actualTheme === 'light' ? 'filter brightness-90 contrast-110' : ''
           }`}
         />
