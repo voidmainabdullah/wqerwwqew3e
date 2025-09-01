@@ -25,7 +25,7 @@ const Logo = () => {
   className="max-h-24 w-auto object-contain transition-all duration-300 hover:scale-105"
 /> 
 
-        </div>
+        </div> 
       </div>
     </div>
   );
