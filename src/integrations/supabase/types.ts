@@ -71,6 +71,7 @@ export type Database = {
           is_locked: boolean
           is_public: boolean
           original_name: string
+          password_hash: string | null
           share_code: string | null
           storage_path: string
           updated_at: string
@@ -87,6 +88,7 @@ export type Database = {
           is_locked?: boolean
           is_public?: boolean
           original_name: string
+          password_hash?: string | null
           share_code?: string | null
           storage_path: string
           updated_at?: string
@@ -103,6 +105,7 @@ export type Database = {
           is_locked?: boolean
           is_public?: boolean
           original_name?: string
+          password_hash?: string | null
           share_code?: string | null
           storage_path?: string
           updated_at?: string
@@ -327,6 +330,20 @@ export type Database = {
       check_storage_quota: {
         Args: { p_file_size: number; p_user_id: string }
         Returns: boolean
+      }
+      create_file_share: {
+        Args: {
+          p_download_limit?: number
+          p_expires_at?: string
+          p_file_id: string
+          p_link_type: string
+          p_password_hash?: string
+          p_recipient_email?: string
+        }
+        Returns: {
+          share_code: string
+          share_token: string
+        }[]
       }
       generate_share_code: {
         Args: Record<PropertyKey, never>
