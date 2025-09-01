@@ -27,7 +27,7 @@ const Logo = () => {
 
         </div> 
       </div>
-    </div>
+    </div> 
   );
 };
 
