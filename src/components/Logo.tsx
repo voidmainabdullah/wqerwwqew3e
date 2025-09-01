@@ -19,11 +19,12 @@ const Logo = () => {
         <div className={`absolute inset-0 blur-sm transition-opacity duration-300 ${
           actualTheme === 'light' ? 'opacity-10 hover:opacity-20' : 'opacity-20 hover:opacity-30'
         }`}>
-          <img 
-            src="/sky.png" 
-            alt="Logo Glow" 
-            className="h-12 w-auto sm:h-16 md:h-20 lg:h-24 xl:h-28 object-contain"
-          />
+         <img 
+  src="/sky.png"
+  alt="Logo"
+  className="max-h-24 w-auto object-contain transition-all duration-300 hover:scale-105"
+/>
+
         </div>
       </div>
     </div>
