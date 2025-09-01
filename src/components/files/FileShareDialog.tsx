@@ -59,32 +59,24 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
         passwordHash = hashData;
       }
 
-      // Generate share token
-      const shareToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-      // Insert shared link
-      const { data, error } = await supabase
-        .from('shared_links')
-        .insert({
-          file_id: fileId,
-          share_token: shareToken,
-          link_type: linkType,
-          expires_at: expiresAt,
-          download_limit: hasDownloadLimit ? shareSettings.downloadLimit : null,
-          password_hash: passwordHash,
-          recipient_email: linkType === 'email' ? shareSettings.recipientEmail : null
-        })
-        .select()
-        .single();
+      // Use the new backend function for robust sharing
+      const { data, error } = await supabase.rpc('create_file_share', {
+        p_file_id: fileId,
+        p_link_type: linkType,
+        p_expires_at: expiresAt,
+        p_download_limit: hasDownloadLimit ? shareSettings.downloadLimit : null,
+        p_password_hash: passwordHash,
+        p_recipient_email: linkType === 'email' ? shareSettings.recipientEmail : null
+      });
 
       if (error) throw error;
 
+      const shareToken = data[0]?.share_token;
+      const shareCode = data[0]?.share_code;
       const shareUrl = `${window.location.origin}/share/${shareToken}`;
 
       if (linkType === 'code') {
-        // Generate a simple code from share token
-        const code = shareToken.substring(0, 8).toUpperCase();
-        setGeneratedCode(code);
+        setGeneratedCode(shareCode);
         setGeneratedLink(shareUrl);
       } else {
         setGeneratedLink(shareUrl);

@@ -406,6 +406,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      toggle_file_lock_status: {
+        Args: { p_file_id: string; p_is_locked: boolean; p_password?: string }
+        Returns: boolean
+      }
+      toggle_file_public_status: {
+        Args: { p_file_id: string; p_is_public: boolean }
+        Returns: boolean
+      }
       user_is_team_admin: {
         Args: { team_id: string; user_id: string }
         Returns: boolean

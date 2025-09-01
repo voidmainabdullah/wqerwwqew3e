@@ -121,20 +121,20 @@ export function FileManager() {
 
   const toggleFileVisibility = async (fileId: string, currentPublicState: boolean) => {
     try {
-      const { error } = await supabase
-        .from('files')
-        .update({ is_public: !currentPublicState })
-        .eq('id', fileId);
+      const { data, error } = await supabase.rpc('toggle_file_public_status', {
+        p_file_id: fileId,
+        p_is_public: !currentPublicState
+      });
 
       if (error) throw error;
 
       setFiles(files.map(file => 
         file.id === fileId 
-          ? { ...file, is_public: !currentPublicState }
+          ? { ...file, is_public: data }
           : file
       ));
 
-      toast.success(`File made ${!currentPublicState ? 'public' : 'private'}`);
+      toast.success(`File made ${data ? 'public' : 'private'}`);
     } catch (error) {
       console.error('Visibility toggle error:', error);
       toast.error('Failed to update file visibility');
@@ -143,20 +143,27 @@ export function FileManager() {
 
   const toggleFileLock = async (fileId: string, currentLockState: boolean) => {
     try {
-      const { error } = await supabase
-        .from('files')
-        .update({ is_locked: !currentLockState })
-        .eq('id', fileId);
+      let password = null;
+      if (!currentLockState) {
+        // If locking, prompt for password
+        password = prompt('Enter password to lock this file (optional):');
+      }
+
+      const { data, error } = await supabase.rpc('toggle_file_lock_status', {
+        p_file_id: fileId,
+        p_is_locked: !currentLockState,
+        p_password: password
+      });
 
       if (error) throw error;
 
       setFiles(files.map(file => 
         file.id === fileId 
-          ? { ...file, is_locked: !currentLockState }
+          ? { ...file, is_locked: data }
           : file
       ));
 
-      toast.success(`File ${!currentLockState ? 'locked' : 'unlocked'}`);
+      toast.success(`File ${data ? 'locked' : 'unlocked'}`);
     } catch (error) {
       console.error('Lock toggle error:', error);
       toast.error('Failed to update file lock status');
