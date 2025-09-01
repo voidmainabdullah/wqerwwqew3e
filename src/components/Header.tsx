@@ -99,7 +99,7 @@ const { user, profile, signOut } = useAuth();
       </div>
       
       <header className="w-full max-w-7xl mx-auto py-2 px-6 md:px-8 flex items-center justify-between max-h-14">
-        <div className="p-3">
+        <div className="p-2">
           <motion.div initial={{
           opacity: 0,
           x: -20

@@ -5,7 +5,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           <div className="md:col-span-2 space-y-6">
-            <Logo />
+            <div className="scale-110">
+              <Logo />
+            </div>
             <p className="text-muted-foreground max-w-xs">
               Modern task management for teams that value clarity, focus, and results.
             </p>

@@ -65,7 +65,7 @@ const AppSidebar = () => {
           <img 
             src="/sky.png" 
             alt="SecureShare Logo" 
-            className="h-10 w-auto object-contain"
+            className="h-12 w-auto sm:h-14 md:h-16 object-contain"
           />
           <span className="font-bold text-xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
             SecureShare
@@ -176,7 +176,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   <img 
                     src="/sky.png" 
                     alt="SecureShare Logo" 
-                    className="h-8 w-auto object-contain"
+                    className="h-10 w-auto object-contain"
                   />
                   <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
                     SecureShare

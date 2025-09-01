@@ -10,7 +10,7 @@ const Logo = () => {
         <img 
           src="/sky.png"
           alt="Logo" 
-          className={`h-10 w-auto sm:h-15 md:h-16 object-contain transition-all duration-300 hover:scale-105 ${
+          className={`h-12 w-auto sm:h-16 md:h-20 lg:h-24 xl:h-28 object-contain transition-all duration-300 hover:scale-105 ${
             actualTheme === 'light' ? 'filter brightness-90 contrast-110' : ''
           }`}
         />
@@ -22,7 +22,7 @@ const Logo = () => {
           <img 
             src="/sky.png" 
             alt="Logo Glow" 
-            className="h-8 w-auto sm:h-10 md:h-12 object-contain"
+            className="h-12 w-auto sm:h-16 md:h-20 lg:h-24 xl:h-28 object-contain"
           />
         </div>
       </div>
