@@ -414,6 +414,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      test_share_token_generation: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       toggle_file_lock_status: {
         Args: { p_file_id: string; p_is_locked: boolean; p_password?: string }
         Returns: boolean
