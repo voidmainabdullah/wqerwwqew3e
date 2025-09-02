@@ -349,6 +349,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      generate_unique_share_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       get_my_team_files: {
         Args: { p_user_id: string }
         Returns: {
