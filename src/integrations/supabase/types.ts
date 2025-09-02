@@ -410,6 +410,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      test_gen_random_bytes: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       toggle_file_lock_status: {
         Args: { p_file_id: string; p_is_locked: boolean; p_password?: string }
         Returns: boolean
