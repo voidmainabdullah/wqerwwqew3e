@@ -3,70 +3,51 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { 
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { 
-  House,
-  Upload,
-  Files,
-  ShareNetwork,
-  ChartBar,
-  Gear,
-  SignOut,
-  Users,
-  PaperPlaneTilt,
-  Code,
-  CurrencyCircleDollar,
-  Lifebuoy,
-  Info,
-} from 'phosphor-react';
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info } from 'phosphor-react';
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
-
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: House },
-  { name: 'Upload', href: '/dashboard/upload', icon: Upload },
-  { name: 'My Files', href: '/dashboard/files', icon: Files },
-  { name: 'Teams', href: '/dashboard/teams', icon: Users },
-  { name: 'Team Files', href: '/dashboard/team-files', icon: PaperPlaneTilt },
-  { name: 'Shared Links', href: '/dashboard/shared', icon: ShareNetwork },
-  { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBar },
-  { name: 'Settings', href: '/dashboard/settings', icon: Gear },
-];
-
+const navigation = [{
+  name: 'Dashboard',
+  href: '/dashboard',
+  icon: House
+}, {
+  name: 'Upload',
+  href: '/dashboard/upload',
+  icon: Upload
+}, {
+  name: 'My Files',
+  href: '/dashboard/files',
+  icon: Files
+}, {
+  name: 'Teams',
+  href: '/dashboard/teams',
+  icon: Users
+}, {
+  name: 'Team Files',
+  href: '/dashboard/team-files',
+  icon: PaperPlaneTilt
+}, {
+  name: 'Shared Links',
+  href: '/dashboard/shared',
+  icon: ShareNetwork
+}, {
+  name: 'Analytics',
+  href: '/dashboard/analytics',
+  icon: ChartBar
+}, {
+  name: 'Settings',
+  href: '/dashboard/settings',
+  icon: Gear
+}];
 const AppSidebar = () => {
   const location = useLocation();
-  
-  return (
-    <Sidebar className="border-r border-border/50">
-      <SidebarHeader>
-        <div className="flex items-center space-x-3 px-6 py-4">
-          <img 
-            src="/sky.png" 
-            alt="SecureShare Logo" 
-            className="h-12 w-auto sm:h-14 md:h-16 object-contain"
-          />
+  return <Sidebar className="border-r border-border/50">
+      <SidebarHeader className="w-auto h-20">
+        <div className="flex items-center space-x-3 px-0 py-4 bg-inherit w-100 h-100">
+          <img src="/sky.png" alt="SecureShare Logo" className="h-40 w-auto sm:h-14 md:h-16 object-contain" />
           <span className="font-bold text-xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
             
           </span>
@@ -81,20 +62,14 @@ const AppSidebar = () => {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigation.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton 
-                    asChild 
-                    isActive={location.pathname === item.href}
-                    className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200"
-                  >
+              {navigation.map(item => <SidebarMenuItem key={item.name}>
+                  <SidebarMenuButton asChild isActive={location.pathname === item.href} className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                     <Link to={item.href}>
                       <item.icon className="h-5 w-5" />
                       <span>{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                </SidebarMenuItem>)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -148,19 +123,19 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-    </Sidebar>
-  );
+    </Sidebar>;
 };
-
-export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  const { user, signOut } = useAuth();
-
+export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+  children
+}) => {
+  const {
+    user,
+    signOut
+  } = useAuth();
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
-
-  return (
-    <SidebarProvider>
+  return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-neutral-800">
         <AppSidebar />
         
@@ -173,11 +148,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 
                 {/* Mobile Logo */}
                 <div className="md:hidden flex items-center space-x-3">
-                  <img 
-                    src="/sky.png" 
-                    alt="SecureShare Logo" 
-                    className="h-10 w-auto object-contain"
-                  />
+                  <img src="/sky.png" alt="SecureShare Logo" className="h-10 w-auto object-contain" />
                   <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
                     SecureShare
                   </span>
@@ -190,12 +161,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                       Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
                     </h2>
                     <p className="text-sm text-slate-400">
-                      {new Date().toLocaleDateString('en-US', { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                      })}
+                      {new Date().toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
                     </p>
                   </div>
                 </div>
@@ -277,6 +248,5 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
           </main> 
         </div>
       </div>
-    </SidebarProvider>
-  );
+    </SidebarProvider>;
 };
