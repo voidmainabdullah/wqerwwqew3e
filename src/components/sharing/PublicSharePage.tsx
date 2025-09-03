@@ -137,12 +137,12 @@ export const PublicSharePage: React.FC = () => {
   const downloadFile = async () => {
     if (!shareData) return;
 
-    // Check if file is locked and password is required
-    if (shareData.file.is_locked && passwordRequired) {
+    // Check if password is required for this shared link
+    if (shareData.password_hash && passwordRequired) {
       toast({
         variant: "destructive",
         title: "Password required",
-        description: "Please enter the password to unlock this file",
+        description: "Please enter the password to access this file",
       });
       return;
     }
@@ -281,7 +281,7 @@ export const PublicSharePage: React.FC = () => {
             )}
           </div>
 
-          {shareData.file.is_locked && (
+          {shareData.password_hash && (
             <Alert>
               <Lock className="h-4 w-4" />
               <AlertDescription>
