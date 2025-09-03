@@ -147,6 +147,16 @@ export const PublicSharePage: React.FC = () => {
       return;
     }
 
+    // Final check for download limits before starting download
+    if (shareData.download_limit && shareData.download_count >= shareData.download_limit) {
+      toast({
+        variant: "destructive",
+        title: "Download limit exceeded",
+        description: "This file has reached its maximum download limit",
+      });
+      return;
+    }
+
     setDownloading(true);
     try {
       const { data: fileData, error } = await supabase.storage
