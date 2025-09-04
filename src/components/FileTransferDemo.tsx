@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Files, Shield, Users, ArrowRight, CheckCircle, Lock, Eye, Zap, Globe, Clock, UserCheck, Settings, Download, Upload } from 'lucide-react';
 const FileTransferDemo = () => {
   return <section className="py-24 px-6 md:px-12 bg-background">
-      <div className="max-w-7xl mx-auto">
+      <div className="content-wrapper">
         <div className="text-center mb-16">
           <motion.h2 initial={{
           opacity: 0,

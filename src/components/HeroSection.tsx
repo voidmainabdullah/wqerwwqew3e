@@ -3,11 +3,8 @@ import { Button } from '@/components/ui/button';
 import TaskBoard from './TaskBoard';
 import { Files, Cloud, Shield } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useTheme } from '@/contexts/ThemeContext';
+
 const HeroSection = () => {
-  const {
-    actualTheme
-  } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   const {
     scrollY
@@ -23,12 +20,12 @@ const HeroSection = () => {
     return () => clearTimeout(timer);
   }, []);
   return <section className="relative w-full min-h-screen px-6 md:px-12 flex items-center overflow-hidden bg-background">
-      {/* Geometric background pattern */}
-     <div className="absolute inset-0 light-box-grid opacity-20"></div>
+      {/* Enhanced geometric background pattern */}
+      <div className="absolute inset-0 light-box-grid opacity-20"></div>
       <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
       <div className="absolute bottom-20 left-10 w-72 h-72 rounded-full bg-accent/5 blur-3xl"></div>
       
-      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 mx-0 my-[120px]">
+      <div className="page-content w-full max-w-7xl grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 mx-auto">
         {/* Left Column - Content */}
         <div className="space-y-6 md:space-y-8 px-4 md:px-0">
           
@@ -80,8 +77,8 @@ const HeroSection = () => {
               </a>
             </Button>
             <Button variant="outline" className="border-2 border-neutral-300 text-foreground hover:bg-neutral-100 hover:text-foreground dark:border-neutral-600 dark:hover:bg-neutral-800 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto" asChild>
-              <a href="/auth" className="bg-white">
-              Go To Dashbaord
+              <a href="/auth">
+              Go To Dashboard
               </a>
             </Button>
             
@@ -186,11 +183,10 @@ const HeroSection = () => {
         </motion.div>
       </div>
       
-      {/* Animated White Glow Line */}
-      <motion.div className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${actualTheme === 'light' ? 'via-neutral-800' : 'via-neutral-800'}`} style={{
+      {/* Animated Glow Line */}
+      <motion.div className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-blue-400/60 to-transparent" style={{
       width: glowWidth,
-      opacity: glowOpacity,
-      boxShadow: actualTheme === 'light' ? "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)" : "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
+      opacity: glowOpacity
     }} />
     </section>;
 };

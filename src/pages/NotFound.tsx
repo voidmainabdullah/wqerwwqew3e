@@ -14,7 +14,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <div className="page-container flex items-center justify-center relative overflow-hidden">
       {/* Enhanced Animated Background */}
       <AnimatedBackground />
       

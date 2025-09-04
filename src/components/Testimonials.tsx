@@ -29,7 +29,7 @@ const Testimonials = () => {
       {/* Background grid */}
       <div className="absolute inset-0 cosmic-grid opacity-20"></div>
       
-      <div className="max-w-7xl mx-auto space-y-16 relative z-10">
+      <div className="content-wrapper space-y-16 relative z-10">
         <motion.div className="text-center space-y-4 max-w-3xl mx-auto" initial={{
         opacity: 0,
         y: 30

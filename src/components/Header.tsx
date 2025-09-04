@@ -18,9 +18,9 @@ import { motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
+
 const Header = () => {
- const { actualTheme } = useTheme();
-const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
 
   const [activePage, setActivePage] = useState('features');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -66,39 +66,37 @@ const { user, profile, signOut } = useAuth();
     return user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
   };
   return <motion.div className={`fixed top-0 left-0 right-0 z-50 pt-2 px-4 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-background/50 shadow-lg' : 'bg-transparent'}`}>
-      {/* Animated White Glow Line at Top */}
-      <motion.div className={`absolute top-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${actualTheme === 'light' ? 'via-neutral-800' : 'via-neutral-800'}`} initial={{
+      {/* Animated Glow Line at Top */}
+      <motion.div className="absolute top-0 left-0 h-px bg-gradient-to-r from-transparent via-blue-400/60 to-transparent" initial={{
       width: "0%"
     }} animate={{
       width: "100%"
     }} transition={{
       duration: 2,
       ease: "easeInOut"
-    }} style={{
-      boxShadow: actualTheme === 'light' ? "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)" : "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
     }} />
       
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Floating boxes with low opacity */}
-        <div className={`absolute top-4 left-20 w-8 h-8 rounded-lg rotate-12 ${actualTheme === 'light' ? 'bg-neutral-800/5' : 'bg-white/5'} animate-float`} style={{
+        <div className="absolute top-4 left-20 w-8 h-8 rounded-lg rotate-12 bg-white/5 animate-float" style={{
         animationDelay: '0s'
       }} />
-        <div className={`absolute top-6 right-32 w-6 h-6 rounded-md rotate-45 ${actualTheme === 'light' ? 'bg-neutral-700/8' : 'bg-white/8'} animate-float`} style={{
+        <div className="absolute top-6 right-32 w-6 h-6 rounded-md rotate-45 bg-white/8 animate-float" style={{
         animationDelay: '2s'
       }} />
-        <div className={`absolute top-8 left-1/3 w-4 h-4 rounded-full ${actualTheme === 'light' ? 'bg-neutral-600/6' : 'bg-white/6'} animate-float`} style={{
+        <div className="absolute top-8 left-1/3 w-4 h-4 rounded-full bg-white/6 animate-float" style={{
         animationDelay: '1s'
       }} />
-        <div className={`absolute top-5 right-1/4 w-5 h-5 rounded-lg rotate-30 ${actualTheme === 'light' ? 'bg-neutral-800/7' : 'bg-white/7'} animate-float`} style={{
+        <div className="absolute top-5 right-1/4 w-5 h-5 rounded-lg rotate-30 bg-white/7 animate-float" style={{
         animationDelay: '3s'
       }} />
-        <div className={`absolute top-7 left-2/3 w-3 h-3 rounded-md rotate-60 ${actualTheme === 'light' ? 'bg-neutral-700/5' : 'bg-white/5'} animate-float`} style={{
+        <div className="absolute top-7 left-2/3 w-3 h-3 rounded-md rotate-60 bg-white/5 animate-float" style={{
         animationDelay: '1.5s'
       }} />
       </div>
       
-      <header className="w-full max-w-7xl mx-auto py-2 px-6 md:px-8 flex items-center justify-between max-h-14">
+      <header className="header-fixed w-full max-w-7xl mx-auto py-4 px-6 md:px-8 flex items-center justify-between">
         <div className="p-2">
           <motion.div initial={{
           opacity: 0,
@@ -300,7 +298,7 @@ const { user, profile, signOut } = useAuth();
           ) : (
             <div className="flex gap-3 rounded-xl"> 
               <Button variant="ghost" className="h-8 px-4 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm text-left transition-all duration-300" asChild>
-                <a href="/auth" className="bg-neutral-300">
+                <a href="/auth">
                   Log in
                 </a>
               </Button>

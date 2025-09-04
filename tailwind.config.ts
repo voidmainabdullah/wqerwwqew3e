@@ -127,9 +127,12 @@ const config: Config = {
         'analytics-green': '0 4px 14px 0 hsl(var(--analytics-green) / 0.15)',
         'analytics-purple': '0 4px 14px 0 hsl(var(--analytics-purple) / 0.15)',
         'analytics': '0 2px 8px 0 currentColor / 0.1',
+        'glow': '0 0 20px currentColor / 0.3',
+        'glow-lg': '0 0 40px currentColor / 0.4',
       },
       backdropBlur: {
         'brand': '12px',
+        'glass': '16px',
       },
       keyframes: {
         "accordion-down": {
@@ -174,6 +177,18 @@ const config: Config = {
           "0%": { transform: "translateY(0) scale(1)" },
           "100%": { transform: "translateY(-4px) scale(1.01)" },
         },
+        "theme-transition": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "logo-glow": {
+          "0%, 100%": { 
+            filter: "brightness(1) drop-shadow(0 0 0px currentColor)" 
+          },
+          "50%": { 
+            filter: "brightness(1.2) drop-shadow(0 0 20px rgba(59, 130, 246, 0.4))" 
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -183,6 +198,15 @@ const config: Config = {
         "brand-glow": "brand-glow 3s ease-in-out infinite",
         "icon-bounce": "icon-bounce 0.6s ease-out",
         "card-lift": "card-lift 0.3s ease-out forwards",
+        "theme-transition": "theme-transition 0.3s ease-out",
+        "logo-glow": "logo-glow 4s ease-in-out infinite",
+      },
+      spacing: {
+        'header': 'var(--header-height)',
+        'page-top': 'var(--page-padding-top)',
+      },
+      maxWidth: {
+        'content': 'var(--content-max-width)',
       },
     },
   },

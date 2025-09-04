@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { AnimatedBackground } from '@/components/ui/animated-background';
-import { useTheme } from '@/contexts/ThemeContext';
 import { 
   Eye, 
   EyeSlash, 
@@ -24,7 +23,6 @@ import {
 export const AuthPage: React.FC = () => {
   const { user, signIn, signUp, signInWithGoogle } = useAuth();
   const { toast } = useToast();
-  const { actualTheme } = useTheme();
   
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
@@ -118,7 +116,7 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative bg-background">
+    <div className="page-container flex items-center justify-center relative bg-background">
 
       {/* Animated Background */}
       <div className="absolute inset-0">
@@ -173,11 +171,7 @@ export const AuthPage: React.FC = () => {
                 <div>
                   <Button
                     variant="outline"
-                    className={`w-full h-14 text-base font-medium border-2 transition-all duration-300 relative overflow-hidden group ${
-                      actualTheme === 'light' 
-                        ? 'border-slate-300 hover:bg-slate-50 hover:border-indigo-400' 
-                        : 'hover:bg-accent/50'
-                    }`}
+                    className="w-full h-14 text-base font-medium border-2 transition-all duration-300 relative overflow-hidden group hover:bg-accent/50"
                     onClick={handleGoogleSignIn}
                     disabled={loading}
                   >
@@ -256,13 +250,6 @@ export const AuthPage: React.FC = () => {
                         className="pl-11 pr-11 h-14 text-base"
                         required
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      >
-                        <Eye className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`} />
-                      </button>
                     </div>
                   </div>
 
@@ -296,18 +283,12 @@ export const AuthPage: React.FC = () => {
                   <div>
                     <Button
                       type="submit"
-                      className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${
-                        actualTheme === 'light' 
-                          ? 'bg-black hover:bg-neutral-800 text-white hover:shadow-black/20' 
-                          : 'bg-white hover:bg-neutral-200 text-black hover:shadow-white/20'
-                      }`}
+                      className="w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group bg-white hover:bg-neutral-200 text-black hover:shadow-white/20"
                       disabled={loading}
                     >
                       {loading ? (
                         <div className="flex items-center gap-3">
-                          <div className={`w-5 h-5 border-2 border-t-transparent rounded-full animate-spin ${
-                            actualTheme === 'light' ? 'border-white' : 'border-primary-foreground'
-                          }`} />
+                          <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                           <span>
                             {isSignUp ? 'Creating Account...' : 'Signing In...'}
                           </span>
@@ -353,15 +334,11 @@ export const AuthPage: React.FC = () => {
                 </div>
 
                 {/* Enhanced Security Notice */}
-                <div className={`p-6 rounded-xl border ${
-                    actualTheme === 'light' 
-                      ? 'bg-gradient-to-r from-neutral-50 via-neutral-25 to-neutral-50 border-neutral-200' 
-                      : 'bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 border-border/50'
-                  }`}>
+                <div className="p-6 rounded-xl border bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 border-border/50">
                   
                   <div className="flex items-start gap-4">
                     <div>
-                      <EyeSlash className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-pri'}`} />
+                      <EyeSlash className="h-6 w-6 flex-shrink-0 mt-1 text-primary" />
                     </div>
                     <div className="text-sm space-y-2">
                       <p className="font-medium text-foreground">Your data is secure</p>
@@ -380,11 +357,9 @@ export const AuthPage: React.FC = () => {
                         ].map((feature, index) => (
                           <div
                             key={index}
-                            className={`flex items-center gap-2 text-xs text-muted-foreground px-2 py-1 rounded-md ${
-                              actualTheme === 'light' ? 'bg-neutral-50/80' : 'bg-background/50'
-                            }`}
+                            className="flex items-center gap-2 text-xs text-muted-foreground px-2 py-1 rounded-md bg-background/50"
                           >
-                            <feature.icon className={`w-3 h-3 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
+                            <feature.icon className="w-3 h-3 text-primary" />
                             <span>{feature.text}</span>
                           </div>
                         ))}

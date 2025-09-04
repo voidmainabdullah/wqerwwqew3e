@@ -258,7 +258,7 @@ export const PublicSharePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="page-container flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background */}
       <AnimatedBackground />
       

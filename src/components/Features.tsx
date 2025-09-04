@@ -47,7 +47,7 @@ const Features = () => {
     setOpenFeature(openFeature === index ? null : index);
   };
   return <section id="features" className="w-full py-12 md:py-24 px-4 md:px-8 bg-card/30" ref={ref}>
-      <div className="max-w-7xl mx-auto">
+      <div className="content-wrapper">
         <motion.div className="mb-12 md:mb-16 text-center" initial={{
         opacity: 0,
         y: 30
