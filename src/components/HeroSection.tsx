@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const {
-    scrollY
+    scrollY 
   } = useScroll();
 
   // Transform scroll position to glow line width and opacity
