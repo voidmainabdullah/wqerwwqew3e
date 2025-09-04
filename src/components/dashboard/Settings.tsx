@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Gear, User, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'phosphor-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
+ 
 export const Settings: React.FC = () => {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
