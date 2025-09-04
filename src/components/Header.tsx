@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { 
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,  
+  DropdownMenuContent, 
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
