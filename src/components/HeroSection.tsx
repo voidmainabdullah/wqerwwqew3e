@@ -86,11 +86,7 @@ const HeroSection = () => {
             </Button>
             
             {/* Anonymous Share Button - Distinctive Design */}
-            <Button 
-              variant="ghost" 
-              className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed"
-              asChild
-            >
+            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
               <a href="/code" className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
@@ -104,7 +100,7 @@ const HeroSection = () => {
 
           <motion.div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4" initial={{
           opacity: 0
-        }} animate={{ 
+        }} animate={{
           opacity: 1
         }} transition={{
           duration: 0.6,
@@ -150,9 +146,9 @@ const HeroSection = () => {
                   </div>
                 </div>
                 <div className="flex -space-x-2">
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/30 border-2 border-card"></div>
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-accent/30 border-2 border-card"></div>
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-muted border-2 border-card flex items-center justify-center text-xs font-medium">+3</div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card bg-rose-400"></div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card bg-blue-500"></div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card flex items-center justify-center text-xs font-medium bg-zinc-800">+3</div>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-2 md:gap-3">

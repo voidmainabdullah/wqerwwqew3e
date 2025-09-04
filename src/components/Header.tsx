@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import Logo from './Logo';
 import { Menu, X, CircleDot, LayoutDashboard, DollarSign, User, Settings, LogOut, Crown } from 'lucide-react';
@@ -19,9 +12,14 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
 const Header = () => {
- const { actualTheme } = useTheme();
-const { user, profile, signOut } = useAuth();
-
+  const {
+    actualTheme
+  } = useTheme();
+  const {
+    user,
+    profile,
+    signOut
+  } = useAuth();
   const [activePage, setActivePage] = useState('features');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,12 +44,10 @@ const { user, profile, signOut } = useAuth();
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
-
   const handleSignOut = async () => {
     await signOut();
     setMobileMenuOpen(false);
   };
-
   const getUserInitials = () => {
     if (user?.user_metadata?.display_name) {
       return user.user_metadata.display_name.charAt(0).toUpperCase();
@@ -61,7 +57,6 @@ const { user, profile, signOut } = useAuth();
     }
     return 'U';
   };
-
   const getUserDisplayName = () => {
     return user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
   };
@@ -98,7 +93,7 @@ const { user, profile, signOut } = useAuth();
       }} />
       </div>
       
-      <header className="w-full max-w-7xl mx-auto py-2 px-6 md:px-8 flex items-center justify-between max-h-14">
+      <header className="w-full max-w-12xl mx-auto py-4 px-3 md:px-8 flex items-center justify-between max-h-17 rounded-none bg-inherit">
         <div className="p-2">
           <motion.div initial={{
           opacity: 0,
@@ -180,8 +175,7 @@ const { user, profile, signOut } = useAuth();
               
               {/* Mobile CTA Buttons */}
               <div className="border-t border-border pt-3 mt-3 space-y-2">
-                {user ? (
-                  <>
+                {user ? <>
                     <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
                       <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-primary text-primary-foreground text-sm">
@@ -192,12 +186,10 @@ const { user, profile, signOut } = useAuth();
                         <p className="text-sm font-medium truncate">{getUserDisplayName()}</p>
                         <div className="flex items-center space-x-2">
                           <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
-                            {profile?.subscription_tier === 'pro' ? (
-                              <>
+                            {profile?.subscription_tier === 'pro' ? <>
                                 <Crown className="w-3 h-3 mr-1" />
                                 Pro
-                              </>
-                            ) : 'Free'}
+                              </> : 'Free'}
                           </Badge>
                         </div>
                       </div>
@@ -212,9 +204,7 @@ const { user, profile, signOut } = useAuth();
                       <LogOut className="mr-2 h-4 w-4" />
                       Sign Out
                     </Button>
-                  </>
-                ) : (
-                  <>
+                  </> : <>
                     <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" asChild>
                       <a href="/auth">
                         Log in
@@ -225,15 +215,13 @@ const { user, profile, signOut } = useAuth();
                         Get Started
                       </a>
                     </Button>
-                  </>
-                )}
+                  </>}
               </div>
             </div>
           </div>}
         
         <div className="hidden md:flex items-center gap-3">
-          {user ? (
-            <div className="flex items-center gap-3">
+          {user ? <div className="flex items-center gap-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-accent/50 transition-all duration-200">
@@ -246,12 +234,10 @@ const { user, profile, signOut } = useAuth();
                       <span className="text-sm font-medium">{getUserDisplayName()}</span>
                       <div className="flex items-center">
                         <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
-                          {profile?.subscription_tier === 'pro' ? (
-                            <>
+                          {profile?.subscription_tier === 'pro' ? <>
                               <Crown className="w-3 h-3 mr-1" />
                               Pro
-                            </>
-                          ) : 'Free'}
+                            </> : 'Free'}
                         </Badge>
                       </div>
                     </div>
@@ -281,14 +267,12 @@ const { user, profile, signOut } = useAuth();
                       Settings
                     </Link>
                   </DropdownMenuItem>
-                  {profile?.subscription_tier !== 'pro' && (
-                    <DropdownMenuItem asChild>
+                  {profile?.subscription_tier !== 'pro' && <DropdownMenuItem asChild>
                       <Link to="/subscription">
                         <Crown className="mr-2 h-4 w-4" />
                         Upgrade to Pro
                       </Link>
-                    </DropdownMenuItem>
-                  )}
+                    </DropdownMenuItem>}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
@@ -296,9 +280,7 @@ const { user, profile, signOut } = useAuth();
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
-          ) : (
-            <div className="flex gap-3 rounded-xl"> 
+            </div> : <div className="flex gap-3 rounded-xl"> 
               <Button variant="ghost" className="h-8 px-4 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm text-left transition-all duration-300" asChild>
                 <a href="/auth" className="bg-neutral-300">
                   Log in
@@ -309,8 +291,7 @@ const { user, profile, signOut } = useAuth();
                   Get Started
                 </a>
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
 
       </header>
