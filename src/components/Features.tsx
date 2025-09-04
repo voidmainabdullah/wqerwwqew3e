@@ -11,7 +11,7 @@ const Features = () => {
   } = useInView({
     threshold: 0.2,
     triggerOnce: true
-  }); 
+  });
   const features = [{
     title: "Secure File Storage",
     description: "Enterprise-grade encryption and security for all your important files and documents.",
