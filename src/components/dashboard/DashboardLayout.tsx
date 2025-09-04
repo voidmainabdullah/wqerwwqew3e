@@ -47,7 +47,7 @@ const AppSidebar = () => {
   return <Sidebar className="border-r border-border/50">
       <SidebarHeader className="w-auto h-20">
         <div className="flex items-center space-x-3 px-0 py-4 bg-inherit w-100 h-100">
-          <img src="/sky.png" alt="SecureShare Logo" className="h-40 w-auto sm:h-5 md:h-16 object-contain" />
+          <img src="/sky.png" alt="SecureShare Logo" className="h-40 w-auto sm:h-20 md:h-16 object-contain" />
           <span className="font-bold text-xl bg-gradient-to-r from-red-200 to-green-400 bg-clip-text">
             
           </span>
