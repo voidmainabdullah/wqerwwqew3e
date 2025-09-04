@@ -39,7 +39,7 @@ const Pricing = () => {
     popular: false
   }];
   return <section id="pricing" className="w-full py-20 px-6 md:px-12 bg-background" ref={ref}>
-      <div className="content-wrapper space-y-16">
+      <div className="max-w-7xl mx-auto space-y-16">
         <motion.div className="text-center space-y-4 max-w-3xl mx-auto" initial={{
         opacity: 0,
         y: 30

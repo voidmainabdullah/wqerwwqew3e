@@ -9,7 +9,7 @@ export const SubscriptionSuccess: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="page-container flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background */}
       <AnimatedBackground />
       

@@ -86,11 +86,11 @@ export const SubscriptionPage: React.FC = () => {
   };
 
   return (
-    <div className="relative page-container">
+    <div className="relative min-h-screen">
       <div className="fixed inset-0 z-0">
         <AnimatedBackground />
       </div>
-      <div className="relative z-10 bg-background/70 backdrop-blur-sm page-container">
+      <div className="relative z-10 bg-background/70 backdrop-blur-sm min-h-screen">
         <div className="container mx-auto px-4 py-12 space-y-16">
           <div className="text-center space-y-4">
             <h1 className="text-5xl font-bold tracking-tight">

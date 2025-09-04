@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 export const Settings: React.FC = () => {
   const { user, signOut } = useAuth();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, actualTheme } = useTheme();
   const { toast } = useToast();
   const [profile, setProfile] = useState<any>(null);
   const [displayName, setDisplayName] = useState('');
@@ -150,7 +150,11 @@ export const Settings: React.FC = () => {
         <Card className="bg-neutral-900 border-neutral-700">
           <CardHeader className="bg-neutral-800">
             <CardTitle className="text-white font-medium flex items-center">
-              <Moon className="mr-2 h-5 w-5 text-yellow-400" />
+              {actualTheme === 'dark' ? (
+                <Moon className="mr-2 h-5 w-5 text-yellow-400" />
+              ) : (
+                <Sun className="mr-2 h-5 w-5 text-yellow-400" />
+              )}
               Appearance
             </CardTitle>
             <CardDescription className="text-muted-foreground">
@@ -160,11 +164,17 @@ export const Settings: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="theme">Theme</Label>
-              <Select value={theme} onValueChange={(value: 'dark' | 'system') => setTheme(value)}>
+              <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
                 <SelectTrigger className="w-full bg-muted">
                   <SelectValue placeholder="Select theme" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="light">
+                    <div className="flex items-center gap-2">
+                      <Sun className="h-4 w-4" />
+                      <span>Light</span>
+                    </div>
+                  </SelectItem>
                   <SelectItem value="dark">
                     <div className="flex items-center gap-2">
                       <Moon className="h-4 w-4" />
@@ -182,7 +192,7 @@ export const Settings: React.FC = () => {
             </div>
 
             <div className="p-4 bg-muted/50 rounded-lg">
-              <p className="text-sm font-medium mb-2">Current theme: dark</p>
+              <p className="text-sm font-medium mb-2">Current theme: {actualTheme}</p>
               <div className="flex gap-4">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-full bg-background border-2 border-border"></div>
