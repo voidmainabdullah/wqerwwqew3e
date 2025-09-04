@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { 
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,  
+  DropdownMenuItem, 
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
