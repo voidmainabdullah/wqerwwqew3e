@@ -31,55 +31,49 @@ export default function CodePage() {
 
     setIsLoading(true);
     try {
-      // Find the shared link by token (using the code as token lookup)
-      const { data: sharedLink, error: linkError } = await supabase
-        .from('shared_links')
-        .select(`
-          *,
-          files(id, original_name, file_size, file_type, storage_path, download_count)
-        `)
-        .ilike('share_token', `%${shareCode.toUpperCase()}%`)
-        .eq('is_active', true)
+      // Find the file by share code directly from files table
+      const { data: fileData, error: fileError } = await supabase
+        .from('files')
+        .select('id, original_name, file_size, file_type, storage_path, download_count, is_locked')
+        .eq('share_code', shareCode.trim().toUpperCase())
         .single();
 
-      if (linkError || !sharedLink) {
-        toast.error('Invalid share code or link has expired');
+      if (fileError || !fileData) {
+        toast.error('Invalid share code or file not found');
         return;
       }
 
-      // Check if password is required
-      if (sharedLink.password_hash && !password) {
+      // Check if file is locked (password protected)
+      if (fileData.is_locked && !password) {
         setRequiresPassword(true);
         toast.error('This file is password protected');
         return;
       }
 
-      // Validate password if required
-      if (sharedLink.password_hash && password) {
-        const { data: isValidPassword } = await supabase.rpc('validate_share_password', {
-          token: sharedLink.share_token,
-          password: password
-        });
+      // Validate password if file is locked and password provided
+      if (fileData.is_locked && password) {
+        // Find the shared link to validate password
+        const { data: sharedLink } = await supabase
+          .from('shared_links')
+          .select('password_hash, share_token')
+          .eq('file_id', fileData.id)
+          .not('password_hash', 'is', null)
+          .maybeSingle();
 
-        if (!isValidPassword) {
-          toast.error('Incorrect password');
-          return;
+        if (sharedLink?.password_hash) {
+          const { data: isValidPassword } = await supabase.rpc('validate_share_password', {
+            token: sharedLink.share_token,
+            password: password
+          });
+
+          if (!isValidPassword) {
+            toast.error('Incorrect password');
+            return;
+          }
         }
       }
 
-      // Check expiry
-      if (sharedLink.expires_at && new Date(sharedLink.expires_at) < new Date()) {
-        toast.error('This share link has expired');
-        return;
-      }
-
-      // Check download limit
-      if (sharedLink.download_limit && sharedLink.download_count >= sharedLink.download_limit) {
-        toast.error('Download limit reached for this file');
-        return;
-      }
-
-      setFile(sharedLink.files);
+      setFile(fileData);
       setRequiresPassword(false);
     } catch (error: any) {
       console.error('Code lookup error:', error);
