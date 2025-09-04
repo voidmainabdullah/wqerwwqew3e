@@ -14,6 +14,7 @@ interface SharedFile {
   file_type: string;
   storage_path: string;
   download_count: number;
+  is_locked: boolean;
 }
 
 export default function CodePage() {
@@ -52,14 +53,27 @@ export default function CodePage() {
 
       // Validate password if file is locked and password provided
       if (fileData.is_locked && password) {
-        // Validate password using the file's password hash and validate_file_password function
-        const { data: isValidPassword } = await supabase.rpc('validate_file_password', {
-          p_file_id: fileData.id,
-          p_password: password
-        });
+        // Find the shared link to validate password
+        const { data: sharedLink } = await supabase
+          .from('shared_links')
+          .select('password_hash, share_token')
+          .eq('file_id', fileData.id)
+          .not('password_hash', 'is', null)
+          .maybeSingle();
 
-        if (!isValidPassword) {
-          toast.error('Incorrect password');
+        if (sharedLink?.password_hash) {
+          const { data: isValidPassword } = await supabase.rpc('validate_share_password', {
+            token: sharedLink.share_token,
+            password: password
+          });
+
+          if (!isValidPassword) {
+            toast.error('Incorrect password');
+            return;
+          }
+        } else {
+          // If no shared link with password found, but file is locked, deny access
+          toast.error('This file requires a password but no password protection is configured');
           return;
         }
       }

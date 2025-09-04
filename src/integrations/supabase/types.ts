@@ -434,6 +434,10 @@ export type Database = {
         Args: { team_id: string; user_id: string }
         Returns: boolean
       }
+      validate_file_password: {
+        Args: { p_file_id: string; p_password: string }
+        Returns: boolean
+      }
       validate_share_password: {
         Args: { password: string; token: string }
         Returns: boolean
