@@ -1,10 +1,69 @@
-@tailwind base;
+ @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Enhanced Color System for Analytics and Branding */
 @layer base {
   :root {
+    /* Button Theme Colors - Light Mode */
+    --button-primary-bg: 0 0% 0%;
+    --button-primary-text: 0 0% 100%;
+    --button-primary-hover: 0 0% 20%;
+    --button-secondary-bg: 0 0% 96%;
+    --button-secondary-text: 0 0% 10%;
+    --button-secondary-hover: 0 0% 90%; 
+    --button-outline-border: 0 0% 80%;
+    --button-outline-hover: 0 0% 96%;
+    --button-ghost-hover: 0 0% 96%;
+    
+    /* Analytics Color Palette - Light Theme */
+    /* Analytics Color Palette - Light Theme (Professional & Accessible) */
+    --analytics-red: 0 65% 51%;
+    --analytics-red-hover: 0 65% 45%;
+    --analytics-red-bg: 0 65% 51% / 0.1;
+    --analytics-yellow: 45 85% 47%;
+    --analytics-yellow-hover: 45 85% 42%;
+    --analytics-yellow-bg: 45 85% 47% / 0.1;
+    --analytics-green: 142 71% 45%;
+    --analytics-green-hover: 142 71% 40%;
+    --analytics-green-bg: 142 71% 45% / 0.1;
+    --analytics-purple: 262 80% 50%;
+    --analytics-purple-hover: 262 80% 45%;
+    --analytics-purple-bg: 262 80% 50% / 0.1;
+    
+    /* Enhanced Brand Colors - Light Theme (Modern & Professional) */
+    --brand-primary: 0 0% 9%; 
+    --brand-primary-hover: 0 0% 15%;
+    --brand-primary-light:0, 100%, 9%;
+    --brand-secondary: 210 20% 96%;
+    --brand-secondary-hover: 210 20% 92%;
+    --brand-accent: 217 91% 60%;
+    --brand-accent-hover: 217 91% 55%;
+    --brand-accent-light: 217 91% 70%;
+    --brand-neutral: 220 14% 96%;
+    --brand-neutral-hover: 220 14% 92%;
+    
+    /* Status Colors - Light Theme (Enhanced Contrast) */
+    --status-success: 142 71% 45%;
+    --status-success-bg: 142 71% 45% / 0.1;
+    --status-warning: 45 85% 47%;
+    --status-warning-bg: 45 85% 47% / 0.1;
+    --status-error: 0 65% 51%;
+    --status-error-bg: 0 65% 51% / 0.1;
+    --status-info: 217 91% 60%;
+    --status-info-bg: 217 91% 60% / 0.1;
+    
+    /* Interactive States (Enhanced) */
+    --hover-overlay: 0 0% 0% / 0.04;
+    --hover-scale: 1.02;
+    --focus-ring: 217 91% 60% / 0.25;
+    --focus-ring-offset: 2px;
+    --active-state: 0 0% 0% / 0.08;
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
     /* Button Theme Colors - Dark Mode */
     --button-primary-bg: 0 0% 100%;
     --button-primary-text: 0 0% 0%;
@@ -56,13 +115,6 @@
     --hover-overlay: 255 255% 100% / 0.06;
     --focus-ring: 217 91% 65% / 0.3;
     --active-state: 255 255% 100% / 0.12;
-    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Enhanced spacing system */
-    --header-height: 80px;
-    --page-padding-top: 120px;
-    --content-max-width: 1400px;
   }
 }
 
@@ -132,6 +184,103 @@
 /* SecureShare - Gmail-inspired dark file sharing platform design system */
 
 @layer base {
+  :root {
+    /* Light theme colors */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 3%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3%;
+
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 210 40% 90%;
+    --secondary-foreground: 0 0% 3%;
+
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 35%;
+
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --warning: 38 92% 45%;
+    --warning-foreground: 0 0% 98%;
+
+    --success: 142 76% 30%;
+    --success-foreground: 0 0% 98%;
+
+    --border: 0 0% 85%;
+    --input: 0 0% 92%;
+    --ring: 0 0% 0%;
+
+    --radius: 8px;
+
+    /* Sidebar colors for navigation */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 3%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 95%;
+    --sidebar-accent-foreground: 0 0% 3%;
+    --sidebar-border: 0 0% 85%;
+    --sidebar-ring: 0 0% 0%;
+
+    /* Custom design tokens for special effects */
+    --primary-glow: 0 0% 0%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 20%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
+    --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.1);
+    --shadow-glow: 0 8px 32px hsl(0 0% 0% / 0.15);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Function highlight colors - vibrant accent colors */
+    --function-upload: 0 0% 0%;
+    --function-upload-glow: 0 0% 20%;
+    --function-share: 0 0% 0%;
+    --function-share-glow: 0 0% 20%;
+    --function-download: 0 0% 20%;
+    --function-download-glow: 0 0% 30%;
+    --function-delete: 0 84% 50%;
+    --function-delete-glow: 0 84% 60%;
+    --function-success: 0 0% 0%;
+    --function-success-glow: 0 0% 20%;
+    --function-processing: 0 0% 30%;
+    --function-processing-glow: 0 0% 40%;
+    
+    /* Cosmic effects - monochromatic greys */
+    --cosmic-dark: 0 0% 35%;
+    --cosmic-medium: 0 0% 95%;
+    --cosmic-light: 0 0% 98%;
+    --cosmic-grey-1: 0 0% 35%;
+    --cosmic-grey-2: 0 0% 45%;
+    
+    /* Glass morphism effects */
+    --glass-border: 0 0% 0% / 0.1;
+    --glass-bg: 0 0% 0% / 0.05;
+    --glass-backdrop: blur(10px);
+    
+    /* Grid patterns */
+    --grid-color: 0 0% 0% / 0.05;
+    
+    /* File type colors - keeping some color for recognition */
+    --file-pdf: 0 84% 50%;
+    --file-image: 0 0% 30%;
+    --file-video: 0 0% 50%;
+    --file-audio: 45 93% 50%;
+    --file-document: 0 0% 0%;
+    --file-archive: 33 84% 50%;
+    --file-code: 0 0% 30%;
+    --file-default: 0 0% 35%;
+  }
+
+  .dark {
     /* Dark theme colors */
     --background: 0 0% 5%;
     --foreground: 0 0% 98%;
@@ -184,20 +333,6 @@
     --shadow-elegant: 0 20px 40px -12px hsl(0 0% 0% / 0.4);
     --shadow-glow: 0 8px 32px hsl(0 0% 80% / 0.15);
     
-    /* Function highlight colors - enhanced for dark mode */
-    --functions-upload: 59 130 246;
-    --functions-uploadGlow: 99 102 241;
-    --functions-share: 34 197 94;
-    --functions-shareGlow: 16 185 129;
-    --functions-download: 168 85 247;
-    --functions-downloadGlow: 147 51 234;
-    --functions-delete: 239 68 68;
-    --functions-deleteGlow: 220 38 38;
-    --functions-success: 34 197 94;
-    --functions-successGlow: 16 185 129;
-    --functions-processing: 251 191 36;
-    --functions-processingGlow: 245 158 11;
-    
     /* Cosmic effects - monochromatic greys */
     --cosmic-dark: 0 0% 30%;
     --cosmic-medium: 0 0% 18%;
@@ -215,18 +350,7 @@
     /* File type colors - keeping some color for recognition */
     --file-document: 0 0% 80%;
     --file-default: 0 0% 45%;
-    
-    /* Enhanced spacing and layout */
-    --header-height: 80px;
-    --page-padding-top: 120px;
-    --content-max-width: 1400px;
-    
-    /* Accessibility enhancements */
-    --focus-ring-width: 3px;
-    --focus-ring-offset: 2px;
-    --focus-ring-color: 217 91% 65%;
-    --high-contrast-border: 0 0% 60%;
-    --high-contrast-text: 0 0% 95%;
+  }
 }
 
 @layer base {
@@ -236,52 +360,7 @@
 
   body {
     @apply bg-background text-foreground;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    scroll-behavior: smooth;
   }
-  
-  /* Enhanced focus styles for accessibility */
-  *:focus-visible {
-    outline: var(--focus-ring-width) solid hsl(var(--focus-ring-color));
-    outline-offset: var(--focus-ring-offset);
-    border-radius: 4px;
-  }
-  
-  /* High contrast mode support */
-  @media (prefers-contrast: high) {
-    :root {
-      --border: var(--high-contrast-border);
-      --foreground: var(--high-contrast-text);
-    }
-  }
-  
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-  
-  /* Page layout improvements */
-  .page-container {
-    padding-top: var(--page-padding-top);
-    min-height: 100vh;
-  }
-  
-  .content-wrapper {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-  
-  @media (min-width: 768px) {
-    .content-wrapper {
-      padding: 0 2rem;
-    }
-  }
-
   /* Background gradient animation */
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
@@ -1127,15 +1206,39 @@
   transform: translateY(0);
   box-shadow: 0 1px 2px hsl(0 0% 0% / 0.1);
 }
-
 /* Light box grid background */
-.light-box-grid {
+/* Light box grid background */
+/* Light theme box grid */
+/* Light theme box grid */
+/* Light theme box grid */
+/* Light theme box grid */
+.light .light-box-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    linear-gradient(#00000022 1px, transparent 1px), /* rgba(0,0,0,0.05) ≈ #0000000D */
+    linear-gradient(90deg, #00000025 1px, transparent 1px);
   background-size: 60px 60px;
   background-position: 0 0, 0 0;
 }
+
+/* Balanced Light Box Grid */
+.light-box-grid {
+  background-image:
+    linear-gradient(#00000032 1px, transparent 1px), /* rgba(0,0,0,0.07) ≈ #00000012 */
+    linear-gradient(90deg, #00000038 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: 0 0, 0 0;
+}
+
+/* Dark mode adjustment */
+@media (prefers-color-scheme: dark) {
+  .light-box-grid {
+    background-image:
+      linear-gradient(#b4b4b44b 1px, transparent 1px), /* rgba(255,255,255,0.07) ≈ #FFFFFF12 */
+      linear-gradient(90deg, #9492924b 1px, transparent 1px);
+  }
+}
+
+
 
 .btn-theme-secondary:active,
 .btn-theme-outline:active,
@@ -1156,24 +1259,22 @@
 
 /* Anonymous Share Button - Professional Styling */
 .anonymous-share-btn {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.12));
-  border: 1px dashed rgba(139, 92, 246, 0.4);
-  color: rgb(216, 180, 254);
-  backdrop-filter: blur(8px); /* glass effect */
-  transition: all 0.3s ease;
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 300;
-  font-size: 12px;
+  /* Light theme styling */
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  border-color: rgba(99, 102, 241, 0.3);
+  color: rgb(99, 102, 241);
+  backdrop-filter: blur(8px);
   position: relative;
 }
 
 .anonymous-share-btn::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+  border-radius: inherit;
   opacity: 0;
   transition: opacity 0.3s ease;
-  border-radius: inherit;
 }
 
 .anonymous-share-btn:hover::before {
@@ -1181,11 +1282,40 @@
 }
 
 .anonymous-share-btn:hover {
-  border-color: rgba(139, 92, 246, 0.6);
-  color: rgb(196, 165, 254);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: rgb(79, 70, 229);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
 }
+
+/* Dark theme overrides */
+.dark .anonymous-share-btn {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.12));
+  border: 1px dashed rgba(139, 92, 246, 0.4);
+  color: rgb(216, 180, 254);
+  backdrop-filter: blur(8px); /* glass effect */
+  transition: all 0.3s ease;
+  font-family: 'Rajdhani', sans-serif;
+   font-weight: 300;
+  font-size: 12px;
+
+}
+
+.dark .anonymous-share-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+ 
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.dark .anonymous-share-btn:hover::before {
+  opacity: 1;
+}
+
+
 
 /* Anonymous button pulse animation */
 @keyframes anonymous-pulse {
@@ -1215,104 +1345,5 @@
     font-size: 1rem;
   }
 }
-
-/* Enhanced theme transition support */
-* {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
 }
 
-/* Logo responsive sizing */
-.logo-responsive {
-  height: 3rem; /* 48px base */
-  width: auto;
-  transition: all 0.3s ease;
-}
-
-@media (min-width: 640px) {
-  .logo-responsive {
-    height: 4rem; /* 64px on sm+ */
-  }
-}
-
-@media (min-width: 768px) {
-  .logo-responsive {
-    height: 5rem; /* 80px on md+ */
-  }
-}
-
-@media (min-width: 1024px) {
-  .logo-responsive {
-    height: 6rem; /* 96px on lg+ */
-  }
-}
-
-@media (min-width: 1280px) {
-  .logo-responsive {
-    height: 7rem; /* 112px on xl+ */
-  }
-}
-
-/* Header spacing fix */
-.header-fixed {
-  height: var(--header-height);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid hsl(var(--border) / 0.5);
-}
-
-/* Page content spacing */
-.page-content {
-  padding-top: var(--page-padding-top);
-}
-
-/* Enhanced function colors for better UX */
-.functions-upload {
-  color: rgb(var(--functions-upload));
-}
-
-.functions-uploadGlow {
-  color: rgb(var(--functions-uploadGlow));
-}
-
-.functions-share {
-  color: rgb(var(--functions-share));
-}
-
-.functions-shareGlow {
-  color: rgb(var(--functions-shareGlow));
-}
-
-.functions-download {
-  color: rgb(var(--functions-download));
-}
-
-.functions-downloadGlow {
-  color: rgb(var(--functions-downloadGlow));
-}
-
-.functions-delete {
-  color: rgb(var(--functions-delete));
-}
-
-.functions-deleteGlow {
-  color: rgb(var(--functions-deleteGlow));
-}
-
-.functions-success {
-  color: rgb(var(--functions-success));
-}
-
-.functions-successGlow {
-  color: rgb(var(--functions-successGlow));
-}
-
-.functions-processing {
-  color: rgb(var(--functions-processing));
-}
-
-.functions-processingGlow {
-  color: rgb(var(--functions-processingGlow));
-}
-}
