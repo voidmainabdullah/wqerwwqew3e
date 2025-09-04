@@ -10,7 +10,7 @@ const Pricing = () => {
   } = useInView({
     threshold: 0.2,
     triggerOnce: true
-  });
+  }); 
   const plans = [{
     name: "Personal",
     price: "Free",
