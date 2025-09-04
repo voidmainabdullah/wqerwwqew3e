@@ -8,7 +8,7 @@ const Testimonials = () => {
   } = useInView({
     threshold: 0.2,
     triggerOnce: true
-  });
+  }); 
   const testimonials = [{
     quote: "Our team collaboration improved by 300% after switching to this platform. File sharing is seamless and secure.",
     author: "Sarah Johnson",
