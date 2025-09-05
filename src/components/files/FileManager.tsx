@@ -218,7 +218,7 @@ export function FileManager() {
           </p>
         </div>
         <Button asChild>
-          <a href="/dashboard/upload" className="flex items-center gap-2 bg-neutral-200 text-neutral-400 my-0 mx-[20px]">
+          <a href="/dashboard/upload" className="flex items-center gap-2 bg-neutral-300 text-neutral-400 my-0 mx-[20px]">
             <Upload className="h-4 w-4" />
             Upload Files
           </a>
@@ -291,7 +291,7 @@ export function FileManager() {
                 <div className="flex items-center justify-between gap-2">
                   {/* Primary Action Buttons */}
                   <div className="flex items-center gap-1">
-                    <Button size="icon" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="h-8 w-8">
+                    <Button size="icon" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="h-8 w-8 bg-zinc-50">
                       <Download className="h-4 w-4" />
                     </Button>
                     
