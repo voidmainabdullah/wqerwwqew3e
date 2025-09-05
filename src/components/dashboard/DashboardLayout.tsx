@@ -197,7 +197,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <DropdownMenuSeparator />
                     {/* New Links */}
                     <DropdownMenuItem asChild>
-                      <Link to="/dashboard/analytics">
+                      <Link to="/dashboard/analytics" className="">
                         <ChartBar className="mr-2 h-4 w-4" />
                         Analytics
                       </Link>
