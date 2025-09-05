@@ -66,7 +66,8 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
         p_expires_at: expiresAt,
         p_download_limit: hasDownloadLimit ? shareSettings.downloadLimit : null,
         p_password_hash: passwordHash,
-        p_recipient_email: linkType === 'email' ? shareSettings.recipientEmail : null
+        p_recipient_email: linkType === 'email' ? shareSettings.recipientEmail : null,
+        p_message: shareSettings.message
       });
 
       if (error) throw error;

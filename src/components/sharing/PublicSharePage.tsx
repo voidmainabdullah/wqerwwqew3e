@@ -21,12 +21,14 @@ interface ShareData {
   expires_at: string | null;
   is_active: boolean;
   password_hash: string | null;
+  message: string | null;
   file: {
     original_name: string;
     file_size: number;
     file_type: string;
     storage_path: string;
     is_locked: boolean;
+    is_public: boolean;
   };
 }
 
@@ -57,7 +59,8 @@ export const PublicSharePage: React.FC = () => {
             file_size,
             file_type,
             storage_path,
-            is_locked
+            is_locked,
+            is_public
           )
         `)
         .eq('share_token', token)
@@ -68,6 +71,12 @@ export const PublicSharePage: React.FC = () => {
 
       if (!data) {
         setError('Share link not found or has expired');
+        return;
+      }
+
+      // Check if file is public
+      if (!data.file.is_public) {
+        setError('This file is private and cannot be accessed');
         return;
       }
 
@@ -86,7 +95,7 @@ export const PublicSharePage: React.FC = () => {
       setShareData(data);
       
       // Check if password is required
-      if (data.password_hash) {
+      if (data.password_hash || data.file.is_locked) {
         setPasswordRequired(true);
       }
     } catch (error: any) {
@@ -278,6 +287,12 @@ export const PublicSharePage: React.FC = () => {
             <p className="text-sm text-muted-foreground">
               {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
             </p>
+            
+            {shareData.message && (
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm text-foreground">{shareData.message}</p>
+              </div>
+            )}
             
             {shareData.expires_at && (
               <p className="text-xs text-muted-foreground">

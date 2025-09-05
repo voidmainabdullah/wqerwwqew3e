@@ -17,6 +17,7 @@ interface FileData {
   file_type: string;
   storage_path: string;
   is_locked: boolean;
+  is_public: boolean;
   share_code: string;
 }
 
@@ -30,6 +31,7 @@ export const CodeSharePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
+  const [shareMessage, setShareMessage] = useState<string | null>(null);
 
   const fetchFileByCode = async () => {
     if (!shareCode.trim()) {
@@ -60,7 +62,29 @@ export const CodeSharePage: React.FC = () => {
         return;
       }
 
+      // Check if file is public
+      if (!data.is_public) {
+        toast({
+          variant: "destructive",
+          title: "Access denied",
+          description: "This file is private and cannot be accessed via share code",
+        });
+        return;
+      }
+
       setFileData(data);
+
+      // Get share message from shared_links table
+      const { data: shareData } = await supabase
+        .from('shared_links')
+        .select('message')
+        .eq('file_id', data.id)
+        .eq('link_type', 'code')
+        .maybeSingle();
+
+      if (shareData?.message) {
+        setShareMessage(shareData.message);
+      }
 
       if (data.is_locked) {
         setPasswordRequired(true);
@@ -225,14 +249,20 @@ export const CodeSharePage: React.FC = () => {
             </div>
 
             {fileData && (
-              <div className="space-y-4">
-                <div className="text-center space-y-2 p-4 bg-muted rounded-lg">
-                  <FileText className="mx-auto h-8 w-8 text-primary" />
-                  <h3 className="font-medium">{fileData.original_name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {formatFileSize(fileData.file_size)} • {fileData.file_type}
-                  </p>
-                </div>
+                <div className="space-y-4">
+                 <div className="text-center space-y-2 p-4 bg-muted rounded-lg">
+                   <FileText className="mx-auto h-8 w-8 text-primary" />
+                   <h3 className="font-medium">{fileData.original_name}</h3>
+                   <p className="text-sm text-muted-foreground">
+                     {formatFileSize(fileData.file_size)} • {fileData.file_type}
+                   </p>
+                   
+                   {shareMessage && (
+                     <div className="mt-3 p-3 bg-primary/10 rounded-lg">
+                       <p className="text-sm text-foreground">{shareMessage}</p>
+                     </div>
+                   )}
+                 </div>
 
                 {fileData.is_locked && (
                   <Alert>

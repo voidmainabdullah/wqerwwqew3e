@@ -174,6 +174,7 @@ export type Database = {
           id: string
           is_active: boolean
           link_type: string
+          message: string | null
           password_hash: string | null
           recipient_email: string | null
           share_token: string
@@ -187,6 +188,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           link_type: string
+          message?: string | null
           password_hash?: string | null
           recipient_email?: string | null
           share_token: string
@@ -200,6 +202,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           link_type?: string
+          message?: string | null
           password_hash?: string | null
           recipient_email?: string | null
           share_token?: string
@@ -327,19 +330,40 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_toggle_file_lock: {
+        Args: { p_file_id: string; p_is_locked: boolean; p_password?: string }
+        Returns: boolean
+      }
+      check_file_access: {
+        Args: { p_file_id: string; p_user_id?: string }
+        Returns: {
+          can_access: boolean
+          reason: string
+        }[]
+      }
       check_storage_quota: {
         Args: { p_file_size: number; p_user_id: string }
         Returns: boolean
       }
       create_file_share: {
-        Args: {
-          p_download_limit?: number
-          p_expires_at?: string
-          p_file_id: string
-          p_link_type: string
-          p_password_hash?: string
-          p_recipient_email?: string
-        }
+        Args:
+          | {
+              p_download_limit?: number
+              p_expires_at?: string
+              p_file_id: string
+              p_link_type: string
+              p_message?: string
+              p_password_hash?: string
+              p_recipient_email?: string
+            }
+          | {
+              p_download_limit?: number
+              p_expires_at?: string
+              p_file_id: string
+              p_link_type: string
+              p_password_hash?: string
+              p_recipient_email?: string
+            }
         Returns: {
           share_code: string
           share_token: string
