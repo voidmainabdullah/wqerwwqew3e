@@ -212,13 +212,13 @@ export function FileManager() {
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">My Files</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight mx-[15px]">My Files</h1>
+          <p className="text-muted-foreground mx-[15px]">
             Manage your uploaded files and shared content.
           </p>
         </div>
         <Button asChild>
-          <a href="/dashboard/upload" className="flex items-center gap-2 bg-neutral-200 text-neutral-400 ">
+          <a href="/dashboard/upload" className="flex items-center gap-2 bg-neutral-200 text-neutral-400 my-0 mx-[20px]">
             <Upload className="h-4 w-4" />
             Upload Files
           </a>
@@ -265,7 +265,7 @@ export function FileManager() {
           </CardContent>
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent">
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4 rounded-xl bg-zinc-900">
+              <CardContent className="p-4 rounded-xl bg-zinc-900 mx-0">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                     <span className="text-primary font-medium text-sm">
