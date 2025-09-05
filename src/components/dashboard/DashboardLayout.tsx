@@ -231,7 +231,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         Settings
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator className="bg-zinc-50" />
+                    <DropdownMenuSeparator className="bg-zinc-600" />
                     <DropdownMenuItem onClick={() => signOut()}>
                       <SignOut className="mr-2 text-red-600 h-4 w-4" />
                       Sign out
