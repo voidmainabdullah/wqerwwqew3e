@@ -12,7 +12,7 @@ import { Gear, User, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'p
 import { useTheme } from '@/contexts/ThemeContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 export const Settings: React.FC = () => {
-  const {
+  const  
     user,
     signOut
   } = useAuth();
