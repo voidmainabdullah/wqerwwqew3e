@@ -11,15 +11,22 @@ import { Badge } from '@/components/ui/badge';
 import { Gear, User, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'phosphor-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
 export const Settings: React.FC = () => {
-  const { user, signOut } = useAuth();
-  const { theme, setTheme, actualTheme } = useTheme();
-  const { toast } = useToast();
+  const {
+    user,
+    signOut
+  } = useAuth();
+  const {
+    theme,
+    setTheme,
+    actualTheme
+  } = useTheme();
+  const {
+    toast
+  } = useToast();
   const [profile, setProfile] = useState<any>(null);
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
-
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -27,28 +34,29 @@ export const Settings: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-
   useEffect(() => {
     if (user) {
       fetchProfile();
       setDisplayName(user.user_metadata?.display_name || user.email?.split('@')[0] || '');
     }
   }, [user]);
-
   const fetchProfile = async () => {
     try {
-      const { data } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
+      const {
+        data
+      } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }
   };
-
   const updateDisplayName = async () => {
     if (!user) return;
     setLoading(true);
     try {
-      const { error } = await supabase.auth.updateUser({
+      const {
+        error
+      } = await supabase.auth.updateUser({
         data: {
           display_name: displayName
         }
@@ -68,28 +76,26 @@ export const Settings: React.FC = () => {
       setLoading(false);
     }
   };
-
   const deleteAccount = async () => {
     if (!user) return;
     const confirmed = window.confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your files and data.');
     if (!confirmed) return;
-
     try {
-      const { data: files } = await supabase.from('files').select('storage_path').eq('user_id', user.id);
+      const {
+        data: files
+      } = await supabase.from('files').select('storage_path').eq('user_id', user.id);
       if (files) {
         const filePaths = files.map(f => f.storage_path);
         if (filePaths.length > 0) {
           await supabase.storage.from('files').remove(filePaths);
         }
       }
-
       await supabase.from('profiles').delete().eq('id', user.id);
       await supabase.from('files').delete().eq('user_id', user.id);
       toast({
         title: 'Account deleted',
         description: 'Your account and all data have been permanently deleted.'
       });
-
       await signOut();
     } catch (error: any) {
       toast({
@@ -99,9 +105,7 @@ export const Settings: React.FC = () => {
       });
     }
   };
-
-  return (
-    <div className="space-y-8 px-6 py-8">
+  return <div className="space-y-8 px-6 py-8">
       <div>
         <h1 className="text-4xl font-bold text-primary">Settings</h1>
         <p className="text-muted-foreground">Manage your account settings and preferences with ease.</p>
@@ -109,7 +113,7 @@ export const Settings: React.FC = () => {
 
       <div className="space-y-6">
         {/* Profile Information */}
-        <Card className="bg-neutral-900 border-neutral-700">
+        <Card className="border-neutral-700 bg-neutral-800">
           <CardHeader className="bg-neutral-800">
             <CardTitle className="text-white font-medium flex items-center">
               <User className="mr-2 h-5 w-5 text-blue-500" />
@@ -119,7 +123,7 @@ export const Settings: React.FC = () => {
               Update your personal information and account details.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-neutral-800">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" value={user?.email || ''} disabled className="bg-muted" />
@@ -131,13 +135,7 @@ export const Settings: React.FC = () => {
             <div className="space-y-2">
               <Label htmlFor="displayName">Display Name</Label>
               <div className="flex gap-2 items-center">
-                <Input
-                  id="displayName"
-                  value={displayName}
-                  onChange={e => setDisplayName(e.target.value)}
-                  placeholder="Enter your display name"
-                  className="flex-grow"
-                />
+                <Input id="displayName" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Enter your display name" className="flex-grow" />
                 <Button onClick={updateDisplayName} disabled={loading} className="flex-shrink-0">
                   Update
                 </Button>
@@ -147,21 +145,17 @@ export const Settings: React.FC = () => {
         </Card>
 
         {/* Theme Settings */}
-        <Card className="bg-neutral-900 border-neutral-700">
+        <Card className="border-neutral-700 bg-neutral-800">
           <CardHeader className="bg-neutral-800">
             <CardTitle className="text-white font-medium flex items-center">
-              {actualTheme === 'dark' ? (
-                <Moon className="mr-2 h-5 w-5 text-yellow-400" />
-              ) : (
-                <Sun className="mr-2 h-5 w-5 text-yellow-400" />
-              )}
+              {actualTheme === 'dark' ? <Moon className="mr-2 h-5 w-5 text-yellow-400" /> : <Sun className="mr-2 h-5 w-5 text-yellow-400" />}
               Appearance
             </CardTitle>
             <CardDescription className="text-muted-foreground">
               Customize the appearance of the application.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-neutral-800">
             <div className="space-y-2">
               <Label htmlFor="theme">Theme</Label>
               <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
@@ -191,23 +185,7 @@ export const Settings: React.FC = () => {
               </Select>
             </div>
 
-            <div className="p-4 bg-muted/50 rounded-lg">
-              <p className="text-sm font-medium mb-2">Current theme: {actualTheme}</p>
-              <div className="flex gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-background border-2 border-border"></div>
-                  <span className="text-xs">Background</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-primary"></div>
-                  <span className="text-xs">Primary</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-muted"></div>
-                  <span className="text-xs">Muted</span>
-                </div>
-              </div>
-            </div>
+            
           </CardContent>
         </Card>
 
@@ -239,26 +217,22 @@ export const Settings: React.FC = () => {
               <div>
                 <p className="font-medium">Storage Usage</p>
                 <p className="text-sm text-muted-foreground">
-                  {profile?.subscription_tier === 'pro'
-                    ? `${formatFileSize(profile?.storage_used || 0)} used (unlimited)`
-                    : `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(profile?.storage_limit || 6442450944)} used`}
+                  {profile?.subscription_tier === 'pro' ? `${formatFileSize(profile?.storage_used || 0)} used (unlimited)` : `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(profile?.storage_limit || 6442450944)} used`}
                 </p>
               </div>
             </div>
 
-            {profile?.subscription_tier !== 'pro' && (
-              <Button asChild>
+            {profile?.subscription_tier !== 'pro' && <Button asChild>
                 <a href="/subscription" className="flex items-center">
                   <Crown className="mr-2 h-4 w-4" />
                   Upgrade to Pro
                 </a>
-              </Button>
-            )}
+              </Button>}
           </CardContent>
         </Card>
 
         {/* Security */}
-        <Card className="bg-neutral-900 border-neutral-700">
+        <Card className="border-neutral-700 bg-zinc-800">
           <CardHeader className="bg-neutral-800">
             <CardTitle className="text-white font-medium flex items-center">
               <Shield className="mr-2 h-5 w-5 text-blue-500" />
@@ -268,7 +242,7 @@ export const Settings: React.FC = () => {
               Manage your account security settings.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-neutral-800">
             <div>
               <p className="font-medium mb-2">Account Security</p>
               <p className="text-sm text-muted-foreground mb-4">
@@ -283,7 +257,7 @@ export const Settings: React.FC = () => {
 
         {/* Danger Zone */}
         <Card className="bg-neutral-900 border-destructive">
-          <CardHeader className="bg-red-900">
+          <CardHeader className="bg-neutral-800">
             <CardTitle className="flex items-center text-white">
               <Warning className="mr-2 h-5 w-5 text-yellow-500" />
               Danger Zone
@@ -292,7 +266,7 @@ export const Settings: React.FC = () => {
               Permanently delete your account and all associated data.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="bg-neutral-800">
             <div className="space-y-4">
               <div>
                 <p className="text-sm text-muted-foreground">
@@ -307,6 +281,5 @@ export const Settings: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
