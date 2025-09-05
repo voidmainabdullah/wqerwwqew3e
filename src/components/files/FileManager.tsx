@@ -212,13 +212,13 @@ export function FileManager() {
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight mx-[15px]">My Files</h1>
-          <p className="text-muted-foreground mx-[15px]">
+          <h1 className="text-2xl font-bold tracking-tight">My Files</h1>
+          <p className="text-muted-foreground">
             Manage your uploaded files and shared content.
           </p>
         </div>
         <Button asChild>
-          <a href="/dashboard/upload" className="flex items-center gap-2 bg-neutral-300 text-neutral-400 my-0 mx-[20px]">
+          <a href="/dashboard/upload" className="flex items-center gap-2">
             <Upload className="h-4 w-4" />
             Upload Files
           </a>
@@ -227,14 +227,14 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6 bg-neutral-800">
+        <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl  border-0" />
+              <Input placeholder="Search files..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-8" />
             </div>
             <div className="w-full sm:w-48">
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input bg-neutral-600 rounded-xl">
+              <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="w-full p-2 border border-input bg-background rounded-md">
                 <option value="all">All Files</option>
                 <option value="image">Images</option>
                 <option value="video">Videos</option>
@@ -253,11 +253,11 @@ export function FileManager() {
             <div className="text-muted-foreground mb-4">
               <Upload className="h-12 w-12" />
             </div>
-            <h3 className="text-lg font-medium mb-2 bg-neutral-950 hover:bg-neutral-800 text-zinc-500">No files found</h3>
+            <h3 className="text-lg font-medium mb-2 text-foreground">No files found</h3>
             <p className="text-muted-foreground text-center mb-4">
               {searchTerm ? 'No files match your search criteria.' : 'Start by uploading your first file.'}
             </p>
-            <Button asChild className="bg-neutral-950 hover:bg-neutral-800 text-blue-500">
+            <Button asChild>
               <a href="/dashboard/upload">
                 Upload Your First File
               </a>
@@ -265,7 +265,7 @@ export function FileManager() {
           </CardContent>
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent">
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4 rounded-xl bg-zinc-900 mx-0">
+              <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                     <span className="text-primary font-medium text-sm">
@@ -291,7 +291,7 @@ export function FileManager() {
                 <div className="flex items-center justify-between gap-2">
                   {/* Primary Action Buttons */}
                   <div className="flex items-center gap-1">
-                    <Button size="icon" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="h-8 w-8 bg-zinc-50">
+                    <Button size="icon" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="h-8 w-8">
                       <Download className="h-4 w-4" />
                     </Button>
                     

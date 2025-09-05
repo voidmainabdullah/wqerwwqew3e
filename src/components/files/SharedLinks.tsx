@@ -138,7 +138,7 @@ export const SharedLinks: React.FC = () => {
   }
   return <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Shared Links</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Shared Links</h1>
         <p className="text-muted-foreground">
           Manage and monitor your active file sharing links.
         </p>

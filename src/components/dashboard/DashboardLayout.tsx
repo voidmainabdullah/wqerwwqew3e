@@ -45,13 +45,13 @@ const navigation = [{
 const AppSidebar = () => {
   const location = useLocation();
   return <Sidebar className="border-r border-border/50">
-      <SidebarHeader className="w-auto h-20">
-        <div className="flex items-center space-x-3 px-0 py-4 bg-inherit w-100 h-100">
-          <img src="/sky.png" alt="SecureShare Logo" className="h-40 w-auto sm:h-20 md:h-16 object-contain" />
+      <SidebarHeader className="h-16 px-4">
+        <div className="flex items-center space-x-3 py-2">
+          <img src="/sky.png" alt="SecureShare Logo" className="h-8 w-auto object-contain" />
           <span className="font-bold text-xl bg-gradient-to-r from-red-200 to-green-400 bg-clip-text">
             
           </span>
-        </div> 
+        </div>
       </SidebarHeader>
       
       <SidebarContent>
@@ -141,26 +141,26 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="border-b border-white/30 bg-neutral-900/30 backdrop-blur-xl sticky top-0 z-40">
-            <div className="flex items-center justify-between h-16 px-6">
+          <header className="border-b border-border/50 bg-background/80 backdrop-blur-xl sticky top-0 z-40">
+            <div className="flex items-center justify-between h-16 px-4">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
                 
                 {/* Mobile Logo */}
-                <div className="md:hidden flex items-center space-x-3">
-                  <img src="/sky.png" alt="SecureShare Logo" className="h-10 w-auto object-contain" />
-                  <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+                <div className="md:hidden flex items-center space-x-2">
+                  <img src="/sky.png" alt="SecureShare Logo" className="h-8 w-auto object-contain" />
+                  <span className="font-bold text-base text-foreground">
                     SecureShare
                   </span>
                 </div>
                 
                 {/* Desktop Welcome Message */}
                 <div className="hidden md:block">
-                  <div className="space-y-1">
-                    <h2 className="text-lg font-semibold text-white">
+                  <div>
+                    <h2 className="text-base font-medium text-foreground">
                       Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
                     </h2>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       {new Date().toLocaleDateString('en-US', {
                       weekday: 'long',
                       year: 'numeric',
@@ -177,24 +177,24 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-accent/50 transition-all duration-200">
                       <Avatar className="h-10 w-10">
-                        <AvatarFallback className="bg-slate-700 text-white">
+                        <AvatarFallback className="bg-primary text-primary-foreground">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" forceMount className="w-56 bg-zinc-800">
+                  <DropdownMenuContent align="end" forceMount className="w-56">
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none text-white">
+                        <p className="text-sm font-medium leading-none">
                           {user.user_metadata?.display_name || 'User'}
                         </p>
-                        <p className="text-xs leading-none text-slate-400">
+                        <p className="text-xs leading-none text-muted-foreground">
                           {user.email}
                         </p>
                       </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-zinc-600" />
+                    <DropdownMenuSeparator />
                     {/* New Links */}
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/analytics" className="">
@@ -224,14 +224,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuSeparator className="bg-zinc-600" />
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/settings">
                         <Gear className="mr-2 h-4 w-4" />
                         Settings
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator className="bg-zinc-600" />
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>
                       <SignOut className="mr-2 text-red-600 h-4 w-4" />
                       Sign out
@@ -243,7 +243,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </header>
 
           {/* Main Content */}
-          <main className="flex-1">
+          <main className="flex-1 p-6">
             {children}
           </main> 
         </div>
