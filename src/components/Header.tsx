@@ -93,7 +93,7 @@ const Header = () => {
       }} />
       </div>
       
-      <header className="w-full max-w-12xl mx-auto py-4 px-3 md:px-8 flex items-center justify-between max-h-17 rounded-none bg-inherit">
+      <header className="w-full max-w-12xl mx-auto py-4 px-3 md:px-8 flex items-center justify-between max-h-12 rounded-none bg-inherit">
         <div className="p-2">
           <motion.div initial={{
           opacity: 0,
