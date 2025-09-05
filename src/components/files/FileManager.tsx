@@ -231,10 +231,10 @@ export function FileManager() {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700" />
+              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl" />
             </div>
             <div className="w-full sm:w-48">
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input rounded-md bg-neutral-600">
+              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input bg-neutral-600 rounded-xl">
                 <option value="all">All Files</option>
                 <option value="image">Images</option>
                 <option value="video">Videos</option>
@@ -265,7 +265,7 @@ export function FileManager() {
           </CardContent>
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent">
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
+              <CardContent className="p-4 rounded-xl bg-zinc-900">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                     <span className="text-primary font-medium text-sm">
