@@ -227,14 +227,14 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="p-6 bg-neutral-800">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8" />
+              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700" />
             </div>
             <div className="w-full sm:w-48">
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input bg-background rounded-md">
+              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input rounded-md bg-neutral-600">
                 <option value="all">All Files</option>
                 <option value="image">Images</option>
                 <option value="video">Videos</option>
@@ -263,7 +263,7 @@ export function FileManager() {
               </a>
             </Button>
           </CardContent>
-        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-zinc-950 hover:bg-zinc-800">
+        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent">
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
