@@ -253,7 +253,7 @@ export function FileManager() {
             <div className="text-muted-foreground mb-4">
               <Upload className="h-12 w-12" />
             </div>
-            <h3 className="text-lg font-medium mb-2 bg-neutral-950 hover:bg-neutral-800 text-green-400">No files found</h3>
+            <h3 className="text-lg font-medium mb-2 bg-neutral-950 hover:bg-neutral-800 text-zinc-500">No files found</h3>
             <p className="text-muted-foreground text-center mb-4">
               {searchTerm ? 'No files match your search criteria.' : 'Start by uploading your first file.'}
             </p>
