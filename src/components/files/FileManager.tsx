@@ -253,18 +253,18 @@ export function FileManager() {
             <div className="text-muted-foreground mb-4">
               <Upload className="h-12 w-12" />
             </div>
-            <h3 className="text-lg font-medium mb-2">No files found</h3>
+            <h3 className="text-lg font-medium mb-2 bg-neutral-950 hover:bg-neutral-800 text-green-400">No files found</h3>
             <p className="text-muted-foreground text-center mb-4">
               {searchTerm ? 'No files match your search criteria.' : 'Start by uploading your first file.'}
             </p>
-            <Button asChild>
+            <Button asChild className="bg-neutral-950 hover:bg-neutral-800 text-blue-500">
               <a href="/dashboard/upload">
                 Upload Your First File
               </a>
             </Button>
           </CardContent>
-        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow rounded-2xl bg-zinc-900">
+        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-neutral-950 hover:bg-neutral-800">
+          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -303,7 +303,7 @@ export function FileManager() {
                       {file.is_public ? <Globe className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                     </Button>
 
-                    <Button size="icon" variant="outline" onClick={() => toggleFileLock(file.id, file.is_locked)} title={file.is_locked ? 'Unlock' : 'Lock'} className="h-8 w-8 bg-zinc-900 hover:bg-zinc-800 text-red-400">
+                    <Button size="icon" variant="outline" onClick={() => toggleFileLock(file.id, file.is_locked)} title={file.is_locked ? 'Unlock' : 'Lock'} className="h-8 w-8">
                       {file.is_locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
                     </Button>
                   </div>
