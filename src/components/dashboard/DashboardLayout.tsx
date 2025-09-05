@@ -194,7 +194,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         </p>
                       </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-stone-400" />
+                    <DropdownMenuSeparator className="bg-zinc-600" />
                     {/* New Links */}
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/analytics" className="">
@@ -224,7 +224,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator className="bg-zinc-600" />
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard/settings">
                         <Gear className="mr-2 h-4 w-4" />
