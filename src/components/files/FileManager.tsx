@@ -227,7 +227,7 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6 bg-neutral-800">
+        <CardContent className="p-6 bg-red-800">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
