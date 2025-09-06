@@ -267,11 +267,11 @@ export function FileManager() {
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow bg-zinc-800">
               <CardContent className="p-4 rounded-xl mx-0 bg-neutral-800">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-red-300 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-primary/1 rounded-lg flex items-center justify-center">
                     <span className="text-primary font-medium text-sm">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
-                  </div>
+                  </div> 
                   <Badge variant="outline" className="text-xs">
                     {file.download_count} downloads
                   </Badge>
