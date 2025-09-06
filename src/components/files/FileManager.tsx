@@ -217,9 +217,9 @@ export function FileManager() {
             Manage your uploaded files and shared content.
           </p>
         </div>
-        <Button className="flex items-center gap-2 bg-red-400  my-0 mx-[20px]" asChild>
+        <Button asChild>
           <a href="/dashboard/upload" className="flex items-center gap-2 bg-red-400  my-0 mx-[20px]"> 
-            <Upload className="h-4 w-4" />
+            <Upload className="h-4 w-4 flex items-center gap-2 bg-red-400  my-0 mx-[20px]" />
             Upload Files
           </a>
         </Button>
