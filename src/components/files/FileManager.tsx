@@ -272,7 +272,7 @@ export function FileManager() {
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
                   </div> 
-                  <Badge variant="outline" className="text-xs bg-neutral-800">
+                  <Badge variant="outline" className="text-xs bg-neutral-700">
                     {file.download_count} downloads
                   </Badge>
                 </div>
