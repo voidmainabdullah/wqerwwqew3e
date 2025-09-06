@@ -267,7 +267,7 @@ export function FileManager() {
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow bg-zinc-800">
               <CardContent className="p-4 rounded-xl mx-0 bg-neutral-700">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-red-300 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-primary/1 rounded-lg flex items-center justify-center">
                     <span className="text-primary font-medium text-sm">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
@@ -289,7 +289,7 @@ export function FileManager() {
                 </div>
 
                 <div className="flex items-center justify-between gap-2">
-                  {/* Primary Action Buttons */}
+                  {/* Primary Action Buttons */} 
                   <div className="flex items-center gap-1">
                     <Button size="icon" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="h-8 w-8 bg-zinc-50">
                       <Download className="h-4 w-4" />
