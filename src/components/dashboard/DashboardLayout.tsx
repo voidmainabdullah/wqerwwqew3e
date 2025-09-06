@@ -142,7 +142,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="flex-1 flex flex-col">
           {/* Header */}
           <header className="border-b border-white/30 bg-neutral-900/30 backdrop-blur-xl sticky top-0 z-40">
-            <div className="flex items-center justify-between h-16 px-6">
+            <div className="flex items-center justify-between h-16 px-4 md:px-6">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
                 
@@ -155,12 +155,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </div>
                 
                 {/* Desktop Welcome Message */}
-                <div className="hidden md:block">
+                <div className="hidden lg:block">
                   <div className="space-y-1">
-                    <h2 className="text-lg font-semibold text-white">
+                    <h2 className="text-base xl:text-lg font-semibold text-white">
                       Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
                     </h2>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-xs xl:text-sm text-slate-400">
                       {new Date().toLocaleDateString('en-US', {
                       weekday: 'long',
                       year: 'numeric',
@@ -243,9 +243,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </header>
 
           {/* Main Content */}
-          <main className="flex-1">
-            {children}
-          </main> 
+          <main className="flex-1 overflow-auto">
+            <div className="p-4 md:p-6 lg:p-8">
+              {children}
+            </div>
+          </main>
         </div>
       </div>
     </SidebarProvider>;

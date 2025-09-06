@@ -6,31 +6,38 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Share } from 'phosphor-react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Share, Lock, Globe, LockSimple, Gear } from 'phosphor-react';
 
 interface SharedLink {
   id: string;
+  file_id: string;
   share_token: string;
   password_hash: string | null;
   download_limit: number | null;
   download_count: number;
   expires_at: string | null;
   created_at: string;
+  is_active: boolean;
+  message: string | null;
   files: {
+    id: string;
     original_name: string;
     file_size: number;
+    is_public: boolean;
+    is_locked: boolean;
   };
 }
 
 export const SharedLinks: React.FC = () => {
-  const {
-    user
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [sharedLinks, setSharedLinks] = useState<SharedLink[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingLink, setEditingLink] = useState<SharedLink | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   useEffect(() => {
     if (user) {
       fetchSharedLinks();
@@ -49,15 +56,14 @@ export const SharedLinks: React.FC = () => {
       }
 
       // Get shared links for user's files
-      const {
-        data,
-        error
-      } = await supabase.from('shared_links').select(`
+      const { data, error } = await supabase
+        .from('shared_links')
+        .select(`
           *,
-          files!inner(original_name, file_size)
-        `).in('file_id', fileIds).order('created_at', {
-        ascending: false
-      });
+          files!inner(id, original_name, file_size, is_public, is_locked)
+        `)
+        .in('file_id', fileIds)
+        .order('created_at', { ascending: false });
       if (error) throw error;
       setSharedLinks(data || []);
     } catch (error) {
@@ -121,6 +127,82 @@ export const SharedLinks: React.FC = () => {
     if (!downloadLimit) return false;
     return downloadCount >= downloadLimit;
   };
+
+  const toggleFilePublicStatus = async (fileId: string, isPublic: boolean) => {
+    try {
+      const { error } = await supabase.rpc('toggle_file_public_status', {
+        p_file_id: fileId,
+        p_is_public: isPublic
+      });
+      if (error) throw error;
+      
+      // Update local state
+      setSharedLinks(prev => prev.map(link => 
+        link.file_id === fileId 
+          ? { ...link, files: { ...link.files, is_public: isPublic } }
+          : link
+      ));
+      
+      toast({
+        title: "File visibility updated",
+        description: `File is now ${isPublic ? 'public' : 'private'}.`
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Update failed",
+        description: error.message
+      });
+    }
+  };
+
+  const toggleSharedLinkStatus = async (linkId: string, isActive: boolean) => {
+    try {
+      const { error } = await supabase.rpc('update_shared_link_settings', {
+        p_link_id: linkId,
+        p_is_active: isActive
+      });
+      if (error) throw error;
+      
+      // Update local state
+      setSharedLinks(prev => prev.map(link => 
+        link.id === linkId ? { ...link, is_active: isActive } : link
+      ));
+      
+      toast({
+        title: "Link status updated",
+        description: `Link is now ${isActive ? 'active' : 'disabled'}.`
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Update failed",
+        description: error.message
+      });
+    }
+  };
+
+  const openEditDialog = (link: SharedLink) => {
+    setEditingLink(link);
+    setIsEditDialogOpen(true);
+  };
+
+  const saveEditedLink = async () => {
+    if (!editingLink) return;
+    
+    try {
+      // Update the link settings
+      await toggleSharedLinkStatus(editingLink.id, editingLink.is_active);
+      setIsEditDialogOpen(false);
+      setEditingLink(null);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Save failed",
+        description: error.message
+      });
+    }
+  };
   if (loading) {
     return <div className="space-y-6">
         <div className="grid gap-4">
@@ -182,9 +264,21 @@ export const SharedLinks: React.FC = () => {
                           <Shield className="w-3 h-3 mr-1" />
                           Protected
                         </Badge>}
+                      {link.files.is_public ? (
+                        <Badge variant="default" className="bg-green-500/20 text-green-700">
+                          <Globe className="w-3 h-3 mr-1" />
+                          Public
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary">
+                          <LockSimple className="w-3 h-3 mr-1" />
+                          Private
+                        </Badge>
+                      )}
                       {expired && <Badge variant="destructive">Expired</Badge>}
                       {limitReached && <Badge variant="destructive">Limit Reached</Badge>}
-                      {!inactive && <Badge variant="default" className="bg-[#41e174]/[0.81]">Active</Badge>}
+                      {!inactive && link.is_active && <Badge variant="default" className="bg-[#41e174]/[0.81]">Active</Badge>}
+                      {!link.is_active && <Badge variant="destructive">Disabled</Badge>}
                     </div>
                   </div>
                 </CardHeader>
@@ -197,7 +291,16 @@ export const SharedLinks: React.FC = () => {
                     <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300">
                       <ArrowSquareOut className="h-4 w-4" />
                     </Button>
+                    <Button variant="outline" size="sm" onClick={() => openEditDialog(link)} className="hover:bg-accent/10 hover:text-accent transition-all duration-300">
+                      <Gear className="h-4 w-4" />
+                    </Button>
                   </div>
+
+                  {link.message && (
+                    <div className="mt-2 p-2 bg-muted/50 rounded-md">
+                      <p className="text-sm text-muted-foreground">Message: {link.message}</p>
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div className="flex items-center">
@@ -221,7 +324,23 @@ export const SharedLinks: React.FC = () => {
                       </span>
                     </div>
 
-                    <div className="flex justify-end">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center space-x-2">
+                        <Switch 
+                          checked={link.files.is_public}
+                          onCheckedChange={(checked) => toggleFilePublicStatus(link.file_id, checked)}
+                        />
+                        <Label className="text-xs">{link.files.is_public ? 'Public' : 'Private'}</Label>
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        <Switch 
+                          checked={link.is_active}
+                          onCheckedChange={(checked) => toggleSharedLinkStatus(link.id, checked)}
+                        />
+                        <Label className="text-xs">{link.is_active ? 'Active' : 'Disabled'}</Label>
+                      </div>
+                      
                       <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105">
                         <Trash className="h-4 w-4" />
                       </Button>
@@ -231,5 +350,43 @@ export const SharedLinks: React.FC = () => {
               </Card>;
       })}
         </div>}
+
+      {/* Edit Link Settings Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Shared Link Settings</DialogTitle>
+          </DialogHeader>
+          
+          {editingLink && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Switch 
+                  checked={editingLink.is_active}
+                  onCheckedChange={(checked) => setEditingLink({...editingLink, is_active: checked})}
+                />
+                <Label>Link Active</Label>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <Switch 
+                  checked={editingLink.files.is_public}
+                  onCheckedChange={(checked) => toggleFilePublicStatus(editingLink.file_id, checked)}
+                />
+                <Label>File Public</Label>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={saveEditedLink}>
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>;
 };

@@ -92,8 +92,8 @@ const Header = () => {
         animationDelay: '1.5s'
       }} />
       </div>
-      
-      <header className="w-full max-w-12xl mx-auto py-4 px-3 md:px-8 flex items-center justify-between max-h-12 rounded-none bg-inherit">
+        
+        <header className="w-full max-w-7xl mx-auto py-3 px-4 md:px-6 lg:px-8 flex items-center justify-between h-14 rounded-none bg-inherit">
         <div className="p-2">
           <motion.div initial={{
           opacity: 0,
@@ -109,13 +109,13 @@ const Header = () => {
         </div>
         
         {/* Mobile menu button */}
-        <button className="md:hidden p-3 rounded-2xl text-muted-foreground hover:text-foreground" onClick={toggleMobileMenu}>
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        <button className="lg:hidden p-2 rounded-xl text-muted-foreground hover:text-foreground" onClick={toggleMobileMenu}>
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
         
         {/* Desktop navigation with dropdowns */}
-        <nav className="hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2">
-          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-2xl">
+        <nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2">
+          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-xl">
             <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
               <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
                 <CircleDot size={14} className="inline-block mr-1" /> Features
@@ -159,7 +159,7 @@ const Header = () => {
         </nav>
         
         {/* Mobile navigation */}
-        {mobileMenuOpen && <div className="md:hidden absolute top-16 left-4 right-4 bg-background/95 backdrop-blur-md py-3 px-4 border border-border rounded-xl shadow-lg z-50">
+        {mobileMenuOpen && <div className="lg:hidden absolute top-14 left-4 right-4 bg-background/95 backdrop-blur-md py-3 px-4 border border-border rounded-xl shadow-lg z-50">
             <div className="flex flex-col gap-2">
               <a href="#features" className={`px-2 py-1.5 text-sm rounded-md transition-colors ${activePage === 'features' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`} onClick={handleNavClick('features')}>
                 <CircleDot size={14} className="inline-block mr-1" /> Features
@@ -220,7 +220,7 @@ const Header = () => {
             </div>
           </div>}
         
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           {user ? <div className="flex items-center gap-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

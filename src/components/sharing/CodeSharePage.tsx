@@ -257,11 +257,11 @@ export const CodeSharePage: React.FC = () => {
                      {formatFileSize(fileData.file_size)} • {fileData.file_type}
                    </p>
                    
-                   {shareMessage && (
-                     <div className="mt-3 p-3 bg-primary/10 rounded-lg">
-                       <p className="text-sm text-foreground">{shareMessage}</p>
-                     </div>
-                   )}
+                    {shareMessage && (
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
+                        <p className="text-sm text-blue-800 dark:text-blue-200">{shareMessage}</p>
+                      </div>
+                    )}
                  </div>
 
                 {fileData.is_locked && (

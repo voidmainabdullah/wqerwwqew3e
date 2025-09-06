@@ -289,8 +289,8 @@ export const PublicSharePage: React.FC = () => {
             </p>
             
             {shareData.message && (
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm text-foreground">{shareData.message}</p>
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
+                <p className="text-sm text-blue-800 dark:text-blue-200">{shareData.message}</p>
               </div>
             )}
             

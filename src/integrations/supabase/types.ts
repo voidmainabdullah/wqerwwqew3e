@@ -450,6 +450,16 @@ export type Database = {
         Args: { p_file_id: string; p_is_public: boolean }
         Returns: boolean
       }
+      update_shared_link_settings: {
+        Args: {
+          p_download_limit?: number
+          p_expires_at?: string
+          p_is_active?: boolean
+          p_link_id: string
+          p_password_hash?: string
+        }
+        Returns: boolean
+      }
       user_is_team_admin: {
         Args: { team_id: string; user_id: string }
         Returns: boolean

@@ -70,6 +70,12 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
         p_message: shareSettings.message
       });
 
+      // Track analytics
+      const { AnalyticsTracker } = await import('@/components/analytics/AnalyticsTracker');
+      if (data?.[0]?.share_token) {
+        await AnalyticsTracker.trackFileShare(fileId, data[0].share_token);
+      }
+
       if (error) throw error;
 
       const shareToken = data[0]?.share_token;
