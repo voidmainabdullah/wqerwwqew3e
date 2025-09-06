@@ -224,7 +224,7 @@ const TeamFileShare: React.FC = () => {
     }
   };
   if (loading) {
-    return <div className="space-y-6">
+    return <div className="space-y-4 p-4 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-muted rounded w-1/4"></div>
           <div className="grid gap-4">
@@ -234,15 +234,16 @@ const TeamFileShare: React.FC = () => {
         </div>
       </div>;
   }
-  return <div className="space-y-6">
-      <div className="flex items-center justify-between">
+
+  return <div className="space-y-6 p-4 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Team Files</h1>
-          <p className="text-muted-foreground">Access and manage files shared within your teams</p>
+          <h1 className="text-xl md:text-2xl font-bold">Team Files</h1>
+          <p className="text-sm md:text-base text-muted-foreground">Access and manage files shared within your teams</p>
         </div>
         <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="hover:scale-105 transition-transform">
+            <Button className="hover:scale-105 transition-transform w-full sm:w-auto">
               <ShareNetwork className="w-4 h-4 mr-2" />
               Share File
             </Button>
@@ -315,62 +316,62 @@ const TeamFileShare: React.FC = () => {
         {/* Team Files */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-lg md:text-xl">
               <Users className="w-5 h-5 mr-2" />
               Files Shared with Me ({teamFiles.length})
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Files that have been shared with your teams
             </CardDescription>
           </CardHeader>
           <CardContent>
             {teamFiles.length === 0 ? <div className="text-center py-8 text-muted-foreground">
                 <File className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p className="text-lg font-medium">No team files yet</p>
-                <p className="text-sm">Files shared with your teams will appear here</p>
+                <p className="text-base md:text-lg font-medium">No team files yet</p>
+                <p className="text-xs md:text-sm px-4">Files shared with your teams will appear here</p>
               </div> : <div className="space-y-4">
-                {teamFiles.map(file => <div key={file.file_id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center space-x-4">
+                {teamFiles.map(file => <div key={file.file_id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 md:p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center space-x-3 flex-1 min-w-0">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                         <File className="w-5 h-5 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium">{file.file_name}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="text-sm md:text-base font-medium truncate">{file.file_name}</p>
                           {file.is_locked && <Lock className="w-4 h-4 text-destructive" />}
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1">
+                        <div className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1 whitespace-nowrap">
                             <User className="w-3 h-3" />
-                            {file.sharer_email}
+                            <span className="truncate max-w-[100px]">{file.sharer_email}</span>
                           </span>
-                          <span className="flex items-center gap-1">
+                          <span className="flex items-center gap-1 whitespace-nowrap">
                             <Users className="w-3 h-3" />
-                            {file.team_name}
+                            <span className="truncate max-w-[80px]">{file.team_name}</span>
                           </span>
-                          <span className="flex items-center gap-1">
+                          <span className="flex items-center gap-1 whitespace-nowrap">
                             <Calendar className="w-3 h-3" />
                             {new Date(file.shared_at).toLocaleDateString()}
                           </span>
-                          <span>{formatFileSize(file.file_size)}</span>
-                          <span>{file.download_count} downloads</span>
+                          <span className="whitespace-nowrap">{formatFileSize(file.file_size)}</span>
+                          <span className="whitespace-nowrap">{file.download_count} downloads</span>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 w-full sm:w-auto">
                       {file.can_download && !file.is_locked && <Button variant="outline" size="sm" onClick={() => downloadFile(file)}>
-                          <Download className="w-4 h-4 mr-2" />
-                          Download
+                          <Download className="w-4 h-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Download</span>
                         </Button>}
                       
                       {file.can_edit && <Button variant="outline" size="sm" onClick={() => toggleFileLock(file.file_id, file.is_locked)} className="text-red-400">
                           {file.is_locked ? <>
-                              <LockOpen className="w-4 h-4 mr-2" />
-                              Unlock
+                              <LockOpen className="w-4 h-4 sm:mr-1" />
+                              <span className="hidden sm:inline">Unlock</span>
                             </> : <>
-                              <Lock className="w-4 h-4 mr-2" />
-                              Lock
+                              <Lock className="w-4 h-4 sm:mr-1" />
+                              <span className="hidden sm:inline">Lock</span>
                             </>}
                         </Button>}
                     </div>
@@ -382,58 +383,59 @@ const TeamFileShare: React.FC = () => {
         {/* My Files */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-lg md:text-xl">
               <File className="w-5 h-5 mr-2" />
               My Files ({userFiles.length})
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Your uploaded files available for sharing
             </CardDescription>
           </CardHeader>
           <CardContent>
             {userFiles.length === 0 ? <div className="text-center py-8 text-muted-foreground">
                 <File className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p className="text-lg font-medium">No files uploaded yet</p>
-                <p className="text-sm">Upload files to start sharing with teams</p>
+                <p className="text-base md:text-lg font-medium">No files uploaded yet</p>
+                <p className="text-xs md:text-sm px-4">Upload files to start sharing with teams</p>
               </div> : <div className="space-y-4">
-                {userFiles.map(file => <div key={file.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center space-x-4">
+                {userFiles.map(file => <div key={file.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 md:p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center space-x-3 flex-1 min-w-0">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                         <File className="w-5 h-5 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium">{file.original_name}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="text-sm md:text-base font-medium truncate">{file.original_name}</p>
                           {file.is_locked && <Lock className="w-4 h-4 text-destructive" />}
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span>{formatFileSize(file.file_size)}</span>
-                          <span>{new Date(file.created_at).toLocaleDateString()}</span>
+                        <div className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-muted-foreground">
+                          <span className="whitespace-nowrap">{formatFileSize(file.file_size)}</span>
+                          <span className="hidden sm:inline">•</span>
+                          <span className="whitespace-nowrap">{new Date(file.created_at).toLocaleDateString()}</span>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 w-full sm:w-auto">
                       <Button variant="outline" size="sm" onClick={() => downloadFile(file)} disabled={file.is_locked}>
-                        <Download className="w-4 h-4 mr-2" />
-                        Download
+                        <Download className="w-4 h-4 sm:mr-1" />
+                        <span className="hidden sm:inline">Download</span>
                       </Button>
                       
                       <Button variant="outline" size="sm" onClick={() => {
                   setSelectedFile(file);
                   setShareDialogOpen(true);
                 }} disabled={file.is_locked}>
-                        <ShareNetwork className="w-4 h-4 mr-2" />
-                        Share
+                        <ShareNetwork className="w-4 h-4 sm:mr-1" />
+                        <span className="hidden sm:inline">Share</span>
                       </Button>
                       
                       <Button variant="outline" size="sm" onClick={() => toggleFileLock(file.id, file.is_locked)}>
                         {file.is_locked ? <>
-                            <LockOpen className="w-4 h-4 mr-2" />
-                            Unlock
+                            <LockOpen className="w-4 h-4 sm:mr-1" />
+                            <span className="hidden sm:inline">Unlock</span>
                           </> : <>
-                            <Lock className="w-4 h-4 mr-2" />
-                            Lock
+                            <Lock className="w-4 h-4 sm:mr-1" />
+                            <span className="hidden sm:inline">Lock</span>
                           </>}
                       </Button>
                     </div>

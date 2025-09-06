@@ -254,7 +254,7 @@ export const TeamFiles: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 p-4 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-muted rounded w-1/4"></div>
           <div className="space-y-2">
@@ -268,17 +268,17 @@ export const TeamFiles: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 p-4 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Team Files</h2>
-          <p className="text-muted-foreground">Files shared within your teams</p>
+          <h2 className="text-xl md:text-2xl font-bold">Team Files</h2>
+          <p className="text-sm md:text-base text-muted-foreground">Files shared within your teams</p>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 w-full sm:w-auto">
           <select
             value={selectedTeam}
             onChange={(e) => setSelectedTeam(e.target.value)}
-            className="px-3 py-2 border border-border rounded-md bg-background text-foreground"
+            className="px-3 py-2 border border-border rounded-md bg-background text-foreground text-sm w-full sm:w-auto min-w-[150px]"
           >
             <option value="all">All Teams</option>
             {teams.map((team) => (
@@ -292,11 +292,11 @@ export const TeamFiles: React.FC = () => {
 
       {teamFiles.length === 0 ? (
         <Card>
-          <CardContent className="p-12">
+          <CardContent className="p-6 md:p-12">
             <div className="text-center">
               <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium mb-2">No team files</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-base md:text-lg font-medium mb-2">No team files</h3>
+              <p className="text-sm md:text-base text-muted-foreground px-4">
                 {selectedTeam === 'all' 
                   ? 'No files have been shared with your teams yet' 
                   : 'No files have been shared with this team yet'
@@ -308,36 +308,36 @@ export const TeamFiles: React.FC = () => {
       ) : (
         <div className="grid gap-4">
           {teamFiles.map((file) => (
-            <Card key={`${file.id}-${file.team_id}`} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 flex-1">
+            <Card key={`${file.id}-${file.team_id}`} className="hover:shadow-md transition-shadow overflow-hidden">
+              <CardContent className="p-3 md:p-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex items-center space-x-3 flex-1 min-w-0">
                     <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                       <FileText className="w-5 h-5 text-primary" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2">
-                        <h3 className="font-medium truncate">{file.original_name}</h3>
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <h3 className="text-sm md:text-base font-medium truncate">{file.original_name}</h3>
                         {file.is_locked && <Lock className="w-4 h-4 text-yellow-500" />}
                       </div>
-                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <span>{formatFileSize(file.file_size)}</span>
-                        <span>•</span>
-                        <span>{file.file_type.toUpperCase()}</span>
-                        <span>•</span>
-                        <span className="flex items-center space-x-1">
+                      <div className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-muted-foreground">
+                        <span className="whitespace-nowrap">{formatFileSize(file.file_size)}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span className="whitespace-nowrap">{file.file_type.toUpperCase()}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span className="flex items-center space-x-1 whitespace-nowrap">
                           <Download className="w-3 h-3" />
                           <span>{file.download_count}</span>
                         </span>
                       </div>
-                      <div className="flex items-center space-x-2 mt-1">
-                        <Badge variant="outline" className="text-xs">
+                      <div className="flex flex-wrap items-center gap-1 mt-1">
+                        <Badge variant="outline" className="text-xs whitespace-nowrap">
                           {file.team_name}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
                           Shared by {file.sharer_email}
                         </span>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
                           <Calendar className="w-3 h-3 inline mr-1" />
                           {formatDistanceToNow(new Date(file.shared_at), { addSuffix: true })}
                         </span>
@@ -345,16 +345,17 @@ export const TeamFiles: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex flex-wrap items-center gap-1 sm:gap-2 w-full sm:w-auto">
                     {file.can_download && (
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => downloadFile(file.id, file.original_name)}
-                        className="hover:scale-105 transition-transform"
+                        className="hover:scale-105 transition-transform flex-shrink-0"
                         disabled={file.is_locked && !file.is_admin}
                       >
-                        <Download className="w-4 h-4" />
+                        <Download className="w-4 h-4 sm:mr-1" />
+                        <span className="hidden sm:inline">Download</span>
                       </Button>
                     )}
                     
@@ -364,17 +365,19 @@ export const TeamFiles: React.FC = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => toggleFileLock(file.id, file.is_locked)}
-                          className="hover:scale-105 transition-transform"
+                          className="hover:scale-105 transition-transform flex-shrink-0"
                         >
-                          {file.is_locked ? <LockOpen className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                          {file.is_locked ? <LockOpen className="w-4 h-4 sm:mr-1" /> : <Lock className="w-4 h-4 sm:mr-1" />}
+                          <span className="hidden sm:inline">{file.is_locked ? 'Unlock' : 'Lock'}</span>
                         </Button>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => removeFileFromTeam(file.id, file.team_id, file.original_name)}
-                          className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all"
+                          className="hover:bg-functions-delete/10 hover:text-functions-delete transition-all flex-shrink-0"
                         >
-                          <Trash className="w-4 h-4" />
+                          <Trash className="w-4 h-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Remove</span>
                         </Button>
                       </>
                     )}

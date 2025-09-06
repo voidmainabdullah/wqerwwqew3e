@@ -38,11 +38,13 @@ export const SharedLinks: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [editingLink, setEditingLink] = useState<SharedLink | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
   useEffect(() => {
     if (user) {
       fetchSharedLinks();
     }
   }, [user]);
+
   const fetchSharedLinks = async () => {
     try {
       // Get user's files first
@@ -203,8 +205,9 @@ export const SharedLinks: React.FC = () => {
       });
     }
   };
+
   if (loading) {
-    return <div className="space-y-6">
+    return <div className="space-y-4 p-4 max-w-7xl mx-auto">
         <div className="grid gap-4">
           {[...Array(3)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader>
@@ -218,19 +221,20 @@ export const SharedLinks: React.FC = () => {
         </div>
       </div>;
   }
-  return <div className="space-y-6">
+
+  return <div className="space-y-6 p-4 max-w-7xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Shared Links</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Shared Links</h1>
+        <p className="text-sm md:text-base text-muted-foreground">
           Manage and monitor your active file sharing links.
         </p>
       </div>
 
       {sharedLinks.length === 0 ? <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
+          <CardContent className="flex flex-col items-center justify-center py-8 md:py-12">
             <Share className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium mb-2">No shared links yet</h3>
-            <p className="text-muted-foreground text-center mb-4">
+            <h3 className="text-base md:text-lg font-medium mb-2">No shared links yet</h3>
+            <p className="text-sm md:text-base text-muted-foreground text-center mb-4 px-4">
               Create shared links from your files to start sharing securely.
             </p>
             <Button asChild>
@@ -245,103 +249,111 @@ export const SharedLinks: React.FC = () => {
         const expired = isExpired(link.expires_at);
         const limitReached = isLimitReached(link.download_limit, link.download_count);
         const inactive = expired || limitReached;
-        return <Card key={link.id} className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''}`} style={{
+        return <Card key={link.id} className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''} overflow-hidden`} style={{
           animationDelay: `${index * 0.1}s`
         }}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg flex items-center">
+                <CardHeader className="pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-base md:text-lg flex items-center truncate">
                         <ShareNetwork className="mr-2 h-5 w-5" />
-                        {link.files.original_name}
+                        <span className="truncate">{link.files.original_name}</span>
                       </CardTitle>
-                      <CardDescription className="mt-1">
+                      <CardDescription className="mt-1 text-xs md:text-sm">
                         {formatFileSize(link.files.file_size)} • Created {new Date(link.created_at).toLocaleDateString()}
                       </CardDescription>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                       {link.password_hash && <Badge variant="secondary">
                           <Shield className="w-3 h-3 mr-1" />
                           Protected
                         </Badge>}
                       {link.files.is_public ? (
-                        <Badge variant="default" className="bg-green-500/20 text-green-700">
+                        <Badge variant="default" className="bg-green-500/20 text-green-700 text-xs">
                           <Globe className="w-3 h-3 mr-1" />
                           Public
                         </Badge>
                       ) : (
-                        <Badge variant="secondary">
+                        <Badge variant="secondary" className="text-xs">
                           <LockSimple className="w-3 h-3 mr-1" />
                           Private
                         </Badge>
                       )}
-                      {expired && <Badge variant="destructive">Expired</Badge>}
-                      {limitReached && <Badge variant="destructive">Limit Reached</Badge>}
-                      {!inactive && link.is_active && <Badge variant="default" className="bg-[#41e174]/[0.81]">Active</Badge>}
-                      {!link.is_active && <Badge variant="destructive">Disabled</Badge>}
+                      {expired && <Badge variant="destructive" className="text-xs">Expired</Badge>}
+                      {limitReached && <Badge variant="destructive" className="text-xs">Limit Reached</Badge>}
+                      {!inactive && link.is_active && <Badge variant="default" className="bg-[#41e174]/[0.81] text-xs">Active</Badge>}
+                      {!link.is_active && <Badge variant="destructive" className="text-xs">Disabled</Badge>}
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-2">
-                    <Input value={`${window.location.origin}/share/${link.share_token}`} readOnly className="font-mono text-sm" />
-                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300">
+                <CardContent className="space-y-3 pt-0">
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Input 
+                      value={`${window.location.origin}/share/${link.share_token}`} 
+                      readOnly 
+                      className="font-mono text-xs md:text-sm flex-1 min-w-0" 
+                    />
+                    <div className="flex gap-1 sm:gap-2">
+                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 flex-shrink-0">
                       <Copy className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300">
+                    <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300 flex-shrink-0">
                       <ArrowSquareOut className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => openEditDialog(link)} className="hover:bg-accent/10 hover:text-accent transition-all duration-300">
+                    <Button variant="outline" size="sm" onClick={() => openEditDialog(link)} className="hover:bg-accent/10 hover:text-accent transition-all duration-300 flex-shrink-0">
                       <Gear className="h-4 w-4" />
                     </Button>
+                    </div>
                   </div>
 
                   {link.message && (
-                    <div className="mt-2 p-2 bg-muted/50 rounded-md">
-                      <p className="text-sm text-muted-foreground">Message: {link.message}</p>
+                    <div className="p-3 bg-muted/50 rounded-md">
+                      <p className="text-xs md:text-sm text-muted-foreground break-words">
+                        <span className="font-medium">Message:</span> {link.message}
+                      </p>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                    <div className="flex items-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs md:text-sm">
+                    <div className="flex items-center gap-2">
                       <Download className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <span>
+                      <span className="truncate">
                         {link.download_count} / {link.download_limit || '∞'} downloads
                       </span>
                     </div>
                     
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <span>
+                      <span className="truncate">
                         {link.expires_at ? `Expires ${new Date(link.expires_at).toLocaleDateString()}` : 'Never expires'}
                       </span>
                     </div>
 
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
                       <Eye className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <span>
+                      <span className="truncate">
                         {link.password_hash ? 'Password protected' : 'Public access'}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center space-x-2">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                      <div className="flex items-center space-x-1">
                         <Switch 
                           checked={link.files.is_public}
                           onCheckedChange={(checked) => toggleFilePublicStatus(link.file_id, checked)}
                         />
-                        <Label className="text-xs">{link.files.is_public ? 'Public' : 'Private'}</Label>
+                        <Label className="text-xs whitespace-nowrap">{link.files.is_public ? 'Public' : 'Private'}</Label>
                       </div>
                       
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-1">
                         <Switch 
                           checked={link.is_active}
                           onCheckedChange={(checked) => toggleSharedLinkStatus(link.id, checked)}
                         />
-                        <Label className="text-xs">{link.is_active ? 'Active' : 'Disabled'}</Label>
+                        <Label className="text-xs whitespace-nowrap">{link.is_active ? 'Active' : 'Disabled'}</Label>
                       </div>
                       
-                      <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105">
+                      <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105 flex-shrink-0">
                         <Trash className="h-4 w-4" />
                       </Button>
                     </div>
@@ -353,7 +365,7 @@ export const SharedLinks: React.FC = () => {
 
       {/* Edit Link Settings Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Edit Shared Link Settings</DialogTitle>
           </DialogHeader>
