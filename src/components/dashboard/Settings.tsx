@@ -12,7 +12,7 @@ import { Gear, User, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'p
 import { useTheme } from '@/contexts/ThemeContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 export const Settings: React.FC = () => {
-  const  
+  const {
     user,
     signOut
   } = useAuth();
@@ -105,28 +105,28 @@ export const Settings: React.FC = () => {
       });
     }
   };
-    <div className="space-y-6">
+  return <div className="space-y-8 px-6 py-8">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Settings</h1>
+        <h1 className="text-4xl font-bold text-primary">Settings</h1>
         <p className="text-muted-foreground">Manage your account settings and preferences with ease.</p>
       </div>
 
       <div className="space-y-6">
         {/* Profile Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-foreground font-medium flex items-center">
-              <User className="mr-2 h-5 w-5 text-primary" />
+        <Card className="border-neutral-700 bg-neutral-800">
+          <CardHeader className="bg-neutral-800">
+            <CardTitle className="text-white font-medium flex items-center">
+              <User className="mr-2 h-5 w-5 text-blue-500" />
               Profile Information
             </CardTitle>
             <CardDescription className="text-muted-foreground">
               Update your personal information and account details.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-neutral-800">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" value={user?.email || ''} disabled />
+              <Input id="email" value={user?.email || ''} disabled className="bg-muted" />
               <p className="text-xs text-muted-foreground">
                 Email cannot be changed. Contact support if you need to update your email.
               </p>
@@ -145,9 +145,9 @@ export const Settings: React.FC = () => {
         </Card>
 
         {/* Theme Settings */}
-                <Moon className="mr-2 h-5 w-5 text-primary" />
-          <CardHeader>
-                <Sun className="mr-2 h-5 w-5 text-primary" />
+        <Card className="border-neutral-700 bg-neutral-800">
+          <CardHeader className="bg-neutral-800">
+            <CardTitle className="text-white font-medium flex items-center">
               {actualTheme === 'dark' ? <Moon className="mr-2 h-5 w-5 text-yellow-400" /> : <Sun className="mr-2 h-5 w-5 text-yellow-400" />}
               Appearance
             </CardTitle>
@@ -155,11 +155,11 @@ export const Settings: React.FC = () => {
               Customize the appearance of the application.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-neutral-800">
             <div className="space-y-2">
               <Label htmlFor="theme">Theme</Label>
               <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full bg-muted">
                   <SelectValue placeholder="Select theme" />
                 </SelectTrigger>
                 <SelectContent>
@@ -190,9 +190,9 @@ export const Settings: React.FC = () => {
         </Card>
 
         {/* Subscription */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl text-primary font-semibold flex items-center">
+        <Card className="bg-neutral-800">
+          <CardHeader className="bg-neutral-800">
+            <CardTitle className="text-xl text-blue-500 font-semibold flex items-center">
               <Crown className="mr-2 h-5 w-5" />
               Subscription
             </CardTitle>
@@ -208,7 +208,7 @@ export const Settings: React.FC = () => {
                   {profile?.subscription_tier === 'pro' ? 'Pro Plan' : 'Free Plan'}
                 </p>
               </div>
-              <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'}>
+              <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="bg-stone-800">
                 {profile?.subscription_tier === 'pro' ? 'Pro' : 'Free'}
               </Badge>
             </div>
@@ -232,17 +232,17 @@ export const Settings: React.FC = () => {
         </Card>
 
         {/* Security */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-foreground font-medium flex items-center">
-              <Shield className="mr-2 h-5 w-5 text-primary" />
+        <Card className="border-neutral-700 bg-zinc-800">
+          <CardHeader className="bg-neutral-800">
+            <CardTitle className="text-white font-medium flex items-center">
+              <Shield className="mr-2 h-5 w-5 text-blue-500" />
               Security
             </CardTitle>
             <CardDescription className="text-muted-foreground">
               Manage your account security settings.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-neutral-800">
             <div>
               <p className="font-medium mb-2">Account Security</p>
               <p className="text-sm text-muted-foreground mb-4">
@@ -256,17 +256,17 @@ export const Settings: React.FC = () => {
         </Card>
 
         {/* Danger Zone */}
-        <Card className="border-destructive">
-          <CardHeader>
-            <CardTitle className="flex items-center text-foreground">
-              <Warning className="mr-2 h-5 w-5 text-destructive" />
+        <Card className="bg-neutral-900 border-destructive">
+          <CardHeader className="bg-neutral-800">
+            <CardTitle className="flex items-center text-white">
+              <Warning className="mr-2 h-5 w-5 text-yellow-500" />
               Danger Zone
             </CardTitle>
             <CardDescription className="text-muted-foreground">
               Permanently delete your account and all associated data.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="bg-neutral-800">
             <div className="space-y-4">
               <div>
                 <p className="text-sm text-muted-foreground">
@@ -281,5 +281,5 @@ export const Settings: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </div>;
 };
