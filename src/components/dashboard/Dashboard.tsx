@@ -119,10 +119,10 @@ export const Dashboard: React.FC = () => {
   }
   const isPro = stats?.subscriptionTier === "pro";
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
-  return <div className="min-h-screen bg-neutral-900/80 text-white">
+  return <div className="min-h-screen text-white rounded-xl bg-inherit">
       {/* Professional Header */}
-      <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm">
-        <div className="px-8 py-6">
+      <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm rounded-full">
+        <div className="px-8 py-6 rounded-2xl bg-neutral-900">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-4">
@@ -158,7 +158,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="p-8 space-y-8">
+      <div className="p-8 space-y-8 bg-neutral-900">
         {/* Main Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Files Card */}
@@ -381,8 +381,7 @@ export const Dashboard: React.FC = () => {
                     Popular Files
                   </h4>
                   <div className="space-y-2">
-                    {stats?.popularFiles.length ? stats.popularFiles.slice(0, 3).map((file, index) => (
-                      <div key={index} className="flex items-center justify-between">
+                    {stats?.popularFiles.length ? stats.popularFiles.slice(0, 3).map((file, index) => <div key={index} className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="w-6 h-6 rounded bg-blue-500/20 flex items-center justify-center">
                             <Files className="w-3 h-3 text-blue-400" />
@@ -392,10 +391,7 @@ export const Dashboard: React.FC = () => {
                           </span>
                         </div>
                         <span className="text-emerald-400 text-sm">{file.download_count} downloads</span>
-                      </div>
-                    )) : (
-                      <p className="text-slate-400 text-sm">No files uploaded yet</p>
-                    )}
+                      </div>) : <p className="text-slate-400 text-sm">No files uploaded yet</p>}
                   </div>
                 </div>
               </div>
