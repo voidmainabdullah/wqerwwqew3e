@@ -218,7 +218,7 @@ export function FileManager() {
           </p>
         </div>
         <Button asChild>
-          <a href="/dashboard/upload" className="flex items-center gap-2 bg-neutral-300 text-neutral-100 my-0 mx-[20px]"> 
+          <a href="/dashboard/upload" className="flex items-center gap-2 bg-red-400  my-0 mx-[20px]"> 
             <Upload className="h-4 w-4" />
             Upload File
           </a>
