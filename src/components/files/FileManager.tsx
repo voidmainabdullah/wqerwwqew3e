@@ -234,7 +234,7 @@ export function FileManager() {
               <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl" />
             </div>
             <div className="w-full sm:w-48">
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border-input bg-neutral-600 rounded-xl">
+              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 bg-neutral-600 rounded-xl">
                 <option value="all">All Files</option>
                 <option value="image">Images</option>
                 <option value="video">Videos</option>
