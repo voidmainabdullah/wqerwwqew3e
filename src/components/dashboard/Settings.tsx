@@ -114,7 +114,7 @@ export const Settings: React.FC = () => {
       <div className="space-y-6">
         {/* Profile Information */}
         <Card className="border-neutral-700 bg-neutral-800">
-          <CardHeader className="bg-neutral-800">
+          <CardHeader className="bg-neutral-800 rounded-3xl">
             <CardTitle className="text-white font-medium flex items-center">
               <User className="mr-2 h-5 w-5 text-blue-500" />
               Profile Information
@@ -146,7 +146,7 @@ export const Settings: React.FC = () => {
 
         {/* Theme Settings */}
         <Card className="border-neutral-700 bg-neutral-800">
-          <CardHeader className="bg-neutral-800">
+          <CardHeader className="bg-neutral-800 rounded-3xl">
             <CardTitle className="text-white font-medium flex items-center">
               {actualTheme === 'dark' ? <Moon className="mr-2 h-5 w-5 text-yellow-400" /> : <Sun className="mr-2 h-5 w-5 text-yellow-400" />}
               Appearance
@@ -191,7 +191,7 @@ export const Settings: React.FC = () => {
 
         {/* Subscription */}
         <Card className="bg-neutral-800">
-          <CardHeader className="bg-neutral-800">
+          <CardHeader className="bg-neutral-800 rounded-full">
             <CardTitle className="text-xl text-blue-500 font-semibold flex items-center">
               <Crown className="mr-2 h-5 w-5" />
               Subscription
@@ -233,7 +233,7 @@ export const Settings: React.FC = () => {
 
         {/* Security */}
         <Card className="border-neutral-700 bg-zinc-800">
-          <CardHeader className="bg-neutral-800">
+          <CardHeader className="bg-neutral-800 rounded-3xl">
             <CardTitle className="text-white font-medium flex items-center">
               <Shield className="mr-2 h-5 w-5 text-blue-500" />
               Security
@@ -257,7 +257,7 @@ export const Settings: React.FC = () => {
 
         {/* Danger Zone */}
         <Card className="bg-neutral-900 border-destructive">
-          <CardHeader className="bg-neutral-800">
+          <CardHeader className="bg-neutral-800 rounded-lg">
             <CardTitle className="flex items-center text-white">
               <Warning className="mr-2 h-5 w-5 text-yellow-500" />
               Danger Zone
