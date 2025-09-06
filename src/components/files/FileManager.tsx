@@ -232,7 +232,7 @@ export function FileManager() {
             <div className="relative flex-1"> 
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl" />
-            </div>
+            </div> 
             <div className="w-full sm:w-48">
               <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 bg-neutral-600 rounded-xl">
                 <option value="all">All Files</option>
