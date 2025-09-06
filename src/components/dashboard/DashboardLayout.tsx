@@ -44,8 +44,8 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  return <Sidebar className="border-r border-border/50">
-      <SidebarHeader className="w-auto h-20">
+  return <Sidebar className="border-r border-border/50 bg-inherit">
+      <SidebarHeader className="w-auto h-20 bg-neutral-800">
         <div className="flex items-center space-x-3 px-0 py-4 bg-inherit w-100 h-100">
           <img src="/sky.png" alt="SecureShare Logo" className="h-40 w-auto sm:h-20 md:h-16 object-contain" />
           <span className="font-bold text-xl bg-gradient-to-r from-red-200 to-green-400 bg-clip-text">
@@ -54,7 +54,7 @@ const AppSidebar = () => {
         </div> 
       </SidebarHeader>
       
-      <SidebarContent>
+      <SidebarContent className="bg-neutral-800">
         {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
