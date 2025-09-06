@@ -263,7 +263,7 @@ export function FileManager() {
               </a>
             </Button>
           </CardContent>
-        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-red-300">
+        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent"> 
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow bg-zinc-800">
               <CardContent className="p-4 rounded-xl mx-0 bg-neutral-800">
                 <div className="flex items-start justify-between mb-3">
