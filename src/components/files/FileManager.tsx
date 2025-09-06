@@ -259,7 +259,7 @@ export function FileManager() {
             </p>
             <Button asChild className="bg-neutral-950 hover:bg-neutral-800 text-blue-500">
               <a href="/dashboard/upload">
-                Upload Your First File
+                Upload a File
               </a>
             </Button>
           </CardContent>
