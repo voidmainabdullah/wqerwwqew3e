@@ -63,17 +63,7 @@ const config: Config = {
           ring: "hsl(var(--sidebar-ring))",
         },
         // Button Theme Colors
-        button: {
-          "primary-bg": "hsl(var(--button-primary-bg))",
-          "primary-text": "hsl(var(--button-primary-text))",
-          "primary-hover": "hsl(var(--button-primary-hover))",
-          "secondary-bg": "hsl(var(--button-secondary-bg))",
-          "secondary-text": "hsl(var(--button-secondary-text))",
-          "secondary-hover": "hsl(var(--button-secondary-hover))",
-          "outline-border": "hsl(var(--button-outline-border))",
-          "outline-hover": "hsl(var(--button-outline-hover))",
-          "ghost-hover": "hsl(var(--button-ghost-hover))",
-        },
+       
         // Enhanced Analytics Color System (4-Color Palette)
         analytics: {
           red: "hsl(var(--analytics-red))",
