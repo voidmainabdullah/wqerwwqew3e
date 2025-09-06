@@ -283,7 +283,7 @@ const FileTransferDemo = () => {
                 duration: 4,
                 repeat: Infinity,
                 ease: "easeInOut"
-              }} className="absolute top-1 right-1 w-3 h-3 rounded-full bg-blue-700" />
+              }} className="absolute top-1 right-1 w-3 h-3 rounded-full bg-slate-100" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Full Control</h3>
@@ -438,7 +438,7 @@ const FileTransferDemo = () => {
               }} transition={{
                 duration: 3,
                 repeat: Infinity
-              }} className="absolute inset-0 rounded-full bg-blue-800" />
+              }} className="absolute inset-0 rounded-full bg-zinc-800" />
               </div>
               <div>
                 <h4 className="font-semibold text-foreground">End-to-End Encryption</h4>
@@ -480,7 +480,7 @@ const FileTransferDemo = () => {
                 duration: 4,
                 repeat: Infinity,
                 delay: 1
-              }} className="absolute inset-1 border border-black/20 dark:border-neutral-800/20 rounded-full bg-zinc-800" />
+              }} className="absolute inset-1 border border-black/20 dark:border-neutral-800/20 rounded-full bg-zinc-50" />
               </div>
               <div>
                 <h4 className="font-semibold text-foreground">Global Infrastructure</h4>
