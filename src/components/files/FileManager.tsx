@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button2';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Download, Search, Filter, Upload, Share2, Lock, Unlock, Globe, EyeOff, Shield, Edit3, MoreVertical } from 'lucide-react';
@@ -217,12 +218,12 @@ export function FileManager() {
             Manage your uploaded files and shared content.
           </p>
         </div>
-        <Button asChild>
+        <Button2 asChild>
           <a href="/dashboard/upload" className="flex items-center gap-2 bg-red-400  my-0 mx-[20px]"> 
             <Upload className="h-4 w-4" />
             Upload Files
           </a>
-        </Button>
+        </Button2>
       </div>
 
       {/* Search and Filter */}
