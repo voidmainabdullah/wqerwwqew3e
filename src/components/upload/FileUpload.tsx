@@ -303,7 +303,7 @@ export const FileUpload: React.FC = () => {
                     </div>
 
                     <Badge variant={
-                      uploadFile.status === 'success' ? 'default' :
+                      uploadFile.status === 'success' ? 'secondary' :
                       uploadFile.status === 'error' ? 'destructive' :
                       uploadFile.status === 'uploading' ? 'secondary' : 'outline'
                     } className={`transition-all duration-300 ${
