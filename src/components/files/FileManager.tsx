@@ -315,7 +315,7 @@ export function FileManager() {
                         <MoreVertical className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="end" className="bg-neutral-800">
                       <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
                         <Shield className="h-4 w-4 mr-2" />
                         Virus Scan
