@@ -199,7 +199,7 @@ export const FileUpload: React.FC = () => {
         </div>
         <Button asChild variant="outline">
           <a href="/dashboard/files" className="flex items-center gap-2">
-             My Files
+             File Manager
             <ArrowRight size={16} />
           </a>
         </Button>
