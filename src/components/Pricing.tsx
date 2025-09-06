@@ -74,7 +74,7 @@ const Pricing = () => {
           duration: 0.6,
           delay: index * 0.2
         }}>
-              {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 text-neutral-100 text-sm rounded-full font-medium bg-[#81f89d]/[0.61]">
+              {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 text-neutral-100 text-sm rounded-full font-medium bg-zinc-700">
                   Most Popular
                 </div>}
               
@@ -90,8 +90,8 @@ const Pricing = () => {
                 
                 <div className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => <div key={i} className="flex items-center gap-3">
-                      <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <div className="h-5 w-5 rounded-full flex items-center justify-center text-primary bg-neutral-700">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="bg-transparent text-green-300">
                           <path d="M5 12L10 17L19 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
