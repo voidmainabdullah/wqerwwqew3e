@@ -182,7 +182,7 @@ export const FileUpload: React.FC = () => {
       case 'uploading':
         return <CircleNotch className="h-4 w-4 text-primary animate-spin" />;
       case 'success':
-        return <CheckCircle className="h-4 w-4 text-success" />;
+        return <CheckCircle className="h-4 w-4 text-green-400" />;
       case 'error':
         return <Warning className="h-4 w-4 text-destructive" />;
     }
