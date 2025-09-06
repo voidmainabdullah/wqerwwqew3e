@@ -269,11 +269,11 @@ export const FileUpload: React.FC = () => {
                        style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className={`transition-colors duration-300 ${
                       uploadFile.status === 'uploading' ? 'animate-glow text-functions-processing' :
-                      uploadFile.status === 'success' ? 'text-red-300' :
+                      uploadFile.status === 'success' ? 'text-functions-success' :
                       uploadFile.status === 'error' ? 'text-functions-delete' : ''
                     }`}>
                       {getStatusIcon(uploadFile.status)}
-                    </div>
+                    </div> 
                     
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">
