@@ -264,15 +264,15 @@ export function FileManager() {
             </Button>
           </CardContent>
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent">
-          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow bg-neutral-600">
-              <CardContent className="p-4 rounded-xl mx-0 bg-neutral-600/[0.63]">
+          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow bg-zinc-800">
+              <CardContent className="p-4 rounded-xl mx-0 bg-neutral-800">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-zinc-700">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                     <span className="text-primary font-medium text-sm">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
                   </div>
-                  <Badge variant="outline" className="text-xs bg-neutral-700">
+                  <Badge variant="outline" className="text-xs">
                     {file.download_count} downloads
                   </Badge>
                 </div>
@@ -303,7 +303,7 @@ export function FileManager() {
                       {file.is_public ? <Globe className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                     </Button>
 
-                    <Button size="icon" variant="outline" onClick={() => toggleFileLock(file.id, file.is_locked)} title={file.is_locked ? 'Unlock' : 'Lock'} className="h-8 w-8 bg-neutral-50">
+                    <Button size="icon" variant="outline" onClick={() => toggleFileLock(file.id, file.is_locked)} title={file.is_locked ? 'Unlock' : 'Lock'} className="h-8 w-8">
                       {file.is_locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
                     </Button>
                   </div>
@@ -315,7 +315,7 @@ export function FileManager() {
                         <MoreVertical className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-neutral-800">
+                    <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
                         <Shield className="h-4 w-4 mr-2" />
                         Virus Scan
@@ -339,7 +339,7 @@ export function FileManager() {
                       <Globe className="h-3 w-3 mr-1" />
                       Public
                     </Badge>}
-                  {file.is_locked && <Badge variant="outline" className="text-xs bg-inherit text-red-300">
+                  {file.is_locked && <Badge variant="outline" className="text-xs">
                       <Lock className="h-3 w-3 mr-1" />
                       Locked
                     </Badge>}
