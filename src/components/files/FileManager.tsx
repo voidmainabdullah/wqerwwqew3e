@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Button } from '@/components/ui/button2';
+import { Button2 } from '@/components/ui/button2';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Download, Search, Filter, Upload, Share2, Lock, Unlock, Globe, EyeOff, Shield, Edit3, MoreVertical } from 'lucide-react';
