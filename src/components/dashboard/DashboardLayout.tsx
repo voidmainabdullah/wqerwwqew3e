@@ -150,7 +150,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <div className="md:hidden flex items-center space-x-3">
                   <img src="/sky.png" alt="SecureShare Logo" className="h-10 w-auto object-contain" />
                   <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-                    SecureShare
+                  
                   </span>
                 </div>
                 
