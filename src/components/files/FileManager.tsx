@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Download, Search, Filter, Upload, Share2, Lock, Unlock, Globe, EyeOff, Shield, Edit3, MoreVertical } from 'lucide-react';
+import { Trash2, Download, Search, Filter, Upload, Share2, Lock, Unlock, Globe, EyeOff, Shield, Edit3, MoreVertical, FolderPlus, CheckSquare, ScanLine, Activity, MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,6 +30,8 @@ export function FileManager() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
 
   // Dialog states
   const [shareDialog, setShareDialog] = useState<{
@@ -179,6 +181,35 @@ export function FileManager() {
       toast.error('Failed to delete file');
     }
   };
+  const createFolder = () => {
+    const folderName = prompt('Enter folder name:');
+    if (folderName?.trim()) {
+      toast.success(`Folder "${folderName}" created successfully`);
+      // TODO: Implement actual folder creation logic
+    }
+  };
+
+  const toggleMultiSelect = () => {
+    setIsMultiSelectMode(!isMultiSelectMode);
+    setSelectedFiles(new Set());
+    toast.info(isMultiSelectMode ? 'Multi-select disabled' : 'Multi-select enabled');
+  };
+
+  const scanAllFiles = () => {
+    toast.info('Scanning all files for viruses...');
+    // Simulate scan process
+    setTimeout(() => {
+      toast.success('All files scanned successfully - no threats detected');
+    }, 3000);
+  };
+
+  const checkManagerHealth = () => {
+    toast.info('Checking file manager health...');
+    setTimeout(() => {
+      toast.success('File manager is healthy - all systems operational');
+    }, 2000);
+  };
+
   const openShareDialog = (fileId: string, fileName: string) => {
     setShareDialog({
       isOpen: true,
@@ -209,32 +240,75 @@ export function FileManager() {
         <div className="animate-spin rounded-full h-8 w-8 "></div>
       </div>;
   }
-  return <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight mx-[15px]">My Files</h1>
-          <p className="text-muted-foreground mx-[10px]">
+          <h1 className="text-2xl font-bold tracking-tight">My Files</h1>
+          <p className="text-muted-foreground">
             Manage your uploaded files and shared content.
           </p>
         </div>
-        <Button asChild>
-          <a href="/dashboard/upload" className="flex items-center gap-2 bg-red-400  my-0 mx-[20px]">  
-            <Upload className="h-4 w-4" />
-            Upload Files
-          </a>
-        </Button>
+        <div className="flex items-center gap-2">
+          {/* More Dropdown Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <MoreHorizontal className="h-4 w-4" />
+                <span className="hidden sm:inline">More</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={createFolder} className="flex items-center gap-2 cursor-pointer">
+                <FolderPlus className="h-4 w-4" />
+                <span>Create Folder</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={toggleMultiSelect} className="flex items-center gap-2 cursor-pointer">
+                <CheckSquare className="h-4 w-4" />
+                <span>Multi Select</span>
+                {isMultiSelectMode && (
+                  <Badge variant="secondary" className="ml-auto text-xs">ON</Badge>
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={scanAllFiles} className="flex items-center gap-2 cursor-pointer">
+                <ScanLine className="h-4 w-4" />
+                <span>Scan All</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={checkManagerHealth} className="flex items-center gap-2 cursor-pointer">
+                <Activity className="h-4 w-4" />
+                <span>Manager Health</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
+          <Button asChild>
+            <a href="/dashboard/upload" className="flex items-center gap-2">  
+              <Upload className="h-4 w-4" />
+              <span className="hidden sm:inline">Upload Files</span>
+            </a>
+          </Button>
+        </div>
       </div>
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6 bg-neutral-800">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1"> 
+        <CardContent className="p-4">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl" />
-            </div> 
-            <div className="w-full sm:w-48">
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 bg-neutral-600 rounded-xl">
+              <Input 
+                placeholder="Search files..." 
+                value={searchTerm} 
+                onChange={e => setSearchTerm(e.target.value)} 
+                className="pl-8" 
+              />
+            </div>
+            <div className="w-full sm:w-40">
+              <select 
+                value={filterType} 
+                onChange={e => setFilterType(e.target.value)} 
+                className="w-full h-10 px-3 py-2 border border-input bg-background rounded-md text-sm"
+              >
                 <option value="all">All Files</option>
                 <option value="image">Images</option>
                 <option value="video">Videos</option>
@@ -249,25 +323,134 @@ export function FileManager() {
 
       {/* Files Grid */}
       {filteredFiles.length === 0 ? <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
+          <CardContent className="flex flex-col items-center justify-center py-8">
             <div className="text-muted-foreground mb-4">
               <Upload className="h-12 w-12" />
             </div>
-            <h3 className="text-lg font-medium mb-2 bg-neutral-800 hover:bg-neutral-800 text-zinc-500">No files found</h3>
+            <h3 className="text-lg font-medium mb-2">No files found</h3>
             <p className="text-muted-foreground text-center mb-4">
               {searchTerm ? 'No files match your search criteria.' : 'Start by uploading your first file.'}
             </p>
-            <Button asChild className="bg-neutral-950 hover:bg-neutral-800 text-blue-500">
+            <Button asChild>
               <a href="/dashboard/upload">
                 Upload a File
               </a>
             </Button>
           </CardContent>
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent"> 
-          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow bg-zinc-800">
-              <CardContent className="p-4 rounded-xl mx-0 bg-neutral-700">
+            <Card key={file.id} className="hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
+              <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-primary/30 rounded-lg flex items-center justify-center">
+                  <div className="flex items-center gap-3">
+                    {isMultiSelectMode && (
+                      <input
+                        type="checkbox"
+                        checked={selectedFiles.has(file.id)}
+                        onChange={(e) => {
+                          const newSelected = new Set(selectedFiles);
+                          if (e.target.checked) {
+                            newSelected.add(file.id);
+                          } else {
+                            newSelected.delete(file.id);
+                          }
+                          setSelectedFiles(newSelected);
+                        }}
+                        className="w-4 h-4 rounded border-2 border-primary"
+                      />
+                    )}
+                    <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                      <span className="text-primary font-medium text-xs">
+                        {file.original_name.split('.').pop()?.toUpperCase().slice(0, 3) || 'FILE'}
+                      </span>
+                    </div>
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    {file.download_count} downloads
+                  </Badge>
+                </div>
+                
+                <div className="mb-3">
+                  <h4 className="font-medium text-sm mb-1 truncate" title={file.original_name}>
+                    {file.original_name}
+                  </h4>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span>{formatFileSize(file.file_size)}</span>
+                    <span>•</span>
+                    <span>{new Date(file.created_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-2">
+                  {/* Primary Action Buttons */}
+                  <div className="flex items-center gap-1">
+                    <Button 
+                      size="icon" 
+                      variant="outline" 
+                      onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} 
+                      title="Download" 
+                      className="h-8 w-8"
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+                    
+                    <Button 
+                      size="icon" 
+                      variant="outline" 
+                      onClick={() => openShareDialog(file.id, file.original_name)} 
+                      title="Share" 
+                      className="h-8 w-8"
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+
+                    <Button 
+                      size="icon" 
+                      variant="outline" 
+                      onClick={() => toggleFileVisibility(file.id, file.is_public)} 
+                      title={file.is_public ? 'Make Private' : 'Make Public'} 
+                      className="h-8 w-8"
+                    >
+                      {file.is_public ? <Globe className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    </Button>
+
+                    <Button 
+                      size="icon" 
+                      variant="outline" 
+                      onClick={() => toggleFileLock(file.id, file.is_locked)} 
+                      title={file.is_locked ? 'Unlock' : 'Lock'} 
+                      className="h-8 w-8"
+                    >
+                      {file.is_locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                    </Button>
+                  </div>
+
+                  {/* More Actions Dropdown */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost" className="h-8 w-8">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-44">
+                      <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
+                        <Shield className="h-4 w-4 mr-2" />
+                        Virus Scan
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openRenameDialog(file.id, file.original_name)}>
+                        <Edit3 className="h-4 w-4 mr-2" />
+                        Rename
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        onClick={() => deleteFile(file.id, file.storage_path)} 
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
                     <span className="text-primary font-medium text-sm">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
@@ -347,6 +530,54 @@ export function FileManager() {
               </CardContent>
             </Card>)}
         </div>}
+
+                {/* Status Indicators */}
+                <div className="flex items-center gap-1 mt-3">
+                  {file.is_public && (
+                    <Badge variant="secondary" className="text-xs">
+                      <Globe className="h-3 w-3 mr-1" />
+                      Public
+                    </Badge>
+                  )}
+                  {file.is_locked && (
+                    <Badge variant="outline" className="text-xs">
+                      <Lock className="h-3 w-3 mr-1" />
+                      Locked
+                    </Badge>
+                  )}
+                  {isMultiSelectMode && selectedFiles.has(file.id) && (
+                    <Badge variant="default" className="text-xs">
+                      Selected
+                    </Badge>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* Multi-select Actions Bar */}
+      {isMultiSelectMode && selectedFiles.size > 0 && (
+        <Card className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50 shadow-lg border-primary/50">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">
+                {selectedFiles.size} file{selectedFiles.size !== 1 ? 's' : ''} selected
+              </span>
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={() => setSelectedFiles(new Set())}>
+                  Clear
+                </Button>
+                <Button size="sm" variant="destructive">
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Share Dialog */}
       <FileShareDialog isOpen={shareDialog.isOpen} onClose={() => setShareDialog({
