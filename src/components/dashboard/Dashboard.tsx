@@ -198,7 +198,7 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                <ShareNetwork className="h-6 w-6 text-purple-400" />
+                <ShareNetwork className="h-6 w-6  text-white bg-inherit" />
               </div>
             </CardHeader>
           </Card>
