@@ -248,8 +248,8 @@ export const Dashboard: React.FC = () => {
                     <Progress value={storageProgress} className="h-2 bg-slate-600" />
                   </div>}
               </div>
-              <div className="w-12 h-12 rounded-xl bg-emreld-500/20 flex items-center justify-center">
-                <Cloud className="h-6 w-6 text-orange-400" />
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                <Cloud className="h-6 w-6 text-white-400" />
               </div>
             </CardHeader>
           </Card>
