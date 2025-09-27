@@ -197,8 +197,8 @@ export const Dashboard: React.FC = () => {
                   <span className="text-purple-400 text-sm">+8.1%</span>
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-inherit flex items-center justify-center">
-                <ShareNetwork className="h-6 w-6  text-white bg-inherit" />
+              <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
+                <ShareNetwork className="h-6 w-6  text-white" />
               </div>
             </CardHeader>
           </Card>
