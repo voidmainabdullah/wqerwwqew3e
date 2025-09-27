@@ -177,7 +177,7 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-zinc-700 ">
-                <Files className="h-6 w-6 text-blue-400 bg-inherit" />
+                <Files className="h-6 w-6 text-white bg-inherit" />
               </div>
             </CardHeader>
           </Card>
