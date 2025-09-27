@@ -44,7 +44,7 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  return <Sidebar className="border-r border-border/50">
+  return <Sidebar className="border-r border-border/50 bg-zinc-900">
       <SidebarHeader className="w-auto h-35">
         <div className="flex items-center space-x-4 px- py-1 bg-inherit w-50 h-50">
           <img src="/sky.png" alt="SecureShare Logo" className="h-30 w-auto sm:h-20 md:h-16 object-contain" />
@@ -142,7 +142,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="flex-1 flex flex-col">
           {/* Header */}
           <header className="border-b border-white/30 bg-neutral-900/30 backdrop-blur-xl sticky top-0 z-40">
-            <div className="flex items-center justify-between h-16 px-4 md:px-6">
+            <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-neutral-900">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
                 
