@@ -218,8 +218,8 @@ export const Dashboard: React.FC = () => {
                   <span className="text-emerald-400 text-sm">+15.3%</span>
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                <Download className="h-6 w-6 text-emerald-400" />
+              <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
+                <Download className="h-6 w-6 text-white" />
               </div>
             </CardHeader>
           </Card>
@@ -248,7 +248,7 @@ export const Dashboard: React.FC = () => {
                     <Progress value={storageProgress} className="h-2 bg-slate-600" />
                   </div>}
               </div>
-              <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-emreld-500/20 flex items-center justify-center">
                 <Cloud className="h-6 w-6 text-orange-400" />
               </div>
             </CardHeader>
