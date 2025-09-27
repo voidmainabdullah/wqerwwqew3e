@@ -129,7 +129,7 @@ export const Dashboard: React.FC = () => {
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                   Dashboard
                 </h1>
-                <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0" : "bg-slate-700 text-slate-300 border-slate-600"}`}>
+                <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-inherit  text-orange-300 border-0" : "bg-slate-700 text-slate-300 border-slate-600"}`}>
                   {isPro ? <>
                       <Crown className="w-4 h-4 mr-1" />
                       Pro + 
