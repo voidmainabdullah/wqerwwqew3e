@@ -662,6 +662,55 @@
   animation: button-press 0.2s ease-out;
 }
 
+/* Notification animations */
+@keyframes notification-slide-in {
+  0% { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes notification-pulse {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.7; 
+  }
+}
+
+.animate-notification-slide-in {
+  animation: notification-slide-in 0.3s ease-out;
+}
+
+.animate-notification-pulse {
+  animation: notification-pulse 2s ease-in-out infinite;
+}
+
+/* Storage progress bar animations */
+@keyframes storage-fill {
+  0% { width: 0%; }
+  100% { width: var(--progress-value); }
+}
+
+.animate-storage-fill {
+  animation: storage-fill 1s ease-out;
+}
+
+/* Help popover animations */
+@keyframes help-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.animate-help-bounce {
+  animation: help-bounce 2s ease-in-out infinite;
+}
+
 /* Banner-specific animations and styles */
 @keyframes banner-glow {
   0%, 100% { 
