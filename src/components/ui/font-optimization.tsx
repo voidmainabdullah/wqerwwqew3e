@@ -94,7 +94,7 @@ export const useFontLoadingStatus = () => {
     const checkFonts = async () => {
       try {
         await Promise.all([
-          document.fonts.load('400 16px Unbounded'),
+          document.fonts.load('400 16px Urbanist'),
           document.fonts.load('400 16px Rationale')
         ]);
         setFontsLoaded(true);
