@@ -95,7 +95,7 @@ export const useFontLoadingStatus = () => {
       try {
         await Promise.all([
           document.fonts.load('400 16px Urbanist'),
-          document.fonts.load('400 16px Rationale')
+          document.fonts.load('400 16px Exo 2')
         ]);
         setFontsLoaded(true);
       } catch (error) {
