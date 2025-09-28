@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Download, Search, Filter, Upload, Share2, Lock, Unlock, Globe, EyeOff, Shield, Edit3, MoreVertical } from 'lucide-react';
+import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Lock, Clock as Unlock, Globe, EyeOff, Shield, CreditCard as Edit3, MoveVertical as MoreVertical } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
