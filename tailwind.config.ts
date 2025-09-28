@@ -19,7 +19,7 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        'heading': ['Unbounded', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'heading': ['Urbanist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         'body': ['Rationale', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         'sans': ['Rationale', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         'mono': ['Fira Code', 'Monaco', 'Consolas', 'monospace'],
