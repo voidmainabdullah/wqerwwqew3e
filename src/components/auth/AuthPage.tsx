@@ -156,10 +156,10 @@ export const AuthPage: React.FC = () => {
                 </div>
                 
                 <div>
-                  <CardTitle className="text-3xl font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+                  <CardTitle className="text-3xl font-heading font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
                     {isSignUp ? 'Join SkieShare' : 'Welcome Back'}
                   </CardTitle>
-                  <CardDescription className="text-lg mt-3 text-muted-foreground">
+                  <CardDescription className="text-lg font-body mt-3 text-muted-foreground">
                     {isSignUp 
                       ? 'Create your account and start sharing files securely' 
                       : 'Sign in to access your secure file sharing dashboard'
@@ -177,11 +177,11 @@ export const AuthPage: React.FC = () => {
                       actualTheme === 'light' 
                         ? 'border-slate-300 hover:bg-slate-50 hover:border-indigo-400' 
                         : 'hover:bg-accent/50'
-                    }`}
+                    } font-heading icon-text`}
                     onClick={handleGoogleSignIn}
                     disabled={loading}
                   >
-                    <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24">
                       <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                       <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                       <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -196,7 +196,7 @@ export const AuthPage: React.FC = () => {
                     <Separator className="w-full" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-4 py-1 text-muted-foreground rounded-full border border-border/50">
+                    <span className="bg-card px-4 py-1 font-body text-muted-foreground rounded-full border border-border/50">
                       Or continue with email
                     </span>
                   </div>
@@ -206,54 +206,54 @@ export const AuthPage: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {isSignUp && (
                     <div className="space-y-2">
-                      <Label htmlFor="displayName" className="text-sm font-medium">
+                      <Label htmlFor="displayName" className="text-sm font-heading font-medium">
                         Display Name
                       </Label>
                       <div className="relative group">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">person</span>
                         <Input
                           id="displayName"
                           type="text"
                           placeholder="Enter your name"
                           value={displayName}
                           onChange={(e) => setDisplayName(e.target.value)}
-                          className="pl-11 h-14 text-base"
+                          className="pl-11 h-14 text-base font-body"
                         />
                       </div>
                     </div>
                   )}
 
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium">
+                    <Label htmlFor="email" className="text-sm font-heading font-medium">
                       Email Address
                     </Label>
                     <div className="relative group">
-                      <Envelope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                      <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">email</span>
                       <Input
                         id="email"
                         type="email"
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-11 h-14 text-base"
+                        className="pl-11 h-14 text-base font-body"
                         required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-sm font-medium">
+                    <Label htmlFor="password" className="text-sm font-heading font-medium">
                       Password
                     </Label>
                     <div className="relative group">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                      <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">lock</span>
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-11 pr-11 h-14 text-base"
+                        className="pl-11 pr-11 h-14 text-base font-body"
                         required
                       />
                       <button
@@ -261,25 +261,27 @@ export const AuthPage: React.FC = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
-                        <Eye className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`} />
+                        <span className={`material-icons md-24 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`}>
+                          {showPassword ? 'visibility_off' : 'visibility'}
+                        </span>
                       </button>
                     </div>
                   </div>
 
                   {isSignUp && (
                     <div className="space-y-2">
-                      <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                      <Label htmlFor="confirmPassword" className="text-sm font-heading font-medium">
                         Confirm Password
                       </Label>
                       <div className="relative group">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">lock</span>
                         <Input
                           id="confirmPassword"
                           type={showConfirmPassword ? "text" : "password"}
                           placeholder="Confirm your password"
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
-                          className="pl-11 pr-11 h-14 text-base"
+                          className="pl-11 pr-11 h-14 text-base font-body"
                           required
                         />
                         <button
@@ -287,7 +289,9 @@ export const AuthPage: React.FC = () => {
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         >
-                          {showConfirmPassword ? <EyeSlash className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          <span className="material-icons md-18">
+                            {showConfirmPassword ? 'visibility_off' : 'visibility'}
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -300,7 +304,7 @@ export const AuthPage: React.FC = () => {
                         actualTheme === 'light' 
                           ? 'bg-black hover:bg-neutral-800 text-white hover:shadow-black/20' 
                           : 'bg-white hover:bg-neutral-200 text-black hover:shadow-white/20'
-                      }`}
+                      } font-heading icon-text`}
                       disabled={loading}
                     >
                       {loading ? (
@@ -314,7 +318,7 @@ export const AuthPage: React.FC = () => {
                         </div>
                       ) : (
                         <div className="flex items-center gap-3">
-                          <ArrowRight className="h-5 w-5" />
+                          <span className="material-icons md-18">arrow_forward</span>
                           <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
                         </div>
                       )}
@@ -332,19 +336,19 @@ export const AuthPage: React.FC = () => {
                       setConfirmPassword('');
                       setDisplayName('');
                     }}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {isSignUp ? (
                       <>
                         Already have an account?{' '}
-                        <span className="text-primary font-medium">
+                        <span className="text-primary font-heading font-medium">
                           Sign in
                         </span>
                       </>
                     ) : (
                       <>
                         Don't have an account?{' '}
-                        <span className="text-primary font-medium">
+                        <span className="text-primary font-heading font-medium">
                           Sign up
                         </span>
                       </>
@@ -361,11 +365,13 @@ export const AuthPage: React.FC = () => {
                   
                   <div className="flex items-start gap-4">
                     <div>
-                      <EyeSlash className={`h-6 w-6 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-pri'}`} />
+                      <span className={`material-icons md-24 flex-shrink-0 mt-1 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`}>
+                        security
+                      </span>
                     </div>
                     <div className="text-sm space-y-2">
-                      <p className="font-medium text-foreground">Your data is secure</p>
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="font-heading font-medium text-foreground">Your data is secure</p>
+                      <p className="font-body text-muted-foreground leading-relaxed">
                         We use industry-standard encryption to protect your account and files. 
                         All transfers are secured with end-to-end encryption.
                       </p>
@@ -373,10 +379,10 @@ export const AuthPage: React.FC = () => {
                       {/* Security features */}
                       <div className="grid grid-cols-2 gap-2 mt-4">
                         {[
-                          { icon: Shield, text: "Encrypted" },
-                          { icon: Lock, text: "Secure" },
-                          { icon: Lightning, text: "Fast" },
-                          { icon: User, text: "Private" }
+                          { icon: "security", text: "Encrypted" },
+                          { icon: "lock", text: "Secure" },
+                          { icon: "flash_on", text: "Fast" },
+                          { icon: "person", text: "Private" }
                         ].map((feature, index) => (
                           <div
                             key={index}
@@ -384,8 +390,10 @@ export const AuthPage: React.FC = () => {
                               actualTheme === 'light' ? 'bg-neutral-50/80' : 'bg-background/50'
                             }`}
                           >
-                            <feature.icon className={`w-3 h-3 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`} />
-                            <span>{feature.text}</span>
+                            <span className={`material-icons md-18 ${actualTheme === 'light' ? 'text-indigo-400' : 'text-primary'}`}>
+                              {feature.icon}
+                            </span>
+                            <span className="font-body">{feature.text}</span>
                           </div>
                         ))}
                       </div>

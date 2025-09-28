@@ -126,17 +126,17 @@ export const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-4">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                   Dashboard
                 </h1>
                 <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0" : "bg-slate-700 text-slate-300 border-slate-600"}`}>
                   {isPro ? <>
-                      <Crown className="w-4 h-4 mr-1" />
+                      <span className="material-icons md-18 mr-1">crown</span>
                       Pro + 
                     </> : "Basic"}
                 </Badge>
               </div>
-              <p className="text-slate-400">
+              <p className="font-body text-slate-400">
                 Welcome back, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
               </p>
             </div>
@@ -144,13 +144,13 @@ export const Dashboard: React.FC = () => {
             {/* Total Balance Card */}
             <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 bg-gray-200">
               <div className="text-right">
-                <p className="text-slate-400 text-sm mb-1">Total Storage Value</p>
-                <p className="text-2xl font-bold text-white">
+                <p className="font-body text-slate-400 text-sm mb-1">Total Storage Value</p>
+                <p className="text-2xl font-heading font-bold text-white">
                   {formatCurrency((stats?.storageUsed || 0) * 0.0001)}
                 </p>
                 <div className="flex items-center justify-end gap-2 mt-2">
-                  <TrendUp className="w-4 h-4 text-emerald-400" />
-                  <span className="text-emerald-400 text-sm">+12.5%</span>
+                  <span className="material-icons md-18 text-emerald-400">trending_up</span>
+                  <span className="font-body text-emerald-400 text-sm">+12.5%</span>
                 </div>
               </div>
             </div>
@@ -165,19 +165,19 @@ export const Dashboard: React.FC = () => {
           <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
-                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                <CardTitle className="font-heading text-slate-400 text-sm font-medium uppercase tracking-wide">
                   Total Files
                 </CardTitle>
-                <div className="text-3xl font-bold text-white mt-2">
+                <div className="text-3xl font-heading font-bold text-white mt-2">
                   {stats?.totalFiles?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400"></div> 
-                  <span className="text-emerald-400 text-sm"> This Month : 287</span>
+                  <span className="font-body text-emerald-400 text-sm"> This Month : 287</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-md flex items-center justify-center bg-zinc-700 ">
-                <Files className="h-6 w-6 text-white bg-inherit" />
+                <span className="material-icons md-24 text-white">folder</span>
               </div>
             </CardHeader>
           </Card>
@@ -186,19 +186,19 @@ export const Dashboard: React.FC = () => {
           <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
-                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                <CardTitle className="font-heading text-slate-400 text-sm font-medium uppercase tracking-wide">
                   Active Shares
                 </CardTitle>
-                <div className="text-3xl font-bold text-white mt-2">
+                <div className="text-3xl font-heading font-bold text-white mt-2">
                   {stats?.totalShares?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                  <span className="text-purple-400 text-sm">+8.1%</span>
+                  <span className="font-body text-purple-400 text-sm">+8.1%</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
-                <ShareNetwork className="h-6 w-6  text-white" />
+                <span className="material-icons md-24 text-white">share</span>
               </div>
             </CardHeader>
           </Card>
@@ -207,15 +207,15 @@ export const Dashboard: React.FC = () => {
           <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
-                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                <CardTitle className="font-heading text-slate-400 text-sm font-medium uppercase tracking-wide">
                   Downloads
                 </CardTitle>
-                <div className="text-3xl font-bold text-white mt-2">
+                <div className="text-3xl font-heading font-bold text-white mt-2">
                   {stats?.totalDownloads?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                  <span className="text-emerald-400 text-sm">+15.3%</span>
+                  <span className="font-body text-emerald-400 text-sm">+15.3%</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
@@ -249,7 +249,7 @@ export const Dashboard: React.FC = () => {
                   </div>}
               </div>
               <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                <Cloud className="h-6 w-6 text-white-400" />
+                <span className="material-icons md-24 text-white">download</span>
               </div>
             </CardHeader>
           </Card>
@@ -258,7 +258,7 @@ export const Dashboard: React.FC = () => {
         {/* Main Content Grid */}
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Left Column - Charts and Analytics */}
-          <div className="lg:col-span-2 space-y-8">
+                <CardTitle className="font-heading text-slate-400 text-sm font-medium uppercase tracking-wide">
             {/* Performance Chart */}
             <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
               <CardHeader>
@@ -484,15 +484,15 @@ export const Dashboard: React.FC = () => {
                         <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                           <Download className="w-4 h-4 text-emerald-400" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                <div className="text-3xl font-heading font-bold text-white mt-2">
                           <p className="text-white text-sm font-medium truncate">
-                            {activity.files?.original_name || 'Unknown file'}
+                      <span className="font-heading">{formatFileSize(stats?.storageUsed || 0)}</span>
                           </p>
                           <p className="text-slate-400 text-xs">
                             {new Date(activity.downloaded_at).toLocaleDateString()}
                           </p>
-                        </div>
-                      </div>) : <div className="text-center py-6 text-slate-400">
+                      <div className="font-heading">{formatFileSize(stats?.storageUsed || 0)}</div>
+                      <div className="text-sm font-body text-slate-400">
                       <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
                       <p className="text-sm">No recent activity</p>
                     </div>}
@@ -502,7 +502,7 @@ export const Dashboard: React.FC = () => {
 
             {/* System Status */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
-              
+                <span className="material-icons md-24 text-white">cloud_upload</span>
               
             </Card>
           </div>

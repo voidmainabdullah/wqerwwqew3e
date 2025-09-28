@@ -192,23 +192,24 @@ export const FileUpload: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Upload Files</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-heading font-bold tracking-tight">Upload Files</h1>
+          <p className="font-body text-muted-foreground">
             Drag and drop files or click to select files to upload.
           </p>
         </div>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="font-heading icon-text">
           <a href="/dashboard/files" className="flex items-center gap-2">
+             <span className="material-icons md-18">folder</span>
              File Manager
-            <ArrowRight size={16} />
+            <span className="material-icons md-18">arrow_forward</span>
           </a>
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>File Upload</CardTitle>
-          <CardDescription>
+          <CardTitle className="font-heading">File Upload</CardTitle>
+          <CardDescription className="font-body">
             Upload files to share with others. All file types are supported.
           </CardDescription>
         </CardHeader>
@@ -222,17 +223,17 @@ export const FileUpload: React.FC = () => {
             } ${isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.01]'}`}
           >
             <input {...getInputProps()} />
-            <Upload className={`mx-auto h-12 w-12 mb-4 transition-colors duration-300 ${
+            <span className={`material-icons md-48 mx-auto mb-4 transition-colors duration-300 ${
               isDragActive ? 'text-functions-upload animate-bounce-subtle' : 'text-muted-foreground'
-            }`} />
+            }`}>upload_file</span>
             {isDragActive ? (
-              <p className="text-functions-upload font-medium animate-pulse">Drop the files here...</p>
+              <p className="text-functions-upload font-heading font-medium animate-pulse">Drop the files here...</p>
             ) : (
               <div className="animate-fade-in">
-                <p className="text-foreground font-medium mb-2">
+                <p className="text-foreground font-heading font-medium mb-2">
                   Click to upload or drag and drop
                 </p>
-                <p className="text-muted-foreground text-sm">
+                <p className="font-body text-muted-foreground text-sm">
                   Any file type is supported
                 </p>
               </div>
@@ -242,21 +243,21 @@ export const FileUpload: React.FC = () => {
           {uploadFiles.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium">Files to upload</h3>
+                <h3 className="text-sm font-heading font-medium">Files to upload</h3>
                 <Button
                   onClick={handleUploadFiles}
                   disabled={isUploading || uploadFiles.every(f => f.status !== 'pending')}
                   size="sm"
-                  className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle"
+                  className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle font-heading icon-text"
                 >
                   {isUploading ? (
                     <>
-                      <CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+                      <span className="material-icons md-18 animate-spin">refresh</span>
                       <span className="animate-pulse">Uploading...</span>
                     </>
                   ) : (
                     <>
-                      <Upload className="mr-2 h-4 w-4" />
+                      <span className="material-icons md-18">upload</span>
                       Upload All
                     </>
                   )}
@@ -272,14 +273,19 @@ export const FileUpload: React.FC = () => {
                       uploadFile.status === 'success' ? 'text-functions-success' :
                       uploadFile.status === 'error' ? 'text-functions-delete' : ''
                     }`}>
-                      {getStatusIcon(uploadFile.status)}
+                      <span className="material-icons md-18">
+                        {uploadFile.status === 'pending' ? 'description' :
+                         uploadFile.status === 'uploading' ? 'upload' :
+                         uploadFile.status === 'success' ? 'check_circle' :
+                         'error'}
+                      </span>
                     </div> 
                     
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">
+                      <p className="text-sm font-heading font-medium truncate">
                         {uploadFile.file.name}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs font-body text-muted-foreground">
                         {formatFileSize(uploadFile.file.size)}
                       </p>
                       
@@ -296,7 +302,7 @@ export const FileUpload: React.FC = () => {
                       )}
                       
                       {uploadFile.error && (
-                        <p className="text-xs text-functions-delete mt-1 animate-fade-in">
+                        <p className="text-xs font-body text-functions-delete mt-1 animate-fade-in">
                           {uploadFile.error}
                         </p>
                       )}
@@ -310,7 +316,7 @@ export const FileUpload: React.FC = () => {
                       uploadFile.status === 'success' ? 'bg-functions-success hover:bg-functions-successGlow animate-bounce-subtle' :
                       uploadFile.status === 'uploading' ? 'bg-functions-processing animate-pulse' :
                       uploadFile.status === 'error' ? 'bg-functions-delete' : ''
-                    }`}>
+                    } font-heading`}>
                       {uploadFile.status}
                     </Badge>
 
@@ -321,7 +327,7 @@ export const FileUpload: React.FC = () => {
                         onClick={() => removeFile(index)}
                         className="hover:text-functions-delete hover:bg-functions-delete/10 transition-colors duration-300"
                       >
-                        <X className="h-4 w-4" />
+                        <span className="material-icons md-18">close</span>
                       </Button>
                     )}
                   </div>

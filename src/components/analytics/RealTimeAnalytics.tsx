@@ -165,14 +165,14 @@ export const RealTimeAnalytics: React.FC = () => {
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="analytics-card analytics-card-green hover:shadow-lg transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Downloads</CardTitle>
+            <CardTitle className="text-sm font-heading font-medium">Total Downloads</CardTitle>
             <div className="icon-container icon-container-green">
-              <Download className="h-5 w-5 analytics-icon analytics-icon-green" />
+              <span className="material-icons md-18 analytics-icon analytics-icon-green">download</span>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{stats?.totalDownloads || 0}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-3xl font-heading font-bold text-foreground">{stats?.totalDownloads || 0}</div>
+            <p className="text-xs font-body text-muted-foreground">
               All-time file downloads
             </p>
           </CardContent>
@@ -180,14 +180,14 @@ export const RealTimeAnalytics: React.FC = () => {
 
         <Card className="analytics-card analytics-card-purple hover:shadow-lg transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Shared Links</CardTitle>
+            <CardTitle className="text-sm font-heading font-medium">Shared Links</CardTitle>
             <div className="icon-container icon-container-purple">
-              <ShareNetwork className="h-5 w-5 analytics-icon analytics-icon-purple" />
+              <span className="material-icons md-18 analytics-icon analytics-icon-purple">share</span>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{stats?.totalShares || 0}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-3xl font-heading font-bold text-foreground">{stats?.totalShares || 0}</div>
+            <p className="text-xs font-body text-muted-foreground">
               Active sharing links
             </p>
           </CardContent>
@@ -195,14 +195,14 @@ export const RealTimeAnalytics: React.FC = () => {
 
         <Card className="analytics-card analytics-card-yellow hover:shadow-lg transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Files</CardTitle>
+            <CardTitle className="text-sm font-heading font-medium">Total Files</CardTitle>
             <div className="icon-container icon-container-yellow">
-              <Files className="h-5 w-5 analytics-icon analytics-icon-yellow" />
+              <span className="material-icons md-18 analytics-icon analytics-icon-yellow">folder</span>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{stats?.totalFiles || 0}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-3xl font-heading font-bold text-foreground">{stats?.totalFiles || 0}</div>
+            <p className="text-xs font-body text-muted-foreground">
               Files in your account
             </p>
           </CardContent>
@@ -213,19 +213,19 @@ export const RealTimeAnalytics: React.FC = () => {
       {stats?.subscriptionTier !== 'pro' && (
         <Card className="analytics-card hover:shadow-lg transition-all duration-300">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 font-heading">
               <div className="icon-container icon-container-blue">
-                <Files className="h-5 w-5 analytics-icon analytics-icon-blue" />
+                <span className="material-icons md-18 analytics-icon analytics-icon-blue">storage</span>
               </div>
               Storage Usage
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="font-body">
               {formatFileSize(stats?.storageUsed || 0)} of {formatFileSize(stats?.storageLimit || 0)} used
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Progress value={storageProgress} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs font-body text-muted-foreground mt-2">
               {(100 - storageProgress).toFixed(1)}% remaining
             </p>
           </CardContent>
@@ -236,13 +236,13 @@ export const RealTimeAnalytics: React.FC = () => {
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="analytics-card hover:shadow-lg transition-all duration-300">
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center font-heading">
               <div className="icon-container icon-container-green mr-3">
-                <TrendUp className="h-5 w-5 analytics-icon analytics-icon-green" />
+                <span className="material-icons md-18 analytics-icon analytics-icon-green">trending_up</span>
               </div>
               Popular Files
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="font-body">
               Your most downloaded files
             </CardDescription>
           </CardHeader>
@@ -253,9 +253,9 @@ export const RealTimeAnalytics: React.FC = () => {
                   <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <div className="icon-container icon-container-yellow" style={{ width: '32px', height: '32px' }}>
-                        <Files className="h-4 w-4 analytics-icon analytics-icon-yellow" />
+                        <span className="material-icons md-18 analytics-icon analytics-icon-yellow">description</span>
                       </div>
-                      <span className="text-sm font-medium truncate max-w-[200px]">
+                      <span className="text-sm font-body font-medium truncate max-w-[200px]">
                         {file.name}
                       </span>
                     </div>
@@ -266,20 +266,20 @@ export const RealTimeAnalytics: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">No downloads yet</p>
+              <p className="text-sm font-body text-muted-foreground">No downloads yet</p>
             )}
           </CardContent>
         </Card>
 
         <Card className="analytics-card hover:shadow-lg transition-all duration-300">
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center font-heading">
               <div className="icon-container icon-container-purple mr-3">
-                <Calendar className="h-5 w-5 analytics-icon analytics-icon-purple" />
+                <span className="material-icons md-18 analytics-icon analytics-icon-purple">event</span>
               </div>
               Recent Downloads
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="font-body">
               Latest file download activity
             </CardDescription>
           </CardHeader>
@@ -290,9 +290,9 @@ export const RealTimeAnalytics: React.FC = () => {
                   <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <div className="icon-container icon-container-green" style={{ width: '32px', height: '32px' }}>
-                        <Download className="h-4 w-4 analytics-icon analytics-icon-green" />
+                        <span className="material-icons md-18 analytics-icon analytics-icon-green">download</span>
                       </div>
-                      <span className="text-sm truncate max-w-[200px]">
+                      <span className="text-sm font-body truncate max-w-[200px]">
                         {download.files?.original_name || 'Unknown file'}
                       </span>
                     </div>
@@ -303,7 +303,7 @@ export const RealTimeAnalytics: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">No downloads yet</p>
+              <p className="text-sm font-body text-muted-foreground">No downloads yet</p>
             )}
           </CardContent>
         </Card>

@@ -52,10 +52,10 @@ const Pricing = () => {
       }} transition={{
         duration: 0.6
       }}>
-          <h2 className="text-3xl md:text-4xl font-medium tracking-tighter text-foreground">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-tighter text-foreground">
             Simple pricing that scales
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="font-body text-muted-foreground text-lg">
             Choose the perfect plan for your team's file sharing and collaboration needs
           </p>
         </motion.div>
@@ -75,41 +75,46 @@ const Pricing = () => {
           delay: index * 0.2
         }}>
               {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 text-neutral-100 text-sm rounded-full font-medium bg-zinc-700">
+                  <span className="material-icons md-18 mr-1">star</span>
                   Most Popular
                 </div>}
               
               <div className="mb-auto">
-                <h3 className="text-2xl font-medium tracking-tighter mb-1 text-foreground">{plan.name}</h3>
+                <h3 className="text-2xl font-heading font-bold tracking-tighter mb-1 text-foreground">{plan.name}</h3>
                 
                 <div className="mb-4">
-                  <div className="text-3xl font-bold tracking-tighter text-foreground">{plan.price}</div>
-                  {plan.period && <div className="text-sm text-muted-foreground">{plan.period}</div>}
+                  <div className="text-3xl font-heading font-bold tracking-tighter text-foreground">{plan.price}</div>
+                  {plan.period && <div className="text-sm font-body text-muted-foreground">{plan.period}</div>}
                 </div>
                 
-                <p className="text-muted-foreground mb-6">{plan.description}</p>
+                <p className="font-body text-muted-foreground mb-6">{plan.description}</p>
                 
                 <div className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => <div key={i} className="flex items-center gap-3">
                       <div className="h-5 w-5 rounded-full flex items-center justify-center text-primary bg-neutral-700">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="bg-transparent text-green-300">
-                          <path d="M5 12L10 17L19 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                        <span className="material-icons md-18 text-green-300">check</span>
                       </div>
-                      <span className="text-sm text-foreground">{feature}</span>
+                      <span className="text-sm font-body text-foreground">{feature}</span>
                     </div>)}
                 </div>
               </div>
               
               <div className="mt-6">
-                <Button className={plan.buttonVariant === "default" ? "w-full" : "w-full border-neutral-300 text-foreground hover:bg-neutral-100 dark:border-neutral-600 dark:hover:bg-neutral-800"} variant={plan.buttonVariant as "default" | "outline"}>
+                <Button className={`${plan.buttonVariant === "default" ? "w-full" : "w-full border-neutral-300 text-foreground hover:bg-neutral-100 dark:border-neutral-600 dark:hover:bg-neutral-800"} font-heading font-semibold icon-text`} variant={plan.buttonVariant as "default" | "outline"}>
+                  <span className="material-icons md-18">
+                    {plan.buttonVariant === "default" ? "rocket_launch" : "contact_support"}
+                  </span>
                   {plan.buttonText}
                 </Button>
               </div>
             </motion.div>)}
         </div>
         
-        <div className="text-center text-muted-foreground">
-          Have questions? <a href="#" className="text-primary hover:underline">Contact our sales team</a>
+        <div className="text-center font-body text-muted-foreground">
+          Have questions? <a href="#" className="text-primary hover:underline icon-text">
+            <span className="material-icons md-18">contact_support</span>
+            Contact our sales team
+          </a>
         </div>
       </div>
     </section>;

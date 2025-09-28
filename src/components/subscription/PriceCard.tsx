@@ -26,18 +26,18 @@ export const PriceCard: React.FC<PriceCardProps> = ({
   return (
     <Card className={`relative ${isPopular ? 'border-primary shadow-lg' : ''}`}>
       {isPopular && (
-        <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-indigo-400 text-neutral-100">
-          <Lightning className="w-3 h-3 mr-1" />
+        <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-indigo-400 text-neutral-100 font-heading">
+          <span className="material-icons md-18 mr-1">flash_on</span>
           Most Popular
         </Badge>
       )}
       
       <CardHeader className="text-center">
-        <CardTitle className="text-xl">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle className="text-xl font-heading">{title}</CardTitle>
+        <CardDescription className="font-body">{description}</CardDescription>
         <div className="mt-4">
-          <span className="text-4xl font-bold">{price}</span>
-          <span className="text-muted-foreground">/{period}</span>
+          <span className="text-4xl font-heading font-bold">{price}</span>
+          <span className="font-body text-muted-foreground">/{period}</span>
         </div>
       </CardHeader>
       
@@ -45,17 +45,20 @@ export const PriceCard: React.FC<PriceCardProps> = ({
         <ul className="space-y-2">
           {features.map((feature, index) => (
             <li key={index} className="flex items-center">
-              <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-              <span className="text-sm">{feature}</span>
+              <span className="material-icons md-18 text-primary mr-2 flex-shrink-0">check</span>
+              <span className="text-sm font-body">{feature}</span>
             </li>
           ))}
         </ul>
         
         <Button 
           onClick={onSubscribe}
-          className="w-full"
+          className="w-full font-heading icon-text"
           variant={isPopular ? "default" : "outline"}
         >
+          <span className="material-icons md-18">
+            {isPopular ? 'rocket_launch' : 'contact_support'}
+          </span>
           Subscribe to {title}
         </Button>
       </CardContent>

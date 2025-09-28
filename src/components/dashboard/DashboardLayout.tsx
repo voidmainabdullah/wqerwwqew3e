@@ -25,35 +25,35 @@ interface UserProfile {
 const navigation = [{
   name: 'Dashboard',
   href: '/dashboard',
-  icon: House
+  icon: 'dashboard'
 }, {
   name: 'Upload',
   href: '/dashboard/upload',
-  icon: Upload
+  icon: 'upload'
 }, {
   name: 'My Files',
   href: '/dashboard/files',
-  icon: Files
+  icon: 'folder'
 }, {
   name: 'Teams',
   href: '/dashboard/teams',
-  icon: Users
+  icon: 'groups'
 }, {
   name: 'Team Files',
   href: '/dashboard/team-files',
-  icon: PaperPlaneTilt
+  icon: 'send'
 }, {
   name: 'Shared Links',
   href: '/dashboard/shared',
-  icon: ShareNetwork
+  icon: 'share'
 }, {
   name: 'Analytics',
   href: '/dashboard/analytics',
-  icon: ChartBar
+  icon: 'analytics'
 }, {
   name: 'Settings',
   href: '/dashboard/settings',
-  icon: Gear
+  icon: 'settings'
 }];
 const AppSidebar = () => {
   const location = useLocation();
@@ -62,7 +62,7 @@ const AppSidebar = () => {
       <SidebarHeader className="w-auto h-35 px-[6px] py-[6px] my-0 mx-[4px]">
         <div className="flex items-center space-x-4 px- py-1 bg-inherit w-50 h-50">
           <img src="/sky.png" alt="SecureShare Logo" className="h-30 w-auto sm:h-20 md:h-16 object-contain" />
-          <span className="font-bold text-xl bg-gradient-to-r from-red-200 to-green-400 bg-clip-text">
+          <span className="font-heading font-bold text-xl bg-gradient-to-r from-red-200 to-green-400 bg-clip-text">
             
           </span>
         </div> 
@@ -71,7 +71,7 @@ const AppSidebar = () => {
       <SidebarContent>
         {/* Navigation */}
         <SidebarGroup className="w-60">
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-3">
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -79,8 +79,8 @@ const AppSidebar = () => {
               {navigation.map(item => <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton asChild isActive={location.pathname === item.href} className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                     <Link to={item.href}>
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.name}</span>
+                      <span className="material-icons md-18">{item.icon}</span>
+                      <span className="font-body">{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>)}
@@ -90,7 +90,7 @@ const AppSidebar = () => {
         
         {/* Quick Actions */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-3">
             Quick Actions
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -98,8 +98,8 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/code">
-                    <Code className="h-5 w-5" />
-                    <span>Recieve Now</span>
+                    <span className="material-icons md-18">qr_code</span>
+                    <span className="font-body">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -107,8 +107,8 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/dashboard/receive">
-                    <PaperPlaneTilt className="h-5 w-5" />
-                    <span>Receive File</span>
+                    <span className="material-icons md-18">inbox</span>
+                    <span className="font-body">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -119,7 +119,7 @@ const AppSidebar = () => {
 
         {/* Extra Pages */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-3">
             More
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -127,8 +127,8 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/subscription">
-                    <CurrencyCircleDollar className="h-5 w-5" />
-                    <span>Pricing</span>
+                    <span className="material-icons md-18">payments</span>
+                    <span className="font-body">Pricing</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

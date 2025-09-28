@@ -43,7 +43,7 @@ const HeroSection = () => {
           }} transition={{
             duration: 0.6,
             delay: 0.2
-          }} className="text-4xl sm:text-5xl md:text-6xl tracking-tight text-foreground leading-[1.1] xl:text-6xl font-semibold">
+          }} className="text-4xl sm:text-5xl md:text-6xl tracking-tight text-foreground leading-[1.1] xl:text-6xl font-heading font-bold">
               Ultimate Transfer  Globally 
               <br />
                Secure. Fast. In Your Control
@@ -59,7 +59,7 @@ const HeroSection = () => {
           }} transition={{
             duration: 0.6,
             delay: 0.4
-          }} className="text-muted-foreground max-w-lg leading-relaxed text-base md:text-lg font-extralight">
+          }} className="text-muted-foreground max-w-lg leading-relaxed text-base md:text-lg font-body">
               Revolutionary file sharing platform that puts security, speed, and collaboration at the forefront of your workflow.
             </motion.p>
           </div>
@@ -74,26 +74,29 @@ const HeroSection = () => {
           duration: 0.6,
           delay: 0.6
         }}>
-            <Button variant="default" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto" asChild>
+            <Button variant="default" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto icon-text" asChild>
               <a href="/auth" className="bg-slate-200 text-neutral-700">
+                <span className="material-icons md-24">rocket_launch</span>
                 Get Started
               </a>
             </Button>
-            <Button variant="outline" className="border-2 border-neutral-300 text-foreground hover:bg-neutral-100 hover:text-foreground dark:border-neutral-600 dark:hover:bg-neutral-800 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto" asChild>
+            <Button variant="outline" className="border-2 border-neutral-300 text-foreground hover:bg-neutral-100 hover:text-foreground dark:border-neutral-600 dark:hover:bg-neutral-800 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto icon-text" asChild>
               <a href="/auth" className="bg-white">
+              <span className="material-icons md-24">dashboard</span>
               Go To Dashbaord
               </a>
             </Button>
             
             {/* Anonymous Share Button - Distinctive Design */}
-            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
+            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
               <a href="/code" className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-current animate-ping opacity-75"></div>
                 </div>
+                <span className="material-icons md-24">share</span>
                 <span>Share Anonymous</span>
-                <div className="text-xs opacity-75 font-normal">No signup</div>
+                <div className="text-xs opacity-75 font-body">No signup</div>
               </a>
             </Button>
           </motion.div>
@@ -108,15 +111,15 @@ const HeroSection = () => {
         }}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <Shield className="h-4 w-4 text-primary" />
+                <span className="material-icons md-18 text-primary">security</span>
               </div>
-              <span className="text-xs sm:text-sm font-medium text-muted-foreground">Military-grade encryption</span>
+              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Military-grade encryption</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <Cloud className="h-4 w-4 text-accent" />
+                <span className="material-icons md-18 text-accent">cloud</span>
               </div>
-              <span className="text-xs sm:text-sm font-medium text-muted-foreground">Unlimited bandwidth</span>
+              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Unlimited bandwidth</span>
             </div>
           </motion.div>
         </div>
@@ -138,28 +141,28 @@ const HeroSection = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <Files className="h-5 w-5 text-primary" />
+                    <span className="material-icons md-24 text-primary">folder</span>
                   </div>
                   <div>
-                    <h3 className="text-sm md:text-base font-semibold text-foreground">Project Files</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">24 files • 2.3 GB</p>
+                    <h3 className="text-sm md:text-base font-heading font-semibold text-foreground">Project Files</h3>
+                    <p className="text-xs md:text-sm font-body text-muted-foreground">24 files • 2.3 GB</p>
                   </div>
                 </div>
                 <div className="flex -space-x-2">
                   <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card bg-rose-400"></div>
                   <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card bg-blue-500"></div>
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card flex items-center justify-center text-xs font-medium bg-zinc-800">+3</div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card flex items-center justify-center text-xs font-heading font-medium bg-zinc-800">+3</div>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-2 md:gap-3">
                 <div className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <Files className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                  <span className="material-icons md-18 text-primary">description</span>
                 </div>
                 <div className="aspect-square rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
-                  <Files className="h-3 w-3 md:h-4 md:w-4 text-accent" />
+                  <span className="material-icons md-18 text-accent">image</span>
                 </div>
                 <div className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center">
-                  <Files className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
+                  <span className="material-icons md-18 text-muted-foreground">video_file</span>
                 </div>
               </div>
             </div>
@@ -167,11 +170,11 @@ const HeroSection = () => {
             <div className="bg-card border border-border rounded-2xl p-3 md:p-4 shadow-lg transform translate-x-4 md:translate-x-8 hover:translate-x-0 transition-all duration-500">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                  <Shield className="h-3 w-3 md:h-4 md:w-4 text-accent" />
+                  <span className="material-icons md-18 text-accent">security</span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs md:text-sm font-medium text-foreground">Secure Upload</p>
-                  <p className="text-xs text-muted-foreground">End-to-end encrypted</p>
+                  <p className="text-xs md:text-sm font-heading font-medium text-foreground">Secure Upload</p>
+                  <p className="text-xs font-body text-muted-foreground">End-to-end encrypted</p>
                 </div>
                 <div className="w-8 md:w-12 h-2 bg-muted rounded-full overflow-hidden">
                   <div className="w-6 md:w-8 h-full bg-accent rounded-full"></div>

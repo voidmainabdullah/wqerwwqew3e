@@ -212,14 +212,14 @@ export function FileManager() {
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight mx-[15px]">My Files</h1>
-          <p className="text-muted-foreground mx-[10px]">
+          <h1 className="text-3xl font-heading font-bold tracking-tight mx-[15px]">My Files</h1>
+          <p className="font-body text-muted-foreground mx-[10px]">
             Manage your uploaded files and shared content.
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="font-heading">
           <a href="/dashboard/upload" className="flex items-center gap-2 bg-red-400  my-0 mx-[20px]">  
-            <Upload className="h-4 w-4" />
+            <span className="material-icons md-18">upload</span>
             Upload Files
           </a>
         </Button>
@@ -230,11 +230,11 @@ export function FileManager() {
         <CardContent className="p-6 bg-neutral-800">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1"> 
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl" />
+              <span className="material-icons md-18 absolute left-2 top-2.5 text-muted-foreground">search</span>
+              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl font-body" />
             </div> 
             <div className="w-full sm:w-48">
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 bg-neutral-600 rounded-xl">
+              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 bg-neutral-600 rounded-xl font-body">
                 <option value="all">All Files</option>
                 <option value="image">Images</option>
                 <option value="video">Videos</option>
@@ -251,14 +251,15 @@ export function FileManager() {
       {filteredFiles.length === 0 ? <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <div className="text-muted-foreground mb-4">
-              <Upload className="h-12 w-12" />
+              <span className="material-icons md-48 text-muted-foreground">upload_file</span>
             </div>
-            <h3 className="text-lg font-medium mb-2 bg-neutral-800 hover:bg-neutral-800 text-zinc-500">No files found</h3>
-            <p className="text-muted-foreground text-center mb-4">
+            <h3 className="text-lg font-heading font-medium mb-2 bg-neutral-800 hover:bg-neutral-800 text-zinc-500">No files found</h3>
+            <p className="font-body text-muted-foreground text-center mb-4">
               {searchTerm ? 'No files match your search criteria.' : 'Start by uploading your first file.'}
             </p>
-            <Button asChild className="bg-neutral-950 hover:bg-neutral-800 text-blue-500">
+            <Button asChild className="bg-neutral-950 hover:bg-neutral-800 text-blue-500 font-heading icon-text">
               <a href="/dashboard/upload">
+                <span className="material-icons md-18">upload</span>
                 Upload a File
               </a>
             </Button>
@@ -268,7 +269,7 @@ export function FileManager() {
               <CardContent className="p-4 rounded-xl mx-0 bg-neutral-700">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 bg-primary/30 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-medium text-sm">
+                    <span className="text-primary font-heading font-medium text-sm">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
                   </div> 
@@ -278,10 +279,10 @@ export function FileManager() {
                 </div>
                 
                 <div className="mb-3">
-                  <h4 className="font-medium text-sm mb-1 truncate" title={file.original_name}>
+                  <h4 className="font-heading font-medium text-sm mb-1 truncate" title={file.original_name}>
                     {file.original_name}
                   </h4>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs font-body text-muted-foreground">
                     <span>{formatFileSize(file.file_size)}</span>
                     <span>•</span>
                     <span>{new Date(file.created_at).toLocaleDateString()}</span>
@@ -292,19 +293,23 @@ export function FileManager() {
                   {/* Primary Action Buttons */} 
                   <div className="flex items-center gap-1">
                     <Button size="icon" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="h-8 w-8 bg-zinc-50">
-                      <Download className="h-4 w-4" />
+                      <span className="material-icons md-18">download</span>
                     </Button>
                     
                     <Button size="icon" variant="outline" onClick={() => openShareDialog(file.id, file.original_name)} title="Share" className="h-8 w-8">
-                      <Share2 className="h-4 w-4" />
+                      <span className="material-icons md-18">share</span>
                     </Button>
 
                     <Button size="icon" variant="outline" onClick={() => toggleFileVisibility(file.id, file.is_public)} title={file.is_public ? 'Make Private' : 'Make Public'} className="h-8 w-8">
-                      {file.is_public ? <Globe className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                      <span className="material-icons md-18">
+                        {file.is_public ? 'public' : 'visibility_off'}
+                      </span>
                     </Button>
 
                     <Button size="icon" variant="outline" onClick={() => toggleFileLock(file.id, file.is_locked)} title={file.is_locked ? 'Unlock' : 'Lock'} className="h-8 w-8">
-                      {file.is_locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                      <span className="material-icons md-18">
+                        {file.is_locked ? 'lock' : 'lock_open'}
+                      </span>
                     </Button>
                   </div>
 
@@ -312,21 +317,21 @@ export function FileManager() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button size="icon" variant="ghost" className="h-8 w-8">
-                        <MoreVertical className="h-4 w-4" />
+                        <span className="material-icons md-18">more_vert</span>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
-                        <Shield className="h-4 w-4 mr-2" />
+                        <span className="material-icons md-18 mr-2">security</span>
                         Virus Scan
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => openRenameDialog(file.id, file.original_name)}>
-                        <Edit3 className="h-4 w-4 mr-2" />
+                        <span className="material-icons md-18 mr-2">edit</span>
                         Rename
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => deleteFile(file.id, file.storage_path)} className="text-destructive focus:text-destructive">
-                        <Trash2 className="h-4 w-4 mr-2" />
+                        <span className="material-icons md-18 mr-2">delete</span>
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -336,11 +341,11 @@ export function FileManager() {
                 {/* Status Indicators */}
                 <div className="flex items-center gap-1 mt-2">
                   {file.is_public && <Badge variant="secondary" className="text-xs">
-                      <Globe className="h-3 w-3 mr-1" />
+                      <span className="material-icons md-18 mr-1">public</span>
                       Public
                     </Badge>}
                   {file.is_locked && <Badge variant="outline" className="text-xs">
-                      <Lock className="h-3 w-3 mr-1" />
+                      <span className="material-icons md-18 mr-1">lock</span>
                       Locked
                     </Badge>}
                 </div>

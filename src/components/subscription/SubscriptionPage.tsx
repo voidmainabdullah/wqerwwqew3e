@@ -93,10 +93,10 @@ export const SubscriptionPage: React.FC = () => {
       <div className="relative z-10 bg-background/70 backdrop-blur-sm min-h-screen">
         <div className="container mx-auto px-4 py-12 space-y-16">
           <div className="text-center space-y-4">
-            <h1 className="text-5xl font-bold tracking-tight">
+            <h1 className="text-5xl font-heading font-bold tracking-tight">
               Simple Pricing for Everyone
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">
               Whether you're just starting or need power features — we've got a
               plan that fits you.
             </p>
@@ -137,12 +137,12 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-green">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-green mx-auto mb-4">
-                  <Upload className="h-6 w-6 analytics-icon analytics-icon-green" />
+                  <span className="material-icons md-24 analytics-icon analytics-icon-green">upload</span>
                 </div>
-                <CardTitle className="text-lg">Unlimited Uploads</CardTitle>
+                <CardTitle className="text-lg font-heading">Unlimited Uploads</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground text-center">
+                <p className="text-sm font-body text-muted-foreground text-center">
                   Upload without daily restrictions and focus on your work.
                 </p>
               </CardContent>
@@ -150,12 +150,12 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-red">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-red mx-auto mb-4">
-                  <Shield className="h-6 w-6 analytics-icon analytics-icon-red" />
+                  <span className="material-icons md-24 analytics-icon analytics-icon-red">security</span>
                 </div>
-                <CardTitle className="text-lg">Advanced Security</CardTitle>
+                <CardTitle className="text-lg font-heading">Advanced Security</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground text-center">
+                <p className="text-sm font-body text-muted-foreground text-center">
                   Protect files with passwords and custom expiry dates.
                 </p>
               </CardContent>
@@ -163,12 +163,12 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-purple">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-purple mx-auto mb-4">
-                  <ChartLineUp className="h-6 w-6 analytics-icon analytics-icon-purple" />
+                  <span className="material-icons md-24 analytics-icon analytics-icon-purple">analytics</span>
                 </div>
-                <CardTitle className="text-lg">Analytics</CardTitle>
+                <CardTitle className="text-lg font-heading">Analytics</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground text-center">
+                <p className="text-sm font-body text-muted-foreground text-center">
                   Get insights on downloads and file performance.
                 </p>
               </CardContent>
@@ -176,12 +176,12 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-yellow">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-yellow mx-auto mb-4">
-                  <Lightning className="h-6 w-6 analytics-icon analytics-icon-yellow" />
+                  <span className="material-icons md-24 analytics-icon analytics-icon-yellow">support_agent</span>
                 </div>
-                <CardTitle className="text-lg">Priority Support</CardTitle>
+                <CardTitle className="text-lg font-heading">Priority Support</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground text-center">
+                <p className="text-sm font-body text-muted-foreground text-center">
                   Faster response times with dedicated support.
                 </p>
               </CardContent>
@@ -189,13 +189,13 @@ export const SubscriptionPage: React.FC = () => {
           </div>
           <Card className="max-w-4xl mx-auto brand-card border-brand-accent/20">
             <CardHeader>
-              <CardTitle className="flex items-center text-xl">
+              <CardTitle className="flex items-center text-xl font-heading">
                 <div className="icon-container icon-container-yellow mr-3">
-                  <Crown className="h-5 w-5 analytics-icon analytics-icon-yellow" />
+                  <span className="material-icons md-18 analytics-icon analytics-icon-yellow">crown</span>
                 </div>
                 Why Upgrade to Pro?
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="font-body">
                 Unlock premium features to supercharge your file sharing
               </CardDescription>
             </CardHeader>
@@ -204,8 +204,8 @@ export const SubscriptionPage: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
-                    <h4 className="font-medium">Unlimited Daily Uploads</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <h4 className="font-heading font-medium">Unlimited Daily Uploads</h4>
+                    <p className="text-sm font-body text-muted-foreground">
                       Never worry about hitting limits. Share as much as you
                       need.
                     </p>
@@ -214,8 +214,8 @@ export const SubscriptionPage: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
-                    <h4 className="font-medium">Custom Expiry Dates</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <h4 className="font-heading font-medium">Custom Expiry Dates</h4>
+                    <p className="text-sm font-body text-muted-foreground">
                       Set file expiry on your terms — days, months, or forever.
                     </p>
                   </div>
@@ -225,8 +225,8 @@ export const SubscriptionPage: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
-                    <h4 className="font-medium">Password Protection</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <h4 className="font-heading font-medium">Password Protection</h4>
+                    <p className="text-sm font-body text-muted-foreground">
                       Add a layer of security to your sensitive files.
                     </p>
                   </div>
@@ -234,8 +234,8 @@ export const SubscriptionPage: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2" />
                   <div>
-                    <h4 className="font-medium">Download Analytics</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <h4 className="font-heading font-medium">Download Analytics</h4>
+                    <p className="text-sm font-body text-muted-foreground">
                       Know when and how your files are accessed.
                     </p>
                   </div>

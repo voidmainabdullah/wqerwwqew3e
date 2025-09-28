@@ -60,10 +60,10 @@ const Features = () => {
       }} transition={{
         duration: 0.6
       }}>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground mb-4 md:mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-foreground mb-4 md:mb-6">
             Built for the future of file sharing
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl font-body text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             Experience next-generation features designed to revolutionize how teams collaborate and share files securely.
           </p>
         </motion.div>
@@ -101,7 +101,14 @@ const Features = () => {
                     index === 4 ? 'analytics-icon-purple' :
                     'analytics-icon-green'
                   }`}>
-                    {React.cloneElement(feature.icon, { size: window.innerWidth >= 768 ? 32 : 24 })}
+                    <span className={`material-icons ${window.innerWidth >= 768 ? 'md-36' : 'md-24'}`}>
+                      {index === 0 ? 'security' :
+                       index === 1 ? 'groups' :
+                       index === 2 ? 'folder_managed' :
+                       index === 3 ? 'lock' :
+                       index === 4 ? 'share' :
+                       'flash_on'}
+                    </span>
                   </div>
                 </div>
 
@@ -110,7 +117,7 @@ const Features = () => {
                   <CollapsibleTrigger className="w-full text-left group/trigger">
                     <div className="flex items-start gap-4">
                       <div className="flex-1">
-                        <motion.h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 group-hover/trigger:text-primary transition-colors duration-300" initial={{
+                        <motion.h3 className="text-xl md:text-2xl font-heading font-bold text-foreground mb-3 group-hover/trigger:text-primary transition-colors duration-300" initial={{
                       opacity: 0,
                       y: 15
                     }} animate={inView ? {
@@ -125,7 +132,7 @@ const Features = () => {
                     }}>
                           {feature.title}
                         </motion.h3>
-                        <motion.p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-4" initial={{
+                        <motion.p className="text-sm md:text-base font-body text-muted-foreground leading-relaxed mb-4" initial={{
                       opacity: 0,
                       y: 20
                     }} animate={inView ? {
@@ -141,12 +148,14 @@ const Features = () => {
                           {feature.description}
                         </motion.p>
                       </div>
-                      <ChevronDown className={`h-5 w-5 md:h-6 md:w-6 text-muted-foreground transition-all duration-300 group-hover/trigger:text-primary flex-shrink-0 ${openFeature === index ? 'rotate-180' : ''}`} />
+                      <span className={`material-icons md-24 text-muted-foreground transition-all duration-300 group-hover/trigger:text-primary flex-shrink-0 ${openFeature === index ? 'rotate-180' : ''}`}>
+                        expand_more
+                      </span>
                     </div>
                   </CollapsibleTrigger>
                   <CollapsibleContent className="mt-4">
                     <div className="pt-4 border-t border-border">
-                      <motion.p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-6" initial={{
+                      <motion.p className="text-sm md:text-base font-body text-muted-foreground leading-relaxed mb-6" initial={{
                     opacity: 0,
                     y: 25
                   }} animate={openFeature === index ? {
@@ -161,11 +170,9 @@ const Features = () => {
                   }}>
                         {feature.expandedDescription}
                       </motion.p>
-                      <button className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors duration-200 text-sm md:text-base">
+                      <button className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-heading font-semibold transition-colors duration-200 text-sm md:text-base">
                         Learn more
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
+                        <span className="material-icons md-18">arrow_forward</span>
                       </button>
                     </div>
                   </CollapsibleContent>

@@ -115,42 +115,70 @@ const Header = () => {
         
         {/* Desktop navigation with dropdowns */}
         <nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2">
-          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-xl">
+          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-xl font-heading">
             <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
-              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
-                <CircleDot size={14} className="inline-block mr-1" /> Features
+              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
+                <span className="material-icons md-18">star</span>
+                Features
               </ToggleGroupItem>
               
               {/* Products Dropdown */}
               <div className="relative group">
-                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
-                  <LayoutDashboard size={14} className="inline-block mr-1" /> Products
+                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                  <span className="material-icons md-18">dashboard</span>
+                  Products
                 </ToggleGroupItem>
                 <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="p-2">
-                    <a href="#" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">File Storage</a>
-                    <a href="#" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">Team Collaboration</a>
-                    <a href="#" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">Enterprise Security</a>
-                    <a href="#" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">API Platform</a>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">storage</span>
+                      File Storage
+                    </a>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">groups</span>
+                      Team Collaboration
+                    </a>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">security</span>
+                      Enterprise Security
+                    </a>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">api</span>
+                      API Platform
+                    </a>
                   </div>
                 </div>
               </div>
 
-              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", activePage === 'pricing' ? 'text-accent-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
-                <DollarSign size={14} className="inline-block mr-1" /> Pricing
+              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'pricing' ? 'text-accent-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
+                <span className="material-icons md-18">payments</span>
+                Pricing
               </ToggleGroupItem>
 
               {/* Resources Dropdown */}
               <div className="relative group">
-                <ToggleGroupItem value="resources" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                <ToggleGroupItem value="resources" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                  <span className="material-icons md-18">library_books</span>
                   Resources
                 </ToggleGroupItem>
                 <div className="absolute top-full left-0 mt-2 w-44 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="p-2">
-                    <a href="/docs" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">Documentation</a>
-                    <a href="/blog" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">Blog</a>
-                    <a href="#" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">Case Studies</a>
-                    <a href="#" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">Support</a>
+                    <a href="/docs" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">description</span>
+                      Documentation
+                    </a>
+                    <a href="/blog" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">article</span>
+                      Blog
+                    </a>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">business</span>
+                      Case Studies
+                    </a>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                      <span className="material-icons md-18">support</span>
+                      Support
+                    </a>
                   </div>
                 </div>
               </div>

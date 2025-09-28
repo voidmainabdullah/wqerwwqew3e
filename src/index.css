@@ -2,6 +2,171 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Google Fonts Typography System */
+@layer base {
+  /* Font Family Definitions */
+  :root {
+    --font-heading: 'Unbounded', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-body: 'Rationale', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
+  }
+
+  /* Base Typography */
+  html {
+    font-family: var(--font-body);
+    font-optical-sizing: auto;
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+
+  /* Heading Typography with Unbounded */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  h5 {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  h6 {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* Body Typography with Rationale */
+  body, p, span, div {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* Button and UI Element Typography */
+  button, .btn {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* Navigation Typography */
+  nav, .nav {
+    font-family: var(--font-heading);
+    font-weight: 400;
+  }
+
+  /* Form Elements */
+  input, textarea, select {
+    font-family: var(--font-body);
+  }
+
+  /* Code and Monospace */
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Material Icons Base Styles */
+  .material-icons,
+  .material-symbols-outlined {
+    font-family: 'Material Icons', 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    vertical-align: middle;
+  }
+
+  /* Icon Size Variants */
+  .material-icons.md-18,
+  .material-symbols-outlined.md-18 { font-size: 18px; }
+  
+  .material-icons.md-24,
+  .material-symbols-outlined.md-24 { font-size: 24px; }
+  
+  .material-icons.md-36,
+  .material-symbols-outlined.md-36 { font-size: 36px; }
+  
+  .material-icons.md-48,
+  .material-symbols-outlined.md-48 { font-size: 48px; }
+
+  /* Icon Color Variants */
+  .material-icons.md-dark,
+  .material-symbols-outlined.md-dark { color: rgba(0, 0, 0, 0.54); }
+  
+  .material-icons.md-light,
+  .material-symbols-outlined.md-light { color: rgba(255, 255, 255, 1); }
+
+  /* Icon with Text Alignment */
+  .icon-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .icon-text .material-icons,
+  .icon-text .material-symbols-outlined {
+    font-size: 1.2em;
+  }
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
 /* Enhanced Color System for Analytics and Branding */
 @layer base {
   :root {

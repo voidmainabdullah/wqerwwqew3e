@@ -42,10 +42,10 @@ const Testimonials = () => {
       }} transition={{
         duration: 0.6
       }}>
-          <h2 className="text-3xl md:text-4xl font-medium tracking-tighter text-foreground">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-tighter text-foreground">
             Trusted by teams worldwide
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="font-body text-muted-foreground text-lg">
             See how our platform transforms file sharing and collaboration for businesses
           </p>
         </motion.div>
@@ -65,14 +65,14 @@ const Testimonials = () => {
           delay: index * 0.2
         }}>
               <div className="mb-6">
-                {[...Array(5)].map((_, i) => <span key={i} className="inline-block mr-1 text-amber-200">★</span>)}
+                {[...Array(5)].map((_, i) => <span key={i} className="material-icons md-18 mr-1 text-amber-400">star</span>)}
               </div>
-              <p className="text-lg mb-8 text-foreground/90 italic">"{testimonial.quote}"</p>
+              <p className="text-lg font-body mb-8 text-foreground/90 italic">"{testimonial.quote}"</p>
               <div className="flex items-center gap-4">
                 <div className={`h-12 w-12 rounded-full ${testimonial.avatar} bg-muted`}></div>
                 <div>
-                  <h4 className="font-medium text-foreground">{testimonial.author}</h4>
-                  <p className="text-sm text-muted-foreground">{testimonial.position}</p>
+                  <h4 className="font-heading font-medium text-foreground">{testimonial.author}</h4>
+                  <p className="text-sm font-body text-muted-foreground">{testimonial.position}</p>
                 </div>
               </div> 
             </motion.div>)}

@@ -13,7 +13,7 @@ const FileTransferDemo = () => {
           y: 0
         }} transition={{
           duration: 0.6
-        }} className="text-4xl md:text-5xl font-semibold text-foreground mb-4">
+        }} className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
             See File Transfer in Action
           </motion.h2>
           <motion.p initial={{
@@ -25,7 +25,7 @@ const FileTransferDemo = () => {
         }} transition={{
           duration: 0.6,
           delay: 0.2
-        }} className="text-muted-foreground text-lg max-w-2xl mx-auto">
+        }} className="font-body text-muted-foreground text-lg max-w-2xl mx-auto">
             Watch how seamlessly your files move through our secure transfer pipeline
           </motion.p>
         </div>
@@ -46,17 +46,17 @@ const FileTransferDemo = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <Files className="h-5 w-5 text-primary" />
+                    <span className="material-icons md-18 text-primary">folder</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground">Project Files</h3>
-                    <p className="text-sm text-muted-foreground">24 files • 2.3 GB</p>
+                    <h3 className="font-heading font-semibold text-foreground">Project Files</h3>
+                    <p className="text-sm font-body text-muted-foreground">24 files • 2.3 GB</p>
                   </div>
                 </div>
                 <div className="flex -space-x-2">
                   <div className="w-8 h-8 rounded-full bg-primary/30 border-2 border-card"></div>
                   <div className="w-8 h-8 rounded-full bg-accent/30 border-2 border-card"></div>
-                  <div className="w-8 h-8 rounded-full bg-muted border-2 border-card flex items-center justify-center text-xs font-medium">+3</div>
+                  <div className="w-8 h-8 rounded-full bg-muted border-2 border-card flex items-center justify-center text-xs font-heading font-medium">+3</div>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-3">
@@ -67,7 +67,7 @@ const FileTransferDemo = () => {
                 repeat: Infinity,
                 delay: 0
               }} className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <Files className="h-4 w-4 text-primary" />
+                  <span className="material-icons md-18 text-primary">description</span>
                 </motion.div>
                 <motion.div animate={{
                 scale: [1, 1.05, 1]
@@ -76,7 +76,7 @@ const FileTransferDemo = () => {
                 repeat: Infinity,
                 delay: 0.3
               }} className="aspect-square rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
-                  <Files className="h-4 w-4 text-accent" />
+                  <span className="material-icons md-18 text-accent">image</span>
                 </motion.div>
                 <motion.div animate={{
                 scale: [1, 1.05, 1]
@@ -85,13 +85,13 @@ const FileTransferDemo = () => {
                 repeat: Infinity,
                 delay: 0.6
               }} className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center">
-                  <Files className="h-4 w-4 text-muted-foreground" />
+                  <span className="material-icons md-18 text-muted-foreground">video_file</span>
                 </motion.div>
               </div>
             </div>
             
             <div className="text-center">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-heading font-medium">
                 <span className="w-2 h-2 bg-primary rounded-full"></span>
                 Step 1: Select Files
               </span>
@@ -106,7 +106,7 @@ const FileTransferDemo = () => {
             duration: 2,
             repeat: Infinity
           }} className="text-muted-foreground">
-              <ArrowRight className="h-8 w-8" />
+              <span className="material-icons md-36">arrow_forward</span>
             </motion.div>
           </div>
 
@@ -124,18 +124,18 @@ const FileTransferDemo = () => {
             <div className="bg-card border border-border rounded-2xl p-6 hover:shadow-xl transition-all duration-500">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-                  <Shield className="h-5 w-5 text-accent" />
+                  <span className="material-icons md-18 text-accent">security</span>
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-foreground">Secure Upload</p>
-                  <p className="text-sm text-muted-foreground">End-to-end encrypted</p>
+                  <p className="font-heading font-semibold text-foreground">Secure Upload</p>
+                  <p className="text-sm font-body text-muted-foreground">End-to-end encrypted</p>
                 </div>
               </div>
               
               <div className="space-y-3">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-sm font-body">
                   <span className="text-muted-foreground">Progress</span>
-                  <span className="text-foreground font-medium">67%</span>
+                  <span className="text-foreground font-heading font-medium">67%</span>
                 </div>
                 <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                   <motion.div initial={{
@@ -148,15 +148,15 @@ const FileTransferDemo = () => {
                   repeatType: "reverse"
                 }} className="h-full bg-accent rounded-full" />
                 </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Shield className="h-4 w-4" />
+                <div className="flex items-center gap-2 text-sm font-body text-muted-foreground">
+                  <span className="material-icons md-18">security</span>
                   <span>256-bit AES encryption</span>
                 </div>
               </div>
             </div>
             
             <div className="text-center">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-heading font-medium">
                 <motion.span animate={{
                 rotate: 360
               }} transition={{
@@ -184,18 +184,18 @@ const FileTransferDemo = () => {
           <div className="bg-card border border-border rounded-2xl p-6 hover:shadow-xl transition-all duration-500">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
-                <CheckCircle className="h-5 w-5 text-green-400" />
+                <span className="material-icons md-18 text-green-400">check_circle</span>
               </div>
               <div>
-                <p className="font-semibold text-foreground">Transfer Complete</p>
-                <p className="text-sm text-muted-foreground">All files shared successfully</p>
+                <p className="font-heading font-semibold text-foreground">Transfer Complete</p>
+                <p className="text-sm font-body text-muted-foreground">All files shared successfully</p>
               </div>
             </div>
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Shared with 5 people</span>
+                <span className="material-icons md-18 text-muted-foreground">groups</span>
+                <span className="text-sm font-body text-muted-foreground">Shared with 5 people</span>
               </div>
               <motion.span animate={{
               scale: [1, 1.2, 1]
@@ -203,14 +203,14 @@ const FileTransferDemo = () => {
               duration: 1.5,
               repeat: Infinity
             }} className="text-green-400">
-                <CheckCircle className="h-5 w-5" />
+                <span className="material-icons md-18">check_circle</span>
               </motion.span>
             </div>
           </div>
           
           <div className="text-center mt-4">
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 rounded-full text-sm font-medium">
-              <CheckCircle className="w-4 h-4" />
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 rounded-full text-sm font-heading font-medium">
+              <span className="material-icons md-18">check_circle</span>
               Step 3: Completed
             </span>
           </div>
@@ -238,11 +238,11 @@ const FileTransferDemo = () => {
                 repeat: Infinity,
                 ease: "linear"
               }} className="absolute inset-2 border-2 border-primary/30 border-t-primary rounded-full bg-transparent" />
-                <Lock className="h-6 w-6 text-primary" />
+                <span className="material-icons md-24 text-primary">lock</span>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">Advanced Encryption</h3>
-                <p className="text-sm text-muted-foreground">Military-grade AES-256</p>
+                <h3 className="font-heading font-semibold text-foreground">Advanced Encryption</h3>
+                <p className="text-sm font-body text-muted-foreground">Military-grade AES-256</p>
               </div>
               <div className="flex justify-center gap-1">
                 {[...Array(5)].map((_, i) => <motion.div key={i} animate={{
@@ -275,7 +275,7 @@ const FileTransferDemo = () => {
                 duration: 2,
                 repeat: Infinity
               }}>
-                  <Settings className="h-6 w-6 text-accent" />
+                  <span className="material-icons md-24 text-accent">settings</span>
                 </motion.div>
                 <motion.div animate={{
                 rotate: [0, 180, 360]
@@ -286,8 +286,8 @@ const FileTransferDemo = () => {
               }} className="absolute top-1 right-1 w-3 h-3 rounded-full bg-slate-100" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">Full Control</h3>
-                <p className="text-sm text-muted-foreground">Permissions & Access</p>
+                <h3 className="font-heading font-semibold text-foreground">Full Control</h3>
+                <p className="text-sm font-body text-muted-foreground">Permissions & Access</p>
               </div>
               <div className="flex justify-center space-x-1 bg-transparent">
                 <motion.div animate={{
@@ -328,7 +328,7 @@ const FileTransferDemo = () => {
         }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
             <div className="text-center space-y-4">
               <div className="relative mx-auto w-16 h-16 rounded-full bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center">
-                <Eye className="h-6 w-6 text-black dark:text-neutral-800" />
+                <span className="material-icons md-24 text-black dark:text-neutral-800">visibility</span>
                 <motion.div animate={{
                 scale: [1, 1.5, 1],
                 opacity: [1, 0, 1]
@@ -338,29 +338,29 @@ const FileTransferDemo = () => {
               }} className="absolute inset-0 rounded-full border-2 border-black/30 dark:border-neutral-800/30 bg-zinc-800" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">Live Monitoring</h3>
-                <p className="text-sm text-muted-foreground">Real-time analytics</p>
+                <h3 className="font-heading font-semibold text-foreground">Live Monitoring</h3>
+                <p className="text-sm font-body text-muted-foreground">Real-time analytics</p>
               </div>
               <div className="space-y-2">
-                <div className="flex justify-between text-xs">
+                <div className="flex justify-between text-xs font-body">
                   <span className="text-muted-foreground">Active transfers</span>
                   <motion.span animate={{
                   opacity: [0.5, 1, 0.5]
                 }} transition={{
                   duration: 1,
                   repeat: Infinity
-                }} className="font-medium text-green-400">
+                }} className="font-heading font-medium text-green-400">
                     24
                   </motion.span>
                 </div>
-                <div className="flex justify-between text-xs">
+                <div className="flex justify-between text-xs font-body">
                   <span className="text-muted-foreground">Users online</span>
                   <motion.span animate={{
                   opacity: [0.5, 1, 0.5]
                 }} transition={{
                   duration: 1.2,
                   repeat: Infinity
-                }} className="font-medium text-green-400">
+                }} className="font-heading font-medium text-green-400">
                     1.2k
                   </motion.span>
                 </div>
@@ -388,17 +388,17 @@ const FileTransferDemo = () => {
                 duration: 1.5,
                 repeat: Infinity
               }}>
-                  <Zap className="h-6 w-6 text-black dark:text-neutral-800 bg-transparent" />
+                  <span className="material-icons md-24 text-black dark:text-neutral-800">flash_on</span>
                 </motion.div>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">Lightning Speed</h3>
-                <p className="text-sm text-muted-foreground">Ultra-fast transfers</p>
+                <h3 className="font-heading font-semibold text-foreground">Lightning Speed</h3>
+                <p className="text-sm font-body text-muted-foreground">Ultra-fast transfers</p>
               </div>
-              <div className="flex items-center justify-center gap-2 text-sm">
-                <Upload className="h-4 w-4 text-black dark:text-white bg-transparent" />
-                <span className="text-foreground font-medium">125 MB/s</span>
-                <Download className="h-4 w-4 text-black dark:text-white" />
+              <div className="flex items-center justify-center gap-2 text-sm font-body">
+                <span className="material-icons md-18 text-black dark:text-white">upload</span>
+                <span className="text-foreground font-heading font-medium">125 MB/s</span>
+                <span className="material-icons md-18 text-black dark:text-white">download</span>
               </div>
             </div>
           </motion.div>
@@ -416,8 +416,8 @@ const FileTransferDemo = () => {
         delay: 0.5
       }} className="mt-16 bg-card border border-border rounded-2xl p-8 hover:shadow-xl transition-all duration-500">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-semibold text-foreground mb-2">Security First Architecture</h3>
-            <p className="text-muted-foreground">Every transfer is protected by multiple layers of security</p>
+            <h3 className="text-2xl font-heading font-bold text-foreground mb-2">Security First Architecture</h3>
+            <p className="font-body text-muted-foreground">Every transfer is protected by multiple layers of security</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-6">
@@ -431,7 +431,7 @@ const FileTransferDemo = () => {
                 repeat: Infinity,
                 ease: "linear"
               }} className="absolute inset-0 border-2 border-dashed border-primary/30 rounded-full" />
-                <Shield className="h-8 w-8 text-primary" />
+                <span className="material-icons md-36 text-primary">security</span>
                 <motion.div animate={{
                 scale: [1, 1.3, 1],
                 opacity: [0.3, 0.8, 0.3]
@@ -441,15 +441,15 @@ const FileTransferDemo = () => {
               }} className="absolute inset-0 rounded-full bg-zinc-800" />
               </div>
               <div>
-                <h4 className="font-semibold text-foreground">End-to-End Encryption</h4>
-                <p className="text-sm text-muted-foreground">Files encrypted before leaving your device</p>
+                <h4 className="font-heading font-semibold text-foreground">End-to-End Encryption</h4>
+                <p className="text-sm font-body text-muted-foreground">Files encrypted before leaving your device</p>
               </div>
             </div>
 
             {/* Access Control */}
             <div className="text-center space-y-4">
               <div className="relative mx-auto w-20 h-20 rounded-full flex items-center justify-center bg-zinc-800">
-                <UserCheck className="h-8 w-8 text-accent" />
+                <span className="material-icons md-36 text-accent">verified_user</span>
                 <motion.div animate={{
                 rotate: [0, -360]
               }} transition={{
@@ -459,15 +459,15 @@ const FileTransferDemo = () => {
               }} className="absolute inset-2 border border-accent/40 border-dotted rounded-full bg-[#1bb428]/[0.08]" />
               </div>
               <div>
-                <h4 className="font-semibold text-foreground">Secure Verified +</h4>
-                <p className="text-sm text-muted-foreground">Multi-factor authentication required</p>
+                <h4 className="font-heading font-semibold text-foreground">Secure Verified +</h4>
+                <p className="text-sm font-body text-muted-foreground">Multi-factor authentication required</p>
               </div>
             </div>
 
             {/* Global Network */}
             <div className="text-center space-y-4">
               <div className="relative mx-auto w-20 h-20 rounded-full bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center">
-                <Globe className="h-8 w-8 text-black dark:text-neutral-800" />
+                <span className="material-icons md-36 text-black dark:text-neutral-800">public</span>
                 <motion.div animate={{
                 scale: [1, 1.4, 1]
               }} transition={{
@@ -483,8 +483,8 @@ const FileTransferDemo = () => {
               }} className="absolute inset-1 border border-black/20 dark:border-neutral-800/20 rounded-full bg-zinc-50" />
               </div>
               <div>
-                <h4 className="font-semibold text-foreground">Global Infrastructure</h4>
-                <p className="text-sm text-muted-foreground">Distributed across 50+ data centers</p>
+                <h4 className="font-heading font-semibold text-foreground">Global Infrastructure</h4>
+                <p className="text-sm font-body text-muted-foreground">Distributed across 50+ data centers</p>
               </div>
             </div>
           </div>
@@ -498,11 +498,11 @@ const FileTransferDemo = () => {
               duration: 2,
               repeat: Infinity
             }} className="w-3 h-3 rounded-full bg-emerald-400" />
-              <span className="text-sm text-muted-foreground">All systems operational</span>
+              <span className="text-sm font-body text-muted-foreground">All systems operational</span>
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">99.9% uptime</span>
+              <span className="material-icons md-18 text-muted-foreground">schedule</span>
+              <span className="text-sm font-body text-muted-foreground">99.9% uptime</span>
             </div>
           </div>
         </motion.div>

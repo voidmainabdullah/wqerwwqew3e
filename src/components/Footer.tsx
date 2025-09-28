@@ -39,45 +39,102 @@ const Footer = () => {
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-medium text-lg text-foreground">Product</h4>
+            <h4 className="font-heading font-semibold text-lg text-foreground">Product</h4>
             <ul className="space-y-3">
-              <li><a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Integrations</a></li>
-              <li><a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Updates</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Roadmap</a></li>
+              <li><a href="#features" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">star</span>
+                Features
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">integration_instructions</span>
+                Integrations
+              </a></li>
+              <li><a href="#pricing" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">payments</span>
+                Pricing
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">update</span>
+                Updates
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">map</span>
+                Roadmap
+              </a></li>
             </ul>
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-medium text-lg text-foreground">Company</h4>
+            <h4 className="font-heading font-semibold text-lg text-foreground">Company</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">About</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Blog</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Careers</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Press</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">info</span>
+                About
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">article</span>
+                Blog
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">work</span>
+                Careers
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">campaign</span>
+                Press
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">contact_mail</span>
+                Contact
+              </a></li>
             </ul>
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-medium text-lg text-foreground">Resources</h4>
+            <h4 className="font-heading font-semibold text-lg text-foreground">Resources</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Documentation</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Help Center</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Guides & Tutorials</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">API Reference</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Community</a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">description</span>
+                Documentation
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">help_center</span>
+                Help Center
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">school</span>
+                Guides & Tutorials
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">code</span>
+                API Reference
+              </a></li>
+              <li><a href="#" className="font-body text-muted-foreground hover:text-foreground transition-colors icon-text">
+                <span className="material-icons md-18">groups</span>
+                Community
+              </a></li>
             </ul>
           </div>
         </div>
         
-        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center text-muted-foreground text-sm">
-          <div>© 2025 DropThrow. All rights reserved.</div>
+        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center font-body text-muted-foreground text-sm">
+          <div className="icon-text">
+            <span className="material-icons md-18">copyright</span>
+            © 2025 DropThrow. All rights reserved.
+          </div>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-            <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-            <a href="#" className="hover:text-foreground transition-colors">Cookies</a>
+            <a href="#" className="hover:text-foreground transition-colors icon-text">
+              <span className="material-icons md-18">privacy_tip</span>
+              Privacy
+            </a>
+            <a href="#" className="hover:text-foreground transition-colors icon-text">
+              <span className="material-icons md-18">gavel</span>
+              Terms
+            </a>
+            <a href="#" className="hover:text-foreground transition-colors icon-text">
+              <span className="material-icons md-18">cookie</span>
+              Cookies
+            </a>
           </div>
         </div>
       </div>
