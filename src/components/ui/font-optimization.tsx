@@ -38,7 +38,7 @@ export const FontOptimization: React.FC = () => {
     const checkFontLoad = async () => {
       try {
         await document.fonts.load('400 16px Unbounded');
-        await document.fonts.load('400 16px Rationale');
+        await document.fonts.load('400 16px Exo 2');
         
         // Add loaded class to body for CSS transitions
         document.body.classList.add('fonts-loaded');
