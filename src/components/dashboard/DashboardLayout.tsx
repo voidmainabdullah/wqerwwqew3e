@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive, QuestionMark, ChatCircle } from 'phosphor-react';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive, Question, ChatCircle } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -253,7 +253,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent/50">
-          <QuestionMark className="h-5 w-5 text-muted-foreground" />
+          <Question className="h-5 w-5 text-muted-foreground" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64 p-4" align="end">
@@ -283,7 +283,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             
             <Button variant="ghost" className="w-full justify-start h-auto p-3" asChild>
               <a href="#" className="flex items-center gap-3">
-                <QuestionMark className="h-4 w-4 text-purple-500" />
+                <Question className="h-4 w-4 text-purple-500" />
                 <div className="text-left">
                   <p className="font-medium">FAQ</p>
                   <p className="text-xs text-muted-foreground">Common questions</p>
