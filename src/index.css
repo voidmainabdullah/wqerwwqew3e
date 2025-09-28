@@ -6,7 +6,7 @@
 @layer base {
   /* Font Family Definitions */
   :root {
-    --font-heading: 'Unbounded', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Urbanist', 'Inter', system-ui, -apple-system, sans-serif;
     --font-body: 'Rationale', 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
   }
