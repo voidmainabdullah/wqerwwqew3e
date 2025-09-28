@@ -75,7 +75,7 @@ const HeroSection = () => {
           delay: 0.6
         }}>
             <Button variant="default" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto icon-text" asChild>
-              <a href="/auth" className="bg-slate-200 text-neutral-700">
+              <a href="/auth" className="bg-slate-100 text-neutral-700">
                 <span className="material-icons md-24">rocket_launch</span>
                 Get Started
               </a>

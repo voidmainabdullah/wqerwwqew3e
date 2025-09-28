@@ -315,7 +315,7 @@ const Header = () => {
                 </a>
               </Button>
               <Button variant="default" className="h-8 px-3 font-medium text-sm text-left" asChild>
-                <a href="/auth">
+                <a href="/auth" className="bg-neutral-600">
                   Get Started
                 </a>
               </Button>
