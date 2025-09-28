@@ -15,7 +15,7 @@ export const FontOptimization: React.FC = () => {
           display: 'swap'
         },
         {
-          family: 'Rationale',
+          family: 'Exo 2',
           weights: ['400'],
           display: 'swap'
         }
