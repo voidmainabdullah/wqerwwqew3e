@@ -11,14 +11,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Copy, Mail, Hash, Link, Calendar, Lock, Download } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-
 interface FileShareDialogProps {
   isOpen: boolean;
   onClose: () => void;
   fileId: string;
   fileName: string;
 }
-
 interface ShareSettings {
   password: string;
   expiryDays: number;
@@ -26,8 +24,12 @@ interface ShareSettings {
   recipientEmail: string;
   message: string;
 }
-
-export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShareDialogProps) {
+export function FileShareDialog({
+  isOpen,
+  onClose,
+  fileId,
+  fileName
+}: FileShareDialogProps) {
   const [activeTab, setActiveTab] = useState('link');
   const [shareSettings, setShareSettings] = useState<ShareSettings>({
     password: '',
@@ -41,26 +43,28 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
   const [generatedCode, setGeneratedCode] = useState('');
   const [hasPassword, setHasPassword] = useState(false);
   const [hasDownloadLimit, setHasDownloadLimit] = useState(false);
-
   const createShareLink = async (linkType: 'direct' | 'email' | 'code') => {
     setIsLoading(true);
     try {
       // Calculate expiry date
-      const expiresAt = shareSettings.expiryDays > 0 ? 
-        new Date(Date.now() + shareSettings.expiryDays * 24 * 60 * 60 * 1000).toISOString() : 
-        null;
+      const expiresAt = shareSettings.expiryDays > 0 ? new Date(Date.now() + shareSettings.expiryDays * 24 * 60 * 60 * 1000).toISOString() : null;
 
       // Hash password if provided
       let passwordHash = null;
       if (hasPassword && shareSettings.password) {
-        const { data: hashData } = await supabase.rpc('hash_password', {
+        const {
+          data: hashData
+        } = await supabase.rpc('hash_password', {
           password: shareSettings.password
         });
         passwordHash = hashData;
       }
 
       // Use the new backend function for robust sharing
-      const { data, error } = await supabase.rpc('create_file_share', {
+      const {
+        data,
+        error
+      } = await supabase.rpc('create_file_share', {
         p_file_id: fileId,
         p_link_type: linkType,
         p_expires_at: expiresAt,
@@ -71,17 +75,16 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
       });
 
       // Track analytics
-      const { AnalyticsTracker } = await import('@/components/analytics/AnalyticsTracker');
+      const {
+        AnalyticsTracker
+      } = await import('@/components/analytics/AnalyticsTracker');
       if (data?.[0]?.share_token) {
         await AnalyticsTracker.trackFileShare(fileId, data[0].share_token);
       }
-
       if (error) throw error;
-
       const shareToken = data[0]?.share_token;
       const shareCode = data[0]?.share_code;
       const shareUrl = `${window.location.origin}/share/${shareToken}`;
-
       if (linkType === 'code') {
         setGeneratedCode(shareCode);
         setGeneratedLink(shareUrl);
@@ -106,7 +109,6 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
       } else {
         toast.success('Share link created successfully!');
       }
-
     } catch (error: any) {
       console.error('Share error:', error);
       toast.error('Failed to create share link: ' + error.message);
@@ -114,7 +116,6 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
       setIsLoading(false);
     }
   };
-
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -123,7 +124,6 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
       toast.error('Failed to copy to clipboard');
     }
   };
-
   const resetDialog = () => {
     setGeneratedLink('');
     setGeneratedCode('');
@@ -137,15 +137,12 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
     setHasPassword(false);
     setHasDownloadLimit(false);
   };
-
   const handleClose = () => {
     resetDialog();
     onClose();
   };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+  return <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto  border-neutral-800 ">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Link className="h-5 w-5" />
@@ -176,29 +173,20 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
             {/* Common Settings */}
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <Switch 
-                  id="password-protection" 
-                  checked={hasPassword}
-                  onCheckedChange={setHasPassword}
-                />
+                <Switch id="password-protection" checked={hasPassword} onCheckedChange={setHasPassword} />
                 <Label htmlFor="password-protection" className="flex items-center gap-2">
                   <Lock className="h-4 w-4" />
                   Password Protection
                 </Label>
               </div>
 
-              {hasPassword && (
-                <div>
+              {hasPassword && <div>
                   <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter password for file access"
-                    value={shareSettings.password}
-                    onChange={(e) => setShareSettings(prev => ({ ...prev, password: e.target.value }))}
-                  />
-                </div>
-              )}
+                  <Input id="password" type="password" placeholder="Enter password for file access" value={shareSettings.password} onChange={e => setShareSettings(prev => ({
+                ...prev,
+                password: e.target.value
+              }))} />
+                </div>}
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -206,10 +194,10 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
                     <Calendar className="h-4 w-4" />
                     Expires in
                   </Label>
-                  <Select
-                    value={shareSettings.expiryDays.toString()}
-                    onValueChange={(value) => setShareSettings(prev => ({ ...prev, expiryDays: parseInt(value) }))}
-                  >
+                  <Select value={shareSettings.expiryDays.toString()} onValueChange={value => setShareSettings(prev => ({
+                  ...prev,
+                  expiryDays: parseInt(value)
+                }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -225,35 +213,22 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
 
                 <div>
                   <div className="flex items-center space-x-2 mb-2">
-                    <Switch 
-                      id="download-limit" 
-                      checked={hasDownloadLimit}
-                      onCheckedChange={setHasDownloadLimit}
-                    />
+                    <Switch id="download-limit" checked={hasDownloadLimit} onCheckedChange={setHasDownloadLimit} />
                     <Label htmlFor="download-limit" className="flex items-center gap-2">
                       <Download className="h-4 w-4" />
                       Download Limit
                     </Label>
                   </div>
-                  {hasDownloadLimit && (
-                    <Input
-                      type="number"
-                      placeholder="Max downloads"
-                      min="1"
-                      value={shareSettings.downloadLimit || ''}
-                      onChange={(e) => setShareSettings(prev => ({ 
-                        ...prev, 
-                        downloadLimit: e.target.value ? parseInt(e.target.value) : null 
-                      }))}
-                    />
-                  )}
+                  {hasDownloadLimit && <Input type="number" placeholder="Max downloads" min="1" value={shareSettings.downloadLimit || ''} onChange={e => setShareSettings(prev => ({
+                  ...prev,
+                  downloadLimit: e.target.value ? parseInt(e.target.value) : null
+                }))} />}
                 </div>
               </div>
             </div>
 
             <TabsContent value="link" className="space-y-4">
-              {generatedLink ? (
-                <Card>
+              {generatedLink ? <Card>
                   <CardContent className="p-4">
                     <Label>Share Link</Label>
                     <div className="flex gap-2 mt-2">
@@ -263,53 +238,35 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                <Button 
-                  onClick={() => createShareLink('direct')} 
-                  disabled={isLoading}
-                  className="w-full"
-                >
+                </Card> : <Button onClick={() => createShareLink('direct')} disabled={isLoading} className="w-full">
                   {isLoading ? 'Creating Link...' : 'Generate Share Link'}
-                </Button>
-              )}
+                </Button>}
             </TabsContent>
 
             <TabsContent value="email" className="space-y-4">
               <div>
                 <Label htmlFor="email">Recipient Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="recipient@example.com"
-                  value={shareSettings.recipientEmail}
-                  onChange={(e) => setShareSettings(prev => ({ ...prev, recipientEmail: e.target.value }))}
-                />
+                <Input id="email" type="email" placeholder="recipient@example.com" value={shareSettings.recipientEmail} onChange={e => setShareSettings(prev => ({
+                ...prev,
+                recipientEmail: e.target.value
+              }))} />
               </div>
               
               <div>
                 <Label htmlFor="message">Message (Optional)</Label>
-                <Textarea
-                  id="message"
-                  placeholder="Add a personal message..."
-                  value={shareSettings.message}
-                  onChange={(e) => setShareSettings(prev => ({ ...prev, message: e.target.value }))}
-                  rows={3}
-                />
+                <Textarea id="message" placeholder="Add a personal message..." value={shareSettings.message} onChange={e => setShareSettings(prev => ({
+                ...prev,
+                message: e.target.value
+              }))} rows={3} />
               </div>
 
-              <Button 
-                onClick={() => createShareLink('email')} 
-                disabled={isLoading || !shareSettings.recipientEmail}
-                className="w-full"
-              >
+              <Button onClick={() => createShareLink('email')} disabled={isLoading || !shareSettings.recipientEmail} className="w-full">
                 {isLoading ? 'Sending Email...' : 'Send Share Link via Email'}
               </Button>
             </TabsContent>
 
             <TabsContent value="code" className="space-y-4">
-              {generatedCode ? (
-                <Card>
+              {generatedCode ? <Card>
                   <CardContent className="p-4">
                     <Label>Share Code</Label>
                     <div className="flex gap-2 mt-2">
@@ -322,21 +279,14 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
                       Recipients can use this code at <strong>/code</strong> to access the file.
                     </p>
                   </CardContent>
-                </Card>
-              ) : (
-                <div>
+                </Card> : <div>
                   <p className="text-sm text-muted-foreground mb-4">
                     Generate a short code that recipients can use to access your file.
                   </p>
-                  <Button 
-                    onClick={() => createShareLink('code')} 
-                    disabled={isLoading}
-                    className="w-full"
-                  >
+                  <Button onClick={() => createShareLink('code')} disabled={isLoading} className="w-full">
                     {isLoading ? 'Generating Code...' : 'Generate Share Code'}
                   </Button>
-                </div>
-              )}
+                </div>}
             </TabsContent>
           </div>
         </Tabs>
@@ -347,6 +297,5 @@ export function FileShareDialog({ isOpen, onClose, fileId, fileName }: FileShare
           </Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 }
