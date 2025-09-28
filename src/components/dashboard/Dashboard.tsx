@@ -9,9 +9,9 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Files, ShareNetwork, Download, Upload, Cloud, Crown, Activity, PaperPlaneTilt, Lightning, TrendUp, Users, Calendar, Eye, Shield, ChartLineUp, Database, Globe } from "phosphor-react";
 interface DashboardStats {
-  totalFiles: number; 
+  totalFiles: number;
   totalShares: number;
-  totalDownloads: number; 
+  totalDownloads: number;
   storageUsed: number;
   storageLimit: number;
   subscriptionTier: string;
@@ -324,7 +324,7 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Real-time Analytics Component */}
-            <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50 rounded-xl p-6">
+            <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50 rounded-xl p-6 bg-inherit">
               <div className="space-y-6">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
@@ -337,7 +337,7 @@ export const Dashboard: React.FC = () => {
                 
                 {/* Analytics Cards Grid */}
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                         <Download className="w-5 h-5 text-emerald-400" />
@@ -349,7 +349,7 @@ export const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
                         <ShareNetwork className="w-5 h-5 text-purple-400" />
@@ -361,7 +361,7 @@ export const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
                         <Files className="w-5 h-5 text-blue-400" />
@@ -375,7 +375,7 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 {/* Popular Files */}
-                <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600/30">
+                <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
                   <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                     <TrendUp className="w-4 h-4 text-emerald-400" />
                     Popular Files
@@ -433,14 +433,14 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Storage Overview */}
-            <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50 text-white">
-              <CardHeader>
+            <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50 text-white bg-neutral-800">
+              <CardHeader className="bg-zinc-800">
                 <CardTitle className="text-white flex items-center gap-2">
                   <Database className="w-5 h-5 text-blue-400" />
                   Storage Overview
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 bg-neutral-800">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-400">Used</span>
@@ -550,7 +550,7 @@ export const Dashboard: React.FC = () => {
 
           <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4 ">
                 <ChartLineUp className="w-6 h-6 text-emerald-400" />
               </div>
               <CardTitle className="text-white">Analytics & Insights</CardTitle>
