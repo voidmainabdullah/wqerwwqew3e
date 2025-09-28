@@ -7,7 +7,7 @@
   /* Font Family Definitions */
   :root {
     --font-heading: 'Urbanist', 'Inter', system-ui, -apple-system, sans-serif;
-    --font-body: 'Rationale', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-body: 'Exo 2', 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
   }
 
