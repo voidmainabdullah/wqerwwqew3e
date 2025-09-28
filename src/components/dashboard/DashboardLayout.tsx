@@ -11,17 +11,14 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
-
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
-
 interface UserProfile {
   storage_used: number;
   storage_limit: number;
   subscription_tier: string;
 }
-
 const navigation = [{
   name: 'Dashboard',
   href: '/dashboard',
@@ -57,7 +54,6 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  
   return <Sidebar className="border-r border-border/50 bg-zinc-900">
       <SidebarHeader className="w-auto h-35 px-[6px] py-[6px] my-0 mx-[4px]">
         <div className="flex items-center space-x-4 px- py-1 bg-inherit w-50 h-50">
@@ -149,28 +145,22 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
-
   const [profile, setProfile] = React.useState<UserProfile | null>(null);
-
   React.useEffect(() => {
     if (user) {
       fetchProfile();
     }
   }, [user]);
-
   const fetchProfile = async () => {
     try {
-      const { data } = await supabase
-        .from('profiles')
-        .select('storage_used, storage_limit, subscription_tier')
-        .eq('id', user?.id)
-        .single();
+      const {
+        data
+      } = await supabase.from('profiles').select('storage_used, storage_limit, subscription_tier').eq('id', user?.id).single();
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }
   };
-
   const formatFileSize = (bytes: number): string => {
     if (!bytes) return '0 Bytes';
     const k = 1024;
@@ -178,32 +168,23 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
   };
-
-  const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit
-    ? (profile.storage_used / profile.storage_limit) * 100
-    : 0;
-
-  const StoragePopover = () => (
-    <Popover>
+  const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
+  const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent/50">
           <HardDrive className="h-5 w-5 text-muted-foreground" />
-          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && (
-            <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center bg-yellow-500 text-white text-xs">
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center bg-yellow-500 text-white text-xs">
               !
-            </Badge>
-          )}
+            </Badge>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-4" align="end">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Storage Usage</h3>
-            {profile?.subscription_tier === 'pro' && (
-              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+            {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
                 Pro
-              </Badge>
-            )}
+              </Badge>}
           </div>
           
           <div className="space-y-2">
@@ -215,42 +196,33 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </span>
             </div>
             
-            {profile?.subscription_tier !== 'pro' && (
-              <>
+            {profile?.subscription_tier !== 'pro' && <>
                 <Progress value={storageProgress} className="h-2" />
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>{storageProgress.toFixed(1)}% used</span>
                   <span>{(100 - storageProgress).toFixed(1)}% remaining</span>
                 </div>
-              </>
-            )}
+              </>}
             
-            {profile?.subscription_tier === 'pro' && (
-              <div className="text-center py-2">
+            {profile?.subscription_tier === 'pro' && <div className="text-center py-2">
                 <Badge variant="outline" className="text-emerald-500 border-emerald-500">
                   Unlimited Storage
                 </Badge>
-              </div>
-            )}
+              </div>}
           </div>
           
-          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && (
-            <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
               <p className="text-sm text-yellow-800 dark:text-yellow-200">
                 You're running low on storage space. Consider upgrading to Pro for unlimited storage.
               </p>
               <Button asChild size="sm" className="mt-2 w-full">
                 <Link to="/subscription">Upgrade to Pro</Link>
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
       </PopoverContent>
-    </Popover>
-  );
-
-  const HelpPopover = () => (
-    <Popover>
+    </Popover>;
+  const HelpPopover = () => <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent/50">
           <Question className="h-5 w-5 text-muted-foreground" />
@@ -293,18 +265,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </div>
       </PopoverContent>
-    </Popover>
-  );
-
-  const FeedbackButton = () => (
-    <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent/50" asChild>
-      <a href="#" className="flex items-center gap-2">
+    </Popover>;
+  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent/50" asChild>
+      <a href="#" className="flex items-center gap-2 bg-neutral-800">
         <ChatCircle className="h-4 w-4 text-muted-foreground" />
         <span className="text-sm text-muted-foreground hidden sm:inline">Feedback</span>
       </a>
-    </Button>
-  );
-
+    </Button>;
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-neutral-800">
         <AppSidebar />
