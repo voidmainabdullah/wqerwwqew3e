@@ -10,7 +10,7 @@ export const FontOptimization: React.FC = () => {
     const preloadFonts = () => {
       const fonts = [
         {
-          family: 'Unbounded',
+          family: 'Urbanist',
           weights: ['400', '600', '700'],
           display: 'swap'
         },
