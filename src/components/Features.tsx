@@ -101,7 +101,7 @@ const Features = () => {
                     index === 4 ? 'analytics-icon-purple' :
                     'analytics-icon-green'
                   }`}>
-                    <span className={`material-icons ${window.innerWidth >= 768 ? 'md-36' : 'md-24'}`}>
+                    <span className="material-icons md-36">
                       {index === 0 ? 'security' :
                        index === 1 ? 'groups' :
                        index === 2 ? 'folder_managed' :

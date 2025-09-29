@@ -423,22 +423,22 @@ const FileTransferDemo = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Encryption Layer */}
             <div className="text-center space-y-4">
-              <div className="relative mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+              <div className="relative mx-auto w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center">
                 <motion.div animate={{
                 rotate: [0, 360]
               }} transition={{
                 duration: 10,
                 repeat: Infinity,
                 ease: "linear"
-              }} className="absolute inset-0 border-2 border-dashed border-primary/30 rounded-full" />
-                <span className="material-icons md-36 text-primary">security</span>
+              }} className="absolute inset-0 border-2 border-dashed border-emerald-500/30 rounded-full" />
+                <span className="material-icons md-36 text-emerald-500">security</span>
                 <motion.div animate={{
                 scale: [1, 1.3, 1],
                 opacity: [0.3, 0.8, 0.3]
               }} transition={{
                 duration: 3,
                 repeat: Infinity
-              }} className="absolute inset-0 rounded-full bg-zinc-800" />
+              }} className="absolute inset-0 rounded-full bg-emerald-500/5" />
               </div>
               <div>
                 <h4 className="font-heading font-semibold text-foreground">End-to-End Encryption</h4>
@@ -448,39 +448,39 @@ const FileTransferDemo = () => {
 
             {/* Access Control */}
             <div className="text-center space-y-4">
-              <div className="relative mx-auto w-20 h-20 rounded-full flex items-center justify-center bg-zinc-800">
-                <span className="material-icons md-36 text-accent">verified_user</span>
+              <div className="relative mx-auto w-20 h-20 rounded-full flex items-center justify-center bg-blue-500/10">
+                <span className="material-icons md-36 text-blue-500">verified_user</span>
                 <motion.div animate={{
                 rotate: [0, -360]
               }} transition={{
                 duration: 8,
                 repeat: Infinity,
                 ease: "linear"
-              }} className="absolute inset-2 border border-accent/40 border-dotted rounded-full bg-[#1bb428]/[0.08]" />
+              }} className="absolute inset-2 border border-blue-500/40 border-dotted rounded-full" />
               </div>
               <div>
-                <h4 className="font-heading font-semibold text-foreground">Secure Verified +</h4>
+                <h4 className="font-heading font-semibold text-foreground">Access Control</h4>
                 <p className="text-sm font-body text-muted-foreground">Multi-factor authentication required</p>
               </div>
             </div>
 
             {/* Global Network */}
             <div className="text-center space-y-4">
-              <div className="relative mx-auto w-20 h-20 rounded-full bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center">
-                <span className="material-icons md-36 text-black dark:text-neutral-800">public</span>
+              <div className="relative mx-auto w-20 h-20 rounded-full bg-purple-500/10 flex items-center justify-center">
+                <span className="material-icons md-36 text-purple-500">public</span>
                 <motion.div animate={{
                 scale: [1, 1.4, 1]
               }} transition={{
                 duration: 4,
                 repeat: Infinity
-              }} className="absolute inset-0 border border-black/30 dark:border-neutral-800/30 rounded-full" />
+              }} className="absolute inset-0 border border-purple-500/30 rounded-full" />
                 <motion.div animate={{
                 scale: [1, 1.2, 1]
               }} transition={{
                 duration: 4,
                 repeat: Infinity,
                 delay: 1
-              }} className="absolute inset-1 border border-black/20 dark:border-neutral-800/20 rounded-full bg-zinc-50" />
+              }} className="absolute inset-1 border border-purple-500/20 rounded-full" />
               </div>
               <div>
                 <h4 className="font-heading font-semibold text-foreground">Global Infrastructure</h4>

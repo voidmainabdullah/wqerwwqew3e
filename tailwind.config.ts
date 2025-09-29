@@ -19,9 +19,9 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        'heading': ['Urbanist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        'body': ['Exo 2 ', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        'sans': ['Exo 2', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'heading': ['Unbounded', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'body': ['Rationale', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'sans': ['Rationale', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         'mono': ['Fira Code', 'Monaco', 'Consolas', 'monospace'],
       },
       colors: {

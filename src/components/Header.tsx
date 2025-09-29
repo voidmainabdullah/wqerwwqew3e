@@ -94,7 +94,7 @@ const Header = () => {
       </div>
         
         <header className="w-full max-w-7xl px-4 md:px-6 flex items-center justify-between h-14 rounded-none bg-inherit mx-0 lg:px-0 py-0">
-        <div className="p-2">
+        <div className="p-2 flex-shrink-0">
           <motion.div initial={{
           opacity: 0,
           x: -20
@@ -109,40 +109,40 @@ const Header = () => {
         </div>
         
         {/* Mobile menu button */}
-        <button className="lg:hidden p-2 rounded-xl text-muted-foreground hover:text-foreground" onClick={toggleMobileMenu}>
+        <button className="lg:hidden p-2 rounded-xl text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-accent/10" onClick={toggleMobileMenu}>
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
         
         {/* Desktop navigation with dropdowns */}
         <nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2">
-          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-xl font-heading">
+          <div className="px-1 py-1 backdrop-blur-md bg-background/90 border border-border/60 shadow-xl rounded-2xl font-heading">
             <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
-              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
+              <ToggleGroupItem value="features" className={cn("px-4 py-2 rounded-xl transition-all duration-300 relative text-sm icon-text hover:scale-105", activePage === 'features' ? 'text-white bg-primary shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50')} onClick={handleNavClick('features')}>
                 <span className="material-icons md-18">star</span>
                 Features
               </ToggleGroupItem> 
               
               {/* Products Dropdown */}
               <div className="relative group">
-                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                <ToggleGroupItem value="products" className={cn("px-4 py-2 rounded-xl transition-all duration-300 relative text-sm icon-text hover:scale-105", 'text-muted-foreground hover:text-foreground hover:bg-accent/50')}>
                   <span className="material-icons md-18">dashboard</span>
                   Products
                 </ToggleGroupItem>
-                <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute top-full left-0 mt-3 w-52 bg-background/95 backdrop-blur-xl border border-border/60 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                   <div className="p-2">
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="#" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">storage</span> 
                        File Storage
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="#" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">groups</span>
                       Team Collaboration
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="#" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">security</span>
                       Enterprise Security
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="#" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">api</span>
                       API Platform
                     </a>
@@ -150,32 +150,32 @@ const Header = () => {
                 </div>
               </div>
 
-              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'pricing' ? 'text-accent-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
+              <ToggleGroupItem value="pricing" className={cn("px-4 py-2 rounded-xl transition-all duration-300 relative text-sm icon-text hover:scale-105", activePage === 'pricing' ? 'text-white bg-primary shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50')} onClick={handleNavClick('pricing')}>
                 <span className="material-icons md-18">payments</span>
                 Pricing
               </ToggleGroupItem>
 
               {/* Resources Dropdown */}
               <div className="relative group">
-                <ToggleGroupItem value="resources" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                <ToggleGroupItem value="resources" className={cn("px-4 py-2 rounded-xl transition-all duration-300 relative text-sm icon-text hover:scale-105", 'text-muted-foreground hover:text-foreground hover:bg-accent/50')}>
                   <span className="material-icons md-18">arrow_drop_down</span>
                   Resources
                 </ToggleGroupItem>
-                <div className="absolute top-full left-0 mt-2 w-44 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute top-full left-0 mt-3 w-48 bg-background/95 backdrop-blur-xl border border-border/60 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                   <div className="p-2">
-                    <a href="/docs" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="/docs" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">description</span>
                       Documentation
                     </a>
-                    <a href="/blog" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="/blog" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">article</span>
                       Blog
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="#" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">business</span>
                       Case Studies
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
+                    <a href="#" className="block px-4 py-3 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-xl transition-all duration-300 icon-text">
                       <span className="material-icons md-18">support</span>
                       Support
                     </a>
@@ -252,7 +252,7 @@ const Header = () => {
           {user ? <div className="flex items-center gap-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-accent/50 transition-all duration-200">
+                  <Button variant="ghost" className="flex items-center gap-3 h-12 px-4 hover:bg-accent/50 transition-all duration-300 rounded-xl">
                     <Avatar className="h-8 w-8">
                       <AvatarFallback className="bg-primary text-primary-foreground">
                         {getUserInitials()}
@@ -271,7 +271,7 @@ const Header = () => {
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuContent className="w-60 bg-background/95 backdrop-blur-xl border border-border/60 rounded-2xl shadow-2xl" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
@@ -309,13 +309,13 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div> : <div className="flex gap-3 rounded-xl"> 
-              <Button variant="ghost" className="h-8 px-4 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm text-left transition-all duration-300" asChild>
-                <a href="/auth" className="bg-neutral-300">
+              <Button variant="ghost" className="h-10 px-5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm rounded-xl transition-all duration-300 hover:scale-105" asChild>
+                <a href="/auth">
                   Log in
                 </a>
               </Button>
-              <Button variant="default" className="h-8 px-3 font-medium text-sm text-left" asChild>
-                <a href="/auth" className="bg-neutral-600">
+              <Button variant="default" className="h-10 px-5 font-medium text-sm rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl" asChild>
+                <a href="/auth">
                   Get Started
                 </a>
               </Button>

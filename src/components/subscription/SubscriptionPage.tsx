@@ -137,7 +137,7 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-green">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-green mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-green">upload</span>
+                  <span className="material-icons md-36 analytics-icon analytics-icon-green">upload</span>
                 </div>
                 <CardTitle className="text-lg font-heading">Unlimited Uploads</CardTitle>
               </CardHeader>
@@ -150,7 +150,7 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-red">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-red mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-red">security</span>
+                  <span className="material-icons md-36 analytics-icon analytics-icon-red">security</span>
                 </div>
                 <CardTitle className="text-lg font-heading">Advanced Security</CardTitle>
               </CardHeader>
@@ -163,7 +163,7 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-purple">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-purple mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-purple">analytics</span>
+                  <span className="material-icons md-36 analytics-icon analytics-icon-purple">analytics</span>
                 </div>
                 <CardTitle className="text-lg font-heading">Analytics</CardTitle>
               </CardHeader>
@@ -176,7 +176,7 @@ export const SubscriptionPage: React.FC = () => {
             <Card className="analytics-card analytics-card-yellow">
               <CardHeader className="text-center">
                 <div className="icon-container icon-container-yellow mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-yellow">support_agent</span>
+                  <span className="material-icons md-36 analytics-icon analytics-icon-yellow">support_agent</span>
                 </div>
                 <CardTitle className="text-lg font-heading">Priority Support</CardTitle>
               </CardHeader>

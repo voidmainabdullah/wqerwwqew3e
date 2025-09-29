@@ -86,22 +86,36 @@ const HeroSection = () => {
               Go To Dashbaord
               </a>
             </Button>
-            
-            {/* Anonymous Share Button - Distinctive Design */}
-            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
-              <a href="/code" className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
-                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-current animate-ping opacity-75"></div>
+          </motion.div>
+
+          {/* Enhanced Anonymous Share Button - Positioned Below */}
+          <motion.div 
+            className="flex justify-center sm:justify-start mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            <Button 
+              variant="ghost" 
+              className="anonymous-share-btn text-base md:text-lg h-14 md:h-16 px-8 md:px-10 rounded-2xl font-heading font-semibold transition-all duration-400 relative overflow-hidden group"
+              asChild
+            >
+              <a href="/code" className="flex items-center gap-4">
+                <div className="relative flex items-center justify-center">
+                  <div className="pulse-dot w-3 h-3 rounded-full bg-current"></div>
+                  <div className="pulse-ring absolute inset-0 w-3 h-3 rounded-full bg-current opacity-75"></div>
                 </div>
-                <span className="material-icons md-24">share</span>
-                <span>Share Anonymous</span>
-                <div className="text-xs opacity-75 font-body">No signup</div>
+                <span className="material-icons md-24">add_circle</span>
+                <div className="flex flex-col items-start">
+                  <span className="text-lg font-bold">Share Anonymous</span>
+                  <span className="text-xs opacity-80 font-body -mt-1">No signup required</span>
+                </div>
+                <span className="material-icons md-18 opacity-60">arrow_forward</span>
               </a>
             </Button>
           </motion.div>
-
-          <motion.div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4" initial={{
+          {/* Enhanced Feature Badges - Better Aligned */}
+          <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-8" initial={{
           opacity: 0
         }} animate={{
           opacity: 1
@@ -109,30 +123,44 @@ const HeroSection = () => {
           duration: 0.6,
           delay: 0.8
         }}>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+            <div className="feature-badge flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-blue-500/10 to-indigo-600/10 border border-blue-500/20">
+              <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
                 <span className="material-icons md-18 text-primary">security</span>
               </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">AWS-259 Encryption</span>
+              <div className="flex flex-col">
+                <span className="text-sm font-heading font-semibold text-foreground">AES-256</span>
+                <span className="text-xs font-body text-muted-foreground">Encryption</span>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
+            
+            <div className="feature-badge flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-emerald-500/10 to-green-600/10 border border-emerald-500/20">
+              <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                 <span className="material-icons md-18 text-accent">cloud</span>
               </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Unlimited bandwidth</span>
-              <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">admin_panel_settings</span>
+              <div className="flex flex-col">
+                <span className="text-sm font-heading font-semibold text-foreground">Unlimited</span>
+                <span className="text-xs font-body text-muted-foreground">Bandwidth</span>
               </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Fully Access</span>
+            </div>
+            
+            <div className="feature-badge flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-purple-500/10 to-violet-600/10 border border-purple-500/20">
+              <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                <span className="material-icons md-18 text-purple-400">admin_panel_settings</span>
               </div>
-              <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">admin_panel_settings</span>
+              <div className="flex flex-col">
+                <span className="text-sm font-heading font-semibold text-foreground">Full</span>
+                <span className="text-xs font-body text-muted-foreground">Control</span>
               </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Fully Access</span>
+            </div>
+            
+            <div className="feature-badge flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-600/10 border border-amber-500/20">
+              <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                <span className="material-icons md-18 text-amber-400">flash_on</span>
               </div>
-               
+              <div className="flex flex-col">
+                <span className="text-sm font-heading font-semibold text-foreground">Lightning</span>
+                <span className="text-xs font-body text-muted-foreground">Fast</span>
+              </div>
             </div>
           </motion.div>
         </div>
