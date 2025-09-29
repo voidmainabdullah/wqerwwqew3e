@@ -121,7 +121,7 @@ const Header = () => {
                 <span className="material-icons md-18">automation</span>
                 Features
               </ToggleGroupItem> 
-              
+               
               {/* Products Dropdown */}
               <div className="relative group">
                 <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
