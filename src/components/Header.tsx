@@ -46,7 +46,7 @@ const Header = () => {
   };
   const handleSignOut = async () => {
     await signOut();
-    setMobileMenuOpen(false);
+    setMobileMenuOpen(false); 
   };
   const getUserInitials = () => {
     if (user?.user_metadata?.display_name) {
@@ -125,7 +125,7 @@ const Header = () => {
               {/* Products Dropdown */}
               <div className="relative group">
                 <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
-                  <span className="material-icons md-18">dashboard2</span>
+                  <span className="material-icons md-18">dashboard</span>
                   Products
                 </ToggleGroupItem>
                 <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
