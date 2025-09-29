@@ -76,7 +76,7 @@ const HeroSection = () => {
         }}>
             <Button variant="default" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto icon-text" asChild>
               <a href="/auth" className="bg-slate-100 text-neutral-700">
-                <span className="material-icons md-24">arrow_top_right</span>
+                <span className="material-icons md-18">arrow_top_right</span>
                 Get Started
               </a>
             </Button>
