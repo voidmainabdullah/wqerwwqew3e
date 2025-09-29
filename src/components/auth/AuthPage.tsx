@@ -133,20 +133,8 @@ export const AuthPage: React.FC = () => {
               <CardHeader className="text-center space-y-4">
                 {/* Logo with enhanced effects */}
                 <div className="mx-auto relative">
-                  <div className="logo-container relative w-24 h-24 mx-auto group">
-                    <img 
-                      src="/sky.png" 
-                      alt="SkieShare Logo" 
-                      className="w-24 h-24 object-contain transition-all duration-500 relative z-10 filter brightness-110 contrast-110" 
-                    />
-                    <div className="logo-glow absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-600/20 transition-all duration-500 rounded-2xl">
-                      <img 
-                        src="/sky.png" 
-                        alt="Logo Glow" 
-                        className="w-full h-full object-contain opacity-50" 
-                      />
-                    </div>
-                    <div className="absolute inset-0 rounded-2xl border border-blue-500/20 transition-all duration-500 opacity-0 group-hover:opacity-100" />
+                  <div className="relative w-20 h-20 mx-auto">
+                    <img src="/sky.png" alt="SkieShare Logo" className="w-20 h-20 object-contain" />
                   </div>
                 </div>
                 

@@ -24,11 +24,11 @@ const NotFound = () => {
       <div className="absolute w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
 
       {/* Flying File-Sharing Icons with Material Icons */}
-      <span className="material-icons md-48 icon-fly left-10 top-20 text-blue-500/40">cloud</span>
-      <span className="material-icons md-48 icon-fly left-1/3 top-40 text-emerald-400/40 delay-1000">upload</span>
-      <span className="material-icons md-48 icon-fly right-20 top-60 text-purple-400/40 delay-500">link</span>
-      <span className="material-icons md-48 icon-fly left-1/4 bottom-20 text-amber-500/40 delay-2000">description</span>
-      <span className="material-icons md-48 icon-fly right-1/3 bottom-40 text-cyan-600/40 delay-1500">security</span>
+      <span className="material-icons md-48 icon-fly left-10 top-20 text-blue-500/30">cloud</span>
+      <span className="material-icons md-48 icon-fly left-1/3 top-40 text-gray-400/30 delay-1000">upload</span>
+      <span className="material-icons md-48 icon-fly right-20 top-60 text-blue-400/30 delay-500">link</span>
+      <span className="material-icons md-48 icon-fly left-1/4 bottom-20 text-gray-500/30 delay-2000">description</span>
+      <span className="material-icons md-48 icon-fly right-1/3 bottom-40 text-blue-600/30 delay-1500">security</span>
 
       {/* Main Content */}
       <div className="relative text-center z-10 animate-fadeIn">
@@ -38,7 +38,10 @@ const NotFound = () => {
         <p className="mt-4 text-xl md:text-2xl font-body text-gray-400">
           Oops! The page you're looking for doesn't exist.
         </p>
-        <a href="/" className="mt-8 inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-heading font-semibold shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-blue-600/50">
+        <a
+          href="/"
+          className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-black text-white font-heading font-semibold shadow-lg transform transition hover:scale-105 hover:shadow-blue-600/50"
+        >
           <span className="material-icons md-18">home</span>
           Return to Home
         </a>
