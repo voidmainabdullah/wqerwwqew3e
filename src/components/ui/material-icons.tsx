@@ -65,7 +65,7 @@ export const IconMap = {
   arrowForward: 'arrow_forward',
   arrowBack: 'arrow_back',
   expandMore: 'expand_more',
-  arrowRight: 'arrow_top_right'
+  arrowRight: 'arrow_top_right',
   
   // Misc
   star: 'star',
