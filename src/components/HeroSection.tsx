@@ -119,10 +119,10 @@ const HeroSection = () => {
               <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
                 <span className="material-icons md-18 text-accent">cloud</span>
               </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Unlimited bandwidth</span>
+              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Full Control</span>
               <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">cloud</span>
+                <span className="material-icons md-18 text-accent">admin_panel_setting</span>
               </div>
               <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Unlimited bandwidth</span>
               </div>
