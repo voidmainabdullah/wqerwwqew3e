@@ -118,7 +118,7 @@ const Header = () => {
           <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-xl font-heading">
             <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
               <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
-                <span className="material-icons md-18">arrow_drop_down</span>
+                <span className="material-icons md-18"></span>
                 Features
               </ToggleGroupItem>
               
@@ -158,7 +158,7 @@ const Header = () => {
               {/* Resources Dropdown */}
               <div className="relative group">
                 <ToggleGroupItem value="resources" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
-                  <span className="material-icons md-18">library_books</span>
+                  <span className="material-icons md-18">arrow_drop_down</span>
                   Resources
                 </ToggleGroupItem>
                 <div className="absolute top-full left-0 mt-2 w-44 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
