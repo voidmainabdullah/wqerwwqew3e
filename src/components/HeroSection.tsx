@@ -113,7 +113,7 @@ const HeroSection = () => {
               <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
                 <span className="material-icons md-18 text-primary">security</span>
               </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Military-grade encryption</span>
+              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">AWS-259 Encryption</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
