@@ -120,7 +120,7 @@ const Header = () => {
               <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
                 <span className="material-icons md-18">trail_length_short</span>
                 Features
-              </ToggleGroupItem>
+              </ToggleGroupItem> 
               
               {/* Products Dropdown */}
               <div className="relative group">
