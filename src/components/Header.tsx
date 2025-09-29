@@ -118,7 +118,7 @@ const Header = () => {
           <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-xl font-heading">
             <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
               <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
-                <span className="material-icons md-18"></span>
+                <span className="material-icons md-18">trail_length_short</span>
                 Features
               </ToggleGroupItem>
               
