@@ -132,7 +132,7 @@ const Header = () => {
                   <div className="p-2">
                     <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
                       <span className="material-icons md-18">storage</span>
-                      File Storage
+                       File Storage
                     </a>
                     <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
                       <span className="material-icons md-18">groups</span>
