@@ -96,7 +96,7 @@ const HeroSection = () => {
                 </div>
                 <span className="material-icons md-24">share</span>
                 <span>Share Anonymous</span>
-                <div className="text-xs opacity-75 font-body">No signup</div>
+                <div className="text-xs opacity-75 font-body"></div>
               </a>
             </Button>
           </motion.div>
