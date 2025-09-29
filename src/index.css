@@ -1504,7 +1504,7 @@
 
 /* Dark theme overrides */
 .dark .anonymous-share-btn {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.12));
+  background: linear-gradient(#000000,#ffffff);
   border: 1px dashed rgba(139, 92, 246, 0.4);
   color: rgb(216, 180, 254);
   backdrop-filter: blur(8px); /* glass effect */
