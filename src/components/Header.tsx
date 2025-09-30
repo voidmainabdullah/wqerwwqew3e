@@ -104,7 +104,9 @@ const Header = () => {
         }} transition={{
           duration: 0.6 
         }}>
-            <Logo />
+            <div className="logo-float">
+              <Logo />
+            </div>
           </motion.div>
         </div>
         
