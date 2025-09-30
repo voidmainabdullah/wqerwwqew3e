@@ -1509,7 +1509,7 @@
   color: rgb(52, 211, 153);
   box-shadow: 0 4px 20px rgba(52, 211, 153, 0.15);
   font-size: 15px;
-  margin-right:30px;
+  margin-right:10px;
 }
 
 .dark .anonymous-share-btn::before {
