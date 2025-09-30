@@ -24,7 +24,7 @@ const Pricing = () => {
     price: "$6.99",
     period: "per user/month",
     description: "Ideal for growing teams with advanced collaboration needs",
-    features: ["100GB storage per user", "Advanced file sharing", "Real-time collaboration", "Team management tools", "Advanced Controls", "E25 Encryption","Premium Features", "24/7 support"],
+    features: ["100GB storage per user", "Advanced file sharing", "Real-time collaboration", "Team management tools", "Advanced security controls", "API access", "Priority support"],
     buttonText: "Start 14-day trial",
     buttonVariant: "default",
     popular: true

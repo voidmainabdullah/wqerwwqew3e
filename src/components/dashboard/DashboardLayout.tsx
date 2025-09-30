@@ -56,24 +56,12 @@ const AppSidebar = () => {
   const location = useLocation();
   return <Sidebar className="border-r border-border/50 bg-zinc-900">
       <SidebarHeader className="w-auto h-35 px-[6px] py-[6px] my-0 mx-[4px]">
-        <div className="flex items-center space-x-3 px-2 py-2 group">
-          <div className="relative">
-            <img 
-              src="/sky.png" 
-              alt="SkieShare Logo" 
-              className="h-12 w-auto object-contain transition-all duration-300 group-hover:scale-110" 
-            />
-            <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
-              <img src="/sky.png" alt="SkieShare Logo Glow" className="h-12 w-auto object-contain" />
-            </div>
-          </div>
-          <div className="hidden xl:block">
-            <span className="font-heading font-bold text-lg bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-              SkieShare
-            </span>
-            <p className="text-xs text-muted-foreground font-body">Secure Transfer</p>
-          </div>
-        </div>
+        <div className="flex items-center space-x-4 px- py-1 bg-inherit w-50 h-50">
+          <img src="/sky.png" alt="SecureShare Logo" className="h-30 w-auto sm:h-20 md:h-16 object-contain" />
+          <span className="font-heading font-bold text-xl bg-gradient-to-r from-red-200 to-green-400 bg-clip-text">
+            
+          </span>
+        </div> 
       </SidebarHeader>
       
       <SidebarContent>

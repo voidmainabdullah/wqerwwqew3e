@@ -93,20 +93,18 @@ const Header = () => {
       }} />
       </div>
         
-        <header className="w-full max-w-7xl px-4 md:px-6 flex items-center justify-between h-14 rounded-none bg-inherit mx-0 lg:px-0 py-0">
+        <header className="w-full max-w-7xl px-4 md:px-6 flex items-center justify-between h-15 rounded-none bg-inherit mx-0 lg:px-0 py-0">
         <div className="p-2">
           <motion.div initial={{
           opacity: 0,
           x: -20
         }} animate={{
-          opacity: 1, 
+          opacity: 1,
           x: 0
         }} transition={{
-          duration: 0.6 
+          duration: 0.6
         }}>
-            <div className="logo-float">
-              <Logo />
-            </div>
+            <Logo />
           </motion.div>
         </div>
         
