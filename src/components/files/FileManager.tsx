@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Lock, Clock as Unlock, Globe, EyeOff, Shield, CreditCard as Edit3, MoveVertical as MoreVertical } from 'lucide-react';
+import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,6 +21,7 @@ interface FileItem {
   is_locked: boolean;
   user_id: string;
   storage_path: string;
+  share_count?: number;
 }
 export function FileManager() {
   const {
@@ -58,14 +59,33 @@ export function FileManager() {
   const fetchFiles = async () => {
     try {
       setLoading(true);
-      const {
-        data,
-        error
-      } = await supabase.from('files').select('*').eq('user_id', user?.id).order('created_at', {
-        ascending: false
-      });
+      
+      // Get files with share count
+      const { data: filesData, error } = await supabase
+        .from('files')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: false });
+
       if (error) throw error;
-      setFiles(data || []);
+      
+      // Get share counts for each file
+      const filesWithShareCount = await Promise.all(
+        (filesData || []).map(async (file) => {
+          const { count } = await supabase
+            .from('shared_links')
+            .select('*', { count: 'exact', head: true })
+            .eq('file_id', file.id)
+            .eq('is_active', true);
+          
+          return {
+            ...file,
+            share_count: count || 0
+          };
+        })
+      );
+      
+      setFiles(filesWithShareCount);
     } catch (error) {
       console.error('Error fetching files:', error);
       toast.error('Failed to load files');
@@ -105,52 +125,7 @@ export function FileManager() {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-  const toggleFileVisibility = async (fileId: string, currentPublicState: boolean) => {
-    try {
-      const {
-        data,
-        error
-      } = await supabase.rpc('toggle_file_public_status', {
-        p_file_id: fileId,
-        p_is_public: !currentPublicState
-      });
-      if (error) throw error;
-      setFiles(files.map(file => file.id === fileId ? {
-        ...file,
-        is_public: data
-      } : file));
-      toast.success(`File made ${data ? 'public' : 'private'}`);
-    } catch (error) {
-      console.error('Visibility toggle error:', error);
-      toast.error('Failed to update file visibility');
-    }
-  };
-  const toggleFileLock = async (fileId: string, currentLockState: boolean) => {
-    try {
-      let password = null;
-      if (!currentLockState) {
-        // If locking, prompt for password
-        password = prompt('Enter password to lock this file (optional):');
-      }
-      const {
-        data,
-        error
-      } = await supabase.rpc('toggle_file_lock_status', {
-        p_file_id: fileId,
-        p_is_locked: !currentLockState,
-        p_password: password
-      });
-      if (error) throw error;
-      setFiles(files.map(file => file.id === fileId ? {
-        ...file,
-        is_locked: data
-      } : file));
-      toast.success(`File ${data ? 'locked' : 'unlocked'}`);
-    } catch (error) {
-      console.error('Lock toggle error:', error);
-      toast.error('Failed to update file lock status');
-    }
-  };
+
   const virusScan = async (fileId: string, fileName: string) => {
     // Simulated virus scan - in production, integrate with actual antivirus service
     toast.info('Scanning file for viruses...');
@@ -212,13 +187,13 @@ export function FileManager() {
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-heading font-bold tracking-tight mx-[15px]">My Files</h1>
-          <p className="font-body text-muted-foreground mx-[10px]">
+          <h1 className="text-3xl font-heading font-bold tracking-tight">My Files</h1>
+          <p className="font-body text-muted-foreground">
             Manage your uploaded files and shared content.
           </p>
         </div>
-        <Button asChild className="font-heading">
-          <a href="/dashboard/upload" className="flex items-center gap-2 bg-red-400  my-0 mx-[20px]">  
+        <Button asChild className="font-heading bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+          <a href="/dashboard/upload" className="flex items-center gap-2">  
             <span className="material-icons md-18">upload</span>
             Upload Files
           </a>
@@ -227,14 +202,14 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6 bg-neutral-800">
+        <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1"> 
               <span className="material-icons md-18 absolute left-2 top-2.5 text-muted-foreground">search</span>
-              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 bg-neutral-700 rounded-2xl font-body" />
+              <Input placeholder="Search files..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 font-body" />
             </div> 
             <div className="w-full sm:w-48">
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 bg-neutral-600 rounded-xl font-body">
+              <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input bg-background rounded-md font-body">
                 <option value="all">All Files</option>
                 <option value="image">Images</option>
                 <option value="video">Videos</option>
@@ -248,79 +223,112 @@ export function FileManager() {
       </Card>
 
       {/* Files Grid */}
-      {filteredFiles.length === 0 ? <Card>
+      {filteredFiles.length === 0 ? (
+        <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <div className="text-muted-foreground mb-4">
               <span className="material-icons md-48 text-muted-foreground">upload_file</span>
             </div>
-            <h3 className="text-lg font-heading font-medium mb-2 bg-neutral-800 hover:bg-neutral-800 text-zinc-500">No files found</h3>
+            <h3 className="text-lg font-heading font-medium mb-2">No files found</h3>
             <p className="font-body text-muted-foreground text-center mb-4">
               {searchTerm ? 'No files match your search criteria.' : 'Start by uploading your first file.'}
             </p>
-            <Button asChild className="bg-neutral-950 hover:bg-neutral-800 text-blue-500 font-heading icon-text">
+            <Button asChild className="font-heading icon-text">
               <a href="/dashboard/upload">
                 <span className="material-icons md-18">upload</span>
                 Upload a File
               </a>
             </Button>
           </CardContent>
-        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-red-400 bg-transparent"> 
-          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-md transition-shadow bg-zinc-800">
-              <CardContent className="p-4 rounded-xl mx-0 bg-neutral-700">
+        </Card>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"> 
+          {filteredFiles.map(file => (
+            <Card key={file.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+              <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-primary/30 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-heading font-medium text-sm">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-blue-500/20">
+                    <span className="text-blue-600 dark:text-blue-400 font-heading font-bold text-xs">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
                   </div> 
-                  <Badge variant="outline" className="text-xs bg-neutral-800">
-                    {file.download_count} downloads
-                  </Badge>
+                  <div className="flex flex-col items-end gap-1">
+                    <Badge variant="outline" className="text-xs">
+                      <span className="material-icons md-18 mr-1">download</span>
+                      {file.download_count}
+                    </Badge>
+                    <Badge variant="secondary" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                      <span className="material-icons md-18 mr-1">share</span>
+                      {file.share_count || 0} shares
+                    </Badge>
+                  </div>
                 </div>
                 
                 <div className="mb-3">
-                  <h4 className="font-heading font-medium text-sm mb-1 truncate" title={file.original_name}>
+                  <h4 className="font-heading font-semibold text-base mb-2 truncate" title={file.original_name}>
                     {file.original_name}
                   </h4>
-                  <div className="flex items-center gap-2 text-xs font-body text-muted-foreground">
+                  <div className="flex items-center gap-2 text-sm font-body text-muted-foreground">
                     <span>{formatFileSize(file.file_size)}</span>
                     <span>•</span>
                     <span>{new Date(file.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>
 
+                {/* Status Indicators */}
+                <div className="flex items-center gap-2 mb-3">
+                  {file.is_public && (
+                    <Badge variant="default" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/20">
+                      <span className="material-icons md-18 mr-1">public</span>
+                      Public
+                    </Badge>
+                  )}
+                  {file.is_locked && (
+                    <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/20">
+                      <span className="material-icons md-18 mr-1">lock</span>
+                      Protected
+                    </Badge>
+                  )}
+                  {!file.is_public && (
+                    <Badge variant="secondary" className="text-xs">
+                      <span className="material-icons md-18 mr-1">visibility_off</span>
+                      Private
+                    </Badge>
+                  )}
+                </div>
+
                 <div className="flex items-center justify-between gap-2">
                   {/* Primary Action Buttons */} 
                   <div className="flex items-center gap-1">
-                    <Button size="icon" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="h-8 w-8 bg-zinc-50">
+                    <Button 
+                      size="icon" 
+                      variant="outline" 
+                      onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} 
+                      title="Download" 
+                      className="h-9 w-9 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
+                    >
                       <span className="material-icons md-18">download</span>
                     </Button>
                     
-                    <Button size="icon" variant="outline" onClick={() => openShareDialog(file.id, file.original_name)} title="Share" className="h-8 w-8">
+                    <Button 
+                      size="icon" 
+                      variant="outline" 
+                      onClick={() => openShareDialog(file.id, file.original_name)} 
+                      title="Share" 
+                      className="h-9 w-9 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 transition-all duration-200"
+                    >
                       <span className="material-icons md-18">share</span>
-                    </Button>
-
-                    <Button size="icon" variant="outline" onClick={() => toggleFileVisibility(file.id, file.is_public)} title={file.is_public ? 'Make Private' : 'Make Public'} className="h-8 w-8">
-                      <span className="material-icons md-18">
-                        {file.is_public ? 'public' : 'visibility_off'}
-                      </span>
-                    </Button>
-
-                    <Button size="icon" variant="outline" onClick={() => toggleFileLock(file.id, file.is_locked)} title={file.is_locked ? 'Unlock' : 'Lock'} className="h-8 w-8">
-                      <span className="material-icons md-18">
-                        {file.is_locked ? 'lock' : 'lock_open'}
-                      </span>
                     </Button>
                   </div>
 
                   {/* More Actions Dropdown */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button size="icon" variant="ghost" className="h-8 w-8">
+                      <Button size="icon" variant="ghost" className="h-9 w-9 hover:bg-muted">
                         <span className="material-icons md-18">more_vert</span>
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="end" className="w-48">
                       <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
                         <span className="material-icons md-18 mr-2">security</span>
                         Virus Scan
@@ -328,6 +336,16 @@ export function FileManager() {
                       <DropdownMenuItem onClick={() => openRenameDialog(file.id, file.original_name)}>
                         <span className="material-icons md-18 mr-2">edit</span>
                         Rename
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openShareDialog(file.id, file.original_name)}>
+                        <span className="material-icons md-18 mr-2">share</span>
+                        Create Share Link
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <a href="/dashboard/shared" className="flex items-center">
+                          <span className="material-icons md-18 mr-2">link</span>
+                          View All Shares
+                        </a>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => deleteFile(file.id, file.storage_path)} className="text-destructive focus:text-destructive">
@@ -337,21 +355,11 @@ export function FileManager() {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-
-                {/* Status Indicators */}
-                <div className="flex items-center gap-1 mt-2">
-                  {file.is_public && <Badge variant="secondary" className="text-xs">
-                      <span className="material-icons md-18 mr-1">public</span>
-                      Public
-                    </Badge>}
-                  {file.is_locked && <Badge variant="outline" className="text-xs">
-                      <span className="material-icons md-18 mr-1">lock</span>
-                      Locked
-                    </Badge>}
-                </div>
               </CardContent>
-            </Card>)}
-        </div>}
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Share Dialog */}
       <FileShareDialog isOpen={shareDialog.isOpen} onClose={() => setShareDialog({
@@ -367,4 +375,4 @@ export function FileManager() {
       currentName: ''
     })} fileId={renameDialog.fileId} currentName={renameDialog.currentName} onRename={newName => handleRename(renameDialog.fileId, newName)} />
     </div>;
-} 
+}

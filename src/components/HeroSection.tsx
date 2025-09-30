@@ -75,33 +75,43 @@ const HeroSection = () => {
           delay: 0.6
         }}>
             <Button variant="default" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto icon-text" asChild>
-              <a href="/auth" className="bg-slate-100 text-neutral-700">
+              <a href="/auth" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
                 <span className="material-icons md-18">arrow_right</span>
                 Get Started
               </a>
             </Button>
-            <Button variant="outline" className="border-2 border-neutral-300 text-foreground hover:bg-neutral-100 hover:text-foreground dark:border-neutral-600 dark:hover:bg-neutral-800 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto icon-text" asChild>
-              <a href="/auth" className="bg-white">
-              <span className="material-icons md-24">dashboard</span>
-              Go To Dashbaord
-              </a>
-            </Button>
-            
-            {/* Anonymous Share Button - Distinctive Design */}
-            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
-              <a href="/code" className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
-                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-current animate-ping opacity-75"></div>
-                </div>
-                <span className="material-icons md-24">share</span>
-                <span>Share Anonymous</span>
-                <div className="text-xs opacity-75 font-body">No signup</div>
+            <Button variant="outline" className="border-2 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto icon-text hover:scale-105" asChild>
+              <a href="/dashboard">
+                <span className="material-icons md-18">dashboard</span>
+                Go To Dashboard
               </a>
             </Button>
           </motion.div>
 
-          <motion.div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4" initial={{
+          {/* Enhanced Anonymous Share Button */}
+          <motion.div className="flex justify-center pt-6" initial={{
+          opacity: 0,
+          y: 20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.8
+        }}>
+            <Button variant="ghost" className="anonymous-share-btn relative overflow-hidden group border-2 border-dashed border-emerald-400/50 bg-gradient-to-r from-emerald-500/10 to-green-500/10 hover:from-emerald-500/20 hover:to-green-500/20 text-emerald-600 dark:text-emerald-400 px-8 py-4 rounded-2xl font-heading font-semibold transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25" asChild>
+              <a href="/code" className="flex items-center gap-3">
+                <div className="relative">
+                  <span className="material-icons md-24 text-emerald-600 dark:text-emerald-400">add_circle</span>
+                  <div className="absolute inset-0 rounded-full bg-emerald-400/20 animate-ping"></div>
+                </div>
+                <div className="flex flex-col items-start">
+                  <span className="text-lg font-bold">Share Anonymous</span>
+                  <span className="text-xs opacity-75 font-body">No account needed</span>
+                </div>
+              </a>
+            </Button>
+          </motion.div>
           opacity: 0
         }} animate={{
           opacity: 1
@@ -132,16 +142,13 @@ const HeroSection = () => {
               </div>
               <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Fully Access</span>
               </div>
-              <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">admin_panel_settings</span>
-              </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Fully Access</span>
-              </div>
+               
             </div>
           </motion.div>
         </div>
 
+          {/* Enhanced Feature Badges */}
+          <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-8" initial={{
         {/* Right Column - Interactive Demo */}
         <motion.div className="relative px-4 md:px-0" initial={{
         opacity: 0,
@@ -173,20 +180,32 @@ const HeroSection = () => {
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-2 md:gap-3">
-                <div className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+          delay: 1.0
                   <span className="material-icons md-18 text-primary">description</span>
-                </div>
-                <div className="aspect-square rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
-                  <span className="material-icons md-18 text-accent">image</span>
-                </div>
-                <div className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center">
-                  <span className="material-icons md-18 text-muted-foreground">video_file</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-card border border-border rounded-2xl p-3 md:p-4 shadow-lg transform translate-x-4 md:translate-x-8 hover:translate-x-0 transition-all duration-500">
+            {/* Security Badge */}
+            <div className="group bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-2xl p-4 hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105">
               <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <span className="material-icons md-24 text-blue-600 dark:text-blue-400">security</span>
+                </div>
+                <div>
+                  <span className="text-sm font-heading font-bold text-blue-700 dark:text-blue-300">AES-256 Encryption</span>
+                  <p className="text-xs text-blue-600/70 dark:text-blue-400/70 font-body">Military Grade</p>
+                </div>
+                </div>
+                  <span className="material-icons md-18 text-muted-foreground">video_file</span>
+
+            {/* Bandwidth Badge */}
+            <div className="group bg-gradient-to-br from-emerald-500/10 to-green-600/10 border border-emerald-500/20 rounded-2xl p-4 hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 hover:scale-105">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <span className="material-icons md-24 text-emerald-600 dark:text-emerald-400">cloud</span>
+                </div>
+                <div>
+                  <span className="text-sm font-heading font-bold text-emerald-700 dark:text-emerald-300">Unlimited Bandwidth</span>
+                  <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70 font-body">No Limits</p>
+                </div>
+            
                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-accent/20 flex items-center justify-center">
                   <span className="material-icons md-18 text-accent">security</span>
                 </div>
@@ -195,9 +214,23 @@ const HeroSection = () => {
                   <p className="text-xs font-body text-muted-foreground">End-to-end encrypted</p>
                 </div>
                 <div className="w-8 md:w-12 h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="w-6 md:w-8 h-full bg-accent rounded-full"></div>
+            </div>
+
+            {/* Control Badge */}
+            <div className="group bg-gradient-to-br from-purple-500/10 to-violet-600/10 border border-purple-500/20 rounded-2xl p-4 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105">
+            </div>
+
+            {/* Speed Badge */}
+            <div className="group bg-gradient-to-br from-amber-500/10 to-orange-600/10 border border-amber-500/20 rounded-2xl p-4 hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-300 hover:scale-105">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <span className="material-icons md-24 text-amber-600 dark:text-amber-400">flash_on</span>
                 </div>
-              </div>
+                <div>
+                  <span className="text-sm font-heading font-bold text-amber-700 dark:text-amber-300">Lightning Fast</span>
+                  <p className="text-xs text-amber-600/70 dark:text-amber-400/70 font-body">Instant Transfer</p>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
             </div>
           </div>
         </motion.div>
@@ -209,6 +242,7 @@ const HeroSection = () => {
       opacity: glowOpacity,
       boxShadow: actualTheme === 'light' ? "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)" : "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
     }} />
-    </section>;
+    </section>
+              );
 };
-export default HeroSection;
+ export default HeroSection;
