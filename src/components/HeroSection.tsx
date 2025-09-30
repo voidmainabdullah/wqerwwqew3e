@@ -94,7 +94,7 @@ const HeroSection = () => {
                   <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-current animate-ping opacity-75"></div>
                 </div>
-                <span className="material-icons md-24">click</span>
+                <span className="material-icons md-24"></span>
                 <span>One-Click Share</span>
                 <div className="text-xs opacity-75 font-body"></div>
               </a>
