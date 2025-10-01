@@ -276,7 +276,7 @@ export function FileManager() {
                 </div>
 
                 {/* Status Indicators */}
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex flex-wrap items-center gap-1.5 mb-3 min-h-[24px]">
                   {file.is_public && (
                     <Badge variant="default" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/20">
                       <span className="material-icons md-18 mr-1">public</span>
@@ -297,34 +297,37 @@ export function FileManager() {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between gap-2">
+                {/* Action Buttons Section */}
+                <div className="flex items-center gap-2">
                   {/* Primary Action Buttons */} 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5 flex-1">
                     <Button 
-                      size="icon" 
+                      size="sm"
                       variant="outline" 
                       onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} 
                       title="Download" 
-                      className="h-9 w-9 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
+                      className="flex-1 h-9 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
                     >
-                      <span className="material-icons md-18">download</span>
+                      <span className="material-icons md-18 mr-1">download</span>
+                      <span className="hidden sm:inline">Download</span>
                     </Button>
                     
                     <Button 
-                      size="icon" 
+                      size="sm"
                       variant="outline" 
                       onClick={() => openShareDialog(file.id, file.original_name)} 
                       title="Share" 
-                      className="h-9 w-9 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 transition-all duration-200"
+                      className="flex-1 h-9 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 transition-all duration-200"
                     >
-                      <span className="material-icons md-18">share</span>
+                      <span className="material-icons md-18 mr-1">share</span>
+                      <span className="hidden sm:inline">Share</span>
                     </Button>
                   </div>
 
                   {/* More Actions Dropdown */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button size="icon" variant="ghost" className="h-9 w-9 hover:bg-muted">
+                      <Button size="icon" variant="outline" className="h-9 w-9 hover:bg-muted flex-shrink-0">
                         <span className="material-icons md-18">more_vert</span>
                       </Button>
                     </DropdownMenuTrigger>

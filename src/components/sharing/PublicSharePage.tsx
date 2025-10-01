@@ -74,12 +74,6 @@ export const PublicSharePage: React.FC = () => {
         return;
       }
 
-      // Check if file is public
-      if (!data.file.is_public) {
-        setError('This file is private and cannot be accessed');
-        return;
-      }
-
       // Check if link has expired
       if (data.expires_at && new Date(data.expires_at) < new Date()) {
         setError('This share link has expired');
