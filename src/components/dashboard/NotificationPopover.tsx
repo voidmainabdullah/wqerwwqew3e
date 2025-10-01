@@ -103,7 +103,7 @@ export const NotificationPopover: React.FC = () => {
       case 'success':
         return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'warning':
-        return <PanelTop  className="h-4 w-4 text-yellow-500" />;
+        return <SquaresExclude  className="h-4 w-4 text-yellow-500" />;
       case 'error':
         return <SquaresExclude className="h-4 w-4 text-red-500" />;
       default:
