@@ -10,7 +10,6 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Share, Lock, Globe, LockSimple, Gear } from 'phosphor-react';
-import { FileLockToggle } from './FileLockToggle';
 interface SharedLink {
   id: string;
   file_id: string;
@@ -277,8 +276,8 @@ export const SharedLinks: React.FC = () => {
                         </Badge>}
                       {expired && <Badge variant="destructive" className="text-xs">Expired</Badge>}
                       {limitReached && <Badge variant="destructive" className="text-xs">Limit Reached</Badge>}
-                      {!inactive && link.is_active && <Badge variant="default" className="text-xs bg-neutral-50">Active</Badge>}
-                      {!link.is_active && <Badge variant="destructive" className="text-xs">Disabled</Badge>}
+                      {!inactive && link.is_active && <Badge variant="default" className="text-xs bg-green-500/10 text-green-600 border-green-500/20">Unlocked</Badge>}
+                      {!link.is_active && <Badge variant="destructive" className="text-xs">Locked</Badge>}
                     </div>
                   </div>
                 </CardHeader>
@@ -325,16 +324,29 @@ export const SharedLinks: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                      <FileLockToggle 
-                        fileId={link.file_id} 
-                        fileName={link.files.original_name}
-                        isLocked={link.files.is_locked}
-                        onToggle={() => fetchSharedLinks()}
-                      />
-                      
-                      <div className="flex items-center space-x-1">
-                        <Switch checked={link.is_active} onCheckedChange={checked => toggleSharedLinkStatus(link.id, checked)} />
-                        <Label className="text-xs whitespace-nowrap">{link.is_active ? 'Active' : 'Disabled'}</Label>
+                      {/* Lock/Unlock Toggle - Only enabled if file has password protection */}
+                      <div className="flex items-center space-x-2">
+                        <Switch 
+                          checked={!link.is_active} 
+                          onCheckedChange={(checked) => toggleSharedLinkStatus(link.id, !checked)}
+                          disabled={!link.password_hash}
+                        />
+                        <Label className="text-xs whitespace-nowrap">
+                          {!link.is_active ? (
+                            <span className="flex items-center gap-1">
+                              <Lock className="w-3 h-3" />
+                              Locked
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <Globe className="w-3 h-3" />
+                              Unlocked
+                            </span>
+                          )}
+                        </Label>
+                        {!link.password_hash && (
+                          <span className="text-xs text-muted-foreground italic">(Password required)</span>
+                        )}
                       </div>
                       
                       <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105 flex-shrink-0">
