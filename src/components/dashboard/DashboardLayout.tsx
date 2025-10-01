@@ -280,7 +280,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent/50" asChild>
       <a href="#" className="flex items-center gap-2 bg-neutral-800">
-        <ChatCircle className="h-4 w-4 text-muted-foreground" />
+       
         <span className="text-sm text-muted-foreground hidden sm:inline">Feedback</span>
       </a>
     </Button>;
