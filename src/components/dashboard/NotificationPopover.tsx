@@ -144,7 +144,7 @@ export const NotificationPopover: React.FC = () => {
             <Button variant="ghost" size="sm" onClick={markAllAsRead}>
               <Cheack className="h-4 w-4" />
             </Button>
-          </div>
+          </div> 
         </div>
         
         <Tabs defaultValue="inbox" className="w-full">
