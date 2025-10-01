@@ -54,21 +54,21 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  return <Sidebar className="border-r border-border/50 bg-zinc-900">
-      <SidebarHeader className="w-auto h-35 px-[6px] py-[6px] my-0 mx-[4px]">
-        <div className="flex items-center space-x-3 px-2 py-2 group">
+  return <Sidebar className="border-r border-border/50 bg-zinc-900 h-screen flex flex-col">
+      <SidebarHeader className="flex-shrink-0 px-3 py-3">
+        <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative">
             <img 
               src="/sky.png" 
               alt="SkieShare Logo" 
-              className="h-12 w-auto object-contain transition-all duration-300 group-hover:scale-110" 
+              className="h-10 w-auto object-contain transition-all duration-300 group-hover:scale-110" 
             />
             <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
-              <img src="/sky.png" alt="SkieShare Logo Glow" className="h-12 w-auto object-contain" />
+              <img src="/sky.png" alt="SkieShare Logo Glow" className="h-10 w-auto object-contain" />
             </div>
           </div>
           <div className="hidden xl:block">
-            <span className="font-heading font-bold text-lg bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="font-heading font-bold text-base bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
               SkieShare
             </span>
             <p className="text-xs text-muted-foreground font-body">Secure Transfer</p>
@@ -76,19 +76,19 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent>
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 space-y-2">
         {/* Navigation */}
         <SidebarGroup className="w-60">
-          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-3">
+          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-0.5">
               {navigation.map(item => <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton asChild isActive={location.pathname === item.href} className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
+                  <SidebarMenuButton asChild isActive={location.pathname === item.href} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                     <Link to={item.href}>
                       <span className="material-icons md-18">{item.icon}</span>
-                      <span className="font-body">{item.name}</span>
+                      <span className="font-body text-sm">{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>)}
@@ -98,25 +98,25 @@ const AppSidebar = () => {
         
         {/* Quick Actions */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-3">
+          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
             Quick Actions
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
+                <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/code">
                     <span className="material-icons md-18">qr_code</span>
-                    <span className="font-body">Receive Now</span>
+                    <span className="font-body text-sm">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
+                <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/dashboard/receive">
                     <span className="material-icons md-18">inbox</span>
-                    <span className="font-body">Receive File</span>
+                    <span className="font-body text-sm">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -127,16 +127,16 @@ const AppSidebar = () => {
 
         {/* Extra Pages */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-3">
+          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
             More
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="h-11 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
+                <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
                   <Link to="/subscription">
                     <span className="material-icons md-18">payments</span>
-                    <span className="font-body">Pricing</span>
+                    <span className="font-body text-sm">Pricing</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
