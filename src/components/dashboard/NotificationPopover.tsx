@@ -12,7 +12,7 @@ interface Notification {
   title: string;
   message: string;
   type: 'info' | 'success' | 'warning' | 'error';
-  read: boolean;
+  read: boolean; 
   created_at: string;
 }
 
