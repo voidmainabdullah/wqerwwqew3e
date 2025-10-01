@@ -154,14 +154,10 @@ export function FileShareDialog({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="link" className="flex items-center gap-1">
               <Link className="h-4 w-4" />
               Direct Link
-            </TabsTrigger>
-            <TabsTrigger value="email" className="flex items-center gap-1">
-              <Mail className="h-4 w-4" />
-              Email
             </TabsTrigger>
             <TabsTrigger value="code" className="flex items-center gap-1">
               <Hash className="h-4 w-4" />
@@ -228,6 +224,20 @@ export function FileShareDialog({
             </div>
 
             <TabsContent value="link" className="space-y-4">
+              <div>
+                <Label htmlFor="link-message">Message (Optional)</Label>
+                <Textarea 
+                  id="link-message" 
+                  placeholder="Add a personal message..." 
+                  value={shareSettings.message} 
+                  onChange={e => setShareSettings(prev => ({
+                    ...prev,
+                    message: e.target.value
+                  }))} 
+                  rows={3} 
+                />
+              </div>
+
               {generatedLink ? <Card>
                   <CardContent className="p-4">
                     <Label>Share Link</Label>
@@ -243,29 +253,21 @@ export function FileShareDialog({
                 </Button>}
             </TabsContent>
 
-            <TabsContent value="email" className="space-y-4">
-              <div>
-                <Label htmlFor="email">Recipient Email</Label>
-                <Input id="email" type="email" placeholder="recipient@example.com" value={shareSettings.recipientEmail} onChange={e => setShareSettings(prev => ({
-                ...prev,
-                recipientEmail: e.target.value
-              }))} />
-              </div>
-              
-              <div>
-                <Label htmlFor="message">Message (Optional)</Label>
-                <Textarea id="message" placeholder="Add a personal message..." value={shareSettings.message} onChange={e => setShareSettings(prev => ({
-                ...prev,
-                message: e.target.value
-              }))} rows={3} />
-              </div>
-
-              <Button onClick={() => createShareLink('email')} disabled={isLoading || !shareSettings.recipientEmail} className="w-full">
-                {isLoading ? 'Sending Email...' : 'Send Share Link via Email'}
-              </Button>
-            </TabsContent>
-
             <TabsContent value="code" className="space-y-4">
+              <div>
+                <Label htmlFor="code-message">Message (Optional)</Label>
+                <Textarea 
+                  id="code-message" 
+                  placeholder="Add a personal message..." 
+                  value={shareSettings.message} 
+                  onChange={e => setShareSettings(prev => ({
+                    ...prev,
+                    message: e.target.value
+                  }))} 
+                  rows={3} 
+                />
+              </div>
+
               {generatedCode ? <Card>
                   <CardContent className="p-4">
                     <Label>Share Code</Label>

@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Share, Lock, Globe, LockSimple, Gear } from 'phosphor-react';
+import { FileLockToggle } from './FileLockToggle';
 interface SharedLink {
   id: string;
   file_id: string;
@@ -324,10 +325,12 @@ export const SharedLinks: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                      <div className="flex items-center space-x-1">
-                        <Switch checked={link.files.is_public} onCheckedChange={checked => toggleFilePublicStatus(link.file_id, checked)} />
-                        <Label className="text-xs whitespace-nowrap">{link.files.is_public ? 'Public' : 'Private'}</Label>
-                      </div>
+                      <FileLockToggle 
+                        fileId={link.file_id} 
+                        fileName={link.files.original_name}
+                        isLocked={link.files.is_locked}
+                        onToggle={() => fetchSharedLinks()}
+                      />
                       
                       <div className="flex items-center space-x-1">
                         <Switch checked={link.is_active} onCheckedChange={checked => toggleSharedLinkStatus(link.id, checked)} />

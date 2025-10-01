@@ -147,8 +147,8 @@ export const PublicSharePage: React.FC = () => {
   const downloadFile = async () => {
     if (!shareData) return;
 
-    // Check if password is required for this shared link
-    if (shareData.password_hash && passwordRequired) {
+    // Check if file is locked or password is required
+    if ((shareData.file.is_locked || shareData.password_hash) && passwordRequired) {
       toast({
         variant: "destructive",
         title: "Password required",

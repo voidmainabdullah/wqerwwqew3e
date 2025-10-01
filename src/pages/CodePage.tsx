@@ -91,6 +91,13 @@ export default function CodePage() {
   const downloadFile = async () => {
     if (!file) return;
 
+    // Check if file is locked - require password validation before download
+    if (file.is_locked && !password) {
+      toast.error('This file is password protected. Please enter the password.');
+      setRequiresPassword(true);
+      return;
+    }
+
     try {
       const { data } = await supabase.storage
         .from('files')
