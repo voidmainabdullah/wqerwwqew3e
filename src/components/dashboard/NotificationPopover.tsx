@@ -3,7 +3,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Bell, Archive,Cheack, CircleCheck as CheckCircle } from 'lucide-react';
+import { Bell, Archive,Check, CircleCheck as CheckCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -142,7 +142,7 @@ export const NotificationPopover: React.FC = () => {
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
             <Button variant="ghost" size="sm" onClick={markAllAsRead}>
-              <Cheack className="h-4 w-4" />
+              <Check className="h-4 w-4" />
             </Button>
           </div> 
         </div>
