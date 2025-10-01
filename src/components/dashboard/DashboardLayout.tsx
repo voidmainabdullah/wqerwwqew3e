@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive, Question, ChatCircle } from 'phosphor-react';
+import{ Server } from 'lucid-react';
 import { NotificationPopover } from './NotificationPopover';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -184,7 +185,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent/50">
-          <HardDrive className="h-5 w-5 text-muted-foreground" />
+          <Server className="h-5 w-5 text-muted-foreground" />
           {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center bg-yellow-500 text-white text-xs">
               !
             </Badge>}
