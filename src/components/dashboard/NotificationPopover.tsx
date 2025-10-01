@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface Notification {
   id: string;
-  title: string;
+  title: string; 
   message: string;
   type: 'info' | 'success' | 'warning' | 'error';
   read: boolean; 
