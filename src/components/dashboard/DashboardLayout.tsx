@@ -184,10 +184,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent/50">
-          <Server className="h-5 w-5 text-muted-foreground" />
+          <HardDrive className="h-5 w-5 text-muted-foreground" />
           {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center bg-yellow-500 text-white text-xs">
               !
-            </Badge>}
+            </Badge>} 
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-4" align="end">
