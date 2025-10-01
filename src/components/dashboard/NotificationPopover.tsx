@@ -3,7 +3,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PanelTopBottomDashed , Archive,Check, CircleCheck as CheckCircle } from 'lucide-react';
+import { PanelTop , Archive,Check, CircleCheck as CheckCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -103,7 +103,7 @@ export const NotificationPopover: React.FC = () => {
       case 'success':
         return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'warning':
-        return <PanelTopBottomDashed  className="h-4 w-4 text-yellow-500" />;
+        return <PanelTop  className="h-4 w-4 text-yellow-500" />;
       case 'error':
         return <Bell className="h-4 w-4 text-red-500" />;
       default:
