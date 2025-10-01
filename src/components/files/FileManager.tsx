@@ -10,7 +10,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { FileShareDialog } from './FileShareDialog';
 import { FileRenameDialog } from './FileRenameDialog';
-
 interface FileItem {
   id: string;
   original_name: string;
@@ -23,9 +22,7 @@ interface FileItem {
   user_id: string;
   storage_path: string;
   share_count?: number;
-  active_shares?: number;
 }
-
 export function FileManager() {
   const {
     user
@@ -75,12 +72,7 @@ export function FileManager() {
       // Get share counts for each file
       const filesWithShareCount = await Promise.all(
         (filesData || []).map(async (file) => {
-          const { count: totalShares } = await supabase
-            .from('shared_links')
-            .select('*', { count: 'exact', head: true })
-            .eq('file_id', file.id);
-          
-          const { count: activeShares } = await supabase
+          const { count } = await supabase
             .from('shared_links')
             .select('*', { count: 'exact', head: true })
             .eq('file_id', file.id)
@@ -88,8 +80,7 @@ export function FileManager() {
           
           return {
             ...file,
-            share_count: totalShares || 0,
-            active_shares: activeShares || 0
+            share_count: count || 0
           };
         })
       );
@@ -266,16 +257,10 @@ export function FileManager() {
                       <span className="material-icons md-18 mr-1">download</span>
                       {file.download_count}
                     </Badge>
-                    <Badge variant="secondary" className="text-xs bg-purple-500/10 text-purple-600 border-purple-500/20">
+                    <Badge variant="secondary" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
                       <span className="material-icons md-18 mr-1">share</span>
-                      {file.active_shares || 0} active
+                      {file.share_count || 0} shares
                     </Badge>
-                    {(file.share_count || 0) > 0 && (
-                      <Badge variant="outline" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/20">
-                        <span className="material-icons md-18 mr-1">link</span>
-                        {file.share_count} total
-                      </Badge>
-                    )}
                   </div>
                 </div>
                 
@@ -291,7 +276,7 @@ export function FileManager() {
                 </div>
 
                 {/* Status Indicators */}
-                <div className="flex flex-wrap items-center gap-1.5 mb-4 min-h-[24px]">
+                <div className="flex flex-wrap items-center gap-1.5 mb-3 min-h-[24px]">
                   {file.is_public && (
                     <Badge variant="default" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/20">
                       <span className="material-icons md-18 mr-1">public</span>
@@ -308,12 +293,6 @@ export function FileManager() {
                     <Badge variant="secondary" className="text-xs">
                       <span className="material-icons md-18 mr-1">visibility_off</span>
                       Private
-                    </Badge>
-                  )}
-                  {(file.share_count || 0) > 0 && (
-                    <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
-                      <span className="material-icons md-18 mr-1">trending_up</span>
-                      Shared {file.share_count} times
                     </Badge>
                   )}
                 </div>
@@ -361,15 +340,15 @@ export function FileManager() {
                         <span className="material-icons md-18 mr-2">edit</span>
                         Rename
                       </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openShareDialog(file.id, file.original_name)}>
+                        <span className="material-icons md-18 mr-2">share</span>
+                        Create Share Link
+                      </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <a href="/dashboard/shared" className="flex items-center">
                           <span className="material-icons md-18 mr-2">link</span>
-                          Manage Shares ({file.share_count || 0})
+                          View All Shares
                         </a>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => openShareDialog(file.id, file.original_name)}>
-                        <span className="material-icons md-18 mr-2">add_link</span>
-                        Create New Share
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => deleteFile(file.id, file.storage_path)} className="text-destructive focus:text-destructive">
