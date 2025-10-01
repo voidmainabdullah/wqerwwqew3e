@@ -121,12 +121,12 @@ export const Dashboard: React.FC = () => {
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
       {/* Professional Header */}
-      <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm rounded-full">
-        <div className="px-8 py-6 bg-neutral-900 rounded-none">
-          <div className="flex items-center justify-between">
+      <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm">
+        <div className="px-4 md:px-6 lg:px-8 py-6 bg-neutral-900">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="space-y-1">
-              <div className="flex items-center gap-4">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                   Dashboard
                 </h1>
                 <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0" : "bg-slate-700 text-slate-300 border-slate-600"}`}>
@@ -136,21 +136,21 @@ export const Dashboard: React.FC = () => {
                     </> : "Basic"}
                 </Badge>
               </div>
-              <p className="text-slate-400">
+              <p className="text-slate-400 text-sm sm:text-base">
                 Welcome back, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
               </p>
             </div>
 
             {/* Total Balance Card */}
-            <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 bg-gray-200">
-              <div className="text-right">
-                <p className="text-slate-400 text-sm mb-1">Total Storage Value</p>
-                <p className="text-2xl font-bold text-white">
+            <div className="w-full lg:w-auto bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-4 sm:p-6 border border-slate-600/50 min-w-0 lg:min-w-[200px]">
+              <div className="text-center lg:text-right">
+                <p className="text-slate-400 text-xs sm:text-sm mb-1">Total Storage Value</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white break-words">
                   {formatCurrency((stats?.storageUsed || 0) * 0.0001)}
                 </p>
-                <div className="flex items-center justify-end gap-2 mt-2">
+                <div className="flex items-center justify-center lg:justify-end gap-2 mt-2">
                   <TrendUp className="w-4 h-4 text-emerald-400" />
-                  <span className="text-emerald-400 text-sm">+12.5%</span>
+                  <span className="text-emerald-400 text-xs sm:text-sm">+12.5%</span>
                 </div>
               </div>
             </div>
@@ -158,88 +158,88 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="p-8 space-y-8 bg-neutral-900">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8 bg-neutral-900">
         {/* Main Stats Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Files Card */}
           <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardHeader className="flex flex-row items-center justify-between pb-3 p-4 sm:p-6">
               <div>
-                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                <CardTitle className="text-slate-400 text-xs sm:text-sm font-medium uppercase tracking-wide">
                   Total Files
                 </CardTitle>
-                <div className="text-3xl font-bold text-white mt-2">
+                <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mt-2">
                   {stats?.totalFiles?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400"></div> 
-                  <span className="text-emerald-400 text-sm"> This Month : 287</span>
+                  <span className="text-emerald-400 text-xs sm:text-sm">This Month: 287</span>
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-md flex items-center justify-center bg-zinc-700 ">
-                <Files className="h-6 w-6 text-white bg-inherit" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-md flex items-center justify-center bg-zinc-700">
+                <Files className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
             </CardHeader>
           </Card>
 
           {/* Shares Card */}
           <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardHeader className="flex flex-row items-center justify-between pb-3 p-4 sm:p-6">
               <div>
-                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                <CardTitle className="text-slate-400 text-xs sm:text-sm font-medium uppercase tracking-wide">
                   Active Shares
                 </CardTitle>
-                <div className="text-3xl font-bold text-white mt-2">
+                <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mt-2">
                   {stats?.totalShares?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                  <span className="text-purple-400 text-sm">+8.1%</span>
+                  <span className="text-purple-400 text-xs sm:text-sm">+8.1%</span>
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
-                <ShareNetwork className="h-6 w-6  text-white" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
+                <ShareNetwork className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
             </CardHeader>
           </Card>
 
           {/* Downloads Card */}
           <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardHeader className="flex flex-row items-center justify-between pb-3 p-4 sm:p-6">
               <div>
-                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                <CardTitle className="text-slate-400 text-xs sm:text-sm font-medium uppercase tracking-wide">
                   Downloads
                 </CardTitle>
-                <div className="text-3xl font-bold text-white mt-2">
+                <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mt-2">
                   {stats?.totalDownloads?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                  <span className="text-emerald-400 text-sm">+15.3%</span>
+                  <span className="text-emerald-400 text-xs sm:text-sm">+15.3%</span>
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
-                <Download className="h-6 w-6 text-white" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
+                <Download className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
             </CardHeader>
           </Card>
 
           {/* Storage Card */}
           <Card className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-slate-600/50 hover:border-slate-500/50 transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardHeader className="flex flex-row items-center justify-between pb-3 p-4 sm:p-6">
               <div>
-                <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
+                <CardTitle className="text-slate-400 text-xs sm:text-sm font-medium uppercase tracking-wide">
                   Storage Used
                 </CardTitle>
-                <div className="text-3xl font-bold text-white mt-2">
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mt-2">
                   {isPro ? <div className="flex items-center gap-2">
-                      <span>{formatFileSize(stats?.storageUsed || 0)}</span>
+                      <span className="truncate">{formatFileSize(stats?.storageUsed || 0)}</span>
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 text-xs">
                         ∞
                       </Badge>
                     </div> : <div>
-                      <div>{formatFileSize(stats?.storageUsed || 0)}</div>
-                      <div className="text-sm text-slate-400">
+                      <div className="truncate">{formatFileSize(stats?.storageUsed || 0)}</div>
+                      <div className="text-xs sm:text-sm text-slate-400">
                         of {formatFileSize(stats?.storageLimit || 0)}
                       </div>
                     </div>}
@@ -248,28 +248,28 @@ export const Dashboard: React.FC = () => {
                     <Progress value={storageProgress} className="h-2 bg-slate-600" />
                   </div>}
               </div>
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                <Cloud className="h-6 w-6 text-white-400" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                <Cloud className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-400" />
               </div>
             </CardHeader>
           </Card>
         </div> 
 
         {/* Main Content Grid */}
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-6 lg:gap-8 lg:grid-cols-3">
           {/* Left Column - Charts and Analytics */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 lg:space-y-8">
             {/* Performance Chart */}
             <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
-              <CardHeader>
+              <CardHeader className="p-4 sm:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-white text-xl">File Transfer Analytics</CardTitle>
-                    <CardDescription className="text-slate-400">
+                    <CardTitle className="text-white text-lg sm:text-xl">File Transfer Analytics</CardTitle>
+                    <CardDescription className="text-slate-400 text-sm">
                       Your file sharing performance over time
                     </CardDescription>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="hidden sm:flex items-center gap-2">
                     <Button variant="outline" size="sm" className="bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600">
                       7 Days
                     </Button>
@@ -279,9 +279,9 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 sm:p-6">
                 {/* Simulated Chart Area */}
-                <div className="h-64 bg-neutral-900/50 rounded-xl p-6 relative overflow-hidden">
+                <div className="h-48 sm:h-64 bg-neutral-900/50 rounded-xl p-4 sm:p-6 relative overflow-hidden">
                   {/* Chart Background Grid */}
                   <div className="absolute inset-0 opacity-20">
                     <div className="w-full h-full" style={{
@@ -289,28 +289,28 @@ export const Dashboard: React.FC = () => {
                         linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px)
                       `,
-                    backgroundSize: '40px 40px'
+                    backgroundSize: '30px 30px'
                   }} />
                   </div>
                   
                   {/* Simulated Chart Line */}
-                  <div className="relative h-full flex items-end justify-between px-4">
+                  <div className="relative h-full flex items-end justify-between px-2 sm:px-4">
                     {[65, 45, 78, 92, 67, 89, 76, 95, 82, 88, 94, 87].map((height, i) => <div key={i} className="flex flex-col items-center gap-2">
-                        <div className="w-6 bg-gradient-to-t from-neutral-500 to-neutral-400 rounded-t-sm transition-all duration-1000" style={{
+                        <div className="w-3 sm:w-4 lg:w-6 bg-gradient-to-t from-neutral-500 to-neutral-400 rounded-t-sm transition-all duration-1000" style={{
                       height: `${height}%`
                     }} />
-                        <span className="text-xs text-slate-500">{i + 1}</span>
+                        <span className="text-xs text-slate-500 hidden sm:block">{i + 1}</span>
                       </div>)}
                   </div>
                   
                   {/* Chart Stats Overlay */}
-                  <div className="absolute top-4 left-4">
-                    <div className="bg-neutral-800/80 backdrop-blur-sm rounded-lg p-3 border border-slate-600/50">
+                  <div className="absolute top-2 sm:top-4 left-2 sm:left-4">
+                    <div className="bg-neutral-800/80 backdrop-blur-sm rounded-lg p-2 sm:p-3 border border-slate-600/50">
                       <div className="flex items-center gap-2 mb-1">
                         <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                        <span className="text-white text-sm font-medium">Downloads</span>
+                        <span className="text-white text-xs sm:text-sm font-medium">Downloads</span>
                       </div>
-                      <div className="text-2xl font-bold text-white">
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
                         {stats?.totalDownloads?.toLocaleString() || 0}
                       </div>
                       <div className="flex items-center gap-1 mt-1">
@@ -324,58 +324,58 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Real-time Analytics Component */}
-            <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50 rounded-xl p-6 bg-inherit">
-              <div className="space-y-6">
+            <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50 rounded-xl p-4 sm:p-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-white text-xl font-semibold">Live Analytics</h3>
-                    <p className="text-slate-400">Real-time file sharing performance</p>
+                    <h3 className="text-white text-lg sm:text-xl font-semibold">Live Analytics</h3>
+                    <p className="text-slate-400 text-sm">Real-time file sharing performance</p>
                   </div>
                   <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
                 </div>
                 
                 {/* Analytics Cards Grid */}
-                <div className="grid gap-4 md:grid-cols-3">
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
+                  <div className="rounded-lg p-3 sm:p-4 border border-slate-600/30 bg-neutral-800">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                        <Download className="w-5 h-5 text-emerald-400" />
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                        <Download className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
                       </div>
                       <div>
-                        <p className="text-slate-400 text-sm">Total Downloads</p>
-                        <p className="text-white text-2xl font-bold">{stats?.totalDownloads || 0}</p>
+                        <p className="text-slate-400 text-xs sm:text-sm">Total Downloads</p>
+                        <p className="text-white text-lg sm:text-xl lg:text-2xl font-bold">{stats?.totalDownloads || 0}</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                  <div className="rounded-lg p-3 sm:p-4 border border-slate-600/30 bg-neutral-800">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                        <ShareNetwork className="w-5 h-5 text-purple-400" />
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                        <ShareNetwork className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
                       </div>
                       <div>
-                        <p className="text-slate-400 text-sm">Active Shares</p>
-                        <p className="text-white text-2xl font-bold">{stats?.totalShares || 0}</p>
+                        <p className="text-slate-400 text-xs sm:text-sm">Active Shares</p>
+                        <p className="text-white text-lg sm:text-xl lg:text-2xl font-bold">{stats?.totalShares || 0}</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                  <div className="rounded-lg p-3 sm:p-4 border border-slate-600/30 bg-neutral-800">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                        <Files className="w-5 h-5 text-blue-400" />
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                        <Files className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                       </div>
                       <div>
-                        <p className="text-slate-400 text-sm">Total Files</p>
-                        <p className="text-white text-2xl font-bold">{stats?.totalFiles || 0}</p>
+                        <p className="text-slate-400 text-xs sm:text-sm">Total Files</p>
+                        <p className="text-white text-lg sm:text-xl lg:text-2xl font-bold">{stats?.totalFiles || 0}</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Popular Files */}
-                <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                <div className="rounded-lg p-3 sm:p-4 border border-slate-600/30 bg-neutral-800">
                   <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                     <TrendUp className="w-4 h-4 text-emerald-400" />
                     Popular Files
@@ -386,11 +386,11 @@ export const Dashboard: React.FC = () => {
                           <div className="w-6 h-6 rounded bg-blue-500/20 flex items-center justify-center">
                             <Files className="w-3 h-3 text-blue-400" />
                           </div>
-                          <span className="text-slate-300 text-sm truncate max-w-[150px]">
+                          <span className="text-slate-300 text-xs sm:text-sm truncate max-w-[100px] sm:max-w-[150px]">
                             {file.original_name}
                           </span>
                         </div>
-                        <span className="text-emerald-400 text-sm">{file.download_count} downloads</span>
+                        <span className="text-emerald-400 text-xs sm:text-sm">{file.download_count} downloads</span>
                       </div>) : <p className="text-slate-400 text-sm">No files uploaded yet</p>}
                   </div>
                 </div>
@@ -399,31 +399,31 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Right Column - Activity and Actions */}
-          <div className="space-y-8">
+          <div className="space-y-6 lg:space-y-8">
             {/* Quick Actions */}
             <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+              <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="text-white flex items-center gap-2 text-lg">
                   <Lightning className="w-5 h-5 text-amber-400" />
                   Quick Actions
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white border-0 h-12">
+              <CardContent className="space-y-3 p-4 sm:p-6 pt-0">
+                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white border-0 h-10 sm:h-12">
                   <Link to="/dashboard/upload" className="flex items-center gap-2">
                     <Upload className="w-5 h-5" />
                     Upload Files
                   </Link>
                 </Button>
                 
-                <Button asChild variant="outline" className="w-full bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600 h-12">
+                <Button asChild variant="outline" className="w-full bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600 h-10 sm:h-12">
                   <Link to="/code" className="flex items-center gap-2">
                     <Download className="w-5 h-5" />
                     Receive Files
                   </Link>
                 </Button>
                 
-                <Button asChild variant="outline" className="w-full bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600 h-12">
+                <Button asChild variant="outline" className="w-full bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600 h-10 sm:h-12">
                   <Link to="/dashboard/shared" className="flex items-center gap-2">
                     <ShareNetwork className="w-5 h-5" />
                     Manage Shares
@@ -434,17 +434,17 @@ export const Dashboard: React.FC = () => {
 
             {/* Storage Overview */}
             <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50 text-white bg-neutral-800">
-              <CardHeader className="bg-zinc-800">
-                <CardTitle className="text-white flex items-center gap-2">
+              <CardHeader className="bg-zinc-800 p-4 sm:p-6">
+                <CardTitle className="text-white flex items-center gap-2 text-lg">
                   <Database className="w-5 h-5 text-blue-400" />
                   Storage Overview
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 bg-neutral-800">
+              <CardContent className="space-y-4 bg-neutral-800 p-4 sm:p-6">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-400">Used</span>
-                    <span className="text-white font-medium">
+                    <span className="text-white font-medium truncate ml-2">
                       {formatFileSize(stats?.storageUsed || 0)}
                     </span>
                   </div>
@@ -454,7 +454,7 @@ export const Dashboard: React.FC = () => {
                         <span className="text-slate-500">
                           {storageProgress.toFixed(1)}% used
                         </span>
-                        <span className="text-slate-500">
+                        <span className="text-slate-500 truncate ml-2">
                           {formatFileSize(stats?.storageLimit || 0)} total
                         </span>
                       </div>
@@ -472,20 +472,20 @@ export const Dashboard: React.FC = () => {
 
             {/* Recent Activity */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+              <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="text-white flex items-center gap-2 text-lg">
                   <Activity className="w-5 h-5 text-emerald-400" />
                   Recent Activity
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 sm:p-6 pt-0">
                 <div className="space-y-3">
                   {stats?.recentActivity.length ? stats.recentActivity.map((activity, index) => <div key={index} className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg">
                         <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                           <Download className="w-4 h-4 text-emerald-400" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium truncate">
+                          <p className="text-white text-xs sm:text-sm font-medium truncate">
                             {activity.files?.original_name || 'Unknown file'}
                           </p>
                           <p className="text-slate-400 text-xs">
@@ -509,18 +509,18 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Bottom Action Cards */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3">
           <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-blue-500/50 transition-all duration-300">
-            <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-blue-400" />
+            <CardHeader className="p-4 sm:p-6">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
+                <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
               </div>
-              <CardTitle className="text-white">Enhanced Security</CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardTitle className="text-white text-lg">Enhanced Security</CardTitle>
+              <CardDescription className="text-slate-400 text-sm">
                 Advanced encryption and access controls for your files
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6 pt-0">
               <Button asChild variant="outline" className="w-full bg-neutral-700/50 border-blue-600 text-blue-300 hover:bg-blue-600/50">
                 <Link to="/dashboard/settings">
                   Configure Security
@@ -530,16 +530,16 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-purple-500/50 transition-all duration-300">
-            <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-purple-400" />
+            <CardHeader className="p-4 sm:p-6">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
+                <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
               </div>
-              <CardTitle className="text-white">Team Collaboration</CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardTitle className="text-white text-lg">Team Collaboration</CardTitle>
+              <CardDescription className="text-slate-400 text-sm">
                 Share files and collaborate with your team members
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6 pt-0">
               <Button asChild variant="outline" className="w-full bg-neutral-700/50 border-purple-600 text-purple-300 hover:bg-neutral-600/50">
                 <Link to="/dashboard/teams">
                   Manage Teams
@@ -549,16 +549,16 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
-            <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4 ">
-                <ChartLineUp className="w-6 h-6 text-emerald-400" />
+            <CardHeader className="p-4 sm:p-6">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
+                <ChartLineUp className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
               </div>
-              <CardTitle className="text-white">Analytics & Insights</CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardTitle className="text-white text-lg">Analytics & Insights</CardTitle>
+              <CardDescription className="text-slate-400 text-sm">
                 Track performance and optimize your file sharing
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6 pt-0">
               <Button asChild variant="outline" className="w-full bg-emerald-700/50 border-emerald-600 text-emerald-300 hover:bg-emerald-600/50">
                 <Link to="/dashboard/analytics">
                   View Analytics
