@@ -142,7 +142,7 @@ export const NotificationPopover: React.FC = () => {
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
             <Button variant="ghost" size="sm" onClick={markAllAsRead}>
-              <Read className="h-4 w-4" />
+              <Cheack className="h-4 w-4" />
             </Button>
           </div>
         </div>
