@@ -147,9 +147,6 @@ export const Dashboard: React.FC = () => {
                 <p className="text-slate-400 text-sm mb-1">Total Storage Value</p>
                 <p className="text-2xl font-bold text-white">
   {Math.floor((stats?.storageUsed || 0) / (1024 * 1024)) * 10} pts 
-  <span className="text-slate-400 text-sm ml-2">
-    ({formatBytes(stats?.storageUsed || 0)})
-  </span>
 </p>
 
                 <div className="flex items-center justify-end gap-2 mt-2">
