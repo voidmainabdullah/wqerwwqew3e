@@ -146,7 +146,7 @@ export const Dashboard: React.FC = () => {
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Token's used</p>
               <p class="text-sm font-thick italic text-white/90">
-  {((stats?.storageUsed || 0) / (2048 * 2048) / 6.99).toFixed(0)}K Tokens
+{Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 6.99).toLocaleString()}K Tokens
 
 </p>
 
