@@ -145,7 +145,7 @@ export const Dashboard: React.FC = () => {
             <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 bg-gray-200">
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Storage Value</p>
-               <p className="text-l font-thin text-white">
+               <p className="text-l font-thin text-white/40">
   {Math.floor((stats?.storageUsed || 0) / (2048 * 2048) / 6.99)}K Encryption Tokens
 </p>
 
