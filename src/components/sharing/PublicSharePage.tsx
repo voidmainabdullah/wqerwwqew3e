@@ -393,6 +393,6 @@ export const PublicSharePage: React.FC = () => {
       {/* Footer */}
       <PageFooter className="relative z-10" />
       </div>
-    </div>
+    
   );
 };
