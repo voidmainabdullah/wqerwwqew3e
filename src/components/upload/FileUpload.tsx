@@ -290,24 +290,25 @@ export const FileUpload: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-heading font-medium">Files to upload</h3>
-                <Button
-                  onClick={handleUploadFiles}
-                  disabled={isUploading || uploadFiles.every(f => f.status !== 'pending')}
-                  size="sm"
-                  className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle font-heading icon-text"
-                >
-                  {isUploading ? (
-                    <LoadingSpinner size="sm" showText={false} />
-                      <LoadingSpinner size="sm" showText={false} />
-                      <span className="animate-pulse">Uploading...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="material-icons md-18">upload</span>
-                      Upload All
-                    </>
-                  )}
-                </Button>
+               <Button
+  onClick={handleUploadFiles}
+  disabled={isUploading || uploadFiles.every(f => f.status !== 'pending')}
+  size="sm"
+  className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle font-heading icon-text"
+>
+  {isUploading ? (
+    <>
+      <LoadingSpinner size="sm" showText={false} />
+      <span className="animate-pulse">Uploading...</span>
+    </>
+  ) : (
+    <>
+      <span className="material-icons md-18">upload</span>
+      Upload All
+    </>
+  )}
+</Button>
+
               </div>
 
               <div className="space-y-2">
