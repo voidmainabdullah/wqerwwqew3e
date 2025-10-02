@@ -10,6 +10,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { Download, Lock, Warning, FileText } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { PageFooter } from '@/components/ui/page-footer';
+import Logo from '@/components/Logo';
 
 interface ShareData {
   id: string;
@@ -220,82 +223,118 @@ export const PublicSharePage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p>Loading share link...</p>
-        </div>
+        <LoadingSpinner size="lg" text="Loading share link..." />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex flex-col bg-background relative">
+        <div className="fixed inset-0 z-0">
+          <AnimatedBackground />
+        </div>
+        
+        <div className="relative z-10 p-6 border-b border-border/50 bg-card/30 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto flex items-center justify-center">
+            <Logo />
+          </div>
+        </div>
+        
+        <div className="flex-1 flex items-center justify-center p-4 relative z-10">
+          <Card className="w-full max-w-md backdrop-blur-md bg-card/95 border border-border/60 shadow-xl">
           <CardContent className="pt-6">
             <div className="text-center">
-              <Warning className="mx-auto h-12 w-12 text-destructive mb-4" />
-              <h2 className="text-lg font-semibold mb-2">Access Denied</h2>
-              <p className="text-muted-foreground">{error}</p>
+              <span className="material-icons md-48 mx-auto mb-4 text-destructive">warning</span>
+              <h2 className="text-lg font-heading font-semibold mb-2">Access Denied</h2>
+              <p className="font-body text-muted-foreground">{error}</p>
             </div>
           </CardContent>
         </Card>
+        </div>
+        
+        <PageFooter className="relative z-10" />
       </div>
     );
   }
 
   if (!shareData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex flex-col bg-background relative">
+        <div className="fixed inset-0 z-0">
+          <AnimatedBackground />
+        </div>
+        
+        <div className="relative z-10 p-6 border-b border-border/50 bg-card/30 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto flex items-center justify-center">
+            <Logo />
+          </div>
+        </div>
+        
+        <div className="flex-1 flex items-center justify-center p-4 relative z-10">
+          <Card className="w-full max-w-md backdrop-blur-md bg-card/95 border border-border/60 shadow-xl">
           <CardContent className="pt-6">
             <div className="text-center">
-              <Warning className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <h2 className="text-lg font-semibold mb-2">Share Link Not Found</h2>
-              <p className="text-muted-foreground">This share link does not exist or has been deactivated.</p>
+              <span className="material-icons md-48 mx-auto mb-4 text-muted-foreground">link_off</span>
+              <h2 className="text-lg font-heading font-semibold mb-2">Share Link Not Found</h2>
+              <p className="font-body text-muted-foreground">This share link does not exist or has been deactivated.</p>
             </div>
           </CardContent>
         </Card>
+        </div>
+        
+        <PageFooter className="relative z-10" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-background relative">
       {/* Animated Background */}
-      <AnimatedBackground />
+      <div className="fixed inset-0 z-0">
+        <AnimatedBackground />
+      </div>
       
-      {/* Content Overlay */}
-      <div className="relative z-10">
-      <Card className="w-full max-w-md">
+      {/* Header with Logo */}
+      <div className="relative z-10 p-6 border-b border-border/50 bg-card/30 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto flex items-center justify-center">
+          <Logo />
+        </div>
+      </div>
+      
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center p-4 relative z-10">
+        <Card className="w-full max-w-md backdrop-blur-md bg-card/95 border border-border/60 shadow-xl">
         <CardHeader className="text-center">
-          <FileText className="mx-auto h-12 w-12 text-primary mb-2" />
-          <CardTitle>Shared File</CardTitle>
-          <CardDescription>
+          <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+            <span className="material-icons md-36 text-primary">description</span>
+          </div>
+          <CardTitle className="font-heading">Shared File</CardTitle>
+          <CardDescription className="font-body">
             Someone has shared a file with you
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center space-y-2">
-            <h3 className="font-medium text-lg">{shareData.file.original_name}</h3>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="font-heading font-medium text-lg">{shareData.file.original_name}</h3>
+            <p className="text-sm font-body text-muted-foreground">
               {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
             </p>
             
             {shareData.message && (
               <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
-                <p className="text-sm text-blue-800 dark:text-blue-200">{shareData.message}</p>
+                <p className="text-sm font-body text-blue-800 dark:text-blue-200">{shareData.message}</p>
               </div>
             )}
             
             {shareData.expires_at && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs font-body text-muted-foreground">
                 Expires: {new Date(shareData.expires_at).toLocaleDateString()}
               </p>
             )}
             
             {shareData.download_limit && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs font-body text-muted-foreground">
                 Downloads: {shareData.download_count}/{shareData.download_limit}
               </p>
             )}
@@ -303,7 +342,7 @@ export const PublicSharePage: React.FC = () => {
 
           {shareData.password_hash && (
             <Alert>
-              <Lock className="h-4 w-4" />
+              <span className="material-icons md-18">lock</span>
               <AlertDescription>
                 This file is password protected
               </AlertDescription>
@@ -312,7 +351,7 @@ export const PublicSharePage: React.FC = () => {
 
           {passwordRequired && (
             <div className="space-y-2">
-              <Label htmlFor="password">Enter Password</Label>
+              <Label htmlFor="password" className="font-heading">Enter Password</Label>
               <div className="flex space-x-2">
                 <Input
                   id="password"
@@ -320,9 +359,10 @@ export const PublicSharePage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
+                  className="font-body"
                   onKeyPress={(e) => e.key === 'Enter' && validatePassword()}
                 />
-                <Button onClick={validatePassword} size="sm">
+                <Button onClick={validatePassword} size="sm" className="font-heading">
                   Unlock
                 </Button>
               </div>
@@ -332,13 +372,26 @@ export const PublicSharePage: React.FC = () => {
           <Button 
             onClick={downloadFile} 
             disabled={downloading || passwordRequired}
-            className="w-full"
+            className="w-full h-12 font-heading icon-text"
           >
-            <Download className="mr-2 h-4 w-4" />
-            {downloading ? 'Downloading...' : 'Download File'}
+            {downloading ? (
+              <>
+                <LoadingSpinner size="sm" showText={false} className="mr-2" />
+                Downloading...
+              </>
+            ) : (
+              <>
+                <span className="material-icons md-18">download</span>
+                Download File
+              </>
+            )}
           </Button>
         </CardContent>
       </Card>
+      </div>
+      
+      {/* Footer */}
+      <PageFooter className="relative z-10" />
       </div>
     </div>
   );

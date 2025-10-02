@@ -254,15 +254,8 @@ export const TeamFiles: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="space-y-4 p-4 max-w-7xl mx-auto">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-muted rounded w-1/4"></div>
-          <div className="space-y-2">
-            <div className="h-16 bg-muted rounded"></div>
-            <div className="h-16 bg-muted rounded"></div>
-            <div className="h-16 bg-muted rounded"></div>
-          </div>
-        </div>
+      <div className="flex items-center justify-center py-12">
+        <LoadingSpinner size="lg" text="Loading team files..." />
       </div>
     );
   }

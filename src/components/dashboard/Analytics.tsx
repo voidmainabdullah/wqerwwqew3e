@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { ChartBar, Download, ShareNetwork, Files, TrendUp, Users, Calendar, Warning, CheckCircle } from 'phosphor-react';
 import { RealTimeAnalytics } from '@/components/analytics/RealTimeAnalytics';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 interface AnalyticsData {
   totalDownloads: number;
@@ -18,8 +19,8 @@ export const Analytics: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-heading font-bold tracking-tight">Analytics</h1>
+        <p className="font-body text-muted-foreground">
           Track your file sharing performance and download statistics in real-time.
         </p>
       </div>

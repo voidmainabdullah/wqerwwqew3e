@@ -6,6 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Hash, Download, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { PageFooter } from '@/components/ui/page-footer';
+import { AnimatedBackground } from '@/components/ui/animated-background';
+import Logo from '@/components/Logo';
 
 interface SharedFile {
   id: string;
@@ -144,14 +148,36 @@ export default function CodePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-background relative flex flex-col">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0">
+        <AnimatedBackground />
+      </div>
+      
+      {/* Header with Logo */}
+      <div className="relative z-10 p-6 border-b border-border/50 bg-card/30 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <Logo />
+          <Button variant="ghost" asChild className="font-heading icon-text">
+            <a href="/">
+              <span className="material-icons md-18">home</span>
+              Back to Home
+            </a>
+          </Button>
+        </div>
+      </div>
+      
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center p-4 relative z-10">
+        <Card className="w-full max-w-md backdrop-blur-md bg-card/95 border border-border/60 shadow-xl">
         <CardHeader className="text-center">
-          <CardTitle className="flex items-center justify-center gap-2">
-            <Hash className="h-6 w-6" />
+          <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+            <span className="material-icons md-36 text-primary">tag</span>
+          </div>
+          <CardTitle className="text-2xl font-heading font-bold">
             Access File with Code
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="font-body">
             Enter the share code to access your file
           </CardDescription>
         </CardHeader>
@@ -160,26 +186,27 @@ export default function CodePage() {
           {!file ? (
             <>
               <div>
-                <Label htmlFor="shareCode">Share Code</Label>
+                <Label htmlFor="shareCode" className="font-heading">Share Code</Label>
                 <Input
                   id="shareCode"
                   placeholder="Enter 8-character code"
                   value={shareCode}
                   onChange={(e) => setShareCode(e.target.value.toUpperCase())}
                   maxLength={8}
-                  className="font-mono tracking-wider text-center"
+                  className="font-mono tracking-wider text-center h-12"
                 />
               </div>
 
               {requiresPassword && (
                 <div>
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password" className="font-heading">Password</Label>
                   <Input
                     id="password"
                     type="password"
                     placeholder="Enter file password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    className="font-body h-12"
                   />
                 </div>
               )}
@@ -187,42 +214,50 @@ export default function CodePage() {
               <Button 
                 onClick={handleCodeSubmit} 
                 disabled={isLoading || !shareCode.trim()}
-                className="w-full"
+                className="w-full h-12 font-heading icon-text"
               >
-                {isLoading ? 'Verifying...' : 'Access File'}
+                {isLoading ? (
+                  <>
+                    <LoadingSpinner size="sm" showText={false} className="mr-2" />
+                    Verifying...
+                  </>
+                ) : (
+                  <>
+                    <span className="material-icons md-18">search</span>
+                    Access File
+                  </>
+                )}
               </Button>
             </>
           ) : (
             <div className="space-y-4">
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="h-8 w-8 text-primary" />
+                  <span className="material-icons md-36 text-primary">description</span>
                 </div>
-                <h3 className="font-semibold text-lg">{file.original_name}</h3>
-                <p className="text-muted-foreground">
+                <h3 className="font-heading font-semibold text-lg">{file.original_name}</h3>
+                <p className="font-body text-muted-foreground">
                   {formatFileSize(file.file_size)} • {file.download_count} downloads
                 </p>
               </div>
 
               <div className="flex gap-2">
-                <Button onClick={downloadFile} className="flex-1">
-                  <Download className="h-4 w-4 mr-2" />
+                <Button onClick={downloadFile} className="flex-1 h-12 font-heading icon-text">
+                  <span className="material-icons md-18">download</span>
                   Download
                 </Button>
-                <Button variant="outline" onClick={resetForm}>
+                <Button variant="outline" onClick={resetForm} className="h-12 font-heading">
                   New Code
                 </Button>
               </div>
             </div>
           )}
-
-          <div className="text-center pt-4 border-t">
-            <Button variant="link" asChild className="text-sm">
-              <a href="/">← Back to Home</a>
-            </Button>
-          </div>
         </CardContent>
       </Card>
+      </div>
+      
+      {/* Footer */}
+      <PageFooter className="relative z-10" />
     </div>
   );
 }

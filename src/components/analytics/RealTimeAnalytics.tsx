@@ -127,6 +127,11 @@ export const RealTimeAnalytics: React.FC = () => {
             </CardContent>
           </Card>)}
       </div>;
+    return (
+      <div className="flex items-center justify-center py-12">
+        <LoadingSpinner size="lg" text="Loading analytics..." />
+      </div>
+    );
   }
   const storageProgress = stats && stats.subscriptionTier !== 'pro' ? stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="space-y-6">

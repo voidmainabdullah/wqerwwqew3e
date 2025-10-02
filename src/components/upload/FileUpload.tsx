@@ -297,8 +297,8 @@ export const FileUpload: React.FC = () => {
                   className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle font-heading icon-text"
                 >
                   {isUploading ? (
-                    <>
-                      <span className="material-icons md-18 animate-spin">refresh</span>
+                    <LoadingSpinner size="sm" showText={false} />
+                      <LoadingSpinner size="sm" showText={false} />
                       <span className="animate-pulse">Uploading...</span>
                     </>
                   ) : (

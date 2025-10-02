@@ -10,6 +10,9 @@ import { useToast } from '@/hooks/use-toast';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Eye, EyeSlash, Envelope, Lock, User, ArrowRight, Shield, Lightning, ArrowLeft } from 'phosphor-react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { PageFooter } from '@/components/ui/page-footer';
+
 export const AuthPage: React.FC = () => {
   const {
     user,
@@ -112,14 +115,17 @@ export const AuthPage: React.FC = () => {
   return <div className="min-h-screen flex items-center justify-center relative bg-background">
 
       {/* Animated Background */}
-      <div className="absolute inset-0">
+      <div className="fixed inset-0 z-0">
         <AnimatedBackground />
       </div>
       
-      {/* Content Container */}
-      <div className="relative z-20 w-full max-w-md mx-auto p-4">
+      {/* Main Content Container */}
+      <div className="relative z-10 w-full min-h-screen flex flex-col">
+        {/* Content Container */}
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="w-full max-w-md mx-auto">
           {/* Back to Home Button */}
-          <div className="mb-8">
+            <div className="mb-6">
             <Button variant="ghost" className="flex items-center gap-2 text-muted-foreground hover:text-foreground group transition-all duration-300 hover:scale-105" onClick={() => window.location.href = '/'}>
               <ArrowLeft className="h-4 w-4" />
               <span className="relative">
@@ -128,11 +134,11 @@ export const AuthPage: React.FC = () => {
             </Button>
           </div>
 
-          <Card className="backdrop-blur-md bg-card/90 border border-border/60 shadow-xl">
+            <Card className="backdrop-blur-md bg-card/95 border border-border/60 shadow-2xl">
               
               <CardHeader className="text-center space-y-4">
                 {/* Logo with enhanced effects */}
-                <div className="mx-auto relative">
+                <div className="mx-auto relative mb-2">
                   <div className="relative w-20 h-20 mx-auto group">
                     <img 
                       src="/sky.png" 
@@ -148,24 +154,28 @@ export const AuthPage: React.FC = () => {
                 
                 <div>
                   <CardTitle className="text-3xl font-heading font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                    {isSignUp ? 'Join SkieShare' : 'Welcome Back'}
+                    {isSignUp ? 'Create Account' : 'Welcome Back'}
                   </CardTitle>
-                  <CardDescription className="text-lg font-body mt-3 text-muted-foreground">
+                  <CardDescription className="text-base font-body mt-2 text-muted-foreground">
                     {isSignUp ? 'Create your account and start sharing files securely' : 'Sign in to access your secure file sharing dashboard'}
                   </CardDescription>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-5 px-6 pb-6">
                 {/* Google Sign In with enhanced styling */}
                 <div>
-                  <Button variant="outline" className={`w-full h-14 text-base font-medium border-2 transition-all duration-300 relative overflow-hidden group ${actualTheme === 'light' ? 'border-slate-300 hover:bg-slate-50 hover:border-indigo-400' : 'hover:bg-accent/50'} font-heading icon-text`} onClick={handleGoogleSignIn} disabled={loading}>
+                  <Button variant="outline" className={`w-full h-12 text-base font-medium border-2 transition-all duration-300 relative overflow-hidden group ${actualTheme === 'light' ? 'border-slate-300 hover:bg-slate-50 hover:border-indigo-400' : 'hover:bg-accent/50'} font-heading icon-text`} onClick={handleGoogleSignIn} disabled={loading}>
+                    {loading ? (
+                      <LoadingSpinner size="sm" showText={false} className="mr-2" />
+                    ) : (
                     <svg className="w-6 h-6" viewBox="0 0 24 24">
                       <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                       <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                       <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                       <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
+                    )}
                     <span>Continue with Google</span>
                   </Button>
                 </div>
@@ -182,14 +192,14 @@ export const AuthPage: React.FC = () => {
                 </div>
 
                 {/* Enhanced Email/Password Form */}
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   {isSignUp && <div className="space-y-2">
                       <Label htmlFor="displayName" className="text-sm font-heading font-medium">
                         Display Name
                       </Label>
                       <div className="relative group">
                         <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">person</span>
-                        <Input id="displayName" type="text" placeholder="Enter your name" value={displayName} onChange={e => setDisplayName(e.target.value)} className="pl-11 h-14 text-base font-body" />
+                        <Input id="displayName" type="text" placeholder="Enter your name" value={displayName} onChange={e => setDisplayName(e.target.value)} className="pl-11 h-12 text-base font-body" />
                       </div>
                     </div>}
 
@@ -199,7 +209,7 @@ export const AuthPage: React.FC = () => {
                     </Label>
                     <div className="relative group">
                       <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">email</span>
-                      <Input id="email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} className="pl-11 h-14 text-base font-body" required />
+                      <Input id="email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} className="pl-11 h-12 text-base font-body" required />
                     </div>
                   </div>
 
@@ -209,7 +219,7 @@ export const AuthPage: React.FC = () => {
                     </Label>
                     <div className="relative group">
                       <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">lock</span>
-                      <Input id="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} className="pl-11 pr-11 h-14 text-base font-body" required />
+                      <Input id="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} className="pl-11 pr-11 h-12 text-base font-body" required />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground">
                         <span className={`material-icons md-24 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`}>
                           {showPassword ? 'visibility_off' : 'visibility'}
@@ -224,7 +234,7 @@ export const AuthPage: React.FC = () => {
                       </Label>
                       <div className="relative group">
                         <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">lock</span>
-                        <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Confirm your password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="pl-11 pr-11 h-14 text-base font-body" required />
+                        <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Confirm your password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="pl-11 pr-11 h-12 text-base font-body" required />
                         <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground">
                           <span className="material-icons md-18">
                             {showConfirmPassword ? 'visibility_off' : 'visibility'}
@@ -234,9 +244,9 @@ export const AuthPage: React.FC = () => {
                     </div>}
 
                   <div>
-                    <Button type="submit" className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${actualTheme === 'light' ? 'bg-black hover:bg-neutral-800 text-white hover:shadow-black/20' : 'bg-white hover:bg-neutral-200 text-black hover:shadow-white/20'} font-heading icon-text`} disabled={loading}>
+                    <Button type="submit" className={`w-full h-12 text-base font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${actualTheme === 'light' ? 'bg-black hover:bg-neutral-800 text-white hover:shadow-black/20' : 'bg-white hover:bg-neutral-200 text-black hover:shadow-white/20'} font-heading icon-text`} disabled={loading}>
                       {loading ? <div className="flex items-center gap-3">
-                          <div className={`w-5 h-5 border-2 border-t-transparent rounded-full animate-spin ${actualTheme === 'light' ? 'border-white' : 'border-primary-foreground'}`} />
+                          <LoadingSpinner size="sm" showText={false} />
                           <span>
                             {isSignUp ? 'Creating Account...' : 'Signing In...'}
                           </span>
@@ -249,7 +259,7 @@ export const AuthPage: React.FC = () => {
                 </form>
 
                 {/* Toggle between Sign In and Sign Up */}
-                <div className="text-center">
+                <div className="text-center pt-2">
                   <button onClick={() => {
               setIsSignUp(!isSignUp);
               setEmail('');
@@ -272,9 +282,13 @@ export const AuthPage: React.FC = () => {
                 </div>
 
                 {/* Enhanced Security Notice */}
-                
               </CardContent>
           </Card>
+          </div>
+        </div>
+        
+        {/* Footer */}
+        <PageFooter showLogo={false} className="relative z-10" />
       </div>
 
     </div>;
