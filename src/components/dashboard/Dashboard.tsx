@@ -37,15 +37,6 @@ const formatCurrency = (amount: number): string => {
     minimumFractionDigits: 2
   }).format(amount);
 };
-function formatTokens(value) {
-  if (value >= 1_000_000) {
-    return (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + "M";
-  } else if (value >= 1000) {
-    return (value / 1000).toFixed(1).replace(/\.0$/, '') + "K";
-  }
-  return value.toString();
-}
-
 export const Dashboard: React.FC = () => {
   const {
     user
@@ -155,9 +146,7 @@ export const Dashboard: React.FC = () => {
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Token's used</p>
               <p class="text-sm font-thick italic text-white/90">
-{formatTokens(Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 3))} Tokens
-
-
+ {Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 6.99).toLocaleString()} Tokens
 
 </p>
 
