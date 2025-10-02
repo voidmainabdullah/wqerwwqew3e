@@ -155,7 +155,8 @@ export const Dashboard: React.FC = () => {
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Token's used</p>
               <p class="text-sm font-thick italic text-white/90">
-{Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 6.99)}K Tokens
+{formatTokens(Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 6.99))} Tokens
+
 
 
 </p>
