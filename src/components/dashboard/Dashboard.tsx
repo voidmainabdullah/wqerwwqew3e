@@ -146,8 +146,12 @@ export const Dashboard: React.FC = () => {
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Storage Value</p>
                 <p className="text-2xl font-bold text-white">
-                  {formatCurrency((stats?.storageUsed || 0) * 0.0001)}
-                </p>
+  {Math.floor((stats?.storageUsed || 0) / (1024 * 1024)) * 10} pts 
+  <span className="text-slate-400 text-sm ml-2">
+    ({formatBytes(stats?.storageUsed || 0)})
+  </span>
+</p>
+
                 <div className="flex items-center justify-end gap-2 mt-2">
                   <TrendUp className="w-4 h-4 text-emerald-400" />
                   <span className="text-emerald-400 text-sm">+12.5%</span>
