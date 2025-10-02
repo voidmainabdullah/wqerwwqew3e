@@ -145,9 +145,10 @@ export const Dashboard: React.FC = () => {
             <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 bg-gray-200">
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Storage Value</p>
-                <p className="text-2xl font-bold text-white">
-  {Math.floor((stats?.storageUsed || 0) / (1024 * 1024)) * 10} pts 
+               <p className="text-2xl font-bold text-white">
+  {Math.floor((stats?.storageUsed || 0) / (1024 * 1024) * 10)} Encryption Tokens
 </p>
+
 
                 <div className="flex items-center justify-end gap-2 mt-2">
                   <TrendUp className="w-4 h-4 text-emerald-400" />
