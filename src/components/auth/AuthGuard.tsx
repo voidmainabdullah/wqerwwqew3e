@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -19,7 +18,10 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <LoadingSpinner size="lg" text="Authenticating..." />
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Authenticating...</p>
+        </div>
       </div>
     );
   }
