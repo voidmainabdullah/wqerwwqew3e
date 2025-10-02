@@ -146,7 +146,7 @@ export const Dashboard: React.FC = () => {
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Storage Value</p>
                <p className="text-2xl font-bold text-white">
-  {Math.floor((stats?.storageUsed || 0) / (1024 * 1024) / 66)} Encryption Tokens
+  {Math.floor((stats?.storageUsed || 0) / (1024 * 1024) / 9)}K Encryption Tokens
 </p>
 
                 <div className="flex items-center justify-end gap-2 mt-2">
