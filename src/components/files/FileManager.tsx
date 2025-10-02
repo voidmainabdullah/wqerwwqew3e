@@ -92,23 +92,37 @@ export function FileManager() {
       setLoading(true);
 
       // Fetch folders in current directory
-      const { data: foldersData, error: foldersError } = await supabase
+      let foldersQuery = supabase
         .from('folders')
         .select('*')
         .eq('user_id', user?.id)
-        .eq('parent_folder_id', currentFolderId)
         .order('name', { ascending: true });
+
+      if (currentFolderId === null) {
+        foldersQuery = foldersQuery.is('parent_folder_id', null);
+      } else {
+        foldersQuery = foldersQuery.eq('parent_folder_id', currentFolderId);
+      }
+
+      const { data: foldersData, error: foldersError } = await foldersQuery;
 
       if (foldersError) throw foldersError;
       setFolders(foldersData || []);
 
       // Fetch files in current directory
-      const { data: filesData, error: filesError } = await supabase
+      let filesQuery = supabase
         .from('files')
         .select('*')
         .eq('user_id', user?.id)
-        .eq('folder_id', currentFolderId)
         .order('created_at', { ascending: false });
+
+      if (currentFolderId === null) {
+        filesQuery = filesQuery.is('folder_id', null);
+      } else {
+        filesQuery = filesQuery.eq('folder_id', currentFolderId);
+      }
+
+      const { data: filesData, error: filesError } = await filesQuery;
 
       if (filesError) throw filesError;
 
