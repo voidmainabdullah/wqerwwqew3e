@@ -67,6 +67,7 @@ export type Database = {
           expires_at: string | null
           file_size: number
           file_type: string
+          folder_id: string | null
           id: string
           is_locked: boolean
           is_public: boolean
@@ -84,6 +85,7 @@ export type Database = {
           expires_at?: string | null
           file_size: number
           file_type: string
+          folder_id?: string | null
           id?: string
           is_locked?: boolean
           is_public?: boolean
@@ -101,6 +103,7 @@ export type Database = {
           expires_at?: string | null
           file_size?: number
           file_type?: string
+          folder_id?: string | null
           id?: string
           is_locked?: boolean
           is_public?: boolean
@@ -111,7 +114,56 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "files_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      folders: {
+        Row: {
+          created_at: string
+          id: string
+          is_public: boolean
+          name: string
+          parent_folder_id: string | null
+          share_code: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          name: string
+          parent_folder_id?: string | null
+          share_code?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          name?: string
+          parent_folder_id?: string | null
+          share_code?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "folders_parent_folder_id_fkey"
+            columns: ["parent_folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -369,6 +421,17 @@ export type Database = {
           share_token: string
         }[]
       }
+      create_folder_share: {
+        Args: {
+          p_expires_at?: string
+          p_folder_id: string
+          p_link_type: string
+          p_password_hash?: string
+        }
+        Returns: {
+          share_code: string
+        }[]
+      }
       generate_share_code: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -376,6 +439,21 @@ export type Database = {
       generate_unique_share_code: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_folder_contents: {
+        Args: { p_folder_id?: string; p_user_id?: string }
+        Returns: {
+          created_at: string
+          download_count: number
+          file_size: number
+          file_type: string
+          folder_id: string
+          id: string
+          is_locked: boolean
+          is_public: boolean
+          item_type: string
+          name: string
+        }[]
       }
       get_my_team_files: {
         Args: { p_user_id: string }

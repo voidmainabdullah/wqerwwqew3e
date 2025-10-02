@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,6 +30,29 @@ export const FileUpload: React.FC = () => {
   const { toast } = useToast();
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
+  const [folders, setFolders] = useState<Array<{ id: string; name: string }>>([]);
+
+  useEffect(() => {
+    if (user) {
+      fetchFolders();
+    }
+  }, [user]);
+
+  const fetchFolders = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('folders')
+        .select('id, name')
+        .eq('user_id', user?.id)
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      setFolders(data || []);
+    } catch (error) {
+      console.error('Error fetching folders:', error);
+    }
+  };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newFiles: UploadFile[] = acceptedFiles.map(file => ({
@@ -122,6 +145,7 @@ export const FileUpload: React.FC = () => {
               file_size: uploadFile.file.size,
               file_type: uploadFile.file.type || 'application/octet-stream',
               storage_path: fileName,
+              folder_id: selectedFolderId,
             })
             .select()
             .single();
@@ -214,6 +238,28 @@ export const FileUpload: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Folder Selection */}
+          {folders.length > 0 && (
+            <div className="space-y-2">
+              <label className="text-sm font-heading font-medium">
+                Upload to folder (optional)
+              </label>
+              <select
+                value={selectedFolderId || ''}
+                onChange={(e) => setSelectedFolderId(e.target.value || null)}
+                className="w-full p-2 border border-input bg-background rounded-md font-body"
+                disabled={isUploading}
+              >
+                <option value="">Root (No Folder)</option>
+                {folders.map((folder) => (
+                  <option key={folder.id} value={folder.id}>
+                    {folder.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <div
             {...getRootProps()}
             className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-300 transform ${
