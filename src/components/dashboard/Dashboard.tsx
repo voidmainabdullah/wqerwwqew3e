@@ -37,6 +37,15 @@ const formatCurrency = (amount: number): string => {
     minimumFractionDigits: 2
   }).format(amount);
 };
+function formatTokens(value) {
+  if (value >= 1_000_000) {
+    return (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + "M";
+  } else if (value >= 1000) {
+    return (value / 1000).toFixed(1).replace(/\.0$/, '') + "K";
+  }
+  return value.toString();
+}
+
 export const Dashboard: React.FC = () => {
   const {
     user
