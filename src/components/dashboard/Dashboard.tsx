@@ -146,7 +146,8 @@ export const Dashboard: React.FC = () => {
               <div className="text-right">
                 <p className="text-slate-400 text-sm mb-1">Total Token's used</p>
               <p class="text-sm font-thick italic text-white/90">
-  {Math.floor((stats?.storageUsed || 0) / (2048 * 2048) / 6.99)}K Tokens 
+  {((stats?.storageUsed || 0) / (2048 * 2048) / 6.99).toFixed(0)}K Tokens
+
 </p>
 
                 <div className="flex items-center justify-end gap-2 mt-2">
