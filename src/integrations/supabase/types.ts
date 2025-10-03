@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          ip_address: unknown | null
+          metadata: Json | null
+          team_id: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          team_id: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          team_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       download_logs: {
         Row: {
           download_method: string
@@ -269,12 +316,99 @@ export type Database = {
           },
         ]
       }
+      space_members: {
+        Row: {
+          added_at: string
+          id: string
+          permissions: Json
+          role: Database["public"]["Enums"]["app_role"]
+          space_id: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          id?: string
+          permissions?: Json
+          role?: Database["public"]["Enums"]["app_role"]
+          space_id: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          id?: string
+          permissions?: Json
+          role?: Database["public"]["Enums"]["app_role"]
+          space_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "space_members_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spaces: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          is_archived: boolean
+          name: string
+          parent_space_id: string | null
+          team_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          name: string
+          parent_space_id?: string | null
+          team_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          name?: string
+          parent_space_id?: string | null
+          team_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spaces_parent_space_id_fkey"
+            columns: ["parent_space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spaces_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_file_shares: {
         Row: {
           file_id: string
           id: string
           shared_at: string
           shared_by: string
+          space_id: string | null
           team_id: string
         }
         Insert: {
@@ -282,6 +416,7 @@ export type Database = {
           id?: string
           shared_at?: string
           shared_by: string
+          space_id?: string | null
           team_id: string
         }
         Update: {
@@ -289,6 +424,7 @@ export type Database = {
           id?: string
           shared_at?: string
           shared_by?: string
+          space_id?: string | null
           team_id?: string
         }
         Relationships: [
@@ -307,7 +443,61 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "team_file_shares_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "team_file_shares_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_invites: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invite_token: string
+          invited_by: string
+          role: Database["public"]["Enums"]["app_role"]
+          status: string
+          team_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          invite_token: string
+          invited_by: string
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+          team_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invite_token?: string
+          invited_by?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_invites_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
@@ -353,6 +543,59 @@ export type Database = {
           },
         ]
       }
+      team_policies: {
+        Row: {
+          allow_external_sharing: boolean
+          allowed_file_types: string[] | null
+          auto_join_domain: string | null
+          created_at: string
+          default_share_expiry_days: number | null
+          id: string
+          max_file_size_mb: number | null
+          require_2fa: boolean
+          require_password_for_shares: boolean
+          retention_days: number | null
+          team_id: string
+          updated_at: string
+        }
+        Insert: {
+          allow_external_sharing?: boolean
+          allowed_file_types?: string[] | null
+          auto_join_domain?: string | null
+          created_at?: string
+          default_share_expiry_days?: number | null
+          id?: string
+          max_file_size_mb?: number | null
+          require_2fa?: boolean
+          require_password_for_shares?: boolean
+          retention_days?: number | null
+          team_id: string
+          updated_at?: string
+        }
+        Update: {
+          allow_external_sharing?: boolean
+          allowed_file_types?: string[] | null
+          auto_join_domain?: string | null
+          created_at?: string
+          default_share_expiry_days?: number | null
+          id?: string
+          max_file_size_mb?: number | null
+          require_2fa?: boolean
+          require_password_for_shares?: boolean
+          retention_days?: number | null
+          team_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_policies_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: true
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teams: {
         Row: {
           admin_id: string
@@ -377,11 +620,47 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          team_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          team_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          team_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      accept_team_invite: {
+        Args: { _invite_token: string; _user_id: string }
+        Returns: Json
+      }
       admin_toggle_file_lock: {
         Args: { p_file_id: string; p_is_locked: boolean; p_password?: string }
         Returns: boolean
@@ -487,6 +766,21 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_team_spaces: {
+        Args: { _parent_space_id?: string; _team_id: string }
+        Returns: {
+          created_at: string
+          created_by: string
+          creator_email: string
+          description: string
+          file_count: number
+          id: string
+          is_archived: boolean
+          name: string
+          parent_space_id: string
+          team_id: string
+        }[]
+      }
       get_user_by_email: {
         Args: { email_input: string }
         Returns: {
@@ -506,6 +800,21 @@ export type Database = {
       }
       hash_password: {
         Args: { password: string }
+        Returns: string
+      }
+      is_team_owner: {
+        Args: { _team_id: string; _user_id: string }
+        Returns: boolean
+      }
+      log_audit_event: {
+        Args: {
+          _action: string
+          _entity_id?: string
+          _entity_type: string
+          _metadata?: Json
+          _team_id: string
+          _user_id: string
+        }
         Returns: string
       }
       reset_daily_upload_count: {
@@ -538,6 +847,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      user_has_team_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _team_id: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
       user_is_team_admin: {
         Args: { team_id: string; user_id: string }
         Returns: boolean
@@ -556,7 +873,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "owner" | "admin" | "member" | "guest" | "readonly"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -683,6 +1000,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["owner", "admin", "member", "guest", "readonly"],
+    },
   },
 } as const

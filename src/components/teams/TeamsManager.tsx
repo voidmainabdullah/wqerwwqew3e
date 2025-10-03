@@ -26,7 +26,11 @@ interface TeamMember {
   joined_at: string;
 }
 
-export function TeamsManager() {
+interface TeamsManagerProps {
+  onSelectTeam?: (teamId: string | null) => void;
+}
+
+export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
   const { user } = useAuth();
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
@@ -284,6 +288,7 @@ export function TeamsManager() {
                       variant="outline"
                       size="sm"
                       onClick={() => {
+                        onSelectTeam?.(team.id);
                         setSelectedTeam(team);
                         fetchTeamMembers(team.id);
                       }}
