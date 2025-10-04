@@ -36,6 +36,29 @@ export function TeamPoliciesManager({ teamId }: TeamPoliciesManagerProps) {
     fetchPolicy();
   }, [teamId]);
 
+  // Real-time subscription for policy changes
+  useEffect(() => {
+    const channel = supabase
+      .channel('team-policies-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'team_policies',
+          filter: `team_id=eq.${teamId}`,
+        },
+        () => {
+          fetchPolicy();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [teamId]);
+
   const fetchPolicy = async () => {
     try {
       setLoading(true);
@@ -94,9 +117,11 @@ export function TeamPoliciesManager({ teamId }: TeamPoliciesManagerProps) {
 
   if (!policy) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <Shield className="h-16 w-16 text-muted-foreground mb-4" />
+      <Card className="border-dashed border-2">
+        <CardContent className="flex flex-col items-center justify-center py-16">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+            <Shield className="h-10 w-10 text-primary" weight="duotone" />
+          </div>
           <h3 className="text-lg font-medium text-foreground mb-2">No policies configured</h3>
         </CardContent>
       </Card>
@@ -106,7 +131,10 @@ export function TeamPoliciesManager({ teamId }: TeamPoliciesManagerProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-foreground mb-2">Team Policies</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">
+          <Shield className="h-6 w-6 text-primary" weight="duotone" />
+          Team Policies
+        </h2>
         <p className="text-muted-foreground">
           Configure security and compliance settings for your team
         </p>
@@ -114,13 +142,17 @@ export function TeamPoliciesManager({ teamId }: TeamPoliciesManagerProps) {
 
       <div className="grid gap-6">
         {/* Sharing Policies */}
-        <Card>
+        <Card className="hover:shadow-lg transition-shadow border-primary/20">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <Globe className="h-5 w-5 text-primary" />
-              <CardTitle>Sharing Policies</CardTitle>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Globe className="h-5 w-5 text-primary" weight="duotone" />
+              </div>
+              <div>
+                <CardTitle>Sharing Policies</CardTitle>
+                <CardDescription>Control how files can be shared</CardDescription>
+              </div>
             </div>
-            <CardDescription>Control how files can be shared</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
@@ -163,13 +195,17 @@ export function TeamPoliciesManager({ teamId }: TeamPoliciesManagerProps) {
         </Card>
 
         {/* Security Policies */}
-        <Card>
+        <Card className="hover:shadow-lg transition-shadow border-primary/20">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <Lock className="h-5 w-5 text-primary" />
-              <CardTitle>Security Policies</CardTitle>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Lock className="h-5 w-5 text-primary" weight="duotone" />
+              </div>
+              <div>
+                <CardTitle>Security Policies</CardTitle>
+                <CardDescription>Enhance team security settings</CardDescription>
+              </div>
             </div>
-            <CardDescription>Enhance team security settings</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
@@ -202,13 +238,17 @@ export function TeamPoliciesManager({ teamId }: TeamPoliciesManagerProps) {
         </Card>
 
         {/* File Policies */}
-        <Card>
+        <Card className="hover:shadow-lg transition-shadow border-primary/20">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <HardDrive className="h-5 w-5 text-primary" />
-              <CardTitle>File Policies</CardTitle>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <HardDrive className="h-5 w-5 text-primary" weight="duotone" />
+              </div>
+              <div>
+                <CardTitle>File Policies</CardTitle>
+                <CardDescription>Control file uploads and storage</CardDescription>
+              </div>
             </div>
-            <CardDescription>Control file uploads and storage</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">

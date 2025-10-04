@@ -40,6 +40,29 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
     fetchInvites();
   }, [teamId]);
 
+  // Real-time subscription for invites
+  useEffect(() => {
+    const channel = supabase
+      .channel('team-invites-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'team_invites',
+          filter: `team_id=eq.${teamId}`,
+        },
+        () => {
+          fetchInvites();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [teamId]);
+
   const fetchInvites = async () => {
     try {
       setLoading(true);
@@ -190,13 +213,16 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Team Invites</h2>
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Envelope className="h-6 w-6 text-primary" weight="duotone" />
+            Team Invites
+          </h2>
           <p className="text-muted-foreground">Manage team member invitations</p>
         </div>
         <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>
           <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <UserPlus className="h-4 w-4" />
+            <Button className="flex items-center gap-2 shadow-lg hover:shadow-xl transition-shadow">
+              <UserPlus className="h-4 w-4" weight="bold" />
               Send Invite
             </Button>
           </DialogTrigger>
@@ -246,11 +272,13 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
       </div>
 
       {invites.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Envelope className="h-16 w-16 text-muted-foreground mb-4" />
+        <Card className="border-dashed border-2">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Envelope className="h-10 w-10 text-primary" weight="duotone" />
+            </div>
             <h3 className="text-lg font-medium text-foreground mb-2">No invites yet</h3>
-            <p className="text-muted-foreground text-center mb-4">
+            <p className="text-muted-foreground text-center mb-6 max-w-sm">
               Start inviting members to collaborate on your team
             </p>
           </CardContent>
@@ -258,20 +286,22 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
       ) : (
         <div className="space-y-3">
           {invites.map((invite) => (
-            <Card key={invite.id}>
+            <Card key={invite.id} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Envelope className="h-5 w-5 text-primary" />
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+                      <Envelope className="h-6 w-6 text-primary-foreground" weight="duotone" />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="font-medium text-foreground">{invite.email}</p>
-                        {getRoleIcon(invite.role)}
-                        <Badge variant="outline" className="capitalize">{invite.role}</Badge>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <p className="font-medium text-foreground truncate">{invite.email}</p>
+                        <div className="flex items-center gap-1">
+                          {getRoleIcon(invite.role)}
+                          <Badge variant="outline" className="capitalize">{invite.role}</Badge>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
                         <span>Sent {new Date(invite.created_at).toLocaleDateString()}</span>
                         <span>•</span>
                         <span>Expires {new Date(invite.expires_at).toLocaleDateString()}</span>
@@ -286,16 +316,17 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
                           variant="outline"
                           size="sm"
                           onClick={() => copyInviteLink(invite.invite_token)}
+                          className="hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
-                          <Copy className="h-4 w-4" />
+                          <Copy className="h-4 w-4" weight="duotone" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => revokeInvite(invite.id)}
-                          className="text-destructive"
+                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
                         >
-                          <XCircle className="h-4 w-4" />
+                          <XCircle className="h-4 w-4" weight="duotone" />
                         </Button>
                       </>
                     )}

@@ -36,6 +36,29 @@ export function TeamFileShare({ teamId }: TeamFileShareProps) {
     fetchTeamFiles();
   }, [teamId]);
 
+  // Real-time subscription for team file shares
+  useEffect(() => {
+    const channel = supabase
+      .channel('team-file-shares-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'team_file_shares',
+          filter: `team_id=eq.${teamId}`,
+        },
+        () => {
+          fetchTeamFiles();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [teamId]);
+
   const fetchTeamFiles = async () => {
     try {
       setLoading(true);
@@ -104,7 +127,10 @@ export function TeamFileShare({ teamId }: TeamFileShareProps) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Team Files</h2>
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <ShareNetwork className="h-6 w-6 text-primary" weight="duotone" />
+            Team Files
+          </h2>
           <p className="text-muted-foreground">Files shared within your team</p>
         </div>
         <Select value={selectedSpace} onValueChange={setSelectedSpace}>
@@ -118,11 +144,13 @@ export function TeamFileShare({ teamId }: TeamFileShareProps) {
       </div>
 
       {teamFiles.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <ShareNetwork className="h-16 w-16 text-muted-foreground mb-4" />
+        <Card className="border-dashed border-2">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <ShareNetwork className="h-10 w-10 text-primary" weight="duotone" />
+            </div>
             <h3 className="text-lg font-medium text-foreground mb-2">No shared files</h3>
-            <p className="text-muted-foreground text-center">
+            <p className="text-muted-foreground text-center max-w-sm">
               Files shared with your team will appear here
             </p>
           </CardContent>
@@ -130,35 +158,37 @@ export function TeamFileShare({ teamId }: TeamFileShareProps) {
       ) : (
         <div className="grid gap-4">
           {teamFiles.map((file) => (
-            <Card key={file.file_id} className="hover:shadow-md transition-shadow">
+            <Card key={file.file_id} className="hover:shadow-xl transition-all duration-200 hover:border-primary/50 group">
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <File className="h-6 w-6 text-primary" />
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+                      <File className="h-6 w-6 text-primary-foreground" weight="duotone" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <p className="font-medium text-foreground truncate">{file.file_name}</p>
                         {file.is_locked && (
-                          <Badge variant="outline" className="text-xs">Locked</Badge>
+                          <Badge variant="outline" className="text-xs bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400">
+                            Locked
+                          </Badge>
                         )}
                       </div>
                       <div className="flex items-center gap-3 text-sm text-muted-foreground flex-wrap">
-                        <span>{formatFileSize(file.file_size)}</span>
+                        <span className="font-medium">{formatFileSize(file.file_size)}</span>
                         <span>•</span>
                         <div className="flex items-center gap-1">
-                          <User className="h-3 w-3" />
-                          <span>{file.sharer_email}</span>
+                          <User className="h-3 w-3" weight="duotone" />
+                          <span className="truncate max-w-[150px]">{file.sharer_email}</span>
                         </div>
                         <span>•</span>
                         <div className="flex items-center gap-1">
-                          <Download className="h-3 w-3" />
+                          <Download className="h-3 w-3" weight="duotone" />
                           <span>{file.download_count} downloads</span>
                         </div>
                         <span>•</span>
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
+                          <Calendar className="h-3 w-3" weight="duotone" />
                           <span>{new Date(file.created_at).toLocaleDateString()}</span>
                         </div>
                       </div>
@@ -170,8 +200,9 @@ export function TeamFileShare({ teamId }: TeamFileShareProps) {
                         variant="outline"
                         size="sm"
                         onClick={() => downloadFile(file.file_id)}
+                        className="hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm"
                       >
-                        <Download className="h-4 w-4 mr-2" />
+                        <Download className="h-4 w-4 mr-2" weight="duotone" />
                         Download
                       </Button>
                     )}

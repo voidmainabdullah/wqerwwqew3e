@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Users, Plus, Settings, UserPlus, Crown, Shield, User } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Users, Plus, UserPlus, Crown, Shield, User, Trash, GearSix } from 'phosphor-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -39,11 +40,36 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
   const [newTeamDescription, setNewTeamDescription] = useState('');
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamToDelete, setTeamToDelete] = useState<Team | null>(null);
 
   useEffect(() => {
     if (user) {
       fetchTeams();
     }
+  }, [user]);
+
+  // Real-time subscription for teams
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel('teams-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'teams',
+        },
+        () => {
+          fetchTeams();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   const fetchTeams = async () => {
@@ -175,6 +201,30 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
     return role === 'admin' ? 'secondary' : 'outline';
   };
 
+  const deleteTeam = async () => {
+    if (!teamToDelete) return;
+
+    try {
+      const { error } = await supabase
+        .from('teams')
+        .delete()
+        .eq('id', teamToDelete.id);
+
+      if (error) throw error;
+
+      toast.success('Team deleted successfully');
+      setTeams(teams.filter(t => t.id !== teamToDelete.id));
+      setTeamToDelete(null);
+      if (selectedTeam?.id === teamToDelete.id) {
+        setSelectedTeam(null);
+        onSelectTeam?.(null);
+      }
+    } catch (error) {
+      console.error('Error deleting team:', error);
+      toast.error('Failed to delete team');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -187,13 +237,16 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-200">Teams</h2>
-          <p className="text-gray-400">Manage your teams and collaborate with others</p>
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Users className="h-6 w-6 text-primary" weight="duotone" />
+            Teams
+          </h2>
+          <p className="text-muted-foreground">Manage your teams and collaborate with others</p>
         </div>
         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
           <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
+            <Button className="flex items-center gap-2 shadow-lg hover:shadow-xl transition-shadow">
+              <Plus className="h-4 w-4" weight="bold" />
               Create Team
             </Button>
           </DialogTrigger>
@@ -206,7 +259,7 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Team Name</label>
+                <label className="text-sm font-medium text-foreground">Team Name</label>
                 <Input
                   value={newTeamName}
                   onChange={(e) => setNewTeamName(e.target.value)}
@@ -215,7 +268,7 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700">Description (Optional)</label>
+                <label className="text-sm font-medium text-foreground">Description (Optional)</label>
                 <Input
                   value={newTeamDescription}
                   onChange={(e) => setNewTeamDescription(e.target.value)}
@@ -237,17 +290,17 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
       </div>
 
       {teams.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <div className="text-gray-400 mb-4">
-              <Users className="h-12 w-12" />
+        <Card className="border-dashed border-2">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Users className="h-10 w-10 text-primary" weight="duotone" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No teams yet</h3>
-            <p className="text-gray-600 text-center mb-4">
-              Create your first team to start collaborating with others
+            <h3 className="text-lg font-medium text-foreground mb-2">No teams yet</h3>
+            <p className="text-muted-foreground text-center mb-6 max-w-sm">
+              Create your first team to start collaborating with others on projects and file sharing
             </p>
-            <Button onClick={() => setShowCreateDialog(true)} className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
+            <Button onClick={() => setShowCreateDialog(true)} className="flex items-center gap-2 shadow-lg">
+              <Plus className="h-4 w-4" weight="bold" />
               Create Your First Team
             </Button>
           </CardContent>
@@ -255,52 +308,69 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {teams.map((team) => (
-            <Card key={team.id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
-                      <span className="text-black dark:text-neutral-200 font-medium text-sm">
-                        {team.name.charAt(0)}
+            <Card key={team.id} className="hover:shadow-xl transition-all duration-200 hover:border-primary/50 group">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+                      <span className="text-primary-foreground font-bold text-lg">
+                        {team.name.charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <CardTitle className="text-lg">{team.name}</CardTitle>
-                      <CardDescription className="text-sm">
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors">{team.name}</CardTitle>
+                      <CardDescription className="text-sm flex items-center gap-1">
+                        <Users className="h-3 w-3" weight="duotone" />
                         {team.member_count} member{team.member_count !== 1 ? 's' : ''}
                       </CardDescription>
                     </div>
                   </div>
                   {team.admin_id === user?.id && (
-                    <Button variant="ghost" size="sm">
-                      <Settings className="h-4 w-4" />
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setTeamToDelete(team)}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+                    >
+                      <Trash className="h-4 w-4" weight="duotone" />
                     </Button>
                   )}
                 </div>
+                <Badge 
+                  variant={getRoleBadgeVariant(team.admin_id === user?.id, team.admin_id === user?.id ? 'admin' : 'member')}
+                  className="w-fit"
+                >
+                  {getRoleIcon(team.admin_id === user?.id ? 'admin' : 'member', team.admin_id === user?.id)}
+                  <span className="ml-1">{team.admin_id === user?.id ? 'Owner' : 'Member'}</span>
+                </Badge>
               </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <Badge variant={getRoleBadgeVariant(team.admin_id === user?.id, team.admin_id === user?.id ? 'admin' : 'member')}>
-                    {team.admin_id === user?.id ? 'Owner' : 'Member'}
-                  </Badge>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="outline"
+              <CardContent className="pt-0">
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      onSelectTeam?.(team.id);
+                      setSelectedTeam(team);
+                      fetchTeamMembers(team.id);
+                    }}
+                    className="flex-1 hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    <User className="h-4 w-4 mr-1" weight="duotone" />
+                    Members
+                  </Button>
+                  {team.admin_id === user?.id && (
+                    <Button 
+                      variant="outline" 
                       size="sm"
                       onClick={() => {
                         onSelectTeam?.(team.id);
-                        setSelectedTeam(team);
-                        fetchTeamMembers(team.id);
                       }}
+                      className="hover:bg-primary hover:text-primary-foreground transition-colors"
                     >
-                      View Members
+                      <UserPlus className="h-4 w-4" weight="duotone" />
                     </Button>
-                    {team.admin_id === user?.id && (
-                      <Button variant="outline" size="sm">
-                        <UserPlus className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -319,21 +389,21 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
             </DialogHeader>
             <div className="space-y-4">
               {teamMembers.map((member) => (
-                <div key={member.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:border-primary/50 transition-colors">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                      <User className="h-4 w-4 text-gray-600" />
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="h-5 w-5 text-primary" weight="duotone" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{member.email}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-foreground">{member.email}</p>
+                      <p className="text-sm text-muted-foreground">
                         Joined {new Date(member.joined_at).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    {getRoleIcon(member.role, member.user_id === selectedTeam.admin_id)}
-                    <Badge variant={getRoleBadgeVariant(member.user_id === selectedTeam.admin_id, member.role)}>
+                    <Badge variant={getRoleBadgeVariant(member.user_id === selectedTeam.admin_id, member.role)} className="flex items-center gap-1">
+                      {getRoleIcon(member.role, member.user_id === selectedTeam.admin_id)}
                       {member.user_id === selectedTeam.admin_id ? 'Owner' : member.role}
                     </Badge>
                   </div>
@@ -343,6 +413,24 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Delete Team Confirmation */}
+      <AlertDialog open={!!teamToDelete} onOpenChange={() => setTeamToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Team</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{teamToDelete?.name}"? This action cannot be undone and will remove all team data, including spaces, files, and member information.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteTeam} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete Team
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -43,6 +43,29 @@ export function TeamSpacesManager({ teamId }: TeamSpacesManagerProps) {
     fetchSpaces();
   }, [teamId, currentParentId]);
 
+  // Real-time subscription for spaces
+  useEffect(() => {
+    const channel = supabase
+      .channel('spaces-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'spaces',
+          filter: `team_id=eq.${teamId}`,
+        },
+        () => {
+          fetchSpaces();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [teamId, currentParentId]);
+
   const fetchSpaces = async () => {
     try {
       setLoading(true);
@@ -172,15 +195,18 @@ export function TeamSpacesManager({ teamId }: TeamSpacesManagerProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Spaces</h2>
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <FolderOpen className="h-6 w-6 text-primary" weight="duotone" />
+            Spaces
+          </h2>
           <p className="text-muted-foreground">
             Organize your team's files into projects and folders
           </p>
         </div>
         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
           <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <FolderPlus className="h-4 w-4" />
+            <Button className="flex items-center gap-2 shadow-lg hover:shadow-xl transition-shadow">
+              <FolderPlus className="h-4 w-4" weight="bold" />
               Create Space
             </Button>
           </DialogTrigger>
@@ -224,15 +250,17 @@ export function TeamSpacesManager({ teamId }: TeamSpacesManagerProps) {
 
       {/* Spaces Grid */}
       {spaces.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <FolderOpen className="h-16 w-16 text-muted-foreground mb-4" />
+        <Card className="border-dashed border-2">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <FolderOpen className="h-10 w-10 text-primary" weight="duotone" />
+            </div>
             <h3 className="text-lg font-medium text-foreground mb-2">No spaces yet</h3>
-            <p className="text-muted-foreground text-center mb-4">
+            <p className="text-muted-foreground text-center mb-6 max-w-sm">
               Create your first space to organize files and projects
             </p>
-            <Button onClick={() => setShowCreateDialog(true)} className="flex items-center gap-2">
-              <FolderPlus className="h-4 w-4" />
+            <Button onClick={() => setShowCreateDialog(true)} className="flex items-center gap-2 shadow-lg">
+              <FolderPlus className="h-4 w-4" weight="bold" />
               Create Space
             </Button>
           </CardContent>
@@ -242,7 +270,7 @@ export function TeamSpacesManager({ teamId }: TeamSpacesManagerProps) {
           {spaces.map((space) => (
             <Card 
               key={space.id} 
-              className="hover:shadow-lg transition-all duration-200 cursor-pointer group"
+              className="hover:shadow-xl transition-all duration-200 cursor-pointer group hover:border-primary/50"
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
@@ -251,16 +279,16 @@ export function TeamSpacesManager({ teamId }: TeamSpacesManagerProps) {
                     onClick={() => navigateToSpace(space)}
                   >
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <FolderOpen className="h-6 w-6 text-primary" />
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+                        <FolderOpen className="h-6 w-6 text-primary-foreground" weight="duotone" />
                       </div>
                       <div className="flex-1">
                         <CardTitle className="text-lg group-hover:text-primary transition-colors">
                           {space.name}
                         </CardTitle>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="secondary" className="text-xs">
-                            <Files className="h-3 w-3 mr-1" />
+                          <Badge variant="secondary" className="text-xs flex items-center gap-1">
+                            <Files className="h-3 w-3" weight="duotone" />
                             {space.file_count} files
                           </Badge>
                         </div>
@@ -270,10 +298,13 @@ export function TeamSpacesManager({ teamId }: TeamSpacesManagerProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => deleteSpace(space.id)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteSpace(space.id);
+                    }}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
                   >
-                    <Trash className="h-4 w-4 text-destructive" />
+                    <Trash className="h-4 w-4" weight="duotone" />
                   </Button>
                 </div>
               </CardHeader>
@@ -285,11 +316,11 @@ export function TeamSpacesManager({ teamId }: TeamSpacesManagerProps) {
                 )}
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <User className="h-3 w-3" />
-                    <span>{space.creator_email}</span>
+                    <User className="h-3 w-3" weight="duotone" />
+                    <span className="truncate max-w-[120px]">{space.creator_email}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Calendar className="h-3 w-3" />
+                    <Calendar className="h-3 w-3" weight="duotone" />
                     <span>{new Date(space.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>
