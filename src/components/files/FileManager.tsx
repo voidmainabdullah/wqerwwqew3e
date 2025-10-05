@@ -15,7 +15,6 @@ import { FolderCreateDialog } from './FolderCreateDialog';
 import { FolderShareDialog } from './FolderShareDialog';
 import { MoveToFolderDialog } from './MoveToFolderDialog';
 import { ShareToTeamsDialog } from './ShareToTeamsDialog';
-
 interface FileItem {
   id: string;
   original_name: string;
@@ -30,7 +29,6 @@ interface FileItem {
   share_count?: number;
   folder_id?: string | null;
 }
-
 interface FolderItem {
   id: string;
   name: string;
@@ -39,16 +37,22 @@ interface FolderItem {
   parent_folder_id: string | null;
 }
 export function FileManager() {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [files, setFiles] = useState<FileItem[]>([]);
   const [folders, setFolders] = useState<FolderItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null);
-  const [breadcrumbs, setBreadcrumbs] = useState<Array<{ id: string | null; name: string }>>([
-    { id: null, name: 'Home' },
-  ]);
+  const [breadcrumbs, setBreadcrumbs] = useState<Array<{
+    id: string | null;
+    name: string;
+  }>>([{
+    id: null,
+    name: 'Home'
+  }]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [selectionMode, setSelectionMode] = useState(false);
 
@@ -79,7 +83,7 @@ export function FileManager() {
   }>({
     isOpen: false,
     folderId: '',
-    folderName: '',
+    folderName: ''
   });
   const [moveToFolderDialog, setMoveToFolderDialog] = useState(false);
   const [shareToTeamsDialog, setShareToTeamsDialog] = useState<{
@@ -96,62 +100,54 @@ export function FileManager() {
       fetchContents();
     }
   }, [user, currentFolderId]);
-
   const fetchContents = async () => {
     try {
       setLoading(true);
 
       // Fetch folders in current directory
-      let foldersQuery = supabase
-        .from('folders')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('name', { ascending: true });
-
+      let foldersQuery = supabase.from('folders').select('*').eq('user_id', user?.id).order('name', {
+        ascending: true
+      });
       if (currentFolderId === null) {
         foldersQuery = foldersQuery.is('parent_folder_id', null);
       } else {
         foldersQuery = foldersQuery.eq('parent_folder_id', currentFolderId);
       }
-
-      const { data: foldersData, error: foldersError } = await foldersQuery;
-
+      const {
+        data: foldersData,
+        error: foldersError
+      } = await foldersQuery;
       if (foldersError) throw foldersError;
       setFolders(foldersData || []);
 
       // Fetch files in current directory
-      let filesQuery = supabase
-        .from('files')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('created_at', { ascending: false });
-
+      let filesQuery = supabase.from('files').select('*').eq('user_id', user?.id).order('created_at', {
+        ascending: false
+      });
       if (currentFolderId === null) {
         filesQuery = filesQuery.is('folder_id', null);
       } else {
         filesQuery = filesQuery.eq('folder_id', currentFolderId);
       }
-
-      const { data: filesData, error: filesError } = await filesQuery;
-
+      const {
+        data: filesData,
+        error: filesError
+      } = await filesQuery;
       if (filesError) throw filesError;
 
       // Get share counts for each file
-      const filesWithShareCount = await Promise.all(
-        (filesData || []).map(async (file) => {
-          const { count } = await supabase
-            .from('shared_links')
-            .select('*', { count: 'exact', head: true })
-            .eq('file_id', file.id)
-            .eq('is_active', true);
-
-          return {
-            ...file,
-            share_count: count || 0,
-          };
-        })
-      );
-
+      const filesWithShareCount = await Promise.all((filesData || []).map(async file => {
+        const {
+          count
+        } = await supabase.from('shared_links').select('*', {
+          count: 'exact',
+          head: true
+        }).eq('file_id', file.id).eq('is_active', true);
+        return {
+          ...file,
+          share_count: count || 0
+        };
+      }));
       setFiles(filesWithShareCount);
     } catch (error) {
       console.error('Error fetching contents:', error);
@@ -160,33 +156,34 @@ export function FileManager() {
       setLoading(false);
     }
   };
-
   const navigateToFolder = async (folderId: string | null, folderName: string) => {
     setCurrentFolderId(folderId);
-    
     if (folderId === null) {
-      setBreadcrumbs([{ id: null, name: 'Home' }]);
+      setBreadcrumbs([{
+        id: null,
+        name: 'Home'
+      }]);
     } else {
-      const existingIndex = breadcrumbs.findIndex((b) => b.id === folderId);
+      const existingIndex = breadcrumbs.findIndex(b => b.id === folderId);
       if (existingIndex !== -1) {
         setBreadcrumbs(breadcrumbs.slice(0, existingIndex + 1));
       } else {
-        setBreadcrumbs([...breadcrumbs, { id: folderId, name: folderName }]);
+        setBreadcrumbs([...breadcrumbs, {
+          id: folderId,
+          name: folderName
+        }]);
       }
     }
     setSelectedItems(new Set());
     setSelectionMode(false);
   };
-
   const deleteFolder = async (folderId: string, folderName: string) => {
-    if (!confirm(`Are you sure you want to delete "${folderName}" and all its contents?`))
-      return;
-
+    if (!confirm(`Are you sure you want to delete "${folderName}" and all its contents?`)) return;
     try {
-      const { error } = await supabase.from('folders').delete().eq('id', folderId);
-
+      const {
+        error
+      } = await supabase.from('folders').delete().eq('id', folderId);
       if (error) throw error;
-
       toast.success('Folder deleted successfully');
       fetchContents();
     } catch (error: any) {
@@ -194,7 +191,6 @@ export function FileManager() {
       toast.error(error.message || 'Failed to delete folder');
     }
   };
-
   const toggleItemSelection = (itemId: string) => {
     const newSelected = new Set(selectedItems);
     if (newSelected.has(itemId)) {
@@ -204,25 +200,18 @@ export function FileManager() {
     }
     setSelectedItems(newSelected);
   };
-
   const handleBulkDelete = async () => {
-    const selectedFiles = Array.from(selectedItems).filter((id) =>
-      files.some((f) => f.id === id)
-    );
-
+    const selectedFiles = Array.from(selectedItems).filter(id => files.some(f => f.id === id));
     if (selectedFiles.length === 0) return;
-
     if (!confirm(`Delete ${selectedFiles.length} selected file(s)?`)) return;
-
     try {
       for (const fileId of selectedFiles) {
-        const file = files.find((f) => f.id === fileId);
+        const file = files.find(f => f.id === fileId);
         if (file) {
           await supabase.storage.from('files').remove([file.storage_path]);
           await supabase.from('files').delete().eq('id', fileId);
         }
       }
-
       toast.success(`Deleted ${selectedFiles.length} file(s)`);
       setSelectedItems(new Set());
       setSelectionMode(false);
@@ -264,7 +253,6 @@ export function FileManager() {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-
   const virusScan = async (fileId: string, fileName: string) => {
     // Simulated virus scan - in production, integrate with actual antivirus service
     toast.info('Scanning file for viruses...');
@@ -276,13 +264,15 @@ export function FileManager() {
     if (!confirm('Are you sure you want to delete this file?')) return;
     try {
       // Delete from storage
-      const { error: storageError } = await supabase.storage
-        .from('files')
-        .remove([storagePath]);
+      const {
+        error: storageError
+      } = await supabase.storage.from('files').remove([storagePath]);
       if (storageError) throw storageError;
 
       // Delete from database
-      const { error: dbError } = await supabase.from('files').delete().eq('id', fileId);
+      const {
+        error: dbError
+      } = await supabase.from('files').delete().eq('id', fileId);
       if (dbError) throw dbError;
       toast.success('File deleted successfully');
       fetchContents(); // Refresh the list
@@ -316,17 +306,12 @@ export function FileManager() {
     const matchesFilter = filterType === 'all' || file.file_type.includes(filterType);
     return matchesSearch && matchesFilter;
   });
-
-  const filteredFolders = folders.filter(folder =>
-    folder.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  const filteredFolders = folders.filter(folder => folder.name.toLowerCase().includes(searchTerm.toLowerCase()));
   if (loading) {
     return <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 "></div>
       </div>;
   }
-
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -336,11 +321,7 @@ export function FileManager() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button
-            onClick={() => setFolderCreateDialog(true)}
-            variant="outline"
-            className="font-heading"
-          >
+          <Button onClick={() => setFolderCreateDialog(true)} variant="outline" className="font-heading bg-[#3f3ff5]/[0.16] border border-blue-500">
             <Folder className="mr-2 h-4 w-4" />
             New Folder
           </Button>
@@ -357,20 +338,13 @@ export function FileManager() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center gap-2 text-sm font-body">
-            {breadcrumbs.map((crumb, index) => (
-              <React.Fragment key={crumb.id || 'root'}>
+            {breadcrumbs.map((crumb, index) => <React.Fragment key={crumb.id || 'root'}>
                 {index > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
-                <button
-                  onClick={() => navigateToFolder(crumb.id, crumb.name)}
-                  className={`flex items-center gap-1 hover:text-primary transition-colors ${
-                    index === breadcrumbs.length - 1 ? 'font-semibold' : 'text-muted-foreground'
-                  }`}
-                >
+                <button onClick={() => navigateToFolder(crumb.id, crumb.name)} className={`flex items-center gap-1 hover:text-primary transition-colors ${index === breadcrumbs.length - 1 ? 'font-semibold' : 'text-muted-foreground'}`}>
                   {index === 0 && <Home className="h-4 w-4" />}
                   {crumb.name}
                 </button>
-              </React.Fragment>
-            ))}
+              </React.Fragment>)}
           </div>
         </CardContent>
       </Card>
@@ -393,54 +367,31 @@ export function FileManager() {
                 <option value="text">Documents</option>
               </select>
             </div>
-            {selectionMode && (
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setMoveToFolderDialog(true)}
-                  disabled={selectedItems.size === 0}
-                  className="font-heading"
-                >
+            {selectionMode && <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setMoveToFolderDialog(true)} disabled={selectedItems.size === 0} className="font-heading">
                   <Folder className="mr-2 h-4 w-4" />
                   Move to Folder
                 </Button>
-                <Button
-                  variant="destructive"
-                  onClick={handleBulkDelete}
-                  disabled={selectedItems.size === 0}
-                  className="font-heading"
-                >
+                <Button variant="destructive" onClick={handleBulkDelete} disabled={selectedItems.size === 0} className="font-heading">
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete ({selectedItems.size})
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSelectionMode(false);
-                    setSelectedItems(new Set());
-                  }}
-                  className="font-heading"
-                >
+                <Button variant="outline" onClick={() => {
+              setSelectionMode(false);
+              setSelectedItems(new Set());
+            }} className="font-heading">
                   Cancel
                 </Button>
-              </div>
-            )}
-            {!selectionMode && (filteredFiles.length > 0 || filteredFolders.length > 0) && (
-              <Button
-                variant="outline"
-                onClick={() => setSelectionMode(true)}
-                className="font-heading"
-              >
+              </div>}
+            {!selectionMode && (filteredFiles.length > 0 || filteredFolders.length > 0) && <Button variant="outline" onClick={() => setSelectionMode(true)} className="font-heading">
                 Select
-              </Button>
-            )}
+              </Button>}
           </div>
         </CardContent>
       </Card>
 
       {/* Content Grid */}
-      {filteredFolders.length === 0 && filteredFiles.length === 0 ? (
-        <Card>
+      {filteredFolders.length === 0 && filteredFiles.length === 0 ? <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <div className="text-muted-foreground mb-4">
               <span className="material-icons md-48 text-muted-foreground">folder_open</span>
@@ -462,12 +413,9 @@ export function FileManager() {
               </Button>
             </div>
           </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Folders */}
-          {filteredFolders.map(folder => (
-            <Card key={`folder-${folder.id}`} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer">
+          {filteredFolders.map(folder => <Card key={`folder-${folder.id}`} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1" onClick={() => navigateToFolder(folder.id, folder.name)}>
@@ -485,21 +433,19 @@ export function FileManager() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {selectionMode && (
-                      <Checkbox
-                        checked={selectedItems.has(folder.id)}
-                        onCheckedChange={() => toggleItemSelection(folder.id)}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    )}
+                    {selectionMode && <Checkbox checked={selectedItems.has(folder.id)} onCheckedChange={() => toggleItemSelection(folder.id)} onClick={e => e.stopPropagation()} />}
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                      <DropdownMenuTrigger asChild onClick={e => e.stopPropagation()}>
                         <Button size="icon" variant="ghost" className="h-8 w-8">
                           <span className="material-icons md-18">more_vert</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setFolderShareDialog({ isOpen: true, folderId: folder.id, folderName: folder.name })}>
+                        <DropdownMenuItem onClick={() => setFolderShareDialog({
+                    isOpen: true,
+                    folderId: folder.id,
+                    folderName: folder.name
+                  })}>
                           <Share2 className="mr-2 h-4 w-4" />
                           Share Folder
                         </DropdownMenuItem>
@@ -513,12 +459,10 @@ export function FileManager() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
 
           {/* Files */}
-          {filteredFiles.map(file => (
-            <Card key={file.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-blue-500/20">
@@ -527,12 +471,7 @@ export function FileManager() {
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    {selectionMode && (
-                      <Checkbox
-                        checked={selectedItems.has(file.id)}
-                        onCheckedChange={() => toggleItemSelection(file.id)}
-                      />
-                    )}
+                    {selectionMode && <Checkbox checked={selectedItems.has(file.id)} onCheckedChange={() => toggleItemSelection(file.id)} />}
                     <div className="flex flex-col items-end gap-1">
                       <Badge variant="outline" className="text-xs">
                         <span className="material-icons md-18 mr-1">download</span>
@@ -559,48 +498,30 @@ export function FileManager() {
 
                 {/* Status Indicators */}
                 <div className="flex flex-wrap items-center gap-1.5 mb-3 min-h-[24px]">
-                  {file.is_public && (
-                    <Badge variant="default" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/20">
+                  {file.is_public && <Badge variant="default" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/20">
                       <span className="material-icons md-18 mr-1">public</span>
                       Public
-                    </Badge>
-                  )}
-                  {file.is_locked && (
-                    <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/20">
+                    </Badge>}
+                  {file.is_locked && <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/20">
                       <span className="material-icons md-18 mr-1">lock</span>
                       Protected
-                    </Badge>
-                  )}
-                  {!file.is_public && (
-                    <Badge variant="secondary" className="text-xs">
+                    </Badge>}
+                  {!file.is_public && <Badge variant="secondary" className="text-xs">
                       <span className="material-icons md-18 mr-1">visibility_off</span>
                       Private
-                    </Badge>
-                  )}
+                    </Badge>}
                 </div>
 
                 {/* Action Buttons Section */}
                 <div className="flex items-center gap-2">
                   {/* Primary Action Buttons */} 
                   <div className="flex items-center gap-1.5 flex-1">
-                    <Button 
-                      size="sm"
-                      variant="outline" 
-                      onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} 
-                      title="Download" 
-                      className="flex-1 h-9 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
-                    >
+                    <Button size="sm" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="flex-1 h-9 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all duration-200">
                       <span className="material-icons md-18 mr-1">download</span>
                       <span className="hidden sm:inline">Download</span>
                     </Button>
                     
-                    <Button 
-                      size="sm"
-                      variant="outline" 
-                      onClick={() => openShareDialog(file.id, file.original_name)} 
-                      title="Share" 
-                      className="flex-1 h-9 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 transition-all duration-200"
-                    >
+                    <Button size="sm" variant="outline" onClick={() => openShareDialog(file.id, file.original_name)} title="Share" className="flex-1 h-9 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 transition-all duration-200">
                       <span className="material-icons md-18 mr-1">share</span>
                       <span className="hidden sm:inline">Share</span>
                     </Button>
@@ -626,7 +547,11 @@ export function FileManager() {
                         <span className="material-icons md-18 mr-2">share</span>
                         Create Share Link
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setShareToTeamsDialog({ isOpen: true, fileId: file.id, fileName: file.original_name })}>
+                      <DropdownMenuItem onClick={() => setShareToTeamsDialog({
+                  isOpen: true,
+                  fileId: file.id,
+                  fileName: file.original_name
+                })}>
                         <span className="material-icons md-18 mr-2">groups</span>
                         Share to Team
                       </DropdownMenuItem>
@@ -645,10 +570,8 @@ export function FileManager() {
                   </DropdownMenu>
                 </div>
               </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+            </Card>)}
+        </div>}
 
       {/* Dialogs */}
       <FileShareDialog isOpen={shareDialog.isOpen} onClose={() => setShareDialog({
@@ -663,36 +586,24 @@ export function FileManager() {
       currentName: ''
     })} fileId={renameDialog.fileId} currentName={renameDialog.currentName} onRename={newName => handleRename(renameDialog.fileId, newName)} />
 
-      <FolderCreateDialog
-        isOpen={folderCreateDialog}
-        onClose={() => setFolderCreateDialog(false)}
-        parentFolderId={currentFolderId}
-        onFolderCreated={fetchContents}
-      />
+      <FolderCreateDialog isOpen={folderCreateDialog} onClose={() => setFolderCreateDialog(false)} parentFolderId={currentFolderId} onFolderCreated={fetchContents} />
 
-      <FolderShareDialog
-        isOpen={folderShareDialog.isOpen}
-        onClose={() => setFolderShareDialog({ isOpen: false, folderId: '', folderName: '' })}
-        folderId={folderShareDialog.folderId}
-        folderName={folderShareDialog.folderName}
-      />
+      <FolderShareDialog isOpen={folderShareDialog.isOpen} onClose={() => setFolderShareDialog({
+      isOpen: false,
+      folderId: '',
+      folderName: ''
+    })} folderId={folderShareDialog.folderId} folderName={folderShareDialog.folderName} />
 
-      <MoveToFolderDialog
-        isOpen={moveToFolderDialog}
-        onClose={() => setMoveToFolderDialog(false)}
-        fileIds={Array.from(selectedItems).filter((id) => files.some((f) => f.id === id))}
-        onMoved={() => {
-          setSelectedItems(new Set());
-          setSelectionMode(false);
-          fetchContents();
-        }}
-      />
+      <MoveToFolderDialog isOpen={moveToFolderDialog} onClose={() => setMoveToFolderDialog(false)} fileIds={Array.from(selectedItems).filter(id => files.some(f => f.id === id))} onMoved={() => {
+      setSelectedItems(new Set());
+      setSelectionMode(false);
+      fetchContents();
+    }} />
       
-      <ShareToTeamsDialog
-        isOpen={shareToTeamsDialog.isOpen}
-        onClose={() => setShareToTeamsDialog({ isOpen: false, fileId: '', fileName: '' })}
-        fileId={shareToTeamsDialog.fileId}
-        fileName={shareToTeamsDialog.fileName}
-      />
+      <ShareToTeamsDialog isOpen={shareToTeamsDialog.isOpen} onClose={() => setShareToTeamsDialog({
+      isOpen: false,
+      fileId: '',
+      fileName: ''
+    })} fileId={shareToTeamsDialog.fileId} fileName={shareToTeamsDialog.fileName} />
     </div>;
 }
