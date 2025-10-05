@@ -336,7 +336,7 @@ export function FileManager() {
 
       {/* Breadcrumb Navigation */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent className="p-4 rounded-2xl rounded-2xl border ">
           <div className="flex items-center gap-2 text-sm font-body">
             {breadcrumbs.map((crumb, index) => <React.Fragment key={crumb.id || 'root'}>
                 {index > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
@@ -351,7 +351,7 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="p-6 bg-zinc-900">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <span className="material-icons md-18 absolute left-2 top-2.5 text-muted-foreground">search</span>
