@@ -14,6 +14,7 @@ import { FileRenameDialog } from './FileRenameDialog';
 import { FolderCreateDialog } from './FolderCreateDialog';
 import { FolderShareDialog } from './FolderShareDialog';
 import { MoveToFolderDialog } from './MoveToFolderDialog';
+import { ShareToTeamsDialog } from './ShareToTeamsDialog';
 
 interface FileItem {
   id: string;
@@ -81,6 +82,15 @@ export function FileManager() {
     folderName: '',
   });
   const [moveToFolderDialog, setMoveToFolderDialog] = useState(false);
+  const [shareToTeamsDialog, setShareToTeamsDialog] = useState<{
+    isOpen: boolean;
+    fileId: string;
+    fileName: string;
+  }>({
+    isOpen: false,
+    fileId: '',
+    fileName: ''
+  });
   useEffect(() => {
     if (user) {
       fetchContents();
@@ -616,6 +626,10 @@ export function FileManager() {
                         <span className="material-icons md-18 mr-2">share</span>
                         Create Share Link
                       </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setShareToTeamsDialog({ isOpen: true, fileId: file.id, fileName: file.original_name })}>
+                        <span className="material-icons md-18 mr-2">groups</span>
+                        Share to Team
+                      </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <a href="/dashboard/shared" className="flex items-center">
                           <span className="material-icons md-18 mr-2">link</span>
@@ -672,6 +686,13 @@ export function FileManager() {
           setSelectionMode(false);
           fetchContents();
         }}
+      />
+      
+      <ShareToTeamsDialog
+        isOpen={shareToTeamsDialog.isOpen}
+        onClose={() => setShareToTeamsDialog({ isOpen: false, fileId: '', fileName: '' })}
+        fileId={shareToTeamsDialog.fileId}
+        fileName={shareToTeamsDialog.fileName}
       />
     </div>;
 }

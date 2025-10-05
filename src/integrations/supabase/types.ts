@@ -269,7 +269,8 @@ export type Database = {
           download_count: number
           download_limit: number | null
           expires_at: string | null
-          file_id: string
+          file_id: string | null
+          folder_id: string | null
           id: string
           is_active: boolean
           link_type: string
@@ -283,7 +284,8 @@ export type Database = {
           download_count?: number
           download_limit?: number | null
           expires_at?: string | null
-          file_id: string
+          file_id?: string | null
+          folder_id?: string | null
           id?: string
           is_active?: boolean
           link_type: string
@@ -297,7 +299,8 @@ export type Database = {
           download_count?: number
           download_limit?: number | null
           expires_at?: string | null
-          file_id?: string
+          file_id?: string | null
+          folder_id?: string | null
           id?: string
           is_active?: boolean
           link_type?: string
@@ -312,6 +315,13 @@ export type Database = {
             columns: ["file_id"]
             isOneToOne: false
             referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shared_links_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
             referencedColumns: ["id"]
           },
         ]
@@ -701,12 +711,21 @@ export type Database = {
         }[]
       }
       create_folder_share: {
-        Args: {
-          p_expires_at?: string
-          p_folder_id: string
-          p_link_type: string
-          p_password_hash?: string
-        }
+        Args:
+          | {
+              p_download_limit?: number
+              p_expires_at?: string
+              p_folder_id: string
+              p_link_type: string
+              p_message?: string
+              p_password_hash?: string
+            }
+          | {
+              p_expires_at?: string
+              p_folder_id: string
+              p_link_type: string
+              p_password_hash?: string
+            }
         Returns: {
           share_code: string
         }[]
@@ -752,6 +771,17 @@ export type Database = {
           sharer_email: string
           team_id: string
           team_name: string
+        }[]
+      }
+      get_shared_folder_contents: {
+        Args: { p_share_token: string }
+        Returns: {
+          created_at: string
+          file_size: number
+          file_type: string
+          id: string
+          item_type: string
+          name: string
         }[]
       }
       get_team_members: {

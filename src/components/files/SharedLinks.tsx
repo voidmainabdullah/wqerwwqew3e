@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Share, Lock, Globe, LockSimple, Gear } from 'phosphor-react';
+import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Share, Lock, Globe, LockSimple, Gear, Link as LinkIcon } from 'phosphor-react';
 interface SharedLink {
   id: string;
   file_id: string;
@@ -93,6 +93,28 @@ export const SharedLinks: React.FC = () => {
         variant: "destructive",
         title: "Copy failed",
         description: "Could not copy link to clipboard."
+      });
+    }
+  };
+
+  const shortenLink = async (shareToken: string) => {
+    const originalUrl = `${window.location.origin}/share/${shareToken}`;
+    
+    // Simple shortening - use first 8 chars of token
+    const shortToken = shareToken.substring(0, 8);
+    const shortenedUrl = `${window.location.origin}/s/${shortToken}`;
+    
+    try {
+      await navigator.clipboard.writeText(shortenedUrl);
+      toast({
+        title: "Shortened link copied",
+        description: "Short link has been copied to clipboard."
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Copy failed",
+        description: "Could not copy shortened link."
       });
     }
   };
@@ -291,7 +313,9 @@ export const SharedLinks: React.FC = () => {
                     <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300 flex-shrink-0">
                       <ArrowSquareOut className="h-4 w-4" />
                     </Button>
-                    
+                    <Button variant="outline" size="sm" onClick={() => shortenLink(link.share_token)} className="hover:bg-secondary/10 hover:text-secondary transition-all duration-300 flex-shrink-0" title="Shorten link">
+                      <LinkIcon className="h-4 w-4" />
+                    </Button>
                     </div>
                   </div>
 
