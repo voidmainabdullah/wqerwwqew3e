@@ -122,7 +122,7 @@ export const Dashboard: React.FC = () => {
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
       {/* Professional Header */}
       <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm rounded-full">
-        <div className="px-8 py-6 bg-neutral-900 rounded-none">
+        <div className="px-8 py-6 rounded-none bg-zinc-900">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-4">
@@ -147,7 +147,7 @@ export const Dashboard: React.FC = () => {
                 <p className="text-slate-400 text-sm mb-1">Total Token's used</p>
               <p className="text-sm font-thick italic text-white/90">
  {Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 6.99).toLocaleString()} Tokens
-</p>
+              </p>
 
                 <div className="flex items-center justify-end gap-2 mt-2">
                   <TrendUp className="w-4 h-4 text-emerald-400" />
@@ -159,7 +159,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="p-8 space-y-8 bg-neutral-900">
+      <div className="p-8 space-y-8 bg-zinc-900">
         {/* Main Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Files Card */}
