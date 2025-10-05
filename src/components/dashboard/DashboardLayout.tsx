@@ -183,202 +183,264 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent/50">
-          <HardDrive className="h-5 w-5 text-muted-foreground" />
-          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center bg-yellow-500 text-white text-xs">
-              !
-            </Badge>} 
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent transition-colors">
+          <HardDrive className="h-5 w-5 text-muted-foreground" weight="duotone" />
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && (
+            <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
+              <span className="text-[10px] text-warning-foreground font-bold">!</span>
+            </div>
+          )} 
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-4" align="end">
-        <div className="space-y-4">
+      <PopoverContent className="w-80 p-0" align="end">
+        <div className="p-4 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Storage Usage</h3>
-            {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+            <div className="flex items-center gap-2">
+              <HardDrive className="h-5 w-5 text-primary" weight="duotone" />
+              <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
+            </div>
+            {profile?.subscription_tier === 'pro' && (
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
                 Pro
-              </Badge>}
+              </Badge>
+            )}
           </div>
           
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm font-body">
               <span className="text-muted-foreground">Used</span>
-              <span className="font-medium">
+              <span className="font-semibold text-foreground">
                 {formatFileSize(profile?.storage_used || 0)}
                 {profile?.subscription_tier !== 'pro' && ` / ${formatFileSize(profile?.storage_limit || 0)}`}
               </span>
             </div>
             
-            {profile?.subscription_tier !== 'pro' && <>
-                <Progress value={storageProgress} className="h-2" />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{storageProgress.toFixed(1)}% used</span>
-                  <span>{(100 - storageProgress).toFixed(1)}% remaining</span>
+            {profile?.subscription_tier !== 'pro' && (
+              <>
+                <div className="space-y-1.5">
+                  <Progress value={storageProgress} className="h-2" />
+                  <div className="flex justify-between text-xs text-muted-foreground font-body">
+                    <span>{storageProgress.toFixed(1)}% used</span>
+                    <span>{(100 - storageProgress).toFixed(1)}% free</span>
+                  </div>
                 </div>
-              </>}
+              </>
+            )}
             
-            {profile?.subscription_tier === 'pro' && <div className="text-center py-2">
-                <Badge variant="outline" className="text-emerald-500 border-emerald-500">
-                  Unlimited Storage
+            {profile?.subscription_tier === 'pro' && (
+              <div className="text-center py-3 px-4 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-lg border border-emerald-500/20">
+                <Badge variant="outline" className="text-emerald-600 dark:text-emerald-400 border-emerald-500/50 bg-transparent font-body">
+                  ✨ Unlimited Storage
                 </Badge>
-              </div>}
+              </div>
+            )}
           </div>
           
-          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                You're running low on storage space. Consider upgrading to Pro for unlimited storage.
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && (
+            <div className="p-3 bg-warning/10 rounded-lg border border-warning/30">
+              <p className="text-sm text-warning-foreground/90 font-body mb-2">
+                You're running low on storage space. Upgrade to Pro for unlimited storage.
               </p>
-              <Button asChild size="sm" className="mt-2 w-full">
-                <Link to="/subscription">Upgrade to Pro</Link>
+              <Button asChild size="sm" className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0">
+                <Link to="/subscription">Upgrade Now</Link>
               </Button>
-            </div>}
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>;
   const HelpPopover = () => <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent/50">
-          <Question className="h-5 w-5 text-muted-foreground" />
+        <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent transition-colors">
+          <Question className="h-5 w-5 text-muted-foreground" weight="duotone" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-64 p-4" align="end">
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Help & Support</h3>
+      <PopoverContent className="w-72 p-0" align="end">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center gap-2">
+            <Lifebuoy className="h-5 w-5 text-primary" weight="duotone" />
+            <h3 className="text-base font-heading font-semibold text-foreground">Help & Support</h3>
+          </div>
           
-          <div className="space-y-2">
-            <Button variant="ghost" className="w-full justify-start h-auto p-3" asChild>
-              <a href="#" className="flex items-center gap-3">
-                <Info className="h-4 w-4 text-blue-500" />
-                <div className="text-left">
-                  <p className="font-medium">Documentation</p>
-                  <p className="text-xs text-muted-foreground">Learn how to use the platform</p>
+          <div className="space-y-1">
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Info className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" weight="duotone" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">Documentation</p>
+                  <p className="text-xs text-muted-foreground font-body">Learn how to use the platform</p>
                 </div>
               </a>
             </Button>
             
-            <Button variant="ghost" className="w-full justify-start h-auto p-3" asChild>
-              <a href="#" className="flex items-center gap-3">
-                <Lifebuoy className="h-4 w-4 text-green-500" />
-                <div className="text-left">
-                  <p className="font-medium">Support Center</p>
-                  <p className="text-xs text-muted-foreground">Get help from our team</p>
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Lifebuoy className="h-5 w-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" weight="duotone" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">Support Center</p>
+                  <p className="text-xs text-muted-foreground font-body">Get help from our team</p>
                 </div>
               </a>
             </Button>
             
-            <Button variant="ghost" className="w-full justify-start h-auto p-3" asChild>
-              <a href="#" className="flex items-center gap-3">
-                <Question className="h-4 w-4 text-purple-500" />
-                <div className="text-left">
-                  <p className="font-medium">FAQ</p>
-                  <p className="text-xs text-muted-foreground">Common questions</p>
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Question className="h-5 w-5 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" weight="duotone" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">FAQ</p>
+                  <p className="text-xs text-muted-foreground font-body">Common questions</p>
                 </div>
               </a>
             </Button>
+            
+            <div className="pt-2 border-t border-border">
+              <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+                <a href="#" className="flex items-start gap-3">
+                  <ChatCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" weight="duotone" />
+                  <div className="text-left flex-1">
+                    <p className="font-heading font-semibold text-sm text-foreground">Live Chat</p>
+                    <p className="text-xs text-muted-foreground font-body">Chat with our support team</p>
+                  </div>
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </PopoverContent>
     </Popover>;
-  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent/50" asChild>
-      <a href="#" className="flex items-center gap-2 bg-neutral-800">
-       
-        <span className="text-sm text-muted-foreground hidden sm:inline">Feedback</span>
+  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
+      <a href="#" className="flex items-center gap-2">
+        <ChatCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
+        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Feedback</span>
       </a>
     </Button>;
   return <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-neutral-800">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="border-b border-white/30 bg-neutral-900/30 backdrop-blur-xl sticky top-0 z-40">
-            <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-neutral-900">
-              <div className="flex items-center space-x-4">
-                <SidebarTrigger />
+          <header className="border-b border-border/60 bg-background/95 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
+            <div className="flex items-center justify-between h-16 px-4 md:px-6">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger className="hover:bg-accent/80 transition-colors" />
                 
                 {/* Mobile Logo */}
-                <div className="md:hidden flex items-center space-x-3">
-                  <img src="/sky.png" alt="SecureShare Logo" className="h-20 w-auto object-contain" />
-                  <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-                  
-                  </span>
+                <div className="md:hidden flex items-center gap-3">
+                  <img src="/sky.png" alt="SkieShare Logo" className="h-8 w-auto object-contain" />
                 </div>
                 
                 {/* Desktop Welcome Message */}
                 <div className="hidden lg:block">
-                  <div className="space-y-1">
-                    <h2 className="text-base xl:text-lg font-semibold text-white">
+                  <div className="space-y-0.5">
+                    <h2 className="text-base xl:text-lg font-heading font-semibold text-foreground">
                       Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
                     </h2>
-                    <p className="text-xs xl:text-sm text-slate-400">
+                    <p className="text-xs xl:text-sm text-muted-foreground font-body">
                       {new Date().toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
-                <div className="flex items-center space-x-1 md:space-x-2">
+                <div className="flex items-center gap-1">
                   <NotificationPopover />
                   <StoragePopover />
                   <HelpPopover />
                   
                   {/* Separator */}
-                  <div className="hidden sm:block w-px h-6 bg-border/50 mx-2"></div>
+                  <div className="hidden sm:block w-px h-6 bg-border mx-2"></div>
                   
                   {/* Feedback Button */}
                   <FeedbackButton />
                   
                   {/* Separator */}
-                  <div className="w-px h-6 bg-border/50 mx-2"></div>
+                  <div className="w-px h-6 bg-border mx-2"></div>
                 </div>
                 
-                {/* User Profile Dropdown */}
+                {/* User Profile Dropdown with Badge */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-9 w-9 rounded-full hover:bg-accent/50 transition-all duration-200">
-                      <Avatar className="h-10 w-10">
-                        <AvatarFallback className="bg-slate-700 text-white">
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
+                      <Avatar className="h-9 w-9 ring-2 ring-border">
+                        <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
+                      {profile?.subscription_tier === 'pro' && (
+                        <Badge className="absolute -top-1 -right-1 h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] border-2 border-background">
+                          PRO
+                        </Badge>
+                      )}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" forceMount className="w-56 bg-zinc-800">
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none text-white">
-                          {user.user_metadata?.display_name || 'User'}
-                        </p>
-                        <p className="text-xs leading-none text-slate-400">
-                          {user.email}
-                        </p>
+                  <DropdownMenuContent align="end" forceMount className="w-64 bg-card border-border shadow-lg">
+                    <DropdownMenuLabel className="font-normal pb-3">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-12 w-12 ring-2 ring-border">
+                          <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold text-lg">
+                            {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col space-y-1 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-heading font-semibold leading-none text-foreground">
+                              {user.user_metadata?.display_name || 'User'}
+                            </p>
+                            {profile?.subscription_tier === 'pro' && (
+                              <Badge className="h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px]">
+                                PRO
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs leading-none text-muted-foreground font-body">
+                            {user.email}
+                          </p>
+                        </div>
                       </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-zinc-600" />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard/analytics" className="">
-                        <ChartBar className="mr-2 h-4 w-4" />
-                        Analytics
+                    <DropdownMenuSeparator className="bg-border" />
+                    
+                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
+                        <span className="font-body">Analytics</span>
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuSeparator className="bg-zinc-600" />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard/settings">
-                        <Gear className="mr-2 h-4 w-4" />
-                        Settings
+                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                      <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
+                        <Gear className="h-4 w-4 text-primary" weight="duotone" />
+                        <span className="font-body">Settings</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator className="bg-zinc-600" />
-                    <DropdownMenuItem onClick={() => signOut()}>
-                      <SignOut className="mr-2 text-red-600 h-4 w-4" />
-                      Sign out
+                    
+                    {profile?.subscription_tier !== 'pro' && (
+                      <>
+                        <DropdownMenuSeparator className="bg-border" />
+                        <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                          <Link to="/subscription" className="flex items-center gap-3 py-2.5">
+                            <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="duotone" />
+                            <span className="font-body">Upgrade to Pro</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                    
+                    <DropdownMenuSeparator className="bg-border" />
+                    <DropdownMenuItem 
+                      onClick={() => signOut()} 
+                      className="cursor-pointer hover:bg-destructive/10 focus:bg-destructive/10 text-destructive"
+                    >
+                      <SignOut className="mr-3 h-4 w-4" weight="duotone" />
+                      <span className="font-body">Sign out</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -387,8 +449,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 overflow-auto">
-            <div className="p-4 md:p-6 lg:p-8 bg-neutral-900">
+          <main className="flex-1 overflow-auto bg-background">
+            <div className="p-4 md:p-6 lg:p-8">
               {children}
             </div>
           </main>
