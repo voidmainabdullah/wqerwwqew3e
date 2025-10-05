@@ -1355,7 +1355,7 @@
 
 /* Enhanced Button Styles for Theme Consistency */
 .btn-theme-primary {
-  background-color: red;
+  background-color: hsl(var(--button-primary-bg));
   color: hsl(var(--button-primary-text));
   border: 1px solid transparent;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1363,13 +1363,13 @@
 }
 
 .btn-theme-primary:hover {
-  background-color: green;
+  background-color: hsl(var(--button-primary-hover));
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px hsl(0 0% 0% / 0.15);
+  box-shadow: 0 4px 12px hsl(0 0% 0% / 0.15); 
 }
 
 .btn-theme-secondary {
-  background-color: blue;
+  background-color: hsl(var(--button-secondary-bg));
   color: hsl(var(--button-secondary-text));
   border: 1px solid hsl(var(--button-outline-border));
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1382,7 +1382,7 @@
 }
 
 .btn-theme-outline {
-  background-color: purple;
+  background-color: #000000;
   color: hsl(var(--foreground));
   border: 2px solid hsl(var(--button-outline-border));
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1395,7 +1395,7 @@
 }
 
 .btn-theme-ghost {
-  background-color: orange;
+  background-color: transparent;
   color: hsl(var(--foreground));
   border: 1px solid transparent;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
