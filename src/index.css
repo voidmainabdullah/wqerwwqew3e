@@ -1382,7 +1382,7 @@
 }
 
 .btn-theme-outline {
-  background-color: transparent;
+  background-color: #000000;
   color: hsl(var(--foreground));
   border: 2px solid hsl(var(--button-outline-border));
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
