@@ -416,10 +416,10 @@ export function FileManager() {
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Folders */}
           {filteredFolders.map(folder => <Card key={`folder-${folder.id}`} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer">
-              <CardContent className="p-4">
+              <CardContent className="p-4 bg-zinc-800 rounded-2xl">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1" onClick={() => navigateToFolder(folder.id, folder.name)}>
-                    <div className="w-12 h-12 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-xl flex items-center justify-center border border-amber-500/20">
+                    <div className="w-12 h-12 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-xl flex items-center justify-center border border-amber-500/20 bg-transparent">
                       <FolderOpen className="h-6 w-6 text-amber-600 dark:text-amber-400" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -463,7 +463,7 @@ export function FileManager() {
 
           {/* Files */}
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-              <CardContent className="p-4">
+              <CardContent className="p-4 bg-zinc-800 rounded-2xl">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-blue-500/20">
                     <span className="text-blue-600 dark:text-blue-400 font-heading font-bold text-xs">
