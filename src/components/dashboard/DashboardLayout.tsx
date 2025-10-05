@@ -58,11 +58,7 @@ const AppSidebar = () => {
       <SidebarHeader className="flex-shrink-0 px-3 py-3">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative">
-            <img 
-              src="/sky.png" 
-              alt="SkieShare Logo" 
-              className="h-10 w-auto object-contain transition-all duration-300 group-hover:scale-110" 
-            />
+            <img src="/sky.png" alt="SkieShare Logo" className="h-10 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
             <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
               <img src="/sky.png" alt="SkieShare Logo Glow" className="h-10 w-auto object-contain" />
             </div>
@@ -185,11 +181,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent transition-colors">
           <HardDrive className="h-5 w-5 text-muted-foreground" weight="duotone" />
-          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && (
-            <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
               <span className="text-[10px] text-warning-foreground font-bold">!</span>
-            </div>
-          )} 
+            </div>} 
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0" align="end">
@@ -199,11 +193,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <HardDrive className="h-5 w-5 text-primary" weight="duotone" />
               <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
             </div>
-            {profile?.subscription_tier === 'pro' && (
-              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
+            {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
                 Pro
-              </Badge>
-            )}
+              </Badge>}
           </div>
           
           <div className="space-y-3">
@@ -215,8 +207,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </span>
             </div>
             
-            {profile?.subscription_tier !== 'pro' && (
-              <>
+            {profile?.subscription_tier !== 'pro' && <>
                 <div className="space-y-1.5">
                   <Progress value={storageProgress} className="h-2" />
                   <div className="flex justify-between text-xs text-muted-foreground font-body">
@@ -224,28 +215,23 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <span>{(100 - storageProgress).toFixed(1)}% free</span>
                   </div>
                 </div>
-              </>
-            )}
+              </>}
             
-            {profile?.subscription_tier === 'pro' && (
-              <div className="text-center py-3 px-4 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-lg border border-emerald-500/20">
+            {profile?.subscription_tier === 'pro' && <div className="text-center py-3 px-4 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-lg border border-emerald-500/20">
                 <Badge variant="outline" className="text-emerald-600 dark:text-emerald-400 border-emerald-500/50 bg-transparent font-body">
                   ✨ Unlimited Storage
                 </Badge>
-              </div>
-            )}
+              </div>}
           </div>
           
-          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && (
-            <div className="p-3 bg-warning/10 rounded-lg border border-warning/30">
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="p-3 bg-warning/10 rounded-lg border border-warning/30">
               <p className="text-sm text-warning-foreground/90 font-body mb-2">
                 You're running low on storage space. Upgrade to Pro for unlimited storage.
               </p>
               <Button asChild size="sm" className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0">
                 <Link to="/subscription">Upgrade Now</Link>
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
       </PopoverContent>
     </Popover>;
@@ -321,7 +307,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="flex-1 flex flex-col">
           {/* Header */}
           <header className="border-b border-border/60 bg-background/95 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
-            <div className="flex items-center justify-between h-16 px-4 md:px-6">
+            <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-zinc-900">
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="hover:bg-accent/80 transition-colors" />
                 
@@ -338,11 +324,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     </h2>
                     <p className="text-xs xl:text-sm text-muted-foreground font-body">
                       {new Date().toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
                     </p>
                   </div>
                 </div>
@@ -374,11 +360,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
-                      {profile?.subscription_tier === 'pro' && (
-                        <Badge className="absolute -top-1 -right-1 h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] border-2 border-background">
+                      {profile?.subscription_tier === 'pro' && <Badge className="absolute -top-1 -right-1 h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] border-2 border-background">
                           PRO
-                        </Badge>
-                      )}
+                        </Badge>}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" forceMount className="w-64 bg-card border-border shadow-lg">
@@ -394,11 +378,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                             <p className="text-sm font-heading font-semibold leading-none text-foreground">
                               {user.user_metadata?.display_name || 'User'}
                             </p>
-                            {profile?.subscription_tier === 'pro' && (
-                              <Badge className="h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px]">
+                            {profile?.subscription_tier === 'pro' && <Badge className="h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px]">
                                 PRO
-                              </Badge>
-                            )}
+                              </Badge>}
                           </div>
                           <p className="text-xs leading-none text-muted-foreground font-body">
                             {user.email}
@@ -422,8 +404,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       </Link>
                     </DropdownMenuItem>
                     
-                    {profile?.subscription_tier !== 'pro' && (
-                      <>
+                    {profile?.subscription_tier !== 'pro' && <>
                         <DropdownMenuSeparator className="bg-border" />
                         <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                           <Link to="/subscription" className="flex items-center gap-3 py-2.5">
@@ -431,14 +412,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                             <span className="font-body">Upgrade to Pro</span>
                           </Link>
                         </DropdownMenuItem>
-                      </>
-                    )}
+                      </>}
                     
                     <DropdownMenuSeparator className="bg-border" />
-                    <DropdownMenuItem 
-                      onClick={() => signOut()} 
-                      className="cursor-pointer hover:bg-destructive/10 focus:bg-destructive/10 text-destructive"
-                    >
+                    <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer hover:bg-destructive/10 focus:bg-destructive/10 text-destructive">
                       <SignOut className="mr-3 h-4 w-4" weight="duotone" />
                       <span className="font-body">Sign out</span>
                     </DropdownMenuItem>
@@ -450,7 +427,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Main Content */}
           <main className="flex-1 overflow-auto bg-background">
-            <div className="p-4 md:p-6 lg:p-8">
+            <div className="p-4 md:p-6 lg:p-8 bg-zinc-900">
               {children}
             </div>
           </main>
