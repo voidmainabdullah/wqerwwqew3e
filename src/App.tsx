@@ -18,6 +18,7 @@ import { FileManager } from "@/components/files/FileManager";
 import { SharedLinks } from "@/components/files/SharedLinks";
 import { FileReceiver } from "@/components/files/FileReceiver";
 import { EnterpriseTeamsManager } from "./components/teams/EnterpriseTeamsManager";
+import { TeamFileSharePage } from "./components/teams/TeamFileSharePage";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import CodePage from "./pages/CodePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";

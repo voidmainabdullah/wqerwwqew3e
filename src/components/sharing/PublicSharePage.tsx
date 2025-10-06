@@ -13,7 +13,8 @@ import { AnimatedBackground } from '@/components/ui/animated-background';
 
 interface ShareData {
   id: string;
-  file_id: string;
+  file_id: string | null;
+  folder_id: string | null;
   share_token: string;
   link_type: string;
   download_count: number;
@@ -22,14 +23,18 @@ interface ShareData {
   is_active: boolean;
   password_hash: string | null;
   message: string | null;
-  file: {
+  file?: {
     original_name: string;
     file_size: number;
     file_type: string;
     storage_path: string;
     is_locked: boolean;
     is_public: boolean;
-  };
+  } | null;
+  folder?: {
+    name: string;
+    is_public: boolean;
+  } | null;
 }
 
 export const PublicSharePage: React.FC = () => {
@@ -61,6 +66,10 @@ export const PublicSharePage: React.FC = () => {
             storage_path,
             is_locked,
             is_public
+          ),
+          folder:folders(
+            name,
+            is_public
           )
         `)
         .eq('share_token', token)
@@ -82,14 +91,15 @@ export const PublicSharePage: React.FC = () => {
 
       // Check download limit
       if (data.download_limit && data.download_count >= data.download_limit) {
-        setError('Download limit exceeded for this file');
+        setError('Download limit exceeded');
         return;
       }
 
       setShareData(data);
       
       // Check if password is required
-      if (data.password_hash || data.file.is_locked) {
+      const isLocked = data.file?.is_locked || false;
+      if (data.password_hash || isLocked) {
         setPasswordRequired(true);
       }
     } catch (error: any) {
@@ -142,7 +152,8 @@ export const PublicSharePage: React.FC = () => {
     if (!shareData) return;
 
     // Check if file is locked or password is required
-    if ((shareData.file.is_locked || shareData.password_hash) && passwordRequired) {
+    const isLocked = shareData.file?.is_locked || false;
+    if ((isLocked || shareData.password_hash) && passwordRequired) {
       toast({
         variant: "destructive",
         title: "Password required",
@@ -163,6 +174,10 @@ export const PublicSharePage: React.FC = () => {
 
     setDownloading(true);
     try {
+      if (!shareData.file || !shareData.file_id) {
+        throw new Error('File information not available');
+      }
+
       const { data: fileData, error } = await supabase.storage
         .from('files')
         .download(shareData.file.storage_path);
@@ -184,7 +199,7 @@ export const PublicSharePage: React.FC = () => {
         file_id: shareData.file_id,
         shared_link_id: shareData.id,
         download_method: 'shared_link',
-        downloader_ip: null, // Could be implemented with IP detection
+        downloader_ip: null,
         downloader_user_agent: navigator.userAgent,
       });
 
@@ -277,10 +292,17 @@ export const PublicSharePage: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center space-y-2">
-            <h3 className="font-medium text-lg">{shareData.file.original_name}</h3>
-            <p className="text-sm text-muted-foreground">
-              {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
-            </p>
+            <h3 className="font-medium text-lg">
+              {shareData.file?.original_name || shareData.folder?.name || 'Shared Item'}
+            </h3>
+            {shareData.file && (
+              <p className="text-sm text-muted-foreground">
+                {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
+              </p>
+            )}
+            {shareData.folder && (
+              <p className="text-sm text-muted-foreground">Folder</p>
+            )}
             
             {shareData.message && (
               <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">

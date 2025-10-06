@@ -91,9 +91,28 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
     try {
       setInviting(true);
       
+      // Check if user exists
+      const { data: userExists, error: userError } = await supabase
+        .rpc('get_user_by_email', { email_input: inviteEmail });
+
+      if (userError) throw userError;
+
+      if (!userExists || userExists.length === 0) {
+        toast.error('No registered user found with this email');
+        return;
+      }
+
+      const invitedUserId = userExists[0].user_id;
       const inviteToken = crypto.randomUUID().replace(/-/g, '');
       const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + 7); // 7 days expiry
+      expiresAt.setDate(expiresAt.getDate() + 7);
+
+      // Get team name
+      const { data: teamData } = await supabase
+        .from('teams')
+        .select('name')
+        .eq('id', teamId)
+        .single();
 
       const { error } = await supabase
         .from('team_invites')
@@ -109,6 +128,22 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
 
       if (error) throw error;
 
+      // Send notification
+      await supabase
+        .from('notifications')
+        .insert({
+          user_id: invitedUserId,
+          type: 'team_invite',
+          title: 'Team Invitation',
+          message: `You've been invited to join ${teamData?.name || 'a team'}`,
+          data: {
+            team_id: teamId,
+            invite_token: inviteToken,
+            team_name: teamData?.name,
+            role: inviteRole
+          }
+        });
+
       await supabase.rpc('log_audit_event', {
         _team_id: teamId,
         _user_id: user?.id,
@@ -117,22 +152,7 @@ export function TeamInvitesManager({ teamId }: TeamInvitesManagerProps) {
         _metadata: { email: inviteEmail, role: inviteRole }
       });
 
-      const inviteLink = `${window.location.origin}/invite/${inviteToken}`;
-      
-      toast.success(
-        <div>
-          <p>Invite sent successfully!</p>
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(inviteLink);
-              toast.success('Invite link copied to clipboard');
-            }}
-            className="text-xs underline mt-1"
-          >
-            Copy invite link
-          </button>
-        </div>
-      );
+      toast.success(`Invite sent to ${inviteEmail}`);
 
       setInviteEmail('');
       setShowInviteDialog(false);

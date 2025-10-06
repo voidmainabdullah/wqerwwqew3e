@@ -1,246 +1,236 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { SquaresExclude , Archive,CheckCheck, CircleCheck as CheckCircle } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Bell, Check, X } from 'phosphor-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface Notification {
   id: string;
-  title: string; 
+  type: string;
+  title: string;
   message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  read: boolean; 
+  data: any;
+  read: boolean;
   created_at: string;
 }
 
 export const NotificationPopover: React.FC = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
       fetchNotifications();
-      setupRealtimeSubscription();
+      
+      // Subscribe to real-time notifications
+      const channel = supabase
+        .channel('notifications')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            setNotifications(prev => [payload.new as Notification, ...prev]);
+            setUnreadCount(prev => prev + 1);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [user]);
 
   const fetchNotifications = async () => {
-    // For now, we'll use mock data since we don't have a notifications table
-    // In production, you would fetch from a notifications table
-    const mockNotifications: Notification[] = [
-      {
-        id: '1',
-        title: 'File Downloaded',
-        message: 'Your file "project-docs.pdf" was downloaded by someone',
-        type: 'info',
-        read: false,
-        created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString() // 30 minutes ago
-      },
-      {
-        id: '2',
-        title: 'Share Link Created',
-        message: 'New share link created for "presentation.pptx"',
-        type: 'success',
-        read: false,
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString() // 2 hours ago
-      },
-      {
-        id: '3',
-        title: 'Storage Warning',
-        message: 'You are using 85% of your storage quota',
-        type: 'warning',
-        read: true,
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() // 1 day ago
-      }
-    ];
+    if (!user) return;
 
-    setNotifications(mockNotifications);
-    setUnreadCount(mockNotifications.filter(n => !n.read).length);
-  };
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(20);
 
-  const setupRealtimeSubscription = () => {
-    // In production, set up real-time subscription for notifications
-    // For now, we'll simulate new notifications occasionally
-    const interval = setInterval(() => {
-      if (Math.random() > 0.95) { // 5% chance every 5 seconds
-        const newNotification: Notification = {
-          id: Date.now().toString(),
-          title: 'New Activity',
-          message: 'Someone accessed your shared file',
-          type: 'info',
-          read: false,
-          created_at: new Date().toISOString()
-        };
-        setNotifications(prev => [newNotification, ...prev]);
-        setUnreadCount(prev => prev + 1);
-      }
-    }, 5000);
-
-    return () => clearInterval(interval);
-  };
-
-  const markAsRead = (notificationId: string) => {
-    setNotifications(prev => 
-      prev.map(n => 
-        n.id === notificationId ? { ...n, read: true } : n
-      )
-    );
-    setUnreadCount(prev => Math.max(0, prev - 1));
-  };
-
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-    setUnreadCount(0);
-  };
-
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case 'success':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'warning':
-        return <SquaresExclude  className="h-4 w-4 text-yellow-500" />;
-      case 'error':
-        return <SquaresExclude className="h-4 w-4 text-red-500" />;
-      default:
-        return <SquaresExclude className="h-4 w-4 text-blue-500" />;
+      if (error) throw error;
+      
+      setNotifications(data || []);
+      setUnreadCount(data?.filter(n => !n.read).length || 0);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
     }
   };
 
-  const formatTimeAgo = (dateString: string) => {
-    const now = new Date();
-    const date = new Date(dateString);
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return 'Just now';
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-    return `${Math.floor(diffInMinutes / 1440)}d ago`;
+  const markAsRead = async (notificationId: string) => {
+    try {
+      await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('id', notificationId);
+
+      setNotifications(prev =>
+        prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
+      );
+      setUnreadCount(prev => Math.max(0, prev - 1));
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
   };
 
-  const inboxNotifications = notifications.filter(n => !n.read);
-  const archivedNotifications = notifications.filter(n => n.read);
+  const handleAcceptInvite = async (notification: Notification) => {
+    try {
+      const { team_id, invite_token } = notification.data;
+
+      const { data, error } = await supabase.rpc('accept_team_invite', {
+        _invite_token: invite_token,
+        _user_id: user?.id
+      });
+
+      if (error) throw error;
+
+      const result = data as { success: boolean; team_id?: string; error?: string };
+      
+      if (result && result.success) {
+        toast({
+          title: "Invitation accepted",
+          description: "You've joined the team successfully"
+        });
+        
+        await markAsRead(notification.id);
+        navigate('/dashboard/teams');
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message
+      });
+    }
+  };
+
+  const handleDeclineInvite = async (notification: Notification) => {
+    try {
+      const { invite_token } = notification.data;
+
+      await supabase
+        .from('team_invites')
+        .update({ status: 'declined' })
+        .eq('invite_token', invite_token);
+
+      await markAsRead(notification.id);
+
+      toast({
+        title: "Invitation declined",
+        description: "You've declined the team invitation"
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message
+      });
+    }
+  };
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent/50">
-          <SquaresExclude className="h-5 w-5 text-muted-foreground" />
+        <Button variant="ghost" size="icon" className="relative">
+          <Bell className="h-5 w-5" weight="duotone" />
           {unreadCount > 0 && (
-            <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-red-500 text-white text-xs">
+            <Badge 
+              className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+              variant="destructive"
+            >
               {unreadCount > 9 ? '9+' : unreadCount}
             </Badge>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0 bg-card border border-border" align="end">
-        <div className="p-4 border-b border-border">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
-            <Button variant="ghost" size="sm" onClick={markAllAsRead}>
-              <CheckCheck className="h-4 w-4" />
-            </Button>
-          </div> 
+      <PopoverContent className="w-80 p-0" align="end">
+        <div className="p-4 border-b">
+          <h3 className="font-semibold">Notifications</h3>
+          {unreadCount > 0 && (
+            <p className="text-sm text-muted-foreground">
+              {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
+            </p>
+          )}
         </div>
-        
-        <Tabs defaultValue="inbox" className="w-full">
-          <div className="px-4 pt-2">
-            <TabsList className="grid w-full grid-cols-2 bg-muted">
-              <TabsTrigger value="inbox" className="flex items-center gap-2">
-                Inbox
-                {unreadCount > 0 && (
-                  <Badge variant="secondary" className="h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
-                    {unreadCount}
-                  </Badge>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="archived">Archived</TabsTrigger>
-            </TabsList>
-          </div>
-          
-          <TabsContent value="inbox" className="mt-0">
-            <div className="max-h-96 overflow-y-auto">
-              {inboxNotifications.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 px-4">
-                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                    <SquaresExclude className="h-8 w-8 text-muted-foreground" />
+        <ScrollArea className="h-[400px]">
+          {notifications.length === 0 ? (
+            <div className="p-8 text-center text-muted-foreground">
+              <Bell className="h-12 w-12 mx-auto mb-2 opacity-50" />
+              <p>No notifications</p>
+            </div>
+          ) : (
+            <div className="space-y-2 p-2">
+              {notifications.map((notification) => (
+                <Card
+                  key={notification.id}
+                  className={`p-3 ${!notification.read ? 'bg-primary/5' : ''}`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm">{notification.title}</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {new Date(notification.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                      {!notification.read && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => markAsRead(notification.id)}
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+
+                    {notification.type === 'team_invite' && !notification.read && (
+                      <div className="flex gap-2 mt-2">
+                        <Button
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => handleAcceptInvite(notification)}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => handleDeclineInvite(notification)}
+                        >
+                          Decline
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                  <h4 className="text-lg font-medium text-foreground mb-2">All caught up</h4>
-                  <p className="text-sm text-muted-foreground text-center">
-                    You will be notified here for any notices on your organizations and projects
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-1">
-                  {inboxNotifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className="p-3 hover:bg-muted/50 cursor-pointer border-b border-border/50 last:border-b-0"
-                      onClick={() => markAsRead(notification.id)}
-                    >
-                      <div className="flex items-start gap-3">
-                        {getNotificationIcon(notification.type)}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground">
-                            {notification.title}
-                          </p>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {notification.message}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-2">
-                            {formatTimeAgo(notification.created_at)}
-                          </p>
-                        </div>
-                        {!notification.read && (
-                          <div className="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                </Card>
+              ))}
             </div>
-          </TabsContent>
-          
-          <TabsContent value="archived" className="mt-0">
-            <div className="max-h-96 overflow-y-auto">
-              {archivedNotifications.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 px-4">
-                  <Archive className="h-12 w-12 text-muted-foreground mb-4" />
-                  <p className="text-sm text-muted-foreground">No archived notifications</p>
-                </div>
-              ) : (
-                <div className="space-y-1">
-                  {archivedNotifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className="p-3 hover:bg-muted/50 border-b border-border/50 last:border-b-0"
-                    >
-                      <div className="flex items-start gap-3">
-                        {getNotificationIcon(notification.type)}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground opacity-75">
-                            {notification.title}
-                          </p>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {notification.message}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-2">
-                            {formatTimeAgo(notification.created_at)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
+          )}
+        </ScrollArea>
       </PopoverContent>
     </Popover>
   );
