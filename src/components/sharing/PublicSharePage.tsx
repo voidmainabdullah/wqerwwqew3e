@@ -37,6 +37,14 @@ interface ShareData {
   } | null;
 }
 
+interface FolderFile {
+  id: string;
+  original_name: string;
+  file_size: number;
+  file_type: string;
+  storage_path: string;
+}
+
 export const PublicSharePage: React.FC = () => {
   const { token } = useParams<{ token: string }>();
   const { toast } = useToast();
@@ -46,6 +54,7 @@ export const PublicSharePage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [passwordRequired, setPasswordRequired] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [folderFiles, setFolderFiles] = useState<FolderFile[]>([]);
 
   useEffect(() => {
     if (token) {
@@ -96,6 +105,17 @@ export const PublicSharePage: React.FC = () => {
       }
 
       setShareData(data);
+      
+      // If it's a folder, fetch its files
+      if (data.folder_id) {
+        const { data: filesData, error: filesError } = await supabase
+          .from('files')
+          .select('id, original_name, file_size, file_type, storage_path')
+          .eq('folder_id', data.folder_id);
+        
+        if (filesError) throw filesError;
+        setFolderFiles(filesData || []);
+      }
       
       // Check if password is required
       const isLocked = data.file?.is_locked || false;
@@ -148,71 +168,92 @@ export const PublicSharePage: React.FC = () => {
     }
   };
 
-  const downloadFile = async () => {
+  const downloadFile = async (fileToDownload?: FolderFile) => {
     if (!shareData) return;
 
-    // Check if file is locked or password is required
-    const isLocked = shareData.file?.is_locked || false;
-    if ((isLocked || shareData.password_hash) && passwordRequired) {
+    // Check if password is required
+    if (shareData.password_hash && passwordRequired) {
       toast({
         variant: "destructive",
         title: "Password required",
-        description: "Please enter the password to access this file",
+        description: "Please enter the password to access this content",
       });
       return;
     }
 
-    // Final check for download limits before starting download
+    // Final check for download limits
     if (shareData.download_limit && shareData.download_count >= shareData.download_limit) {
       toast({
         variant: "destructive",
         title: "Download limit exceeded",
-        description: "This file has reached its maximum download limit",
+        description: "This share has reached its maximum download limit",
       });
       return;
     }
 
     setDownloading(true);
     try {
-      if (!shareData.file || !shareData.file_id) {
-        throw new Error('File information not available');
+      // For folders, download specific file
+      if (fileToDownload) {
+        const { data: fileData, error } = await supabase.storage
+          .from('files')
+          .download(fileToDownload.storage_path);
+
+        if (error) throw error;
+
+        const url = URL.createObjectURL(fileData);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileToDownload.original_name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        toast({
+          title: "Download started",
+          description: `Downloading ${fileToDownload.original_name}`,
+        });
+      } 
+      // For single files
+      else if (shareData.file && shareData.file_id) {
+        const { data: fileData, error } = await supabase.storage
+          .from('files')
+          .download(shareData.file.storage_path);
+
+        if (error) throw error;
+
+        const url = URL.createObjectURL(fileData);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = shareData.file.original_name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Log the download
+        await supabase.from('download_logs').insert({
+          file_id: shareData.file_id,
+          shared_link_id: shareData.id,
+          download_method: 'shared_link',
+          downloader_ip: null,
+          downloader_user_agent: navigator.userAgent,
+        });
+
+        // Update download count
+        await supabase
+          .from('shared_links')
+          .update({ download_count: shareData.download_count + 1 })
+          .eq('id', shareData.id);
+
+        toast({
+          title: "Download started",
+          description: "Your file download has begun",
+        });
+      } else {
+        throw new Error('No file available to download');
       }
-
-      const { data: fileData, error } = await supabase.storage
-        .from('files')
-        .download(shareData.file.storage_path);
-
-      if (error) throw error;
-
-      // Create download link
-      const url = URL.createObjectURL(fileData);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = shareData.file.original_name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      // Log the download
-      await supabase.from('download_logs').insert({
-        file_id: shareData.file_id,
-        shared_link_id: shareData.id,
-        download_method: 'shared_link',
-        downloader_ip: null,
-        downloader_user_agent: navigator.userAgent,
-      });
-
-      // Update download count
-      await supabase
-        .from('shared_links')
-        .update({ download_count: shareData.download_count + 1 })
-        .eq('id', shareData.id);
-
-      toast({
-        title: "Download started",
-        description: "Your file download has begun",
-      });
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -301,7 +342,9 @@ export const PublicSharePage: React.FC = () => {
               </p>
             )}
             {shareData.folder && (
-              <p className="text-sm text-muted-foreground">Folder</p>
+              <p className="text-sm text-muted-foreground">
+                Folder with {folderFiles.length} file{folderFiles.length !== 1 ? 's' : ''}
+              </p>
             )}
             
             {shareData.message && (
@@ -351,14 +394,49 @@ export const PublicSharePage: React.FC = () => {
             </div>
           )}
 
-          <Button 
-            onClick={downloadFile} 
-            disabled={downloading || passwordRequired}
-            className="w-full"
-          >
-            <Download className="mr-2 h-4 w-4" />
-            {downloading ? 'Downloading...' : 'Download File'}
-          </Button>
+          {/* For folders, show file list */}
+          {shareData.folder && folderFiles.length > 0 && !passwordRequired && (
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              <p className="text-sm font-medium">Files in this folder:</p>
+              {folderFiles.map((file) => (
+                <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{file.original_name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatFileSize(file.file_size)} • {file.file_type}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => downloadFile(file)}
+                    disabled={downloading}
+                  >
+                    <Download className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* For single files, show download button */}
+          {shareData.file && (
+            <Button 
+              onClick={() => downloadFile()} 
+              disabled={downloading || passwordRequired}
+              className="w-full"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              {downloading ? 'Downloading...' : 'Download File'}
+            </Button>
+          )}
+
+          {/* For empty folders */}
+          {shareData.folder && folderFiles.length === 0 && !passwordRequired && (
+            <div className="text-center py-4 text-muted-foreground">
+              <p className="text-sm">This folder is empty</p>
+            </div>
+          )}
         </CardContent>
       </Card>
       </div>
