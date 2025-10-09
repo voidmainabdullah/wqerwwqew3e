@@ -81,66 +81,11 @@ export const SubscriptionPage: React.FC = () => {
             <PriceCard title="Pro Monthly" price="$6.99" period="month" description="Full access with monthly billing" features={features.pro} onSubscribe={() => handleSubscribe("monthly")} />
             <PriceCard title="Pro Yearly" price="$69.99" period="year" description="Save 17% with annual billing" features={features.pro} isPopular={true} onSubscribe={() => handleSubscribe("yearly")} />
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
-            <Card className="analytics-card analytics-card-green">
-              <CardHeader className="text-center">
-                <div className="icon-container icon-container-green mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-green">upload</span>
-                </div>
-                <CardTitle className="text-lg font-heading">Unlimited Uploads</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm font-body text-muted-foreground text-center">
-                  Upload without daily restrictions and focus on your work.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="analytics-card analytics-card-red">
-              <CardHeader className="text-center">
-                <div className="icon-container icon-container-red mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-red">security</span>
-                </div>
-                <CardTitle className="text-lg font-heading">Advanced Security</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm font-body text-muted-foreground text-center">
-                  Protect files with passwords and custom expiry dates.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="analytics-card analytics-card-purple">
-              <CardHeader className="text-center">
-                <div className="icon-container icon-container-purple mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-purple">analytics</span>
-                </div>
-                <CardTitle className="text-lg font-heading">Analytics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm font-body text-muted-foreground text-center">
-                  Get insights on downloads and file performance.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="analytics-card analytics-card-yellow">
-              <CardHeader className="text-center">
-                <div className="icon-container icon-container-yellow mx-auto mb-4">
-                  <span className="material-icons md-24 analytics-icon analytics-icon-yellow">support_agent</span>
-                </div>
-                <CardTitle className="text-lg font-heading">Priority Support</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm font-body text-muted-foreground text-center">
-                  Faster response times with dedicated support.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          
           <Card className="max-w-4xl mx-auto brand-card border-brand-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center text-xl font-heading">
-                <div className="icon-container icon-container-yellow mr-3">
-                  <span className="material-icons md-18 analytics-icon analytics-icon-yellow">crown</span>
-                </div>
+                
                 Why Upgrade to Pro?
               </CardTitle>
               <CardDescription className="font-body">
