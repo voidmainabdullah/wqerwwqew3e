@@ -22,7 +22,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
   onSubscribe
 }) => {
   return <Card className={`relative ${isPopular ? 'border-primary shadow-lg' : ''}`}>
-      {isPopular && <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-indigo-400 text-neutral-100 font-heading">
+      {isPopular && <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-neutral-100 font-heading bg-blue-800/60 border border-blue-600 ">
           <span className="material-icons md-18 mr-1">flash_on</span>
           Most Popular
         </Badge>}
