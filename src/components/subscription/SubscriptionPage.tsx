@@ -3,57 +3,50 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PriceCard } from "./PriceCard";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Crown,
-  Shield,
-  Lightning,
-  Upload,
-  ChartLineUp,
-} from "phosphor-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Crown, Shield, Lightning, Upload, ChartLineUp } from "phosphor-react";
 import { AnimatedBackground } from "@/components/ui/animated-background";
-
 export const SubscriptionPage: React.FC = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
-
+  const {
+    user
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const handleSubscribe = async (plan: "monthly" | "yearly") => {
     if (!user) {
       toast({
         variant: "destructive",
         title: "Authentication required",
-        description: "Please log in to subscribe",
+        description: "Please log in to subscribe"
       });
       return;
     }
     try {
       const {
-        data: { session },
+        data: {
+          session
+        }
       } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("No valid session found");
-
-      const { data, error } = await supabase.functions.invoke(
-        "create-paddle-checkout",
-        {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-          body: { plan },
+      const {
+        data,
+        error
+      } = await supabase.functions.invoke("create-paddle-checkout", {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        },
+        body: {
+          plan
         }
-      );
-
+      });
       if (error) throw new Error(error.message || "Failed to create checkout");
       if (data?.error) throw new Error(data.error);
-
       if (data?.checkout_url) {
         window.open(data.checkout_url, "_blank");
         toast({
           title: "Checkout opened",
-          description: "Complete your subscription in the new tab",
+          description: "Complete your subscription in the new tab"
         });
       } else {
         throw new Error("No checkout URL received");
@@ -62,31 +55,15 @@ export const SubscriptionPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Subscription error",
-        description: err.message || "Failed to create subscription",
+        description: err.message || "Failed to create subscription"
       });
     }
   };
-
   const features = {
-    free: [
-      "10 uploads per day",
-      "Basic file sharing",
-      "7-day link expiry",
-      "Community support",
-    ],
-    pro: [
-      "Unlimited uploads",
-      "Password protection",
-      "Custom expiry dates",
-      "Download analytics",
-      "Priority support",
-      "Custom branding",
-      "API access",
-    ],
+    free: ["10 uploads per day", "Basic file sharing", "7-day link expiry", "Community support"],
+    pro: ["Unlimited uploads", "Password protection", "Custom expiry dates", "Download analytics", "Priority support", "Custom branding", "API access"]
   };
-
-  return (
-    <div className="relative min-h-screen">
+  return <div className="relative min-h-screen">
       <div className="fixed inset-0 z-0">
         <AnimatedBackground />
       </div>
@@ -96,42 +73,15 @@ export const SubscriptionPage: React.FC = () => {
             <h1 className="text-5xl font-heading font-bold tracking-tight">
               Simple Pricing for Everyone
             </h1>
-            <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">
-              Whether you're just starting or need power features — we've got a
-              plan that fits you.
-            </p>
+            <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">Whether you're just starting or need power features — we've got a plan that fits .</p>
           </div>
           <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
-            <PriceCard
-              title="Free"
-              price="$0"
-              period="forever"
-              description="Perfect for getting started"
-              features={features.free}
-              onSubscribe={() =>
-                toast({
-                  title: "Already on Free plan",
-                  description: "You're currently using the free plan",
-                })
-              }
-            />
-            <PriceCard
-              title="Pro Monthly"
-              price="$6.99"
-              period="month"
-              description="Full access with monthly billing"
-              features={features.pro}
-              onSubscribe={() => handleSubscribe("monthly")}
-            />
-            <PriceCard
-              title="Pro Yearly"
-              price="$69.99"
-              period="year"
-              description="Save 17% with annual billing"
-              features={features.pro}
-              isPopular={true}
-              onSubscribe={() => handleSubscribe("yearly")}
-            />
+            <PriceCard title="Free" price="$0" period="forever" description="Perfect for getting started" features={features.free} onSubscribe={() => toast({
+            title: "Already on Free plan",
+            description: "You're currently using the free plan"
+          })} />
+            <PriceCard title="Pro Monthly" price="$6.99" period="month" description="Full access with monthly billing" features={features.pro} onSubscribe={() => handleSubscribe("monthly")} />
+            <PriceCard title="Pro Yearly" price="$69.99" period="year" description="Save 17% with annual billing" features={features.pro} isPopular={true} onSubscribe={() => handleSubscribe("yearly")} />
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
             <Card className="analytics-card analytics-card-green">
@@ -245,6 +195,5 @@ export const SubscriptionPage: React.FC = () => {
           </Card>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
