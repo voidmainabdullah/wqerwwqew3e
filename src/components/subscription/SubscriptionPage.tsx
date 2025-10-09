@@ -70,10 +70,8 @@ export const SubscriptionPage: React.FC = () => {
       <div className="relative z-10 bg-background/70 backdrop-blur-sm min-h-screen">
         <div className="container mx-auto px-4 py-12 space-y-16">
           <div className="text-center space-y-4">
-            <h1 className="text-5xl font-heading font-bold tracking-tight">
-              Simple Pricing for Everyone
-            </h1>
-            <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">Whether you're just starting or need power features — we've got a plan that fits .</p>
+            <h1 className="text-5xl font-heading font-bold tracking-tight">Get More In Your Control </h1>
+            <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">Because Your Files Deserves Better !</p>
           </div>
           <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
             <PriceCard title="Free" price="$0" period="forever" description="Perfect for getting started" features={features.free} onSubscribe={() => toast({
