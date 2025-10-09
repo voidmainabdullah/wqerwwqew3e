@@ -7,16 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Upload,
-  File,
-  X,
-  CheckCircle,
-  Warning,
-  CircleNotch,
-  ArrowRight
-} from 'phosphor-react';
-
+import { Upload, File, X, CheckCircle, Warning, CircleNotch, ArrowRight } from 'phosphor-react';
 interface UploadFile {
   file: File;
   progress: number;
@@ -24,78 +15,76 @@ interface UploadFile {
   error?: string;
   id?: string;
 }
-
 export const FileUpload: React.FC = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const {
+    user
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
-  const [folders, setFolders] = useState<Array<{ id: string; name: string }>>([]);
-
+  const [folders, setFolders] = useState<Array<{
+    id: string;
+    name: string;
+  }>>([]);
   useEffect(() => {
     if (user) {
       fetchFolders();
     }
   }, [user]);
-
   const fetchFolders = async () => {
     try {
-      const { data, error } = await supabase
-        .from('folders')
-        .select('id, name')
-        .eq('user_id', user?.id)
-        .order('name', { ascending: true });
-
+      const {
+        data,
+        error
+      } = await supabase.from('folders').select('id, name').eq('user_id', user?.id).order('name', {
+        ascending: true
+      });
       if (error) throw error;
       setFolders(data || []);
     } catch (error) {
       console.error('Error fetching folders:', error);
     }
   };
-
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newFiles: UploadFile[] = acceptedFiles.map(file => ({
       file,
       progress: 0,
       status: 'pending'
     }));
-    
     setUploadFiles(prev => [...prev, ...newFiles]);
   }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive
+  } = useDropzone({
     onDrop,
     disabled: isUploading
   });
-
   const removeFile = (index: number) => {
     setUploadFiles(prev => prev.filter((_, i) => i !== index));
   };
-
   const handleUploadFiles = async () => {
     if (!user || uploadFiles.length === 0) return;
-    
     setIsUploading(true);
-    
     try {
       // Check storage quota before upload
       const totalFileSize = uploadFiles.reduce((sum, file) => sum + file.file.size, 0);
-      
-      const { data: canUpload, error: quotaError } = await supabase.rpc('check_storage_quota', {
+      const {
+        data: canUpload,
+        error: quotaError
+      } = await supabase.rpc('check_storage_quota', {
         p_user_id: user.id,
         p_file_size: totalFileSize
       });
-
       if (quotaError) throw quotaError;
-
       if (!canUpload) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('storage_used, storage_limit, subscription_tier')
-        .eq('id', user.id)
-        .maybeSingle();
-
+        const {
+          data: profile
+        } = await supabase.from('profiles').select('storage_used, storage_limit, subscription_tier').eq('id', user.id).maybeSingle();
         const formatFileSize = (bytes: number): string => {
           if (bytes === 0) return '0 Bytes';
           const k = 1024;
@@ -103,11 +92,10 @@ export const FileUpload: React.FC = () => {
           const i = Math.floor(Math.log(bytes) / Math.log(k));
           return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         };
-
         toast({
           variant: "destructive",
           title: "Storage limit exceeded",
-          description: `You've used ${formatFileSize(profile?.storage_used || 0)} of your ${formatFileSize(profile?.storage_limit || 0)} storage limit. Upgrade to Pro for unlimited storage.`,
+          description: `You've used ${formatFileSize(profile?.storage_used || 0)} of your ${formatFileSize(profile?.storage_limit || 0)} storage limit. Upgrade to Pro for unlimited storage.`
         });
         setIsUploading(false);
         return;
@@ -116,81 +104,75 @@ export const FileUpload: React.FC = () => {
       // Upload files one by one
       for (let i = 0; i < uploadFiles.length; i++) {
         const uploadFile = uploadFiles[i];
-        
         if (uploadFile.status !== 'pending') continue;
-
         try {
           // Update status to uploading
-          setUploadFiles(prev => prev.map((f, idx) => 
-            idx === i ? { ...f, status: 'uploading' as const } : f
-          ));
+          setUploadFiles(prev => prev.map((f, idx) => idx === i ? {
+            ...f,
+            status: 'uploading' as const
+          } : f));
 
           // Create unique file path
           const fileExt = uploadFile.file.name.split('.').pop();
           const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
 
           // Upload to Supabase Storage
-          const { data: storageData, error: storageError } = await supabase.storage
-            .from('files')
-            .upload(fileName, uploadFile.file);
-
+          const {
+            data: storageData,
+            error: storageError
+          } = await supabase.storage.from('files').upload(fileName, uploadFile.file);
           if (storageError) throw storageError;
 
           // Save file metadata to database
-          const { data: fileData, error: dbError } = await supabase
-            .from('files')
-            .insert({
-              user_id: user.id,
-              original_name: uploadFile.file.name,
-              file_size: uploadFile.file.size,
-              file_type: uploadFile.file.type || 'application/octet-stream',
-              storage_path: fileName,
-              folder_id: selectedFolderId,
-            })
-            .select()
-            .single();
-
+          const {
+            data: fileData,
+            error: dbError
+          } = await supabase.from('files').insert({
+            user_id: user.id,
+            original_name: uploadFile.file.name,
+            file_size: uploadFile.file.size,
+            file_type: uploadFile.file.type || 'application/octet-stream',
+            storage_path: fileName,
+            folder_id: selectedFolderId
+          }).select().single();
           if (dbError) throw dbError;
 
           // Storage is automatically updated by database trigger
           // No need to manually update upload counts
 
           // Mark as success
-          setUploadFiles(prev => prev.map((f, idx) => 
-            idx === i ? { ...f, status: 'success' as const, progress: 100, id: fileData.id } : f
-          ));
-
+          setUploadFiles(prev => prev.map((f, idx) => idx === i ? {
+            ...f,
+            status: 'success' as const,
+            progress: 100,
+            id: fileData.id
+          } : f));
         } catch (error: any) {
           console.error('Upload error:', error);
-          setUploadFiles(prev => prev.map((f, idx) => 
-            idx === i ? { 
-              ...f, 
-              status: 'error' as const, 
-              error: error.message || 'Upload failed' 
-            } : f
-          ));
+          setUploadFiles(prev => prev.map((f, idx) => idx === i ? {
+            ...f,
+            status: 'error' as const,
+            error: error.message || 'Upload failed'
+          } : f));
         }
       }
-
       const successCount = uploadFiles.filter(f => f.status === 'success').length;
       if (successCount > 0) {
         toast({
           title: "Upload complete",
-          description: `Successfully uploaded ${successCount} file(s).`,
+          description: `Successfully uploaded ${successCount} file(s).`
         });
       }
-
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Upload failed",
-        description: error.message || 'An error occurred during upload.',
+        description: error.message || 'An error occurred during upload.'
       });
     } finally {
       setIsUploading(false);
     }
   };
-
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -198,7 +180,6 @@ export const FileUpload: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-
   const getStatusIcon = (status: UploadFile['status']) => {
     switch (status) {
       case 'pending':
@@ -211,9 +192,7 @@ export const FileUpload: React.FC = () => {
         return <Warning className="h-4 w-4 text-destructive" />;
     }
   };
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-heading font-bold tracking-tight">Upload Files</h1>
@@ -222,7 +201,7 @@ export const FileUpload: React.FC = () => {
           </p>
         </div>
         <Button asChild variant="outline" className="font-heading icon-text">
-          <a href="/dashboard/files" className="flex items-center gap-2">
+          <a href="/dashboard/files" className="flex items-center gap-2 bg-blue-800/30 border border-blue-600 ">
              <span className="material-icons md-18">folder</span>
              File Manager
             <span className="material-icons md-18">arrow_forward</span>
@@ -239,91 +218,52 @@ export const FileUpload: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Folder Selection */}
-          {folders.length > 0 && (
-            <div className="space-y-2">
+          {folders.length > 0 && <div className="space-y-2">
               <label className="text-sm font-heading font-medium">
                 Upload to folder (optional)
               </label>
-              <select
-                value={selectedFolderId || ''}
-                onChange={(e) => setSelectedFolderId(e.target.value || null)}
-                className="w-full p-2 border border-input bg-background rounded-md font-body"
-                disabled={isUploading}
-              >
+              <select value={selectedFolderId || ''} onChange={e => setSelectedFolderId(e.target.value || null)} className="w-full p-2 border border-input bg-background rounded-md font-body" disabled={isUploading}>
                 <option value="">Root (No Folder)</option>
-                {folders.map((folder) => (
-                  <option key={folder.id} value={folder.id}>
+                {folders.map(folder => <option key={folder.id} value={folder.id}>
                     {folder.name}
-                  </option>
-                ))}
+                  </option>)}
               </select>
-            </div>
-          )}
+            </div>}
 
-          <div
-            {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-300 transform ${
-              isDragActive 
-                ? 'border-functions-upload bg-functions-upload/10 scale-[1.02] shadow-lg shadow-functions-uploadGlow/20' 
-                : 'border-border hover:border-functions-upload/50 hover:bg-functions-upload/5'
-            } ${isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.01]'}`}
-          >
+          <div {...getRootProps()} className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-300 transform ${isDragActive ? 'border-functions-upload bg-functions-upload/10 scale-[1.02] shadow-lg shadow-functions-uploadGlow/20' : 'border-border hover:border-functions-upload/50 hover:bg-functions-upload/5'} ${isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.01]'}`}>
             <input {...getInputProps()} />
-            <span className={`material-icons md-48 mx-auto mb-4 transition-colors duration-300 ${
-              isDragActive ? 'text-functions-upload animate-bounce-subtle' : 'text-muted-foreground'
-            }`}>upload_file</span>
-            {isDragActive ? (
-              <p className="text-functions-upload font-heading font-medium animate-pulse">Drop the files here...</p>
-            ) : (
-              <div className="animate-fade-in">
+            <span className={`material-icons md-48 mx-auto mb-4 transition-colors duration-300 ${isDragActive ? 'text-functions-upload animate-bounce-subtle' : 'text-muted-foreground'}`}>upload_file</span>
+            {isDragActive ? <p className="text-functions-upload font-heading font-medium animate-pulse">Drop the files here...</p> : <div className="animate-fade-in">
                 <p className="text-foreground font-heading font-medium mb-2">
                   Click to upload or drag and drop
                 </p>
                 <p className="font-body text-muted-foreground text-sm">
                   Any file type is supported
                 </p>
-              </div>
-            )}
+              </div>}
           </div>
 
-          {uploadFiles.length > 0 && (
-            <div className="space-y-3">
+          {uploadFiles.length > 0 && <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-heading font-medium">Files to upload</h3>
-                <Button
-                  onClick={handleUploadFiles}
-                  disabled={isUploading || uploadFiles.every(f => f.status !== 'pending')}
-                  size="sm"
-                  className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle font-heading icon-text"
-                >
-                  {isUploading ? (
-                    <>
+                <Button onClick={handleUploadFiles} disabled={isUploading || uploadFiles.every(f => f.status !== 'pending')} size="sm" className="bg-functions-upload hover:bg-functions-uploadGlow text-white shadow-lg hover:shadow-functions-uploadGlow/30 transition-all duration-300 animate-bounce-subtle font-heading icon-text">
+                  {isUploading ? <>
                       <span className="material-icons md-18 animate-spin">refresh</span>
                       <span className="animate-pulse">Uploading...</span>
-                    </>
-                  ) : (
-                    <>
+                    </> : <>
                       <span className="material-icons md-18">upload</span>
                       Upload All
-                    </>
-                  )}
+                    </>}
                 </Button>
               </div>
 
               <div className="space-y-2">
-                {uploadFiles.map((uploadFile, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg transition-all duration-300 hover:shadow-md animate-fade-in" 
-                       style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className={`transition-colors duration-300 ${
-                      uploadFile.status === 'uploading' ? 'animate-glow text-functions-processing' :
-                      uploadFile.status === 'success' ? 'text-functions-success' :
-                      uploadFile.status === 'error' ? 'text-functions-delete' : ''
-                    }`}>
+                {uploadFiles.map((uploadFile, index) => <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg transition-all duration-300 hover:shadow-md animate-fade-in" style={{
+              animationDelay: `${index * 0.1}s`
+            }}>
+                    <div className={`transition-colors duration-300 ${uploadFile.status === 'uploading' ? 'animate-glow text-functions-processing' : uploadFile.status === 'success' ? 'text-functions-success' : uploadFile.status === 'error' ? 'text-functions-delete' : ''}`}>
                       <span className="material-icons md-18">
-                        {uploadFile.status === 'pending' ? 'description' :
-                         uploadFile.status === 'uploading' ? 'upload' :
-                         uploadFile.status === 'success' ? 'check_circle' :
-                         'error'}
+                        {uploadFile.status === 'pending' ? 'description' : uploadFile.status === 'uploading' ? 'upload' : uploadFile.status === 'success' ? 'check_circle' : 'error'}
                       </span>
                     </div> 
                     
@@ -335,54 +275,28 @@ export const FileUpload: React.FC = () => {
                         {formatFileSize(uploadFile.file.size)}
                       </p>
                       
-                      {uploadFile.status === 'uploading' && (
-                        <div className="mt-1 animate-pulse">
-                          <Progress 
-                            value={uploadFile.progress} 
-                            className="h-2"
-                            style={{
-                              background: 'linear-gradient(to right, hsl(var(--functions-processing)), hsl(var(--functions-processing-glow)))'
-                            }}
-                          />
-                        </div>
-                      )}
+                      {uploadFile.status === 'uploading' && <div className="mt-1 animate-pulse">
+                          <Progress value={uploadFile.progress} className="h-2" style={{
+                    background: 'linear-gradient(to right, hsl(var(--functions-processing)), hsl(var(--functions-processing-glow)))'
+                  }} />
+                        </div>}
                       
-                      {uploadFile.error && (
-                        <p className="text-xs font-body text-functions-delete mt-1 animate-fade-in">
+                      {uploadFile.error && <p className="text-xs font-body text-functions-delete mt-1 animate-fade-in">
                           {uploadFile.error}
-                        </p>
-                      )}
+                        </p>}
                     </div>
 
-                    <Badge variant={
-                      uploadFile.status === 'success' ? 'secondary' :
-                      uploadFile.status === 'error' ? 'destructive' :
-                      uploadFile.status === 'uploading' ? 'secondary' : 'outline'
-                    } className={`transition-all duration-300 ${
-                      uploadFile.status === 'success' ? 'bg-functions-success hover:bg-functions-successGlow animate-bounce-subtle' :
-                      uploadFile.status === 'uploading' ? 'bg-functions-processing animate-pulse' :
-                      uploadFile.status === 'error' ? 'bg-functions-delete' : ''
-                    } font-heading`}>
+                    <Badge variant={uploadFile.status === 'success' ? 'secondary' : uploadFile.status === 'error' ? 'destructive' : uploadFile.status === 'uploading' ? 'secondary' : 'outline'} className={`transition-all duration-300 ${uploadFile.status === 'success' ? 'bg-functions-success hover:bg-functions-successGlow animate-bounce-subtle' : uploadFile.status === 'uploading' ? 'bg-functions-processing animate-pulse' : uploadFile.status === 'error' ? 'bg-functions-delete' : ''} font-heading`}>
                       {uploadFile.status}
                     </Badge>
 
-                    {uploadFile.status === 'pending' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeFile(index)}
-                        className="hover:text-functions-delete hover:bg-functions-delete/10 transition-colors duration-300"
-                      >
+                    {uploadFile.status === 'pending' && <Button variant="ghost" size="sm" onClick={() => removeFile(index)} className="hover:text-functions-delete hover:bg-functions-delete/10 transition-colors duration-300">
                         <span className="material-icons md-18">close</span>
-                      </Button>
-                    )}
-                  </div>
-                ))}
+                      </Button>}
+                  </div>)}
               </div>
-            </div>
-          )}
+            </div>}
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
