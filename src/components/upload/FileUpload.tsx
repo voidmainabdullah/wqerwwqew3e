@@ -195,10 +195,8 @@ export const FileUpload: React.FC = () => {
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-heading font-bold tracking-tight">Upload Files</h1>
-          <p className="font-body text-muted-foreground">
-            Drag and drop files or click to select files to upload.
-          </p>
+          
+          
         </div>
         <Button asChild variant="outline" className="font-heading icon-text">
           <a href="/dashboard/files" className="flex items-center gap-2 bg-blue-800/30 border border-blue-600 ">
