@@ -55,7 +55,7 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  return <Sidebar className="border-r border-border/50 bg-zinc-900 h-screen flex flex-col">
+  return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-zinc-900">
       <SidebarHeader className="flex-shrink-0 px-3 py-3">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative">
@@ -73,7 +73,7 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 space-y-2">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-zinc-900">
         {/* Navigation */}
         <SidebarGroup className="w-60">
           <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
