@@ -296,7 +296,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </PopoverContent>
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
-      <a href="#" className="flex items-center gap-2">
+      <a href="#" className="flex items-center gap-2 bg-indigo- 700/90 border border-indigo-600 ">
         <ChatCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
         <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Feedback</span>
       </a>
@@ -337,7 +337,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               
               <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 bg-neutral-900 ">
                   <NotificationPopover />
                   <StoragePopover />
                   <HelpPopover />
@@ -366,11 +366,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         </Badge>}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" forceMount className="w-64 bg-card border-border shadow-lg">
+                  <DropdownMenuContent align="end" forceMount className="w-64 border-none shadow-lg border-c rounded-2xl bg-zinc-800">
                     <DropdownMenuLabel className="font-normal pb-3">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-12 w-12 ring-2 ring-border">
-                          <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold text-lg">
+                          <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-lg text-blue-700 font-extrabold">
                             {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
