@@ -465,7 +465,7 @@ export function FileManager() {
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
               <CardContent className="p-4 bg-zinc-800 rounded-2xl">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-blue-500/20 bg-blue-950">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-blue-500/20">
                     <span className="text-blue-600 dark:text-blue-400 font-heading font-bold text-xs">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>

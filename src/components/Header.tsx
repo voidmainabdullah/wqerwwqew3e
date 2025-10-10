@@ -46,7 +46,7 @@ const Header = () => {
   };
   const handleSignOut = async () => {
     await signOut();
-    setMobileMenuOpen(false);
+    setMobileMenuOpen(false); 
   };
   const getUserInitials = () => {
     if (user?.user_metadata?.display_name) {
@@ -99,10 +99,10 @@ const Header = () => {
           opacity: 0,
           x: -20
         }} animate={{
-          opacity: 1,
+          opacity: 1, 
           x: 0
         }} transition={{
-          duration: 0.6
+          duration: 0.6 
         }}>
             <div className="logo-float">
               <Logo />
@@ -273,7 +273,7 @@ const Header = () => {
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" forceMount className="w-56 bg-zinc-900 border-none ">
+                <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
