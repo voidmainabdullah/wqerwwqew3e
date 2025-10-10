@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive, Question, ChatCircle } from 'phosphor-react';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive, Question, ChatCircle, Crown } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -296,9 +296,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </PopoverContent>
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
-      <a href="#" className="flex items-center gap-2 bg-indigo- 700/90 border border-indigo-600 ">
-        <ChatCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
-        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Feedback</span>
+      <a href="#" className="flex items-center gap-2 bg-blue-800">
+        <Crown className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
+        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
       </a>
     </Button>;
   return <SidebarProvider>
