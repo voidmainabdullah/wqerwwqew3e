@@ -142,16 +142,17 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {/* Total Balance Card */}
-            <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 bg-gray-200">
+            <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 border border-slate-600/50 bg-slate-950 rounded-2xl">
               <div className="text-right">
-                <p className="text-slate-400 text-sm mb-1">Total Token's used</p>
+                <p className="text-slate-400 text-sm mb-1">Connect With Partener's </p>
               <p className="text-sm font-thick italic text-white/90">
  {Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 6.99).toLocaleString()} Tokens
               </p>
 
                 <div className="flex items-center justify-end gap-2 mt-2">
                   <TrendUp className="w-4 h-4 text-emerald-400" />
-                  <span className="text-emerald-400 text-sm">+12.5%</span>
+                  <span className="text-emerald-400 text-sm">
+                </span>
                 </div>
               </div>
             </div>
