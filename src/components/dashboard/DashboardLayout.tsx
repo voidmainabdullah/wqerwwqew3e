@@ -297,8 +297,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
       <a href="#" className="flex items-center gap-2 bg-blue-800">
-        <ChatCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
-        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Feedback</span>
+        <Crown className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
+        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
       </a>
     </Button>;
   return <SidebarProvider>
