@@ -296,7 +296,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </PopoverContent>
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
-      <a href="#" className="flex items-center gap-2">
+      <a href="#" className="flex items-center gap-2 bg-blue-800">
         <ChatCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
         <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Feedback</span>
       </a>
@@ -337,7 +337,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               
               <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 bg-neutral-900 ">
                   <NotificationPopover />
                   <StoragePopover />
                   <HelpPopover />
