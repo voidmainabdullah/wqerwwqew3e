@@ -105,7 +105,7 @@ export const Settings: React.FC = () => {
       });
     }
   };
-  return <div className="space-y-8 px-6 py-8 bg-neutral-700">
+  return <div className="space-y-8 px-6 py-8 bg-zinc-900">
       <div>
         <h1 className="text-4xl font-heading font-bold text-primary">Settings</h1>
         <p className="font-body text-muted-foreground">Manage your account settings and preferences with ease.</p>
