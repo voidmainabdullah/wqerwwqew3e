@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive,Cardholder, Headset, Dresser, Question,UserGear, ClockCounterClockwise, ChatCircle, Crown } from 'phosphor-react';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +20,7 @@ interface UserProfile {
   storage_limit: number;
   subscription_tier: string;
 }
-const navigation = [{
+const navigation = [{ 
   name: 'Dashboard',
   href: '/dashboard',
   icon: 'dashboard'
@@ -393,7 +393,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <UserGear className="h-4 w-4 text-primary" weight="duotone" />
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
                         <span className="font-body">Account</span>
                       </Link>
                     </DropdownMenuItem>
@@ -407,29 +407,29 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <ClockCounterClockwise className="h-4 w-4 text-primary" weight="duotone" />
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
                         <span className="font-body">Backup</span>
                       </Link>
                     </DropdownMenuItem>
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <Dresser className="h-4 w-4 text-primary" weight="duotone" />
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
                         <span className="font-body">Storage</span>
                       </Link>
                     </DropdownMenuItem>
  <DropdownMenuSeparator className="bg-border" />
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <Gear className="h-4 w-4 text-primary" weight="duotone" />
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
                         <span className="font-body">Settings</span>
                       </Link>
                     </DropdownMenuItem>
-                     
+                    
 
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
-                        <Headset className="h-4 w-4 text-primary" weight="duotone" />
+                        <Gear className="h-4 w-4 text-primary" weight="duotone" />
                         <span className="font-body">Support 24/7</span>
                       </Link>
                     </DropdownMenuItem>
@@ -438,7 +438,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                <DropdownMenuSeparator className="bg-border" />
                         <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                           <Link to="/subscription" className="flex items-center gap-3 py-2.5">
-                            <Cardholder className="h-4 w-4 text-amber-500" weight="duotone" />
+                            <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="duotone" />
                             <span className="font-body">Subscription</span>
                           </Link>
                         </DropdownMenuItem>
