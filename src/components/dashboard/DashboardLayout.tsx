@@ -9,7 +9,7 @@ import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, Pap
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/progress'; 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
 interface DashboardLayoutProps {
