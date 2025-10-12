@@ -59,9 +59,9 @@ const AppSidebar = () => {
       <SidebarHeader className="flex-shrink-0 px-3 py-3">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative">
-            <img src="/sky.png" alt="SkieShare Logo" className="h-10 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
+            <img src="/skie.png" alt="SkieShare Logo" className="h-10 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
             <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
-              <img src="/sky.png" alt="SkieShare Logo Glow" className="h-10 w-auto object-contain" />
+              <img src="/skie.png" alt="SkieShare Logo Glow" className="h-10 w-auto object-contain" />
             </div>
           </div>
           <div className="hidden xl:block">
@@ -314,7 +314,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 
                 {/* Mobile Logo */}
                 <div className="md:hidden flex items-center gap-3">
-                  <img src="/sky.png" alt="SkieShare Logo" className="h-8 w-auto object-contain" />
+                  <img src="/skie.png" alt="SkieShare Logo" className="h-8 w-auto object-contain" />
                 </div>
                 
                 {/* Desktop Welcome Message */}
