@@ -407,7 +407,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <ClockCounterClockwise className="h-4 w-4 text-primary" weight="duotone" />
+                        <ClockCounterClockwise className="h-4 w-4 text-primary " weight="fill" />
                         <span className="font-body">Backup</span>
                       </Link>
                     </DropdownMenuItem>
