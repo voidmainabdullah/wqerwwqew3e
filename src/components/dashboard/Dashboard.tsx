@@ -178,7 +178,7 @@ export const Dashboard: React.FC = () => {
       </div>
     </div>
           </div>
-        </div>
+  
        
 
 
@@ -199,6 +199,7 @@ export const Dashboard: React.FC = () => {
       </div>
     </div>
           </div>
+    
 
   
 
