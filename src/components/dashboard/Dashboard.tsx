@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Files, ShareNetwork, Download, Upload, Cloud, Crown, Activity, PaperPlaneTilt, Lightning, TrendUp, Users, Calendar, Eye, Shield, ChartLineUp, Database, Globe } from "phosphor-react";
+import { Files, ShareNetwork, Download, Upload, Cloud, Crown, Activity, PaperPlaneTilt, Lightning, TrendUp, Users, Calendar, Eye, Shield, ChartLineUp, ArrowUpRight, Database, Globe } from "phosphor-react";
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -141,23 +141,55 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-            {/* Total Balance Card */}
-            <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 bg-gray-200">
-              <div className="text-right">
-                <p className="text-slate-400 text-sm mb-1">Total Token's used</p>
-              <p className="text-sm font-thick italic text-white/90">
- {Math.round((stats?.storageUsed || 0) / (2048 * 2048) / 6.99).toLocaleString()} Tokens
-              </p>
+          {/* Total Balance Card */}
+<div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 bg-gray-200">
+  <div className="text-right">
+    <p className="text-slate-400 text-sm mb-4">Connect Your Account</p>
 
-                <div className="flex items-center justify-end gap-2 mt-2">
-                  <TrendUp className="w-4 h-4 text-emerald-400" />
-                  <span className="text-emerald-400 text-sm">+12.5%</span>
-                </div>
-              </div>
-            </div>
+    {/* Icons Row */}
+    <div className="flex flex-col gap-4 items-start">
+
+      {/* Drive */}
+      <div className="flex items-center gap-3">
+        <img
+          alt="Drive icon"
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciICB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiPjxwYXRoIGZpbGw9IiMxZTg4ZTUiIGQ9Ik0zOC41OSwzOWMtMC41MzUsMC45My0wLjI5OCwxLjY4LTEuMTk1LDIuMTk3QzM2LjQ5OCw0MS43MTUsMzUuNDY1LDQyLDM0LjM5LDQySDEzLjYxIGMtMS4wNzQsMC0yLjEwNi0wLjI4NS0zLjAwNC0wLjgwMkM5LjcwOCw0MC42ODEsOS45NDUsMzkuOTMsOS40MSwzOWw3LjY3LTloMTMuODRMMzguNTksMzl6Ii8+PHBhdGggZmlsbD0iI2ZiYzAyZCIgZD0iTTI3LjQ2Myw2Ljk5OWMxLjA3My0wLjAwMiwyLjEwNC0wLjcxNiwzLjAwMS0wLjE5OGMwLjg5NywwLjUxOSwxLjY2LDEuMjcsMi4xOTcsMi4yMDFsMTAuMzksMTcuOTk2IGMwLjUzNywwLjkzLDAuODA3LDEuOTY3LDAuODA4LDMuMDAyYzAuMDAxLDEuMDM3LTEuMjY3LDIuMDczLTEuODA2LDMuMDAxbC0xMS4xMjctMy4wMDVsLTYuOTI0LTExLjk5M0wyNy40NjMsNi45OTl6Ii8+PHBhdGggZmlsbD0iI2U1MzkzNSIgZD0iTTQzLjg2LDMwYzAsMS4wNC0wLjI3LDIuMDctMC44MSwzbC0zLjY3LDYuMzVjLTAuNTMsMC43OC0xLjIxLDEuNC0xLjk5LDEuODVMMzAuOTIsMzBINDMuODZ6Ii8+PHBhdGggZmlsbD0iIzRjYWY1MCIgZD0iTTUuOTQ3LDMzLjAwMWMtMC41MzgtMC45MjgtMS44MDYtMS45NjQtMS44MDYtM2MwLjAwMS0xLjAzNiwwLjI3LTIuMDczLDAuODA4LTMuMDA0bDEwLjM5LTE3Ljk5NiBjMC41MzctMC45MywxLjMtMS42ODIsMi4xOTYtMi4yYzAuODk3LTAuNTE5LDEuOTI5LDAuMTk1LDMuMDAyLDAuMTk3bDMuNDU5LDExLjAwOWwtNi45MjIsMTEuOTg5TDUuOTQ3LDMzLjAwMXoiLz48cGF0aCBmaWxsPSIjMTU2NWMwIiBkPSJNMTcuMDgsMzBsLTYuNDcsMTEuMmMtMC43OC0wLjQ1LTEuNDYtMS4wNy0xLjk5LTEuODVMNC45NSwzM2MtMC41NC0wLjkzLTAuODEtMS45Ni0wLjgxLTNIMTcuMDh6Ii8+PHBhdGggZmlsbD0iIzJlN2QzMiIgZD0iTTMwLjQ2LDYuOEwyNCwxOEwxNy41Myw2LjhjMC43OC0wLjQ1LDEuNjYtMC43MywyLjYtMC43OUwyNy40Niw2QzI4LjU0LDYsMjkuNTcsNi4yOCwzMC40Niw2Ljh6Ii8+PC9zdmc+"
+          className="w-10 h-10"
+        />
+        <span className="text-white flex items-center gap-2">
+          Drive
+           </span>
+            <ArrowUpRight className="w-3 h-3 text-blue-400" />
+      </div>
+    </div>
+        
+                       
+       
+
+
+      {/* GitHub */}
+      <div className="flex items-center gap-3">
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADv0lEQVR4nO2aSWgUQRSGvyguMS5oRBOiILjhKaC4gBejBz244kGMIJG45GD0IIIggoIXFU1yEMSzZ0XBJSoaA65xQ0QRjYKHuGXBJBpj1EjBG2mame7qmaruEeqDd5mp7v+97jdVb14VOBwOh8PhcNilBKgEGoBG4DXQCfwU65TPGmXMRrnmv6YY2AW0AINZ2gOgVu713zAFqAe+5RC433qBOqCMPGYYsBvoMRi439RDPQiMIM+YDTy1GLjfngCzyBPWW37rmawbWJd08FXAQALBp+wXUJNU8DsSDNxvaqWIPe1/5UHg3kxYG+eE1xOwXPVZDLRPNDLNCTNtBz88ZLafL+PmAUeBzwaC/gQcAebKvRcGjH0sy7E19gWIq2ALfONHAweA755xbcAd4CJwRuyifNbmGaeu2Q8U+e6pNDoC/NhrK/iygPRT1hxw7QxgjWYlVyZjpweMuR3gh/p5lmKB+pBUvUR8NIb4cty0YLFGbX+T+GgK8aXX9B+oWs3Jyj8H2KBAc3LdaVK0RUPwg0x6thkDfNTw574pwVLgT4iY+r6C+Fiq6dMkE2KVGk/7HPFzQcOvDSaEGjSE4nz7KZZp+KWaKNaXnK+2q6+AqrQ7xLfLJoRaQ0QekhyPQ3xTjdac6cijAihqdrabEOkPEblBcjSH+PbDhMhAiMgzkuNliG9qzyFnvmoUQEnxJcS3LhMibzSWm6nEzzQNv16ZELqmIVRNfvYkr5oQqtMQukL86LyYEyaENmkIKVtCflWBg7LJmjMlGn88UqvBWOwzDniu4c9vYLIp0fuaT1w1RQqxxyjglqYv90wKb9UUVfYCWIB5Fmms+17bYvrJd/gEzorI6TR7ASr9zgMrctzJVdm0Usrt3xGCb7eRicd8Io88Xd5y4F0GZ1Qv8bqsJqneftibPimp/iNC0F5T+wjGKZHKyt8HVJsgijkhjdNWyaQwVFvtfZaBD8pxG2OTn5+aNILK2fHyfbWhDcw9OTwAVSBZYwhwN43oYc+Y2jSZ0BfxQEN5lsHfER+tb452+oS7PVmgmCj9uO3AaunkRmFCFsF3iG+xUJGmT3DKcLsrSvD9MVei/06HpNuSMnGAaUSE4FWVupmEqEqTCW+BQ8Aq2cpeDmwDhka478gIbz6x4FMs1mhMDEbMjELN5S72tM/EbJmBgxzWqQFSjNKY7fPmmJx303JzQDb4DzoEUZThHl1yGNP6UpcLk6UUbc8hAwrTbHfX26zwbFAolWFTlgcW6qTtvUvqAofD4XA4HA4HBvkLVrrU+UoENrgAAAAASUVORK5CYII="
+          alt="GitHub"
+          className="w-10 h-10"
+        />
+        <span className="text-white flex items-center gap-2">
+          GitHub
+        </span>
+         
+                            <ArrowUpRight className="w-3 h-3 text-blue-400" />
+                          </div>
+</div>
           </div>
         </div>
-      </div>
+      
+      
+    </div>
+
+    </div>
+
+      
 
       <div className="p-8 space-y-8 bg-zinc-900">
         {/* Main Stats Grid */}
