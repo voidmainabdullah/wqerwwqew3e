@@ -189,7 +189,7 @@ export const Dashboard: React.FC = () => {
 </div>
       </div>
     </div>
-          </div>
+          
 
       {/* GitHub */}
       <div className="flex items-center gap-3">
