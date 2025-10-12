@@ -439,7 +439,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                           <Link to="/subscription" className="flex items-center gap-3 py-2.5">
                             <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="duotone" />
-                            <span className="font-body">Upgrade to Pro</span>
+                            <span className="font-body">Subscription</span>
                           </Link>
                         </DropdownMenuItem>
                       </>}
