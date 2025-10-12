@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -429,7 +429,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
-                        <Gear className="h-4 w-4 text-primary" weight="duotone" />
+                        <Headset className="h-4 w-4 text-primary" weight="duotone" />
                         <span className="font-body">Support 24/7</span>
                       </Link>
                     </DropdownMenuItem>
