@@ -65,7 +65,7 @@ const AppSidebar = () => {
             </div>
           </div>
           <div className="hidden xl:block">
-            <span className="font-heading font-bold text-base bg-gradient-to-r from-white to-emerald-400 bg-clip-text text-transparent">
+            <span className="font-heading font-bold text-base bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
               SkieShare
             </span>
             <p className="text-xs text-muted-foreground font-body">Secure Transfer</p>
