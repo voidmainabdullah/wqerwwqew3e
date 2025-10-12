@@ -425,7 +425,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         <span className="font-body">Settings</span>
                       </Link>
                     </DropdownMenuItem>
-                    
+                     
 
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
