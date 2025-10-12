@@ -8,7 +8,7 @@ const Logo = () => {
       <div className="relative">
         {/* Main Logo */}
         <img 
-          src="/sky.png" 
+          src="/skie.png" 
           alt="SkieShare Logo" 
           className={`h-10 w-auto sm:h-12 md:h-14 lg:h-16 object-contain transition-all duration-500 group-hover:scale-110 ${
             actualTheme === 'light' 
@@ -24,7 +24,7 @@ const Logo = () => {
             : 'opacity-0 group-hover:opacity-30'
         }`}>
           <img 
-            src="/sky.png" 
+            src="/skie.png" 
             alt="SkieShare Logo Glow" 
             className="h-10 w-auto sm:h-12 md:h-14 lg:h-16 object-contain" 
           />
