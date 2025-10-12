@@ -182,7 +182,7 @@ export const Dashboard: React.FC = () => {
        <img alt="svgImg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciICB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiPjxwYXRoIGZpbGw9IiMwODQ1OTMiIGQ9Ik0yNC41IDhBMTQuNSAxNC41IDAgMSAwIDI0LjUgMzdBMTQuNSAxNC41IDAgMSAwIDI0LjUgOFoiLz48cGF0aCBmaWxsPSIjMDU1NmFiIiBkPSJNMTYuMTU1LDE1Ljk3MmMtMS4zMi0wLjUwNS0yLjc1My0wLjc4MS00LjI1LTAuNzgxQzUuMzMsMTUuMTkxLDAsMjAuNTIxLDAsMjcuMDk2IGMwLDIuNDc2LDAuNzU3LDQuNzc0LDIuMDUsNi42NzhjMC4wNjEtMC4wMjYsMTYuNDQ1LTYuODg5LDI2LjQwNi0xMC44ODhDMjIuOTUyLDE5LjU2OCwxNy45MDMsMTYuNjQxLDE2LjE1NSwxNS45NzJ6Ii8+PHBhdGggZmlsbD0iIzE4YjBmZiIgZD0iTTQ4LDI5LjM3M2MwLTUuMzE3LTQuMzEtOS42MjctOS42MjctOS42MjdjLTAuOTk3LDAtMS45NTgsMC4xNTItMi44NjMsMC40MzMgYy0wLjk5NiwwLjMxLTMuNjUyLDEuMzQyLTcuMDU0LDIuNzA4YzguMzc3LDUuMDUsMTcuNzksMTAuOTk2LDE4LjI1MiwxMS4yODhDNDcuNTI1LDMyLjc2LDQ4LDMxLjEyMyw0OCwyOS4zNzN6Ii8+PHBhdGggZmlsbD0iIzJjY2VmZiIgZD0iTTQ2LjcwOSwzNC4xNzVjLTAuNDYzLTAuMjkyLTkuODc1LTYuMjM4LTE4LjI1Mi0xMS4yODhDMTguNDk1LDI2Ljg4NSwyLjExMSwzMy43NDgsMi4wNSwzMy43NzQgQzIuNDY3LDM0LjM4OCw1LjYyNywzOSwxMS45MDQsMzljNS4wMywwLDE2LjE3NiwwLDI2LjM1NCwwQzQzLjY2OSwzOSw0Ni4xNDgsMzUuMTQ2LDQ2LjcwOSwzNC4xNzV6Ii8+PC9zdmc+" className="w-10 h-10"/>
      <div className="flex items-center gap-2 text-white cursor-pointer group">
   <span className="relative flex items-center gap-2 transition-transform duration-300 group-hover:scale-110">
-    Onedrive
+    Dropbox
     <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
   </span>
   <ArrowUpRight className="w-3 h-3 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
