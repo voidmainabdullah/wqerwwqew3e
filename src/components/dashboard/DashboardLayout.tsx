@@ -418,7 +418,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         <span className="font-body">Storage</span>
                       </Link>
                     </DropdownMenuItem>
-
+ <DropdownMenuSeparator className="bg-border" />
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
@@ -435,7 +435,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     </DropdownMenuItem>
                     
                     {profile?.subscription_tier !== 'pro' && <>
-                        <DropdownMenuSeparator className="bg-border" />
+               <DropdownMenuSeparator className="bg-border" />
                         <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                           <Link to="/subscription" className="flex items-center gap-3 py-2.5">
                             <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="duotone" />
