@@ -159,7 +159,7 @@ export const Dashboard: React.FC = () => {
         <span className="text-white flex items-center gap-2">
           Drive
            </span>
-            <ArrowUpRight className="w-3 h-3 text-blue-400" />
+            <ArrowUpRight className="w-3 h-3 text-blue-400 hover:w-5" />
       </div>
     </div>
         
