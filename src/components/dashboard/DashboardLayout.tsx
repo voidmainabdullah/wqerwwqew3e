@@ -394,35 +394,35 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
-                        <span className="font-body">Analytics</span>
+                        <span className="font-body">Account</span>
                       </Link>
                     </DropdownMenuItem>
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
-                        <span className="font-body">Analytics</span>
+                        <span className="font-body">Analytic</span>
                       </Link>
                     </DropdownMenuItem>
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
-                        <span className="font-body">Analytics</span>
+                        <span className="font-body">Backup</span>
                       </Link>
                     </DropdownMenuItem>
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
-                        <span className="font-body">Analytics</span>
+                        <span className="font-body">Storage</span>
                       </Link>
                     </DropdownMenuItem>
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
-                        <span className="font-body">Analytics</span>
+                        <span className="font-body">Settings</span>
                       </Link>
                     </DropdownMenuItem>
                     
@@ -430,7 +430,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
                         <Gear className="h-4 w-4 text-primary" weight="duotone" />
-                        <span className="font-body">Settings</span>
+                        <span className="font-body">Support 24/7</span>
                       </Link>
                     </DropdownMenuItem>
                     
