@@ -421,7 +421,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
  <DropdownMenuSeparator className="bg-border" />
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
+                        <Gear className="h-4 w-4 text-primary" weight="duotone" />
                         <span className="font-body">Settings</span>
                       </Link>
                     </DropdownMenuItem>
