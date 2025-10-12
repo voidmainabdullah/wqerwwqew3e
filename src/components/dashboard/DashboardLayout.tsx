@@ -181,7 +181,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent transition-colors">
-          <HardDrive className="h-5 w-5 text-muted-foreground" weight="duotone" />
+          <HardDrive className="h-5 w-5 text-muted-foreground" weight="fill" />
           {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
               <span className="text-[10px] text-warning-foreground font-bold">!</span>
             </div>} 
@@ -191,7 +191,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <HardDrive className="h-5 w-5 text-primary" weight="duotone" />
+              <HardDrive className="h-5 w-5 text-primary" weight="fill" />
               <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
             </div>
             {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
@@ -239,20 +239,20 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const HelpPopover = () => <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent transition-colors">
-          <Question className="h-5 w-5 text-muted-foreground" weight="duotone" />
+          <Question className="h-5 w-5 text-muted-foreground" weight="fill" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72 p-0" align="end">
         <div className="p-4 space-y-4">
           <div className="flex items-center gap-2">
-            <Lifebuoy className="h-5 w-5 text-primary" weight="duotone" />
+            <Lifebuoy className="h-5 w-5 text-primary" weight="fill" />
             <h3 className="text-base font-heading font-semibold text-foreground">Help & Support</h3>
           </div>
           
           <div className="space-y-1">
             <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
               <a href="#" className="flex items-start gap-3">
-                <Info className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" weight="duotone" />
+                <Info className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" weight="fill" />
                 <div className="text-left flex-1">
                   <p className="font-heading font-semibold text-sm text-foreground">Documentation</p>
                   <p className="text-xs text-muted-foreground font-body">Learn how to use the platform</p>
@@ -262,7 +262,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             
             <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
               <a href="#" className="flex items-start gap-3">
-                <Lifebuoy className="h-5 w-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" weight="duotone" />
+                <Lifebuoy className="h-5 w-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" weight="fill" />
                 <div className="text-left flex-1">
                   <p className="font-heading font-semibold text-sm text-foreground">Support Center</p>
                   <p className="text-xs text-muted-foreground font-body">Get help from our team</p>
@@ -272,7 +272,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             
             <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
               <a href="#" className="flex items-start gap-3">
-                <Question className="h-5 w-5 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" weight="duotone" />
+                <Question className="h-5 w-5 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" weight="fill" />
                 <div className="text-left flex-1">
                   <p className="font-heading font-semibold text-sm text-foreground">FAQ</p>
                   <p className="text-xs text-muted-foreground font-body">Common questions</p>
@@ -283,7 +283,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <div className="pt-2 border-t border-border">
               <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
                 <a href="#" className="flex items-start gap-3">
-                  <ChatCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" weight="duotone" />
+                  <ChatCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" weight="fill" />
                   <div className="text-left flex-1">
                     <p className="font-heading font-semibold text-sm text-foreground">Live Chat</p>
                     <p className="text-xs text-muted-foreground font-body">Chat with our support team</p>
@@ -297,7 +297,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
       <a href="#" className="flex items-center gap-2 bg-blue-800">
-        <Crown className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="duotone" />
+        <Crown className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" weight="fill" />
         <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
       </a>
     </Button>;
@@ -393,14 +393,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <UserGear className="h-4 w-4 text-primary" weight="duotone" />
+                        <UserGear className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Account</span>
                       </Link>
                     </DropdownMenuItem>
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
+                        <ChartBar className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Analytic</span>
                       </Link>
                     </DropdownMenuItem>
@@ -414,14 +414,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <HardDrives className="h-4 w-4 text-primary" weight="duotone" />
+                        <HardDrives className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Storage</span>
                       </Link>
                     </DropdownMenuItem>
  <DropdownMenuSeparator className="bg-border" />
                      <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <Gear className="h-4 w-4 text-primary" weight="duotone" />
+                        <Gear className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Settings</span>
                       </Link>
                     </DropdownMenuItem>
@@ -429,7 +429,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
-                        <Headset className="h-4 w-4 text-primary" weight="duotone" />
+                        <Headset className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Support 24/7</span>
                       </Link>
                     </DropdownMenuItem>
@@ -438,7 +438,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                <DropdownMenuSeparator className="bg-border" />
                         <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                           <Link to="/subscription" className="flex items-center gap-3 py-2.5">
-                            <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="duotone" />
+                            <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="fill" />
                             <span className="font-body">Subscription</span>
                           </Link>
                         </DropdownMenuItem>
@@ -446,7 +446,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     
                     <DropdownMenuSeparator className="bg-border" />
                     <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer hover:bg-destructive/10 focus:bg-destructive/10 text-destructive">
-                      <SignOut className="mr-3 h-4 w-4" weight="duotone" />
+                      <SignOut className="mr-3 h-4 w-4" weight="fill" />
                       <span className="font-body">Sign out</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
