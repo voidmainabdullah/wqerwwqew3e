@@ -177,13 +177,15 @@ export const Dashboard: React.FC = () => {
           alt="GitHub"
           className="w-10 h-10"
         />
-        <span className="text-white flex items-center gap-2">
-          GitHub
-        </span>
-         
-                            <ArrowUpRight className="w-3 h-3 text-blue-400" />
-                          </div>
+          <div className="flex items-center gap-2 text-white cursor-pointer group">
+  <span className="relative flex items-center gap-2 transition-transform duration-300 group-hover:scale-110">
+    Drive
+    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+  </span>
+  <ArrowUpRight className="w-3 h-3 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
 </div>
+      </div>
+    </div>
           </div>
         </div>
       
