@@ -43,8 +43,8 @@ const Logo = () => {
         <div className="flex flex-col">
           <span className={`text-xl xl:text-2xl font-heading font-bold tracking-tight transition-all duration-300 group-hover:scale-105 ${
             actualTheme === 'light'
-              ? 'bg-gradient-to-r from-slate-800 via-blue-600 to-slate-800 bg-clip-text text-transparent'
-              : 'bg-gradient-to-r from-white via-blue-400 to-white bg-clip-text text-transparent'
+              ? 'bg-gradient-to-r from-white/80 via-white/60 to-white bg-clip-text text-transparent'
+              : 'bg-gradient-to-r from-white/80 via-white/60 to-white bg-clip-text text-transparent'
           }`}>
             SkieShare
           </span>
