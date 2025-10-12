@@ -398,6 +398,35 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       </Link>
                     </DropdownMenuItem>
 
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
+                        <span className="font-body">Analytics</span>
+                      </Link>
+                    </DropdownMenuItem>
+
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
+                        <span className="font-body">Analytics</span>
+                      </Link>
+                    </DropdownMenuItem>
+
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
+                        <span className="font-body">Analytics</span>
+                      </Link>
+                    </DropdownMenuItem>
+
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <ChartBar className="h-4 w-4 text-primary" weight="duotone" />
+                        <span className="font-body">Analytics</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    
+
                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
                       <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
                         <Gear className="h-4 w-4 text-primary" weight="duotone" />
