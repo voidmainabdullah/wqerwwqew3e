@@ -141,73 +141,48 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-      {/* Total Balance Card */}
-<div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 rounded-3xl p-5 sm:p-7 border border-slate-600/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
+      {/* Interactive Video Balance Card */}
+<div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 rounded-3xl border border-slate-600/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-blue-500/20">
 
-  {/* Responsive YouTube Video Background */}
-  <div className="absolute inset-0 -z-0 overflow-hidden rounded-3xl">
+  {/* Background Video */}
+  <div className="absolute inset-0 overflow-hidden rounded-3xl">
     <iframe
-      className="w-full h-full object-cover scale-105 opacity-40"
+      className="w-full h-full object-cover scale-105 opacity-80 transition-all duration-500 group-hover:opacity-100"
       src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0"
-      title="Background Video"
+      title="Ad Video"
       frameBorder="0"
       allow="autoplay; encrypted-media"
       allowFullScreen
     ></iframe>
-    <div className="absolute inset-0 bg-gradient-to-br from-slate-900/70 via-slate-900/60 to-slate-800/70"></div>
+    {/* Soft Gradient Overlay for Glow */}
+    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/30 to-slate-800/60 group-hover:from-transparent group-hover:to-transparent transition-all duration-500"></div>
   </div>
 
-  {/* Content */}
-  <div className="relative z-10 text-right">
-    <p className="text-slate-300 text-sm mb-4 font-medium tracking-wide flex justify-between items-center">
-      Connect Your Account
-      {/* Dropdown Toggle for Mobile */}
-      <button
-        className="sm:hidden text-slate-300 hover:text-blue-400 transition"
-        onClick={() => {
-          const el = document.getElementById("videoDropdown");
-          el.classList.toggle("hidden");
-          el.classList.toggle("animate-fadeIn");
-        }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-    </p>
+  {/* Hover Overlay */}
+  <a
+    href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="relative z-10 flex flex-col items-center justify-center text-center py-20 sm:py-28 transition-all duration-500"
+  >
+    <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 text-2xl font-bold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
+      Watch Now: Cloud Sync Tutorial
+    </h3>
+  </a>
 
-    {/* Dropdown or Video Info (Optional) */}
-    <div
-      id="videoDropdown"
-      className="hidden sm:flex flex-col sm:flex-row gap-4 items-start justify-start"
-    >
-      <div className="w-full bg-slate-800/70 rounded-xl p-4 backdrop-blur-md shadow-md text-left">
-        <h3 className="text-white font-semibold text-base mb-1">File Sharing Video Tutorial</h3>
-        <p className="text-slate-400 text-sm leading-relaxed">
-          Watch this short demo to see how you can easily connect your account and share files securely.
-        </p>
-      </div>
-    </div>
-  </div>
+  {/* Animated Glow Orbs */}
+  <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/30 rounded-full blur-3xl animate-pulse-slow"></div>
+  <div className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-400/20 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
 </div>
-          </div>
-        </div>
-      </div>
 
 <style>
 {`
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.9; }
 }
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
 }
 `}
 </style>
