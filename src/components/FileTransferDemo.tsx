@@ -505,7 +505,7 @@ const FileTransferDemo = () => {
               <span className="text-sm font-body text-muted-foreground">99.9% uptime</span>
             </div>
           </div> 
-        </motion.div>   
+        </motion.div>    
       </div>
     </section>;
 };
