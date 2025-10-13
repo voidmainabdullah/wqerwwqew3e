@@ -141,11 +141,45 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-      {/* Ultra Professional Ad Layout */}
+      {/* Professional Header */}
+<div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm rounded-full">
+  <div className="px-8 py-6 rounded-none bg-zinc-900">
+    <div className="flex items-center justify-between">
+      {/* Dashboard Title - Hidden on Mobile */}
+      <div className="hidden md:block space-y-1">
+        <div className="flex items-center gap-4">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+          <Badge
+            className={`px-3 py-1 text-sm font-medium ${
+              isPro
+                ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0"
+                : "bg-slate-700 text-slate-300 border-slate-600"
+            }`}
+          >
+            {isPro ? (
+              <>
+                <Crown className="w-4 h-4 mr-1" /> Pro +
+              </>
+            ) : (
+              "Basic"
+            )}
+          </Badge>
+        </div>
+        <p className="text-slate-400">
+          Welcome back, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Ultra Professional Ad Layout */}
 <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4">
 
-  {/* Interactive Video Balance Card (Neutral Dark Theme) */}
-  <div className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-neutral-500/20">
+  {/* Interactive Video Balance Card (Slightly Smaller Height) */}
+  <div className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-neutral-500/20 h-[360px] md:h-[420px]">
 
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
@@ -207,7 +241,7 @@ export const Dashboard: React.FC = () => {
       href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       target="_blank"
       rel="noopener noreferrer"
-      className="relative z-10 flex flex-col items-center justify-center text-center py-24 sm:py-32 transition-all duration-500"
+      className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500"
     >
       <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-2xl font-bold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
         Cloud Sync Pro – Lightning Fast Uploads
@@ -241,8 +275,8 @@ export const Dashboard: React.FC = () => {
     <div className="absolute bottom-0 left-0 w-40 h-40 bg-neutral-400/10 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
   </div>
 
-  {/* Right Side Ad Preview Panel */}
-  <div className="relative flex flex-col justify-between bg-gradient-to-br from-neutral-900 via-neutral-850 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-xl w-full md:w-1/3 p-6 hover:shadow-neutral-500/20 transition-all duration-500">
+  {/* Right Side Ad Preview Panel — Hidden on Mobile */}
+  <div className="hidden md:flex relative flex-col justify-between bg-gradient-to-br from-neutral-900 via-neutral-850 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-xl w-full md:w-1/3 p-6 hover:shadow-neutral-500/20 transition-all duration-500">
 
     {/* Ad Image */}
     <div className="relative overflow-hidden rounded-2xl mb-5">
@@ -256,9 +290,7 @@ export const Dashboard: React.FC = () => {
 
     {/* Ad Content */}
     <div className="text-left space-y-3">
-      <h4 className="text-gray-100 text-lg font-semibold">
-        Ultra Cloud Storage
-      </h4>
+      <h4 className="text-gray-100 text-lg font-semibold">Ultra Cloud Storage</h4>
       <p className="text-gray-400 text-sm leading-relaxed">
         Experience next-gen performance with secure and lightning-fast cloud syncing for professionals.
       </p>
@@ -287,9 +319,6 @@ export const Dashboard: React.FC = () => {
     </div>
   </div>
 </div>
-          </div>
-        </div>
-      </div>
 
 <style>
 {`
