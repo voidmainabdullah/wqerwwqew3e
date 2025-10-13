@@ -175,6 +175,8 @@ export const Dashboard: React.FC = () => {
   <div className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-400/20 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
 </div>
           </div>
+        </div>
+      </div>
 
 <style>
 {`
