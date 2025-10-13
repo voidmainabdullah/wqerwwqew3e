@@ -164,7 +164,7 @@ export const Dashboard: React.FC = () => {
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe
         className="w-full h-full object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100"
-        src="https://youtu.be/XgHljqs1ItM?si=W3gPYrXlX63CMlfG"
+        src="https://youtu.be/XgHljqs1ItM"
         title="Ad Video"
         frameBorder="0"
         allow="autoplay; encrypted-media"
