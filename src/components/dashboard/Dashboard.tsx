@@ -141,85 +141,61 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-        {/* Total Balance Card */}
-<div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 border border-slate-600/50 shadow-xl">
-  <div className="text-right">
-    <p className="text-slate-400 text-sm mb-4">Connect Your Account</p>
+      {/* Total Balance Card */}
+<div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 rounded-3xl p-5 sm:p-7 border border-slate-600/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
+
+  {/* 3D Floating Cloud Effect */}
+  <div className="absolute inset-0">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" className="w-full h-full opacity-[0.18] blur-2xl">
+      <defs>
+        <radialGradient id="softCloud" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#7dd3fc" />
+          <stop offset="70%" stopColor="#3b82f6" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#1e3a8a" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="300" cy="280" rx="220" ry="140" fill="url(#softCloud)" />
+      <ellipse cx="180" cy="300" rx="150" ry="90" fill="url(#softCloud)" />
+      <ellipse cx="420" cy="300" rx="180" ry="100" fill="url(#softCloud)" />
+    </svg>
+  </div>
+
+  {/* Content */}
+  <div className="relative z-10 text-right">
+    <p className="text-slate-300 text-sm mb-4 font-medium tracking-wide">
+      Connect Your Account
+    </p>
 
     {/* Icons Row */}
-    <div className="flex flex-col sm:flex-row sm:flex-wrap gap-6 sm:gap-8 items-start sm:items-center justify-start">
-
-      {/* Drive */}
-      <div className="flex items-center gap-3">
-        <img
-          alt="Drive"
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciICB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiPjxwYXRoIGZpbGw9IiMxZTg4ZTUiIGQ9Ik0zOC41OSwzOWMtMC41MzUsMC45My0wLjI5OCwxLjY4LTEuMTk1LDIuMTk3QzM2LjQ5OCw0MS43MTUsMzUuNDY1LDQyLDM0LjM5LDQySDEzLjYxIGMtMS4wNzQsMC0yLjEwNi0wLjI4NS0zLjAwNC0wLjgwMkM5LjcwOCw0MC42ODEsOS45NDUsMzkuOTMsOS40MSwzOWw3LjY3LTloMTMuODRMMzguNTksMzl6Ii8+PHBhdGggZmlsbD0iI2ZiYzAyZCIgZD0iTTI3LjQ2Myw2Ljk5OWMxLjA3My0wLjAwMiwyLjEwNC0wLjcxNiwzLjAwMS0wLjE5OGMwLjg5NywwLjUxOSwxLjY2LDEuMjcsMi4xOTcsMi4yMDFsMTAuMzksMTcuOTk2IGMwLjUzNywwLjkzLDAuODA3LDEuOTY3LDAuODA4LDMuMDAyYzAuMDAxLDEuMDM3LTEuMjY3LDIuMDczLTEuODA2LDMuMDAxbC0xMS4xMjctMy4wMDVsLTYuOTI0LTExLjk5M0wyNy40NjMsNi45OTl6Ii8+PHBhdGggZmlsbD0iI2U1MzkzNSIgZD0iTTQzLjg2LDMwYzAsMS4wNC0wLjI3LDIuMDctMC44MSwzbC0zLjY3LDYuMzVjLTAuNTMsMC43OC0xLjIxLDEuNC0xLjk5LDEuODVMMzAuOTIsMzBINDMuODZ6Ii8+PHBhdGggZmlsbD0iIzRjYWY1MCIgZD0iTTUuOTQ3LDMzLjAwMWMtMC41MzgtMC45MjgtMS44MDYtMS45NjQtMS44MDYtM2MwLjAwMS0xLjAzNiwwLjI3LTIuMDczLDAuODA4LTMuMDA0bDEwLjM5LTE3Ljk5NiBjMC41MzctMC45MywxLjMtMS42ODIsMi4xOTYtMi4yYzAuODk3LTAuNTE5LDEuOTI5LDAuMTk1LDMuMDAyLDAuMTk3bDMuNDU5LDExLjAwOWwtNi45MjIsMTEuOTg5TDUuOTQ3LDMzLjAwMXoiLz48cGF0aCBmaWxsPSIjMTU2NWMwIiBkPSJNMTcuMDgsMzBsLTYuNDcsMTEuMmMtMC43OC0wLjQ1LTEuNDYtMS4wNy0xLjk5LTEuODVMNC45NSwzM2MtMC41NC0wLjkzLTAuODEtMS45Ni0wLjgxLTNIMTcuMDh6Ii8+PHBhdGggZmlsbD0iIzJlN2QzMiIgZD0iTTMwLjQ2LDYuOEwyNCwxOEwxNy41Myw2LjhjMC43OC0wLjQ1LDEuNjYtMC43MywyLjYtMC43OUwyNy40Niw2QzI4LjU0LDYsMjkuNTcsNi4yOCwzMC40Niw2Ljh6Ii8+PC9zdmc+" 
-          className="w-10 h-10"
-        />
-        <div className="flex items-center gap-2 text-white cursor-pointer group">
-          <span className="relative flex items-center gap-2 transition-transform duration-300 group-hover:scale-110">
-            Drive
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-          </span>
-          <ArrowUpRight className="w-3 h-3 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+    <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6 items-start sm:items-center justify-start">
+      {[
+        { name: "Drive", src: "https://www.svgrepo.com/show/355037/google-drive.svg" },
+        { name: "OneDrive", src: "https://www.svgrepo.com/show/448252/onedrive.svg" },
+        { name: "Dropbox", src: "https://www.svgrepo.com/show/448221/dropbox.svg" },
+        { name: "GitHub", src: "https://www.svgrepo.com/show/452210/github.svg" },
+      ].map((platform, i) => (
+        <div
+          key={i}
+          className="flex items-center justify-between gap-3 sm:gap-4 bg-slate-800/60 hover:bg-slate-700/60 rounded-xl px-3 py-2 sm:px-4 sm:py-3 transition-all duration-300 backdrop-blur-sm hover:scale-[1.03]"
+        >
+          <img
+            alt={platform.name}
+            src={platform.src}
+            className="w-8 h-8 sm:w-10 sm:h-10 object-contain drop-shadow-md"
+          />
+          <div className="flex items-center gap-2 text-white cursor-pointer group">
+            <span className="relative flex items-center text-sm sm:text-base font-medium tracking-wide group-hover:text-blue-400 transition-colors duration-300">
+              {platform.name}
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+            </span>
+            <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </div>
         </div>
-      </div>
-
-      {/* OneDrive */}
-      <div className="flex items-center gap-3">
-        <img
-          alt="OneDrive"
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciICB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiPjxwYXRoIGZpbGw9IiMwODQ1OTMiIGQ9Ik0yNC41IDhBMTQuNSAxNC41IDAgMSAwIDI0LjUgMzdBMTQuNSAxNC41IDAgMSAwIDI0LjUgOFoiLz48cGF0aCBmaWxsPSIjMDU1NmFiIiBkPSJNMTYuMTU1LDE1Ljk3MmMtMS4zMi0wLjUwNS0yLjc1My0wLjc4MS00LjI1LTAuNzgxQzUuMzMsMTUuMTkxLDAsMjAuNTIxLDAsMjcuMDk2IGMwLDIuNDc2LDAuNzU3LDQuNzc0LDIuMDUsNi42NzhjMC4wNjEtMC4wMjYsMTYuNDQ1LTYuODg5LDI2LjQwNi0xMC44ODhDMjIuOTUyLDE5LjU2OCwxNy45MDMsMTYuNjQxLDE2LjE1NSwxNS45NzJ6Ii8+PHBhdGggZmlsbD0iIzE4YjBmZiIgZD0iTTQ4LDI5LjM3M2MwLTUuMzE3LTQuMzEtOS42MjctOS42MjctOS42MjdjLTAuOTk3LDAtMS45NTgsMC4xNTItMi44NjMsMC40MzMgYy0wLjk5NiwwLjMxLTMuNjUyLDEuMzQyLTcuMDU0LDIuNzA4YzguMzc3LDUuMDUsMTcuNzksMTAuOTk2LDE4LjI1MiwxMS4yODhDNDcuNTI1LDMyLjc2LDQ4LDMxLjEyMyw0OCwyOS4zNzN6Ii8+PHBhdGggZmlsbD0iIzJjY2VmZiIgZD0iTTQ2LjcwOSwzNC4xNzVjLTAuNDYzLTAuMjkyLTkuODc1LTYuMjM4LTE4LjI1Mi0xMS4yODhDMTguNDk1LDI2Ljg4NSwyLjExMSwzMy43NDgsMi4wNSwzMy43NzQgQzIuNDY3LDM0LjM4OCw1LjYyNywzOSwxMS45MDQsMzljNS4wMywwLDE2LjE3NiwwLDI2LjM1NCwwQzQzLjY2OSwzOSw0Ni4xNDgsMzUuMTQ2LDQ2LjcwOSwzNC4xNzV6Ii8+PC9zdmc+"
-          className="w-10 h-10"
-        />
-        <div className="flex items-center gap-2 text-white cursor-pointer group">
-          <span className="relative flex items-center gap-2 transition-transform duration-300 group-hover:scale-110">
-            OneDrive
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-          </span>
-          <ArrowUpRight className="w-3 h-3 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-        </div>
-      </div>
-
-      {/* Dropbox */}
-      <div className="flex items-center gap-3">
-        <img
-          alt="Dropbox"
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciICB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiPjxwYXRoIGZpbGw9IiMwODQ1OTMiIGQ9Ik0yNC41IDhBMTQuNSAxNC41IDAgMSAwIDI0LjUgMzdBMTQuNSAxNC41IDAgMSAwIDI0LjUgOFoiLz48cGF0aCBmaWxsPSIjMDU1NmFiIiBkPSJNMTYuMTU1LDE1Ljk3MmMtMS4zMi0wLjUwNS0yLjc1My0wLjc4MS00LjI1LTAuNzgxQzUuMzMsMTUuMTkxLDAsMjAuNTIxLDAsMjcuMDk2IGMwLDIuNDc2LDAuNzU3LDQuNzc0LDIuMDUsNi42NzhjMC4wNjEtMC4wMjYsMTYuNDQ1LTYuODg5LDI2LjQwNi0xMC44ODhDMjIuOTUyLDE5LjU2OCwxNy45MDMsMTYuNjQxLDE2LjE1NSwxNS45NzJ6Ii8+PHBhdGggZmlsbD0iIzE4YjBmZiIgZD0iTTQ4LDI5LjM3M2MwLTUuMzE3LTQuMzEtOS42MjctOS42MjctOS42MjdjLTAuOTk3LDAtMS45NTgsMC4xNTItMi44NjMsMC40MzMgYy0wLjk5NiwwLjMxLTMuNjUyLDEuMzQyLTcuMDU0LDIuNzA4YzguMzc3LDUuMDUsMTcuNzksMTAuOTk2LDE4LjI1MiwxMS4yODhDNDcuNTI1LDMyLjc2LDQ4LDMxLjEyMyw0OCwyOS4zNzN6Ii8+PHBhdGggZmlsbD0iIzJjY2VmZiIgZD0iTTQ2LjcwOSwzNC4xNzVjLTAuNDYzLTAuMjkyLTkuODc1LTYuMjM4LTE4LjI1Mi0xMS4yODhDMTguNDk1LDI2Ljg4NSwyLjExMSwzMy43NDgsMi4wNSwzMy43NzQgQzIuNDY3LDM0LjM4OCw1LjYyNywzOSwxMS45MDQsMzljNS4wMywwLDE2LjE3NiwwLDI2LjM1NCwwQzQzLjY2OSwzOSw0Ni4xNDgsMzUuMTQ2LDQ2LjcwOSwzNC4xNzV6Ii8+PC9zdmc+"
-          className="w-10 h-10"
-        />
-        <div className="flex items-center gap-2 text-white cursor-pointer group">
-          <span className="relative flex items-center gap-2 transition-transform duration-300 group-hover:scale-110">
-            Dropbox
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-          </span>
-          <ArrowUpRight className="w-3 h-3 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-        </div>
-      </div>
-
-      {/* GitHub */}
-      <div className="flex items-center gap-3">
-        <img
-          alt="GitHub"
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADv0lEQVR4nO2aSWgUQRSGvyguMS5oRBOiILjhKaC4gBejBz244kGMIJG45GD0IIIggoIXFU1yEMSzZ0XBJSoaA65xQ0QRjYKHuGXBJBpj1EjBG2mame7qmaruEeqDd5mp7v+97jdVb14VOBwOh8PhcNilBKgEGoBG4DXQCfwU65TPGmXMRrnmv6YY2AW0AINZ2gOgVu713zAFqAe+5RC433qBOqCMPGYYsBvoMRi439RDPQiMIM+YDTy1GLjfngCzyBPWW37rmawbWJd08FXAQALBp+wXUJNU8DsSDNxvaqWIPe1/5UHg3kxYG+eE1xOwXPVZDLRPNDLNCTNtBz88ZLafL+PmAUeBzwaC/gQcAebKvRcGjH0sy7E19gWIq2ALfONHAweA755xbcAd4CJwRuyifNbmGaeu2Q8U+e6pNDoC/NhrK/iygPRT1hxw7QxgjWYlVyZjpweMuR3gh/p5lmKB+pBUvUR8NIb4cty0YLFGbX+T+GgK8aXX9B+oWs3Jyj8H2KBAc3LdaVK0RUPwg0x6thkDfNTw574pwVLgT4iY+r6C+Fiq6dMkE2KVGk/7HPFzQcOvDSaEGjSE4nz7KZZp+KWaKNaXnK+2q6+AqrQ7xLfLJoRaQ0QekhyPQ3xTjdac6cijAihqdrabEOkPEblBcjSH+PbDhMhAiMgzkuNliG9qzyFnvmoUQEnxJcS3LhMibzSWm6nEzzQNv16ZELqmIVRNfvYkr5oQqtMQukL86LyYEyaENmkIKVtCflWBg7LJmjMlGn88UqvBWOwzDniu4c9vYLIp0fuaT1w1RQqxxyjglqYv90wKb9UUVfYCWIB5Fmms+17bYvrJd/gEzorI6TR7ASr9zgMrctzJVdm0Usrt3xGCb7eRicd8Io88Xd5y4F0GZ1Qv8bqsJqneftibPimp/iNC0F5T+wjGKZHKyt8HVJsgijkhjdNWyaQwVFvtfZaBD8pxG2OTn5+aNILK2fHyfbWhDcw9OTwAVSBZYwhwN43oYc+Y2jSZ0BfxQEN5lsHfER+tb452+oS7PVmgmCj9uO3AaunkRmFCFsF3iG+xUJGmT3DKcLsrSvD9MVei/06HpNuSMnGAaUSE4FWVupmEqEqTCW+BQ8Aq2cpeDmwDhka478gIbz6x4FMs1mhMDEbMjELN5S72tM/EbJmBgxzWqQFSjNKY7fPmmJx303JzQDb4DzoEUZThHl1yGNP6UpcLk6UUbc8hAwrTbHfX26zwbFAolWFTlgcW6qTtvUvqAofD4XA4HA4HBvkLVrrU+UoENrgAAAAASUVORK5CYII="
-          className="w-10 h-10"
-        />
-        <div className="flex items-center gap-2 text-white cursor-pointer group">
-          <span className="relative flex items-center gap-2 transition-transform duration-300 group-hover:scale-110">
-            GitHub
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-          </span>
-          <ArrowUpRight className="w-3 h-3 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-        </div>
-      </div>
-
+      ))}
     </div>
   </div>
 </div>
-          </div>
-        </div>
-      </div>
-      
+
 
       <div className="p-8 space-y-8 bg-zinc-900">
         {/* Main Stats Grid */}
