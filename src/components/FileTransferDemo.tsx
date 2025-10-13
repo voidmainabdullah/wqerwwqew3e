@@ -1,164 +1,512 @@
-import React, { useState } from "react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Shield,
-  Users,
-  Files,
-  Lock,
-  Share2,
-  Zap,
-  ChevronDown,
-} from "lucide-react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-
-const Features = () => {
-  const [openFeature, setOpenFeature] = useState<number | null>(null);
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
-
-  const toggleFeature = (index: number) => {
-    setOpenFeature(openFeature === index ? null : index);
-  };
-
-  const features = [
-    {
-      title: "Secure File Storage",
-      description:
-        "Enterprise-grade encryption and security for all your important files and documents.",
-      expandedDescription:
-        "Store files with military-grade AES-256 encryption. Files are encrypted both in transit and at rest. Access controls ensure only authorized users can view sensitive content. Automated backups and version history keep your data safe.",
-      icon: <Shield className="w-6 h-6 text-primary" />,
-    },
-    {
-      title: "Real-time Collaboration",
-      description:
-        "Work together seamlessly with real-time file sharing and collaboration tools.",
-      expandedDescription:
-        "Share instantly with team members and external partners. Get real-time notifications for file updates, comments, and project progress — all within your workspace.",
-      icon: <Users className="w-6 h-6 text-primary" />,
-    },
-    {
-      title: "Smart File Organization",
-      description:
-        "AI-powered organization and search to find files faster than ever.",
-      expandedDescription:
-        "Automatically categorize and tag files. Smart folders organize content by project or custom rules. Use advanced search with metadata or content recognition for instant results.",
-      icon: <Files className="w-6 h-6 text-primary" />,
-    },
-    {
-      title: "Access Control",
-      description:
-        "Granular permissions and access control to keep sensitive files secure.",
-      expandedDescription:
-        "Set detailed permissions for each file and folder. Manage who can view, edit, or share. Time-limited links and audit logs give you full visibility.",
-      icon: <Lock className="w-6 h-6 text-primary" />,
-    },
-    {
-      title: "Instant Sharing",
-      description:
-        "Share files with anyone, anywhere using secure links and updates.",
-      expandedDescription:
-        "Generate secure links with expiry dates or password protection. Real-time sync ensures everyone always has the latest version.",
-      icon: <Share2 className="w-6 h-6 text-primary" />,
-    },
-    {
-      title: "Lightning Fast",
-      description:
-        "Optimized performance for instant uploads, downloads, and sync.",
-      expandedDescription:
-        "Powered by CDN and compression for lightning-fast transfers. Resume interrupted uploads and keep files automatically updated across devices.",
-      icon: <Zap className="w-6 h-6 text-primary" />,
-    },
-  ];
-
-  return (
-    <section
-      id="features"
-      className="w-full py-16 md:py-24 px-4 md:px-8 bg-card/30"
-      ref={ref}
-    >
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Files, Shield, Users, ArrowRight, CircleCheck as CheckCircle, Lock, Eye, Zap, Globe, Clock, UserCheck, Settings, Download, Upload } from 'lucide-react';
+const FileTransferDemo = () => {
+  return <section className="py-24 px-6 md:px-12 bg-background">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-foreground mb-4">
-            Built for the Future of File Sharing
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Experience next-generation tools that redefine collaboration,
-            security, and performance for your entire team.
-          </p>
+        <div className="text-center mb-16">
+          <motion.h2 initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6
+        }} className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
+            See File Transfer in Action
+          </motion.h2>
+          <motion.p initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.2
+        }} className="font-body text-muted-foreground text-lg max-w-2xl mx-auto">
+            Watch how seamlessly your files move through our secure transfer pipeline
+          </motion.p>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-8 items-center">
+          {/* Step 1: File Selection */}
+          <motion.div initial={{
+          opacity: 0,
+          x: -50
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} transition={{
+          duration: 0.8,
+          delay: 0.2
+        }} className="space-y-6">
+            <div className="bg-card border border-border rounded-2xl p-6 hover:shadow-xl transition-all duration-500">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                    <span className="material-icons md-18 text-primary">folder</span>
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-semibold text-foreground">Project Files</h3>
+                    <p className="text-sm font-body text-muted-foreground">24 files • 2.3 GB</p>
+                  </div>
+                </div>
+                <div className="flex -space-x-2">
+                  <div className="w-8 h-8 rounded-full bg-primary/30 border-2 border-card"></div>
+                  <div className="w-8 h-8 rounded-full bg-accent/30 border-2 border-card"></div>
+                  <div className="w-8 h-8 rounded-full bg-muted border-2 border-card flex items-center justify-center text-xs font-heading font-medium">+3</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <motion.div animate={{
+                scale: [1, 1.05, 1]
+              }} transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: 0
+              }} className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <span className="material-icons md-18 text-primary">description</span>
+                </motion.div>
+                <motion.div animate={{
+                scale: [1, 1.05, 1]
+              }} transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: 0.3
+              }} className="aspect-square rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                  <span className="material-icons md-18 text-accent">image</span>
+                </motion.div>
+                <motion.div animate={{
+                scale: [1, 1.05, 1]
+              }} transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: 0.6
+              }} className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center">
+                  <span className="material-icons md-18 text-muted-foreground">video_file</span>
+                </motion.div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-heading font-medium">
+                <span className="w-2 h-2 bg-primary rounded-full"></span>
+                Step 1: Select Files
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Arrow */}
+          <div className="flex justify-center">
+            <motion.div animate={{
+            x: [0, 10, 0]
+          }} transition={{
+            duration: 2,
+            repeat: Infinity
+          }} className="text-muted-foreground">
+              <span className="material-icons md-36">arrow_forward</span>
+            </motion.div>
+          </div>
+
+          {/* Step 2: Secure Transfer */}
+          <motion.div initial={{
+          opacity: 0,
+          x: 50
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} transition={{
+          duration: 0.8,
+          delay: 0.4
+        }} className="space-y-6">
+            <div className="bg-card border border-border rounded-2xl p-6 hover:shadow-xl transition-all duration-500">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <span className="material-icons md-18 text-accent">security</span>
+                </div>
+                <div className="flex-1">
+                  <p className="font-heading font-semibold text-foreground">Secure Upload</p>
+                  <p className="text-sm font-body text-muted-foreground">End-to-end encrypted</p>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm font-body">
+                  <span className="text-muted-foreground">Progress</span>
+                  <span className="text-foreground font-heading font-medium">67%</span>
+                </div>
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <motion.div initial={{
+                  width: "0%"
+                }} animate={{
+                  width: "67%"
+                }} transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }} className="h-full bg-accent rounded-full" />
+                </div>
+                <div className="flex items-center gap-2 text-sm font-body text-muted-foreground">
+                  <span className="material-icons md-18">security</span>
+                  <span>256-bit AES encryption</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-heading font-medium">
+                <motion.span animate={{
+                rotate: 360
+              }} transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "linear"
+              }} className="w-2 h-2 bg-accent rounded-full" />
+                Step 2: Secure Transfer
+              </span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Step 3: Completion */}
+        <motion.div initial={{
+        opacity: 0,
+        y: 50
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.8,
+        delay: 0.6
+      }} className="mt-12 max-w-md mx-auto">
+          <div className="bg-card border border-border rounded-2xl p-6 hover:shadow-xl transition-all duration-500">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
+                <span className="material-icons md-18 text-green-400">check_circle</span>
+              </div>
+              <div>
+                <p className="font-heading font-semibold text-foreground">Transfer Complete</p>
+                <p className="text-sm font-body text-muted-foreground">All files shared successfully</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-icons md-18 text-muted-foreground">groups</span>
+                <span className="text-sm font-body text-muted-foreground">Shared with 5 people</span>
+              </div>
+              <motion.span animate={{
+              scale: [1, 1.2, 1]
+            }} transition={{
+              duration: 1.5,
+              repeat: Infinity
+            }} className="text-green-400">
+                <span className="material-icons md-18">check_circle</span>
+              </motion.span>
+            </div>
+          </div>
+          
+          <div className="text-center mt-4">
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 rounded-full text-sm font-heading font-medium">
+              <span className="material-icons md-18">check_circle</span>
+              Step 3: Completed
+            </span>
+          </div>
         </motion.div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div className="h-full bg-card border border-border rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-primary/40 transition-all duration-300 hover:-translate-y-2 cosmic-glass">
-                {/* Icon */}
-                <div className="w-16 h-16 rounded-xl border border-border flex items-center justify-center bg-gradient-to-br from-primary/10 to-transparent mb-6 shadow-md group-hover:scale-105 transition-transform duration-300">
-                  {feature.icon}
-                </div>
-
-                {/* Content */}
-                <Collapsible
-                  open={openFeature === index}
-                  onOpenChange={() => toggleFeature(index)}
-                >
-                  <CollapsibleTrigger className="w-full text-left flex items-start justify-between group">
-                    <div>
-                      <h3 className="text-xl font-heading font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-200">
-                        {feature.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {feature.description}
-                      </p>
-                    </div>
-                    <ChevronDown
-                      className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${
-                        openFeature === index ? "rotate-180 text-primary" : ""
-                      }`}
-                    />
-                  </CollapsibleTrigger>
-
-                  <CollapsibleContent>
-                    <div className="mt-4 pt-4 border-t border-border">
-                      <motion.p
-                        className="text-sm text-muted-foreground leading-relaxed mb-4"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={
-                          openFeature === index ? { opacity: 1, y: 0 } : {}
-                        }
-                        transition={{ duration: 0.3 }}
-                      >
-                        {feature.expandedDescription}
-                      </motion.p>
-                      <button className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm transition-colors duration-200">
-                        Learn more →
-                      </button>
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
+        {/* Additional Security & Control Features */}
+        <div className="mt-20 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Encryption Security */}
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.1
+        }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+            <div className="text-center space-y-4">
+              <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-zinc-800">
+                <motion.div animate={{
+                rotate: [0, 360]
+              }} transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "linear"
+              }} className="absolute inset-2 border-2 border-primary/30 border-t-primary rounded-full bg-transparent" />
+                <span className="material-icons md-24 text-primary">lock</span>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+              <div>
+                <h3 className="font-heading font-semibold text-foreground">Advanced Encryption</h3>
+                <p className="text-sm font-body text-muted-foreground">Military-grade AES-256</p>
+              </div>
+              <div className="flex justify-center gap-1">
+                {[...Array(5)].map((_, i) => <motion.div key={i} animate={{
+                opacity: [0.3, 1, 0.3]
+              }} transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: i * 0.2
+              }} className="w-2 h-1 rounded-full bg-green-300" />)}
+              </div>
+            </div>
+          </motion.div>
 
-export default Features;
+          {/* Full Control */}
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.2
+        }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+            <div className="text-center space-y-4">
+              <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-zinc-700">
+                <motion.div animate={{
+                scale: [1, 1.1, 1]
+              }} transition={{
+                duration: 2,
+                repeat: Infinity
+              }}>
+                  <span className="material-icons md-24 text-accent">settings</span>
+                </motion.div>
+                <motion.div animate={{
+                rotate: [0, 180, 360]
+              }} transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }} className="absolute top-1 right-1 w-3 h-3 rounded-full bg-slate-100" />
+              </div>
+              <div>
+                <h3 className="font-heading font-semibold text-foreground">Full Control</h3>
+                <p className="text-sm font-body text-muted-foreground">Permissions & Access</p>
+              </div>
+              <div className="flex justify-center space-x-1 bg-transparent">
+                <motion.div animate={{
+                y: [0, -4, 0]
+              }} transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: 0
+              }} className="w-1 h-6 rounded-full bg-slate-100" />
+                <motion.div animate={{
+                y: [0, -4, 0]
+              }} transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: 0.2
+              }} className="w-1 h-4 rounded-full bg-green-300" />
+                <motion.div animate={{
+                y: [0, -4, 0]
+              }} transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: 0.4
+              }} className="w-1 h-8 rounded-full bg-gray-100" />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Real-time Monitoring */}
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.3
+        }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+            <div className="text-center space-y-4">
+              <div className="relative mx-auto w-16 h-16 rounded-full bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center">
+                <span className="material-icons md-24 text-black dark:text-neutral-800">visibility</span>
+                <motion.div animate={{
+                scale: [1, 1.5, 1],
+                opacity: [1, 0, 1]
+              }} transition={{
+                duration: 2,
+                repeat: Infinity
+              }} className="absolute inset-0 rounded-full border-2 border-black/30 dark:border-neutral-800/30 bg-zinc-800" />
+              </div>
+              <div>
+                <h3 className="font-heading font-semibold text-foreground">Live Monitoring</h3>
+                <p className="text-sm font-body text-muted-foreground">Real-time analytics</p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs font-body">
+                  <span className="text-muted-foreground">Active transfers</span>
+                  <motion.span animate={{
+                  opacity: [0.5, 1, 0.5]
+                }} transition={{
+                  duration: 1,
+                  repeat: Infinity
+                }} className="font-heading font-medium text-green-400">
+                    24
+                  </motion.span>
+                </div>
+                <div className="flex justify-between text-xs font-body">
+                  <span className="text-muted-foreground">Users online</span>
+                  <motion.span animate={{
+                  opacity: [0.5, 1, 0.5]
+                }} transition={{
+                  duration: 1.2,
+                  repeat: Infinity
+                }} className="font-heading font-medium text-green-400">
+                    1.2k
+                  </motion.span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Lightning Speed */}
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.4
+        }} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+            <div className="text-center space-y-4">
+               <div className="relative mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-zinc-800 text-white">
+                <motion.div animate={{
+                rotate: [0, 360],
+                scale: [1, 1.2, 1]
+              }} transition={{
+                duration: 1.5,
+                repeat: Infinity
+              }}>
+                  <span className="material-icons md-24 text-black dark:text-neutral-800">flash_on</span>
+                </motion.div>
+              </div>
+              <div>
+                <h3 className="font-heading font-semibold text-foreground">Lightning Speed</h3>
+                <p className="text-sm font-body text-muted-foreground">Ultra-fast transfers</p>
+              </div>
+              <div className="flex items-center justify-center gap-2 text-sm font-body">
+                <span className="material-icons md-18 text-black dark:text-white">upload</span>
+                <span className="text-foreground font-heading font-medium">125 MB/s</span>
+                <span className="material-icons md-18 text-black dark:text-white">download</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Security Showcase */}
+        <motion.div initial={{
+        opacity: 0,
+        y: 40
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.8,
+        delay: 0.5
+      }} className="mt-16 bg-card border border-border rounded-2xl p-8 hover:shadow-xl transition-all duration-500">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-heading font-bold text-foreground mb-2">Security First Architecture</h3>
+            <p className="font-body text-muted-foreground">Every transfer is protected by multiple layers of security</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Encryption Layer */}
+            <div className="text-center space-y-4">
+              <div className="relative mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+                <motion.div animate={{
+                rotate: [0, 360]
+              }} transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "linear"
+              }} className="absolute inset-0 border-2 border-dashed border-primary/30 rounded-full" />
+                <span className="material-icons md-36 text-primary">security</span>
+                <motion.div animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.8, 0.3]
+              }} transition={{
+                duration: 3,
+                repeat: Infinity
+              }} className="absolute inset-0 rounded-full bg-zinc-800" />
+              </div>
+              <div>
+                <h4 className="font-heading font-semibold text-foreground">End-to-End Encryption</h4>
+                <p className="text-sm font-body text-muted-foreground">Files encrypted before leaving your device</p>
+              </div>
+            </div>
+
+            {/* Access Control */}
+            <div className="text-center space-y-4">
+              <div className="relative mx-auto w-20 h-20 rounded-full flex items-center justify-center bg-zinc-800">
+                <span className="material-icons md-36 text-accent">verified_user</span>
+                <motion.div animate={{
+                rotate: [0, -360]
+              }} transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "linear"
+              }} className="absolute inset-2 border border-accent/40 border-dotted rounded-full bg-[#1bb428]/[0.08]" />
+              </div>
+              <div>
+                <h4 className="font-heading font-semibold text-foreground">Secure Verified +</h4>
+                <p className="text-sm font-body text-muted-foreground">Multi-factor authentication required</p>
+              </div>
+            </div>
+
+            {/* Global Network */}
+            <div className="text-center space-y-4">
+              <div className="relative mx-auto w-20 h-20 rounded-full bg-black/10 dark:bg-neutral-800/10 flex items-center justify-center">
+                <span className="material-icons md-36 text-black dark:text-neutral-800">public</span>
+                <motion.div animate={{
+                scale: [1, 1.4, 1]
+              }} transition={{
+                duration: 4,
+                repeat: Infinity
+              }} className="absolute inset-0 border border-black/30 dark:border-neutral-800/30 rounded-full" />
+                <motion.div animate={{
+                scale: [1, 1.2, 1]
+              }} transition={{
+                duration: 4,
+                repeat: Infinity,
+                delay: 1
+              }} className="absolute inset-1 border border-black/20 dark:border-neutral-800/20 rounded-full bg-zinc-50" />
+              </div>
+              <div>
+                <h4 className="font-heading font-semibold text-foreground">Global Infrastructure</h4>
+                <p className="text-sm font-body text-muted-foreground">Distributed across 50+ data centers</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Real-time Status Indicators */}
+          <div className="mt-8 flex justify-center space-x-8">
+            <div className="flex items-center gap-2">
+              <motion.div animate={{
+              scale: [1, 1.2, 1]
+            }} transition={{
+              duration: 2,
+              repeat: Infinity
+            }} className="w-3 h-3 rounded-full bg-emerald-400" />
+              <span className="text-sm font-body text-muted-foreground">All systems operational</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="material-icons md-18 text-muted-foreground">schedule</span>
+              <span className="text-sm font-body text-muted-foreground">99.9% uptime</span>
+            </div>
+          </div>
+        </motion.div> 
+      </div>
+    </section>;
+};
+export default FileTransferDemo;
