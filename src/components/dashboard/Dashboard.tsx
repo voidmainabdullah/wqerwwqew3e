@@ -163,7 +163,7 @@ export const Dashboard: React.FC = () => {
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe
-        className="w-full h-full object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100"
+        className="w-full h-30 object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100"
         src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0"
         title="Ad Video"
         frameBorder="0"
