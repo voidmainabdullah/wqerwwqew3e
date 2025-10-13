@@ -162,12 +162,34 @@ export const Dashboard: React.FC = () => {
 
   {/* Content */}
   <div className="relative z-10 text-right">
-    <p className="text-slate-300 text-sm mb-4 font-medium tracking-wide">
+    <p className="text-slate-300 text-sm mb-4 font-medium tracking-wide flex justify-between items-center">
       Connect Your Account
+      {/* Dropdown Toggle for Mobile */}
+      <button
+        className="sm:hidden text-slate-300 hover:text-blue-400 transition"
+        onClick={() => {
+          const el = document.getElementById("mobileDropdown");
+          el.classList.toggle("hidden");
+          el.classList.toggle("animate-fadeIn");
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
     </p>
 
     {/* Icons Row */}
-    <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6 items-start sm:items-center justify-start">
+    <div
+      id="mobileDropdown"
+      className="hidden sm:flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6 items-start sm:items-center justify-start"
+    >
       {[
         { name: "Drive", src: "https://www.svgrepo.com/show/355037/google-drive.svg" },
         { name: "OneDrive", src: "https://www.svgrepo.com/show/448252/onedrive.svg" },
@@ -188,16 +210,35 @@ export const Dashboard: React.FC = () => {
               {platform.name}
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
             </span>
-            <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </div>
         </div>
       ))}
     </div>
   </div>
 </div>
-          </div>
-        </div>
-      </div>
+
+<style>
+{`
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+`}
+</style>
+
 
       <div className="p-8 space-y-8 bg-zinc-900">
         {/* Main Stats Grid */}
