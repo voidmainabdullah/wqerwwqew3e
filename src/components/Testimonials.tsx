@@ -40,7 +40,7 @@ const Testimonials = () => {
       {/* Decorative Background */}
       <div className="absolute inset-0">
         <img
-          src="/skie-1.png"
+          src="/image.png"
           alt="Decorative background"
           className="w-full h-full object-cover opacity-10"
         />
