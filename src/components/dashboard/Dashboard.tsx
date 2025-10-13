@@ -164,7 +164,7 @@ export const Dashboard: React.FC = () => {
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe
         className="w-full h-full object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100"
-        src="https://youtu.be/XgHljqs1ItM"
+        src="<iframe width="716" height="403" src="https://www.youtube.com/embed/XgHljqs1ItM" title="Hostinger AI Website Builder | Hostinger.com" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>"
         title="Ad Video"
         frameBorder="0"
         allow="autoplay; encrypted-media"
