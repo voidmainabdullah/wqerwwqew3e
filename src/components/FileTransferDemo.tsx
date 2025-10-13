@@ -139,7 +139,7 @@ const Features = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
-            Built for the Future of File Sharing
+            Built for the Fwjnfalkjfdaslfnasklf
           </h2>
           <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
             Experience next-generation technology designed for security,
