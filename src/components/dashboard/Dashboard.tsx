@@ -164,12 +164,12 @@ export const Dashboard: React.FC = () => {
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe
         className="w-full h-full object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100"
-        src="<iframe width="716" height="403" src="https://www.youtube.com/embed/XgHljqs1ItM" title="Hostinger AI Website Builder | Hostinger.com" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0"
         title="Ad Video"
         frameBorder="0"
         allow="autoplay; encrypted-media"
         allowFullScreen
-      ></iframe>
+      ></iframe> 
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
     </div>
 
