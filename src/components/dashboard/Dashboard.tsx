@@ -141,8 +141,8 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-      {/* Interactive Video Balance Card */}
-<div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 rounded-3xl border border-slate-600/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-blue-500/20">
+      {/* Interactive Video Balance Card (Neutral Dark Theme) */}
+<div className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-neutral-500/20">
 
   {/* Background Video */}
   <div className="absolute inset-0 overflow-hidden rounded-3xl">
@@ -154,13 +154,13 @@ export const Dashboard: React.FC = () => {
       allow="autoplay; encrypted-media"
       allowFullScreen
     ></iframe>
-    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/40 to-slate-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
+    <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
   </div>
 
   {/* Top Bar (Ad Label + Dropdown) */}
   <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
     {/* Ad Label */}
-    <span className="text-sm font-semibold text-blue-300 bg-slate-800/60 backdrop-blur-sm px-3 py-1 rounded-full border border-slate-600/40 shadow-sm">
+    <span className="text-sm font-semibold text-gray-200 bg-neutral-900/70 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-700/40 shadow-sm">
       Ad · Sponsored
     </span>
 
@@ -172,7 +172,7 @@ export const Dashboard: React.FC = () => {
           el.classList.toggle("hidden");
           el.classList.toggle("animate-fadeIn");
         }}
-        className="text-slate-300 hover:text-blue-400 transition"
+        className="text-gray-300 hover:text-gray-100 transition"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -188,14 +188,14 @@ export const Dashboard: React.FC = () => {
       {/* Dropdown Menu */}
       <div
         id="adDropdown"
-        className="hidden absolute right-0 mt-2 w-52 bg-slate-800/80 border border-slate-700 rounded-xl p-3 shadow-lg backdrop-blur-lg z-30"
+        className="hidden absolute right-0 mt-2 w-52 bg-neutral-900/90 border border-neutral-700 rounded-xl p-3 shadow-lg backdrop-blur-lg z-30"
       >
-        <h4 className="text-slate-100 text-sm font-semibold mb-2">Ad Key Points</h4>
-        <ul className="text-slate-300 text-xs space-y-1">
+        <h4 className="text-gray-100 text-sm font-semibold mb-2">Ad Key Points</h4>
+        <ul className="text-gray-400 text-xs space-y-1">
           <li>✔ Sync all your files securely</li>
-          <li>✔ Fast and encrypted cloud storage</li>
-          <li>✔ 24/7 global access from any device</li>
-          <li>✔ 1TB free on signup!</li>
+          <li>✔ Ultra-fast encrypted storage</li>
+          <li>✔ 24/7 global device access</li>
+          <li>✔ Get 1TB free on signup!</li>
         </ul>
       </div>
     </div>
@@ -208,7 +208,7 @@ export const Dashboard: React.FC = () => {
     rel="noopener noreferrer"
     className="relative z-10 flex flex-col items-center justify-center text-center py-24 sm:py-32 transition-all duration-500"
   >
-    <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 text-2xl font-bold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
+    <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-2xl font-bold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
       Cloud Sync Pro – Lightning Fast Uploads
     </h3>
   </a>
@@ -219,7 +219,7 @@ export const Dashboard: React.FC = () => {
       href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       target="_blank"
       rel="noopener noreferrer"
-      className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-semibold shadow-md hover:shadow-blue-500/30 transition-all duration-300 overflow-hidden"
+      className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-neutral-800 text-gray-100 font-semibold border border-neutral-700 hover:bg-neutral-700 hover:border-gray-600 shadow-md hover:shadow-neutral-500/20 transition-all duration-300 overflow-hidden"
     >
       <span className="relative z-10">Visit Now</span>
       <svg
@@ -232,17 +232,14 @@ export const Dashboard: React.FC = () => {
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
       </svg>
-      <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-10 transition duration-300 rounded-full"></span>
+      <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-10 transition duration-300 rounded-full"></span>
     </a>
   </div>
 
   {/* Animated Glow Orbs */}
-  <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/30 rounded-full blur-3xl animate-pulse-slow"></div>
-  <div className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-400/20 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
+  <div className="absolute -top-10 -right-10 w-32 h-32 bg-neutral-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
+  <div className="absolute bottom-0 left-0 w-40 h-40 bg-neutral-400/10 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
 </div>
-          </div>
-        </div>
-      </div>
 
 <style>
 {`
