@@ -182,7 +182,7 @@ export const Dashboard: React.FC = () => {
     </div>
   </div>
 </div>
-
+          </div>
       
 
       <div className="p-8 space-y-8 bg-zinc-900">
