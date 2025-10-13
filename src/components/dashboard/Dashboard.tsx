@@ -154,29 +154,92 @@ export const Dashboard: React.FC = () => {
       allow="autoplay; encrypted-media"
       allowFullScreen
     ></iframe>
-    {/* Soft Gradient Overlay for Glow */}
-    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/30 to-slate-800/60 group-hover:from-transparent group-hover:to-transparent transition-all duration-500"></div>
+    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/40 to-slate-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
   </div>
 
-  {/* Hover Overlay */}
+  {/* Top Bar (Ad Label + Dropdown) */}
+  <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
+    {/* Ad Label */}
+    <span className="text-sm font-semibold text-blue-300 bg-slate-800/60 backdrop-blur-sm px-3 py-1 rounded-full border border-slate-600/40 shadow-sm">
+      Ad · Sponsored
+    </span>
+
+    {/* Dropdown Button */}
+    <div className="relative">
+      <button
+        onClick={() => {
+          const el = document.getElementById("adDropdown");
+          el.classList.toggle("hidden");
+          el.classList.toggle("animate-fadeIn");
+        }}
+        className="text-slate-300 hover:text-blue-400 transition"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {/* Dropdown Menu */}
+      <div
+        id="adDropdown"
+        className="hidden absolute right-0 mt-2 w-52 bg-slate-800/80 border border-slate-700 rounded-xl p-3 shadow-lg backdrop-blur-lg z-30"
+      >
+        <h4 className="text-slate-100 text-sm font-semibold mb-2">Ad Key Points</h4>
+        <ul className="text-slate-300 text-xs space-y-1">
+          <li>✔ Sync all your files securely</li>
+          <li>✔ Fast and encrypted cloud storage</li>
+          <li>✔ 24/7 global access from any device</li>
+          <li>✔ 1TB free on signup!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {/* Center Hover Title */}
   <a
     href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     target="_blank"
     rel="noopener noreferrer"
-    className="relative z-10 flex flex-col items-center justify-center text-center py-20 sm:py-28 transition-all duration-500"
+    className="relative z-10 flex flex-col items-center justify-center text-center py-24 sm:py-32 transition-all duration-500"
   >
     <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 text-2xl font-bold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
-      Watch Now: Cloud Sync Tutorial
+      Cloud Sync Pro – Lightning Fast Uploads
     </h3>
   </a>
+
+  {/* Bottom Right CTA Button */}
+  <div className="absolute bottom-5 right-5 z-20">
+    <a
+      href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-semibold shadow-md hover:shadow-blue-500/30 transition-all duration-300 overflow-hidden"
+    >
+      <span className="relative z-10">Visit Now</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-4 h-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+      <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-10 transition duration-300 rounded-full"></span>
+    </a>
+  </div>
 
   {/* Animated Glow Orbs */}
   <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/30 rounded-full blur-3xl animate-pulse-slow"></div>
   <div className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-400/20 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
 </div>
-          </div>
-        </div>
-      </div>
 
 <style>
 {`
@@ -186,6 +249,14 @@ export const Dashboard: React.FC = () => {
 }
 .animate-pulse-slow {
   animation: pulse-slow 6s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
 }
 `}
 </style>
