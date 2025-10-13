@@ -121,27 +121,6 @@ export const Dashboard: React.FC = () => {
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
       {/* Professional Header */}
-      <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm rounded-full">
-        <div className="px-8 py-6 rounded-none bg-zinc-900">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <div className="flex items-center gap-4">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-                  Dashboard
-                </h1>
-                <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0" : "bg-slate-700 text-slate-300 border-slate-600"}`}>
-                  {isPro ? <>
-                      <Crown className="w-4 h-4 mr-1" />
-                      Pro + 
-                    </> : "Basic"}
-                </Badge>
-              </div>
-              <p className="text-slate-400">
-                Welcome back, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
-              </p>
-            </div>
-
-      {/* Professional Header */}
 <div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm rounded-full">
   <div className="px-8 py-6 rounded-none bg-zinc-900">
     <div className="flex items-center justify-between">
@@ -319,9 +298,6 @@ export const Dashboard: React.FC = () => {
     </div>
   </div>
 </div>
-          </div>
-        </div>
-      </div>
 
 <style>
 {`
@@ -343,6 +319,7 @@ export const Dashboard: React.FC = () => {
 `}
 </style>
 
+      
 
       <div className="p-8 space-y-8 bg-zinc-900">
         {/* Main Stats Grid */}
