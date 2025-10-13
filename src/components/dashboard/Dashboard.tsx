@@ -275,7 +275,7 @@ export const Dashboard: React.FC = () => {
   <div className="hidden md:flex relative flex-col justify-between bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-xl h-80 w-full md:w-1/3 p-6 hover:shadow-gray-500/20 transition-all duration-500">
     <div className="relative overflow-hidden rounded-2xl mb-5">
       <img
-        src="https://images.unsplash.com/photo-1672938464174-b5d2a875cc7d?q=80&w=800"
+        src="/skie.png"
         alt="Ad Preview"
         className="w-full h-48 object-cover rounded-2xl hover:scale-105 transition-transform duration-500"
       />
