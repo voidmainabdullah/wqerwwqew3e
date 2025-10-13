@@ -1,113 +1,202 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { Crown } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useToast } from '@/hooks/use-toast';
+import { Download, Lock, FileText, Key, ArrowLeft } from 'phosphor-react';
+import { AnimatedBackground } from '@/components/ui/animated-background';
+import { useNavigate } from 'react-router-dom'; // ✅ React Router hook
 
-interface SharedFile {
+interface FileData {
   id: string;
   original_name: string;
   file_size: number;
   file_type: string;
   storage_path: string;
-  download_count: number;
   is_locked: boolean;
+  is_public: boolean;
+  share_code: string;
 }
 
-export default function CodePage() {
+export const CodeSharePage: React.FC = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate(); // ✅ React Router navigate hook
+
   const [shareCode, setShareCode] = useState('');
   const [password, setPassword] = useState('');
-  const [file, setFile] = useState<SharedFile | null>(null);
-  const [requiresPassword, setRequiresPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [fileData, setFileData] = useState<FileData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [passwordRequired, setPasswordRequired] = useState(false);
+  const [shareMessage, setShareMessage] = useState<string | null>(null);
 
-  const handleCodeSubmit = async () => {
+  const fetchFileByCode = async () => {
     if (!shareCode.trim()) {
-      toast.error('Please enter a share code');
+      toast({
+        variant: "destructive",
+        title: "Invalid code",
+        description: "Please enter a valid share code",
+      });
       return;
     }
 
-    setIsLoading(true);
+    setLoading(true);
     try {
-      const { data: fileData, error: fileError } = await supabase
+      const { data, error } = await supabase
         .from('files')
-        .select('id, original_name, file_size, file_type, storage_path, download_count, is_locked')
+        .select('*')
         .eq('share_code', shareCode.trim().toUpperCase())
-        .single();
+        .maybeSingle();
 
-      if (fileError || !fileData) {
-        toast.error('Invalid share code or file not found');
+      if (error) throw error;
+
+      if (!data) {
+        toast({
+          variant: "destructive",
+          title: "File not found",
+          description: "No file found with this share code",
+        });
         return;
       }
 
-      if (fileData.is_locked && !password) {
-        setRequiresPassword(true);
-        toast.error('This file is password protected');
+      // Check if file is public
+      if (!data.is_public) {
+        toast({
+          variant: "destructive",
+          title: "Access denied",
+          description: "This file is private and cannot be accessed via share code",
+        });
         return;
       }
 
-      if (fileData.is_locked && password) {
-        const { data: sharedLink } = await supabase
+      setFileData(data);
+
+      // Get share message from shared_links table
+      const { data: shareData } = await supabase
+        .from('shared_links')
+        .select('message')
+        .eq('file_id', data.id)
+        .eq('link_type', 'code')
+        .maybeSingle();
+
+      if (shareData?.message) {
+        setShareMessage(shareData.message);
+      }
+
+      if (data.is_locked) {
+        setPasswordRequired(true);
+      }
+
+      toast({
+        title: "File found",
+        description: `Found: ${data.original_name}`,
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || 'Failed to find file',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const downloadFile = async () => {
+    if (!fileData) return;
+
+    if (fileData.is_locked && passwordRequired && !password.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Password required",
+        description: "Please enter the password to unlock this file",
+      });
+      return;
+    }
+
+    setDownloading(true);
+    try {
+      if (fileData.is_locked && password.trim()) {
+        const { data: shareLink, error: shareLinkError } = await supabase
           .from('shared_links')
           .select('password_hash, share_token')
           .eq('file_id', fileData.id)
           .not('password_hash', 'is', null)
           .maybeSingle();
 
-        if (sharedLink?.password_hash) {
-          const { data: isValidPassword } = await supabase.rpc('validate_share_password', {
-            token: sharedLink.share_token,
+        if (shareLinkError && shareLinkError.code !== 'PGRST116') {
+          throw shareLinkError;
+        }
+
+        if (shareLink?.password_hash) {
+          const { data: isValid, error: validateError } = await supabase.rpc('validate_share_password', {
+            token: shareLink.share_token,
             password: password
           });
 
-          if (!isValidPassword) {
-            toast.error('Incorrect password');
+          if (validateError) throw validateError;
+
+          if (!isValid) {
+            toast({
+              variant: "destructive",
+              title: "Invalid password",
+              description: "The password you entered is incorrect",
+            });
+            setDownloading(false);
             return;
           }
-        } else {
-          toast.error('This file requires a password but none configured');
-          return;
         }
       }
 
-      setFile(fileData);
-      setRequiresPassword(false);
+      const { data: fileBlob, error } = await supabase.storage
+        .from('files')
+        .download(fileData.storage_path);
+
+      if (error) throw error;
+
+      const url = URL.createObjectURL(fileBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileData.original_name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      await supabase.from('download_logs').insert({
+        file_id: fileData.id,
+        shared_link_id: null,
+        download_method: 'share_code',
+        downloader_ip: null,
+        downloader_user_agent: navigator.userAgent,
+      });
+
+      await supabase
+        .from('files')
+        .update({ download_count: (fileData as any).download_count + 1 })
+        .eq('id', fileData.id);
+
+      toast({
+        title: "Download started",
+        description: "Your file download has begun",
+      });
+
+      setPasswordRequired(false);
     } catch (error: any) {
-      console.error('Code lookup error:', error);
-      toast.error('Failed to retrieve file: ' + error.message);
+      toast({
+        variant: "destructive",
+        title: "Download failed",
+        description: error.message,
+      });
     } finally {
-      setIsLoading(false);
+      setDownloading(false);
     }
   };
 
-  const downloadFile = async () => {
-    if (!file) return;
-    try {
-      const { data } = await supabase.storage.from('files').createSignedUrl(file.storage_path, 60);
-      if (data) {
-        const link = document.createElement('a');
-        link.href = data.signedUrl;
-        link.download = file.original_name;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        await supabase.from('download_logs').insert({
-          file_id: file.id,
-          download_method: 'code_share'
-        });
-        toast.success('File download started');
-      }
-    } catch (error) {
-      console.error('Download error:', error);
-      toast.error('Failed to download file');
-    }
-  };
-
-  const formatFileSize = (bytes: number): string => {
+  const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -115,212 +204,103 @@ export default function CodePage() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const resetForm = () => {
-    setShareCode('');
-    setPassword('');
-    setFile(null);
-    setRequiresPassword(false);
-  };
-
   return (
-    <div className="min-h-screen bg-neutral-950 text-gray-100 flex flex-col items-center justify-center p-4 space-y-8">
-      
-      {/* File Access Card */}
-      <Card className="w-full max-w-md bg-neutral-900 border border-neutral-700 shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="font-heading flex items-center justify-center gap-2 text-gray-100">
-            <span className="material-icons md-24 text-gray-300">tag</span>
-            Access File with Code
-          </CardTitle>
-          <CardDescription className="font-body text-gray-400">
-            Enter your unique share code to access the file.
-          </CardDescription>
-        </CardHeader>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      <AnimatedBackground />
 
-        <CardContent className="space-y-4">
-          {!file ? (
-            <>
-              <div>
-                <Label htmlFor="shareCode" className="font-heading text-gray-300">Share Code</Label>
+      <div className="relative z-10 w-full max-w-md">
+        {/* Go Back Button */}
+        <div className="mb-4">
+          <Button 
+            variant="ghost" 
+            className="flex items-center gap-2"
+            onClick={() => navigate(-1)}   // ✅ React Router back
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Go Back
+          </Button>
+        </div>
+
+        <Card>
+          <CardHeader className="text-center">
+            <Key className="mx-auto h-12 w-12 text-primary mb-2" />
+            <CardTitle>Access File with Code</CardTitle>
+            <CardDescription>
+              Enter the share code to access the file
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="shareCode">Share Code</Label>
+              <div className="flex space-x-2">
                 <Input
                   id="shareCode"
-                  placeholder="Enter 8-character code"
                   value={shareCode}
                   onChange={(e) => setShareCode(e.target.value.toUpperCase())}
+                  placeholder="Enter 8-character code"
                   maxLength={8}
-                  className="font-mono tracking-wider text-center bg-neutral-800 border-neutral-700 text-gray-100"
+                  className="font-mono"
+                  onKeyPress={(e) => e.key === 'Enter' && fetchFileByCode()}
                 />
-              </div>
-
-              {requiresPassword && (
-                <div>
-                  <Label htmlFor="password" className="font-heading text-gray-300">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter file password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="bg-neutral-800 border-neutral-700 text-gray-100"
-                  />
-                </div>
-              )}
-
-              <Button
-                onClick={handleCodeSubmit}
-                disabled={isLoading || !shareCode.trim()}
-                className="w-full bg-gradient-to-r from-gray-700 to-gray-600 text-white hover:from-gray-600 hover:to-gray-500 font-heading"
-              >
-                <span className="material-icons md-18 mr-2">
-                  {isLoading ? 'refresh' : 'search'}
-                </span>
-                {isLoading ? 'Verifying...' : 'Access File'}
-              </Button>
-            </>
-          ) : (
-            <div className="space-y-4">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-neutral-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="material-icons md-36 text-gray-300">description</span>
-                </div>
-                <h3 className="font-heading text-lg font-semibold">{file.original_name}</h3>
-                <p className="text-gray-400 text-sm">
-                  {formatFileSize(file.file_size)} • {file.download_count} downloads
-                </p>
-              </div>
-
-              <div className="flex gap-2">
-                <Button onClick={downloadFile} className="flex-1 bg-gray-700 hover:bg-gray-600">
-                  <span className="material-icons md-18 mr-2">download</span>
-                  Download
-                </Button>
-                <Button variant="outline" onClick={resetForm} className="text-gray-300 border-gray-700">
-                  New Code
+                <Button onClick={fetchFileByCode} disabled={loading} size="sm">
+                  {loading ? 'Finding...' : 'Find'}
                 </Button>
               </div>
             </div>
-          )}
 
-          <div className="text-center pt-4 border-t border-neutral-800">
-            <Button variant="link" asChild className="text-sm text-gray-400 hover:text-gray-200">
-              <a href="/">
-                <span className="material-icons md-18 mr-1">arrow_back</span>
-                Back to Home
-              </a>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+            {fileData && (
+                <div className="space-y-4">
+                 <div className="text-center space-y-2 p-4 bg-muted rounded-lg">
+                   <FileText className="mx-auto h-8 w-8 text-primary" />
+                   <h3 className="font-medium">{fileData.original_name}</h3>
+                   <p className="text-sm text-muted-foreground">
+                     {formatFileSize(fileData.file_size)} • {fileData.file_type}
+                   </p>
+                   
+                    {shareMessage && (
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
+                        <p className="text-sm text-blue-800 dark:text-blue-200">{shareMessage}</p>
+                      </div>
+                    )}
+                 </div>
 
-      {/* Ultra Professional Ad Layout (Responsive) */}
-      <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto">
+                {fileData.is_locked && (
+                  <Alert>
+                    <Lock className="h-4 w-4" />
+                    <AlertDescription>
+                      This file is password protected
+                    </AlertDescription>
+                  </Alert>
+                )}
 
-        {/* Interactive Ad Card */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-neutral-500/20 h-[360px] md:h-[420px]">
-          
-          <div className="absolute inset-0 overflow-hidden rounded-3xl">
-            <iframe
-              className="w-full h-full object-cover opacity-80 transition-all duration-500 group-hover:opacity-100"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0"
-              title="Ad Video"
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-            ></iframe>
-            <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/70 via-neutral-900/50 to-neutral-800/80 group-hover:opacity-50 transition-all"></div>
-          </div>
+                {passwordRequired && (
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Enter Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter password"
+                      onKeyPress={(e) => e.key === 'Enter' && downloadFile()}
+                    />
+                  </div>
+                )}
 
-          {/* Ad Label + Dropdown */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
-            <span className="text-sm font-semibold text-gray-200 bg-neutral-900/70 px-3 py-1 rounded-full border border-neutral-700 shadow-sm">
-              Ad · Sponsored
-            </span>
-
-            <div className="relative">
-              <button
-                onClick={() => {
-                  const el = document.getElementById("adDropdown");
-                  el.classList.toggle("hidden");
-                }}
-                className="text-gray-300 hover:text-gray-100"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              <div
-                id="adDropdown"
-                className="hidden absolute right-0 mt-2 w-60 bg-neutral-900/95 border border-neutral-700 rounded-xl p-4 shadow-xl backdrop-blur-lg z-30"
-              >
-                <h4 className="text-gray-100 text-sm font-semibold mb-2">Ad Highlights</h4>
-                <ul className="text-gray-400 text-xs space-y-1">
-                  <li>• Lightning-fast sync</li>
-                  <li>• End-to-end encryption</li>
-                  <li>• Global file access</li>
-                  <li>• Free 1TB on sign-up</li>
-                </ul>
+                <Button 
+                  onClick={downloadFile} 
+                  disabled={downloading}
+                  className="w-full"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  {downloading ? 'Downloading...' : 'Download File'}
+                </Button>
               </div>
-            </div>
-          </div>
-
-          {/* Hover Title */}
-          <a
-            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all"
-          >
-            <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-xl md:text-2xl font-bold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all">
-              Cloud Sync Pro – Lightning Fast Uploads
-            </h3>
-          </a>
-
-          {/* CTA Button */}
-          <div className="absolute bottom-5 right-5 z-20">
-            <a
-              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-full bg-neutral-800 border border-neutral-700 text-gray-100 hover:bg-neutral-700 transition-all"
-            >
-              Visit Now
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        {/* Ad Preview (Hidden on Mobile) */}
-        <div className="hidden md:flex flex-col justify-between bg-gradient-to-br from-neutral-900 via-neutral-850 to-neutral-800 rounded-3xl border border-neutral-700 shadow-xl w-full md:w-1/3 p-6">
-          <div className="relative overflow-hidden rounded-2xl mb-5">
-            <img
-              src="https://images.unsplash.com/photo-1672938464174-b5d2a875cc7d?q=80&w=800"
-              alt="Ad Preview"
-              className="w-full h-48 object-cover rounded-2xl hover:scale-105 transition-transform"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 rounded-2xl"></div>
-          </div>
-          <div className="text-left space-y-2">
-            <h4 className="text-gray-100 text-lg font-semibold">Ultra Cloud Storage</h4>
-            <p className="text-gray-400 text-sm">Next-gen encrypted syncing for professionals with high security and performance.</p>
-          </div>
-          <div className="mt-5">
-            <a
-              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-gray-700 to-gray-600 text-gray-200 border border-neutral-700 hover:from-gray-600 hover:to-gray-500 transition-all"
-            >
-              Learn More
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-        </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
-  ); 
-}
+  );
+};
+ 
