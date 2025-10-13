@@ -141,30 +141,27 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-      {/* Total Balance Card */}
-<div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 rounded-3xl p-5 sm:p-7 border border-slate-600/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
+      {/* Total Balance Card with YouTube-Style Video Ad */}
+<div className="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto p-0">
 
-  {/* 3D Floating Cloud Effect */}
-  <div className="absolute inset-0">
-    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" className="w-full h-full opacity-[0.18] blur-2xl">
-      <defs>
-        <radialGradient id="softCloud" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#7dd3fc" />
-          <stop offset="70%" stopColor="#3b82f6" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#1e3a8a" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <ellipse cx="300" cy="280" rx="220" ry="140" fill="url(#softCloud)" />
-      <ellipse cx="180" cy="300" rx="150" ry="90" fill="url(#softCloud)" />
-      <ellipse cx="420" cy="300" rx="180" ry="100" fill="url(#softCloud)" />
-    </svg>
-  </div>
+  {/* Background Video (auto-loop muted ad style) */}
+  <video
+    className="absolute inset-0 w-full h-full object-cover opacity-40"
+    autoPlay
+    loop
+    muted
+    playsInline
+    src="https://cdn.pixabay.com/video/2023/10/26/187432-875004904_large.mp4"
+  />
 
-  {/* Content */}
-  <div className="relative z-10 text-right">
+  {/* Overlay Gradient for Readability */}
+  <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-slate-800/70 to-slate-700/70 backdrop-blur-[2px]" />
+
+  {/* Card Content */}
+  <div className="relative z-10 p-6 sm:p-7 text-right">
     <p className="text-slate-300 text-sm mb-4 font-medium tracking-wide flex justify-between items-center">
       Connect Your Account
-      {/* Dropdown Toggle for Mobile */}
+      {/* Mobile Dropdown Button */}
       <button
         className="sm:hidden text-slate-300 hover:text-blue-400 transition"
         onClick={() => {
@@ -185,7 +182,7 @@ export const Dashboard: React.FC = () => {
       </button>
     </p>
 
-    {/* Icons Row */}
+    {/* Dropdown / Platforms */}
     <div
       id="mobileDropdown"
       className="hidden sm:flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6 items-start sm:items-center justify-start"
@@ -198,7 +195,7 @@ export const Dashboard: React.FC = () => {
       ].map((platform, i) => (
         <div
           key={i}
-          className="flex items-center justify-between gap-3 sm:gap-4 bg-slate-800/60 hover:bg-slate-700/60 rounded-xl px-3 py-2 sm:px-4 sm:py-3 transition-all duration-300 backdrop-blur-sm hover:scale-[1.03]"
+          className="flex items-center justify-between gap-3 sm:gap-4 bg-slate-800/70 hover:bg-slate-700/70 rounded-xl px-3 py-2 sm:px-4 sm:py-3 transition-all duration-300 backdrop-blur-sm hover:scale-[1.03]"
         >
           <img
             alt={platform.name}
@@ -225,10 +222,25 @@ export const Dashboard: React.FC = () => {
       ))}
     </div>
   </div>
+
+  {/* Floating Video Controls (like YouTube ad feel) */}
+  <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-xs text-slate-300/90">
+    <span className="flex items-center gap-2">
+      <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M10 15l5.19-3L10 9v6z" />
+        <path
+          fillRule="evenodd"
+          d="M21 8.5a2.5 2.5 0 00-2.5-2.5h-13A2.5 2.5 0 003 8.5v7a2.5 2.5 0 002.5 2.5h13a2.5 2.5 0 002.5-2.5v-7zM2 8.5A3.5 3.5 0 015.5 5h13A3.5 3.5 0 0122 8.5v7a3.5 3.5 0 01-3.5 3.5h-13A3.5 3.5 0 012 15.5v-7z"
+          clipRule="evenodd"
+        />
+      </svg>
+      Sponsored Ad
+    </span>
+    <button className="bg-slate-800/70 px-2 py-1 rounded-lg hover:bg-slate-700/70 transition text-[11px]">
+      Skip Ad →
+    </button>
+  </div>
 </div>
-          </div>
-        </div>
-      </div>
 
 <style>
 {`
