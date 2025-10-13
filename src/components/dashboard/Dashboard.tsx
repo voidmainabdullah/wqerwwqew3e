@@ -241,6 +241,8 @@ export const Dashboard: React.FC = () => {
     </button>
   </div>
 </div>
+          </div>
+        </div>
 
 <style>
 {`
