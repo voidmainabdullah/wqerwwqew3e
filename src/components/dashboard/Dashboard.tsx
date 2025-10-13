@@ -158,7 +158,7 @@ export const Dashboard: React.FC = () => {
 <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4">
 
   {/* Interactive Video Ad Card */}
-  <div className="relative overflow-hidden  bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[200px]">
+  <div className="relative overflow-hidden  bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
 
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
