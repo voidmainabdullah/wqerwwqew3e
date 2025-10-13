@@ -260,7 +260,7 @@ export const Dashboard: React.FC = () => {
     {/* Ad Image */}
     <div className="relative overflow-hidden rounded-2xl mb-5">
       <img
-        src="https://images.unsplash.com/photo-1672938464174-b5d2a875cc7d?q=80&w=800"
+        src="/skie.png"
         alt="Ad Preview"
         className="w-full h-52 object-cover rounded-2xl hover:scale-105 transition-transform duration-500"
       />
