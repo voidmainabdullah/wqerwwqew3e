@@ -120,21 +120,21 @@ export const Dashboard: React.FC = () => {
   const isPro = stats?.subscriptionTier === "pro";
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
-      {/* Professional Header */}
-<div className="border-b border-slate-700/50 bg-neutral-900/80 backdrop-blur-sm rounded-full">
-  <div className="px-8 py-6 rounded-none bg-zinc-900">
+     {/* Professional Header */}
+<div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
+  <div className="px-8 py-6 rounded-none bg-neutral-950">
     <div className="flex items-center justify-between">
-      {/* Dashboard Title - Hidden on Mobile */}
-      <div className=" md:block space-y-1">
+      {/* Dashboard Title */}
+      <div className="hidden md:block space-y-1">
         <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent">
             Dashboard
           </h1>
           <Badge
             className={`px-3 py-1 text-sm font-medium ${
               isPro
-                ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0"
-                : "bg-slate-700 text-slate-300 border-slate-600"
+                ? "bg-gradient-to-r from-amber-500 to-orange-400 text-white border-0"
+                : "bg-neutral-800 text-gray-300 border border-neutral-700"
             }`}
           >
             {isPro ? (
@@ -146,7 +146,7 @@ export const Dashboard: React.FC = () => {
             )}
           </Badge>
         </div>
-        <p className="text-slate-400">
+        <p className="text-gray-500">
           Welcome back, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
         </p>
       </div>
@@ -157,13 +157,13 @@ export const Dashboard: React.FC = () => {
 {/* Ultra Professional Ad Layout */}
 <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4">
 
-  {/* Interactive Video Balance Card (Slightly Smaller Height) */}
-  <div className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-neutral-500/20 h-[360px] md:h-[420px]">
+  {/* Interactive Video Ad Card */}
+  <div className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[400px]">
 
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe
-        className="w-full h-full object-cover scale-105 opacity-80 transition-all duration-500 group-hover:opacity-100"
+        className="w-full h-full object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100"
         src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0"
         title="Ad Video"
         frameBorder="0"
@@ -173,9 +173,9 @@ export const Dashboard: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
     </div>
 
-    {/* Top Bar (Ad Label + Dropdown) */}
+    {/* Top Bar (Ad Label + Dropdown Menu) */}
     <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
-      <span className="text-sm font-semibold text-gray-200 bg-neutral-900/70 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-700/40 shadow-sm">
+      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-neutral-950/80 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
         Ad · Sponsored
       </span>
 
@@ -199,41 +199,58 @@ export const Dashboard: React.FC = () => {
           </svg>
         </button>
 
-        {/* Dropdown Menu */}
+        {/* Dropdown Menu - Professional Key Points */}
         <div
           id="adDropdown"
-          className="hidden absolute right-0 mt-2 w-52 bg-neutral-900/90 border border-neutral-700 rounded-xl p-3 shadow-lg backdrop-blur-lg z-30"
+          className="hidden absolute right-0 mt-3 w-64 bg-neutral-950/95 border border-neutral-800 rounded-2xl p-4 shadow-2xl backdrop-blur-md z-30"
         >
-          <h4 className="text-gray-100 text-sm font-semibold mb-2">Ad Key Points</h4>
-          <ul className="text-gray-400 text-xs space-y-1">
-            <li>✔ Secure file sync</li>
-            <li>✔ Fast global access</li>
-            <li>✔ Encrypted cloud storage</li>
-            <li>✔ 1TB bonus on signup</li>
+          <h4 className="text-gray-100 text-sm font-semibold mb-3 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20h9" />
+            </svg>
+            Key Features
+          </h4>
+          <ul className="text-gray-400 text-sm space-y-2">
+            <li className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-amber-400 rounded-full"></span>
+              Secure File Synchronization
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+              Global High-Speed Access
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+              End-to-End Encryption
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+              +1TB Free Storage Offer
+            </li>
           </ul>
         </div>
       </div>
     </div>
 
-    {/* Center Hover Title */}
+    {/* Hover Title */}
     <a
       href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       target="_blank"
       rel="noopener noreferrer"
       className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500"
     >
-      <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-2xl font-bold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
-        Cloud Sync Pro – Lightning Fast Uploads
+      <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-2xl font-semibold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
+        Cloud Sync Pro — Lightning Fast Uploads
       </h3>
     </a>
 
-    {/* Bottom Right CTA Button */}
+    {/* Visit Now CTA */}
     <div className="absolute bottom-5 right-5 z-20">
       <a
         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         target="_blank"
         rel="noopener noreferrer"
-        className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-neutral-800 text-gray-100 font-semibold border border-neutral-700 hover:bg-neutral-700 hover:border-gray-600 shadow-md hover:shadow-neutral-500/20 transition-all duration-300 overflow-hidden"
+        className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-neutral-900/80 text-gray-100 font-semibold border border-neutral-700 hover:bg-neutral-800 hover:border-gray-600 shadow-md hover:shadow-gray-500/20 transition-all duration-300 overflow-hidden"
       >
         <span className="relative z-10">Visit Now</span>
         <svg
@@ -249,39 +266,35 @@ export const Dashboard: React.FC = () => {
       </a>
     </div>
 
-    {/* Animated Glow Orbs */}
-    <div className="absolute -top-10 -right-10 w-32 h-32 bg-neutral-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
-    <div className="absolute bottom-0 left-0 w-40 h-40 bg-neutral-400/10 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
+    {/* Glow Orbs */}
+    <div className="absolute -top-10 -right-10 w-32 h-32 bg-neutral-600/15 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div className="absolute bottom-0 left-0 w-40 h-40 bg-neutral-500/10 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
   </div>
 
-  {/* Right Side Ad Preview Panel — Hidden on Mobile */}
-  <div className="hidden md:flex relative flex-col justify-between bg-gradient-to-br from-neutral-900 via-neutral-850 to-neutral-800 rounded-3xl border border-neutral-700/60 shadow-xl w-full md:w-1/3 p-6 hover:shadow-neutral-500/20 transition-all duration-500">
-
-    {/* Ad Image */}
+  {/* Right Side Preview Card */}
+  <div className="hidden md:flex relative flex-col justify-between bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-xl w-full md:w-1/3 p-6 hover:shadow-gray-500/20 transition-all duration-500">
     <div className="relative overflow-hidden rounded-2xl mb-5">
       <img
-        src="/skie.png"
+        src="https://images.unsplash.com/photo-1672938464174-b5d2a875cc7d?q=80&w=800"
         alt="Ad Preview"
-        className="w-full h-52 object-cover rounded-2xl hover:scale-105 transition-transform duration-500"
+        className="w-full h-48 object-cover rounded-2xl hover:scale-105 transition-transform duration-500"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/50 rounded-2xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 rounded-2xl"></div>
     </div>
 
-    {/* Ad Content */}
     <div className="text-left space-y-3">
       <h4 className="text-gray-100 text-lg font-semibold">Ultra Cloud Storage</h4>
       <p className="text-gray-400 text-sm leading-relaxed">
-        Experience next-gen performance with secure and lightning-fast cloud syncing for professionals.
+        Experience next-gen speed and security with the most efficient cloud system built for professionals.
       </p>
     </div>
 
-    {/* CTA Button */}
     <div className="mt-5">
       <a
         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-gray-700 to-gray-600 text-gray-200 font-semibold border border-neutral-700 hover:from-gray-600 hover:to-gray-500 hover:text-white transition-all duration-300"
+        className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-800 to-neutral-700 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300"
       >
         Learn More
         <svg
@@ -319,7 +332,6 @@ export const Dashboard: React.FC = () => {
 `}
 </style>
 
-      
 
       <div className="p-8 space-y-8 bg-zinc-900">
         {/* Main Stats Grid */}
