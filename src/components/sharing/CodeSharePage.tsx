@@ -322,5 +322,5 @@ export default function CodePage() {
         </div>
       </div>
     </div>
-  );
+  ); 
 }
