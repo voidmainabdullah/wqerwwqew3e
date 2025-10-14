@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { DotsThreeOutlineVertical, Check, Bell X } from 'phosphor-react';
+import { DotsThreeOutlineVertical, Check, Bell, X } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Notification {
