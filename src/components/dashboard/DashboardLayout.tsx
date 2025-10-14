@@ -355,7 +355,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onClick={() => handleConnect('GitHub')}
           className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-zinc-800 transition-all w-24"
         >
-          <GithubLogo className="h-6 w-6 text-gray-200" />
+          <FaGithub className="h-6 w-6 text-gray-200" />
           <span className="text-xs text-muted-foreground mt-1">GitHub</span>
         </button>
 
@@ -363,7 +363,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onClick={() => handleConnect('Google Drive')}
           className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-zinc-800 transition-all w-24"
         >
-          <GoogleDriveLogo className="h-6 w-6 text-green-400" />
+          <FaGithub className="h-6 w-6 text-green-400" />
           <span className="text-xs text-muted-foreground mt-1">Drive</span>
         </button>
       </div>
