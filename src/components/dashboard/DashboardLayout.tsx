@@ -1,6 +1,8 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, Link, useLocation } from 'react-router-dom';
+import { FaGithub } from 'react-icons/fa';
+import { SiGoogledrive } from 'react-icons/si';
 import { Button } from '@/components/ui/button'; 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
