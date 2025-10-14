@@ -234,7 +234,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <Button
         size="sm"
         className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-0"
-        </Button>
+      > 
         <UsersThree className="h-4 w-4 mr-2" weight="fill" />
         Create Team
       </Button>
