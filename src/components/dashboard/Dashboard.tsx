@@ -294,7 +294,7 @@ export const Dashboard: React.FC = () => {
         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-800 to-neutral-700 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300"
+        className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-850 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300"
       >
         Learn More
         <svg
@@ -435,7 +435,7 @@ export const Dashboard: React.FC = () => {
           {/* Left Column - Charts and Analytics */}
           <div className="lg:col-span-2 space-y-8">
             {/* Performance Chart */}
-            <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
+            <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-slate-600/50">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -499,7 +499,7 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Real-time Analytics Component */}
-            <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50 rounded-xl p-6 bg-inherit">
+            <div className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-slate-600/50 rounded-xl p-6 bg-inherit">
               <div className="space-y-6">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
@@ -576,7 +576,7 @@ export const Dashboard: React.FC = () => {
           {/* Right Column - Activity and Actions */}
           <div className="space-y-8">
             {/* Quick Actions */}
-            <Card className="bg-gradient-to-br from-neutral-800 to-neutral-700 border-slate-600/50">
+            <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Lightning className="w-5 h-5 text-amber-400" />
