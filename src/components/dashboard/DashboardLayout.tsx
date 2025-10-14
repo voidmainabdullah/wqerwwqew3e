@@ -4,8 +4,8 @@ import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, UsersThree,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'; 
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -178,117 +178,129 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
   };
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
- const StoragePopover = () => (
-  <Popover>
-    <PopoverTrigger asChild>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="relative h-9 w-9 hover:bg-accent transition-colors"
-      >
-        <UsersThree className="h-5 w-5 text-blue-500 dark:text-blue-400" weight="fill" />
-      </Button>
-    </PopoverTrigger>
-
-    <PopoverContent className="w-80 p-0" align="end">
-      <div className="p-5 space-y-5">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <UsersThree className="h-5 w-5 text-blue-500" weight="fill" />
-            <h3 className="text-base font-heading font-semibold text-foreground">Create Team</h3>
-          </div>
-        </div>
-      </div>
-
-          <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
-            New
-          </Badge>
-    
-
-        {/* Form Section */}
-        <div className="space-y-3">
-          <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">
-              Team Name
-            </label>
-            <input
-              type="text"
-              placeholder="e.g. Fabel Developers"
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-            />
-          </div>
-        </div>
-    
-          <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">
-              Invite Members
-            </label>
-            <input
-              type="email"
-              placeholder="Enter email to invite"
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-            />
-          </div>
-        </div>
-    
-
-          <div className="text-xs text-muted-foreground">
-            You can add or remove team members anytime later.
-          </div>
-        
-  
-
-        {/* CTA */}
-        <Button
-          size="sm"
-          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-0"
-        >
-          <UsersThree className="h-4 w-4 mr-2" weight="fill" />
-          Create Team
+  const StoragePopover = () => <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent transition-colors">
+          <HardDrive className="h-5 w-5 text-muted-foreground" weight="fill" />
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
+              <span className="text-[10px] text-warning-foreground font-bold">!</span>
+            </div>} 
         </Button>
-      </div>
-  
-    </PopoverContent>
-  </Popover>
-);
-
-    
-
-const FeedbackButton = () => (
-  <Button
-    variant="ghost"
-    size="sm"
-    asChild
-    className="
-  group relative h-auto px-5 py-2.5 rounded-full border-none
-  font-semibold text-white
-  bg-[linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6,#60a5fa,#93c5fd)]
-  bg-[length:250%_100%]
-  bg-left
-  shadow-[0_20px_10px_-15px_rgba(37,99,235,0.4)]
-  text-shadow-[1px_1px_2px_rgba(0,0,0,0.4)]
-  transition-all duration-300 ease-in-out
-  hover:bg-[length:270%_100%]
-  hover:bg-right
-  hover:shadow-[0_25px_15px_-15px_rgba(59,130,246,0.6)]
-  hover:-translate-y-0.5
-  focus:outline-none
-"
-
-  >
-    <a href="#" className="flex items-center gap-2 text-black no-underline">
-      <Crown
-        className="h-4 w-4 text-amber-400 transition-all duration-300 group-hover:scale-110"
-        weight="duotone"
-      />
-      <span className="text-sm  text-white hidden sm:inline font-semibold">
-        Upgrade
-      </span>
-    </a>
-  </Button>
-);
-
+      </PopoverTrigger>
+      <PopoverContent className="w-80 p-0" align="end">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <HardDrive className="h-5 w-5 text-primary" weight="fill" />
+              <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
+            </div>
+            {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
+                Pro
+              </Badge>}
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm font-body">
+              <span className="text-muted-foreground">Used</span>
+              <span className="font-semibold text-foreground">
+                {formatFileSize(profile?.storage_used || 0)}
+                {profile?.subscription_tier !== 'pro' && ` / ${formatFileSize(profile?.storage_limit || 0)}`}
+              </span>
+            </div>
+            
+            {profile?.subscription_tier !== 'pro' && <>
+                <div className="space-y-1.5">
+                  <Progress value={storageProgress} className="h-2" />
+                  <div className="flex justify-between text-xs text-muted-foreground font-body">
+                    <span>{storageProgress.toFixed(1)}% used</span>
+                    <span>{(100 - storageProgress).toFixed(1)}% free</span>
+                  </div>
+                </div>
+              </>}
+            
+            {profile?.subscription_tier === 'pro' && <div className="text-center py-3 px-4 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-lg border border-emerald-500/20">
+                <Badge variant="outline" className="text-emerald-600 dark:text-emerald-400 border-emerald-500/50 bg-transparent font-body">
+                  ✨ Unlimited Storage
+                </Badge>
+              </div>}
+          </div>
+          
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="p-3 bg-warning/10 rounded-lg border border-warning/30">
+              <p className="text-sm text-warning-foreground/90 font-body mb-2">
+                You're running low on storage space. Upgrade to Pro for unlimited storage.
+              </p>
+              <Button asChild size="sm" className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0">
+                <Link to="/subscription">Upgrade Now</Link>
+              </Button>
+            </div>}
+        </div>
+      </PopoverContent>
+    </Popover>;
+  const HelpPopover = () => <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent transition-colors">
+          <Question className="h-5 w-5 text-muted-foreground" weight="fill" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-72 p-0" align="end">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center gap-2">
+            <Lifebuoy className="h-5 w-5 text-primary" weight="fill" />
+            <h3 className="text-base font-heading font-semibold text-foreground">Help & Support</h3>
+          </div>
+          
+          <div className="space-y-1">
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Info className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" weight="fill" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">Documentation</p>
+                  <p className="text-xs text-muted-foreground font-body">Learn how to use the platform</p>
+                </div>
+              </a>
+            </Button>
+            
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Lifebuoy className="h-5 w-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" weight="fill" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">Support Center</p>
+                  <p className="text-xs text-muted-foreground font-body">Get help from our team</p>
+                </div>
+              </a>
+            </Button>
+            
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Question className="h-5 w-5 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" weight="fill" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">FAQ</p>
+                  <p className="text-xs text-muted-foreground font-body">Common questions</p>
+                </div>
+              </a>
+            </Button>
+            
+            <div className="pt-2 border-t border-border">
+              <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+                <a href="#" className="flex items-start gap-3">
+                  <ChatCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" weight="fill" />
+                  <div className="text-left flex-1">
+                    <p className="font-heading font-semibold text-sm text-foreground">Live Chat</p>
+                    <p className="text-xs text-muted-foreground font-body">Chat with our support team</p>
+                  </div>
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>;
+  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
+      <a href="#" className="flex items-center gap-2 bg-blue-800">
+        <Crown className="h-4 w-4 text-amber-400 group-hover:text-amber-600  transition-colors" weight="duotone" />
+        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
+      </a>
+    </Button>;
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
