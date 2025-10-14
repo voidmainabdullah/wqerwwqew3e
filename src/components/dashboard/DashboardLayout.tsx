@@ -376,7 +376,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   </Popover>
 </div>
 
-
+ 
               
               <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
