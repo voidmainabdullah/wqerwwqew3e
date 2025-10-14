@@ -147,7 +147,7 @@ export const Dashboard: React.FC = () => {
           </Badge>
         </div>
         <p className="text-gray-500">
-          Welcome back, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
+          Welcome baf, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
         </p>
       </div>
     </div>
