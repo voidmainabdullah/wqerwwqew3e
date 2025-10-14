@@ -204,7 +204,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
             New
           </Badge>
-        </div>
+      
 
         {/* Form Section */}
         <div className="space-y-3">
