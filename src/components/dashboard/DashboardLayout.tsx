@@ -199,6 +199,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <h3 className="text-base font-heading font-semibold text-foreground">Create Team</h3>
           </div>
         </div>
+      </div>
+    </PopoverContent>
           <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
             New
           </Badge>
