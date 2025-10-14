@@ -204,7 +204,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
             New
           </Badge>
-      
+    
 
         {/* Form Section */}
         <div className="space-y-3">
@@ -218,6 +218,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             />
           </div>
+        </div>
 
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-1">
