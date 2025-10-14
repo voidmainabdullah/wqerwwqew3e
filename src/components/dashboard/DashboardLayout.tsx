@@ -178,7 +178,28 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
   };
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
- 
+ const CreateTeamButton = () => (
+  <Button
+    asChild
+    className="
+      group relative h-9 px-5 rounded-full border-0 
+      font-semibold text-white
+      bg-[linear-gradient(90deg,#2563eb,#1e40af,#2563eb)]
+      bg-[length:300%_100%]
+      shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)]
+      transition-all duration-300 ease-in-out
+      hover:bg-[length:320%_100%]
+      hover:scale-[1.03]
+      hover:shadow-[0_6px_25px_-8px_rgba(37,99,235,0.7)]
+    "
+  >
+    <Link to="/dashboard/teams" className="flex items-center gap-2">
+      <Users className="h-4 w-4 text-blue-200 group-hover:text-white transition-colors" weight="fill" />
+      <span className="text-sm font-medium">Create Team</span>
+    </Link>
+  </Button>
+);
+
  const FeedbackButton = () => (
   <Button
     variant="ghost"
