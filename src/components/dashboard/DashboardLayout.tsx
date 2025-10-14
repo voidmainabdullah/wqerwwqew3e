@@ -239,6 +239,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </div>
   </PopoverContent>
 </Popover> 
+  </Popover>
 
 const FeedbackButton = () => (
   <Button
