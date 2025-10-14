@@ -267,7 +267,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <p className="font-heading font-semibold text-sm text-foreground">Support Center</p>
                   <p className="text-xs text-muted-foreground font-body">Get help from our team</p>
                 </div>
-              </a>
+               </a>
             </Button>
             
             <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
