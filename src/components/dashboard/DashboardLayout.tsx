@@ -226,8 +226,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             Description (Optional)
           </label>
           <textarea
-            id="teamDesc"
-            rows="2"
+            id="teamDesc" 
+            rows={2}
             placeholder="Add a short team description..."
             className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
           ></textarea>
