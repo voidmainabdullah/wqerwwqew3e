@@ -334,6 +334,61 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   </div>
                 </div>
               </div>
+              {/* Connect Popover */}
+<div className="hidden lg:flex items-center justify-end w-full">
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button
+        variant="ghost"
+        className="text-sm font-semibold hover:bg-accent/30 transition-all"
+      >
+        Connect
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-60 p-4">
+      <h3 className="text-sm font-semibold text-foreground mb-2">Connect Services</h3>
+
+      <div className="flex gap-3 mb-2">
+        <button
+          onClick={() => handleConnect('GitHub')}
+          className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-zinc-800 transition-all w-24"
+        >
+          <GithubLogo className="h-6 w-6 text-gray-200" />
+          <span className="text-xs text-muted-foreground mt-1">GitHub</span>
+        </button>
+
+        <button
+          onClick={() => handleConnect('Google Drive')}
+          className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-zinc-800 transition-all w-24"
+        >
+          <GoogleDriveLogo className="h-6 w-6 text-green-400" />
+          <span className="text-xs text-muted-foreground mt-1">Drive</span>
+        </button>
+      </div>
+
+      {/* Error Message */}
+      {error && (
+        <p className="text-xs text-destructive font-body mt-2">
+          {error}
+        </p>
+      )}
+    </PopoverContent>
+  </Popover>
+</div>
+
+// Outside component state & handler:
+const [error, setError] = React.useState<string | null>(null);
+
+const handleConnect = (service: string) => {
+  const success = Math.random() > 0.5; // simulate success/failure
+  if (!success) {
+    setError(`Failed to connect to ${service}`);
+  } else {
+    setError(null);
+    alert(`${service} connected successfully!`);
+  }
+};
+
               
               <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
