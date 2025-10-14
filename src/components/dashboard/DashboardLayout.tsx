@@ -198,6 +198,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <UsersThree className="h-5 w-5 text-blue-500" weight="fill" />
             <h3 className="text-base font-heading font-semibold text-foreground">Create Team</h3>
           </div>
+        </div>
           <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
             New
           </Badge>
@@ -228,7 +229,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </div>
       </div>
-    </PopoverContent>
+    
 
           <div className="text-xs text-muted-foreground">
             You can add or remove team members anytime later.
