@@ -4,8 +4,6 @@ import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Plus, UsersThree } from 'phosphor-react';
-
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'; 
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover';
@@ -181,111 +179,128 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
-  <PopoverTrigger asChild>
-    <Button
-      variant="ghost"
-      size="icon"
-      className="relative h-9 w-9 hover:bg-accent transition-colors"
-    >
-      <UsersThree className="h-5 w-5 text-muted-foreground" weight="fill" />
-    </Button>
-  </PopoverTrigger>
-
-  <PopoverContent className="w-80 p-0" align="end">
-    <div className="p-4 space-y-4">
-      {/* Header */}
-      <div className="flex items-center gap-2">
-        <UsersThree className="h-5 w-5 text-primary" weight="fill" />
-        <h3 className="text-base font-heading font-semibold text-foreground">
-          Create New Team
-        </h3>
-      </div>
-
-      {/* Input Section */}
-      <div className="space-y-3">
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="teamName"
-            className="text-sm text-muted-foreground font-body"
-          >
-            Team Name
-          </label>
-          <input
-            id="teamName"
-            type="text"
-            placeholder="Enter your team name"
-            className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-          />
-        </div>
-
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="teamDesc"
-            className="text-sm text-muted-foreground font-body"
-          >
-            Description (Optional)
-          </label>
-          <textarea
-            id="teamDesc" 
-            rows={2}
-            placeholder="Add a short team description..."
-            className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
-          ></textarea>
-        </div>
-      </div>
-
-      {/* Create Button */}
-      <div className="pt-2">
-        <Button
-          size="sm"
-          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold transition-all"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Create Team
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent transition-colors">
+          <HardDrive className="h-5 w-5 text-muted-foreground" weight="fill" />
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
+              <span className="text-[10px] text-warning-foreground font-bold">!</span>
+            </div>} 
         </Button>
-      </div>
-
-      {/* Hint / Info */}
-      <div className="pt-1 text-center">
-        <p className="text-xs text-muted-foreground font-body">
-          Invite members after creating your team.
-        </p>
-      </div>
-    </div>
-  </PopoverContent>
-</Popover>
-;
- const FeedbackButton = () => (
-  <Button
-    variant="ghost"
-    size="sm"
-    asChild
-    className="
-      group relative h-auto px-5 py-2.5 rounded-full border-none
-      font-semibold text-black
-      bg-[linear-gradient(15deg,#ddff00,#b8d100,#93a300,#6e7500,#ddff00,#b8d100,#93a300,#6e7500)]
-      bg-[length:300%_100%]
-      bg-left
-      shadow-[0_30px_10px_-20px_rgba(221,255,0,0.2)]
-      text-shadow-[2px_2px_3px_rgba(221,255,0,0.3)]
-      transition-all duration-300 ease-in-out
-      hover:bg-[length:320%_100%]
-      hover:bg-right
-      hover:-translate-y-0.5
-    "
-  >
-    <a href="#" className="flex items-center gap-2 text-black no-underline">
-      <Crown
-        className="h-4 w-4 fill-black transition-all duration-300 group-hover:scale-110"
-        weight="duotone"
-      />
-      <span className="text-sm hidden sm:inline font-semibold">
-        Upgrade
-      </span>
-    </a>
-  </Button>
-); 
-
+      </PopoverTrigger>
+      <PopoverContent className="w-80 p-0" align="end">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <HardDrive className="h-5 w-5 text-primary" weight="fill" />
+              <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
+            </div>
+            {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
+                Pro
+              </Badge>}
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm font-body">
+              <span className="text-muted-foreground">Used</span>
+              <span className="font-semibold text-foreground">
+                {formatFileSize(profile?.storage_used || 0)}
+                {profile?.subscription_tier !== 'pro' && ` / ${formatFileSize(profile?.storage_limit || 0)}`}
+              </span>
+            </div>
+            
+            {profile?.subscription_tier !== 'pro' && <>
+                <div className="space-y-1.5">
+                  <Progress value={storageProgress} className="h-2" />
+                  <div className="flex justify-between text-xs text-muted-foreground font-body">
+                    <span>{storageProgress.toFixed(1)}% used</span>
+                    <span>{(100 - storageProgress).toFixed(1)}% free</span>
+                  </div>
+                </div>
+              </>}
+            
+            {profile?.subscription_tier === 'pro' && <div className="text-center py-3 px-4 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-lg border border-emerald-500/20">
+                <Badge variant="outline" className="text-emerald-600 dark:text-emerald-400 border-emerald-500/50 bg-transparent font-body">
+                  ✨ Unlimited Storage
+                </Badge>
+              </div>}
+          </div>
+          
+          {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="p-3 bg-warning/10 rounded-lg border border-warning/30">
+              <p className="text-sm text-warning-foreground/90 font-body mb-2">
+                You're running low on storage space. Upgrade to Pro for unlimited storage.
+              </p>
+              <Button asChild size="sm" className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0">
+                <Link to="/subscription">Upgrade Now</Link>
+              </Button>
+            </div>}
+        </div>
+      </PopoverContent>
+    </Popover>;
+  const HelpPopover = () => <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent transition-colors">
+          <Question className="h-5 w-5 text-muted-foreground" weight="fill" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-72 p-0" align="end">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center gap-2">
+            <Lifebuoy className="h-5 w-5 text-primary" weight="fill" />
+            <h3 className="text-base font-heading font-semibold text-foreground">Help & Support</h3>
+          </div>
+          
+          <div className="space-y-1">
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Info className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" weight="fill" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">Documentation</p>
+                  <p className="text-xs text-muted-foreground font-body">Learn how to use the platform</p>
+                </div>
+              </a>
+            </Button>
+            
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Lifebuoy className="h-5 w-5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" weight="fill" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">Support Center</p>
+                  <p className="text-xs text-muted-foreground font-body">Get help from our team</p>
+                </div>
+              </a>
+            </Button>
+            
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+              <a href="#" className="flex items-start gap-3">
+                <Question className="h-5 w-5 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" weight="fill" />
+                <div className="text-left flex-1">
+                  <p className="font-heading font-semibold text-sm text-foreground">FAQ</p>
+                  <p className="text-xs text-muted-foreground font-body">Common questions</p>
+                </div>
+              </a>
+            </Button>
+            
+            <div className="pt-2 border-t border-border">
+              <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
+                <a href="#" className="flex items-start gap-3">
+                  <ChatCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" weight="fill" />
+                  <div className="text-left flex-1">
+                    <p className="font-heading font-semibold text-sm text-foreground">Live Chat</p>
+                    <p className="text-xs text-muted-foreground font-body">Chat with our support team</p>
+                  </div>
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>;
+  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
+      <a href="#" className="flex items-center gap-2 bg-blue-800">
+        <Crown className="h-4 w-4 text-amber-400 group-hover:text-amber-600  transition-colors" weight="duotone" />
+        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
+      </a>
+    </Button>;
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
@@ -318,7 +333,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     </p>
                   </div>
                 </div>
-                
               </div>
               
               <div className="flex items-center gap-2">
@@ -326,7 +340,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <div className="flex items-center gap-1 bg-neutral-900 ">
                   <NotificationPopover />
                   <StoragePopover />
-                
+                  <HelpPopover />
                   
                   {/* Separator */}
                   <div className="hidden sm:block w-px h-6 bg-border mx-2"></div>
