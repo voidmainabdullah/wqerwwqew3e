@@ -215,6 +215,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </div>
     </div>
+  </PopoverContent>
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-1">Invite Members</label>
           <input
