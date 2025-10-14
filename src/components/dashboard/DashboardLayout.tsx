@@ -1,12 +1,12 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'; 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'; 
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
-import { NotificationPopover } from './NotificationPopover'; 
+import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress'; 
@@ -20,7 +20,7 @@ interface UserProfile {
   storage_limit: number;
   subscription_tier: string;
 }
-const navigation = [{  
+const navigation = [{ 
   name: 'Dashboard',
   href: '/dashboard',
   icon: 'dashboard'
@@ -180,12 +180,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-9 w-40 rounded-full  bg-zinc-800 hover:bg-zinc-700 transition-colors">
-          <Users className="h-5 w-5 text-muted-foreground" weight="fill" />
-  <span className="font-body text-sm text-foreground">Create Team</span>
-  <span className="text-sm font-bold text-neutral-400">+</span>
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent transition-colors">
+          <HardDrive className="h-5 w-5 text-muted-foreground" weight="fill" />
           {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
-              <span className="text-[10px] text-warning-foreground  font-bold">!</span>
+              <span className="text-[10px] text-warning-foreground font-bold">!</span>
             </div>} 
         </Button>
       </PopoverTrigger>
@@ -193,7 +191,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <HardDrive className="h-5 w-5 text-primary  " weight="fill" />
+              <HardDrive className="h-5 w-5 text-primary" weight="fill" />
               <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
             </div>
             {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
@@ -240,7 +238,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Popover>;
   const HelpPopover = () => <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9 hidden hover:bg-accent transition-colors">
+        <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-accent transition-colors">
           <Question className="h-5 w-5 text-muted-foreground" weight="fill" />
         </Button>
       </PopoverTrigger>
@@ -285,7 +283,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <div className="pt-2 border-t border-border">
               <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
                 <a href="#" className="flex items-start gap-3">
-                  <ChatCircle className="h-5 w-5 text-primary mt-0.5  flex-shrink-0" weight="fill" />
+                  <ChatCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" weight="fill" />
                   <div className="text-left flex-1">
                     <p className="font-heading font-semibold text-sm text-foreground">Live Chat</p>
                     <p className="text-xs text-muted-foreground font-body">Chat with our support team</p>
@@ -297,40 +295,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </PopoverContent>
     </Popover>;
-const FeedbackButton = () => (
-  <Button
-    variant="ghost"
-    size="sm"
-    asChild
-    className="
-  group relative h-auto px-5 py-2.5 rounded-full border-none
-  font-semibold text-white
-  bg-[linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6,#60a5fa,#93c5fd)]
-  bg-[length:250%_100%]
-  bg-left
-  shadow-[0_20px_10px_-15px_rgba(37,99,235,0.4)]
-  text-shadow-[1px_1px_2px_rgba(0,0,0,0.4)]
-  transition-all duration-300 ease-in-out
-  hover:bg-[length:270%_100%]
-  hover:bg-right
-  hover:shadow-[0_25px_15px_-15px_rgba(59,130,246,0.6)]
-  hover:-translate-y-0.5
-  focus:outline-none
-"
-
-  >
-    <a href="#" className="flex items-center gap-2 text-white no-underline">
-      <Crown
-        className="h-4 w-4 fill text-amber-400 transition-all duration-300 group-hover:scale-110"
-        weight="duotone"
-      />
-      <span className="text-sm hidden sm:inline font-semibold">
-        Upgrade
-      </span>
-    </a> 
-  </Button>
-);
-
+  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
+      <a href="#" className="flex items-center gap-2 bg-blue-800">
+        <Crown className="h-4 w-4 text-amber-400 group-hover:text-amber-600  transition-colors" weight="duotone" />
+        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
+      </a>
+    </Button>;
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
@@ -347,7 +317,23 @@ const FeedbackButton = () => (
                   <img src="/skie.png" alt="SkieShare Logo" className="h-8 w-auto object-contain" />
                 </div>
                 
-                
+                {/* Desktop Welcome Message */}
+                <div className="hidden lg:block">
+                  <div className="space-y-0.5">
+                    <h2 className="text-base xl:text-lg font-heading font-semibold text-foreground">
+                      Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
+                    </h2>
+                    <p className="text-xs xl:text-sm text-muted-foreground font-body">
+                      {new Date().toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                    </p>
+                  </div>
+                </div>
+              </div>
               
               <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
