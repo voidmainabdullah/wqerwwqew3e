@@ -222,7 +222,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
           />
         </div>
-      </div>
+        
 
         <div className="text-xs text-muted-foreground">
           You can add or remove team members anytime later.
@@ -234,7 +234,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <Button
         size="sm"
         className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-0"
-      >
+        </Button>
         <UsersThree className="h-4 w-4 mr-2" weight="fill" />
         Create Team
       </Button>
