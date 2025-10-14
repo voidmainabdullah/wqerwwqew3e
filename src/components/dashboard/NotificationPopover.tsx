@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Team, Check, X } from 'phosphor-react';
+import { UsersThree, Check, X } from 'phosphor-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Notification {
@@ -151,7 +151,7 @@ export const NotificationPopover: React.FC = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <Team className="h-5 w-5" weight="duotone" />
+          <UsersThree className="h-5 w-5" weight="duotone" />
           {unreadCount > 0 && (
             <Badge 
               className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
