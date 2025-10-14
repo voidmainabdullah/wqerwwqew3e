@@ -219,7 +219,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             />
           </div>
         </div>
-
+    
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-1">
               Invite Members
@@ -231,7 +231,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             />
           </div>
         </div>
-      </div>
     
 
           <div className="text-xs text-muted-foreground">
