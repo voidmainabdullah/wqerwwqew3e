@@ -227,6 +227,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           You can add or remove team members anytime later.
         </div>
       </div>
+    </div>
 
       {/* CTA */}
       <Button
@@ -237,10 +238,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         Create Team
       </Button>
     </div>
+  
   </PopoverContent>
-
+</Popover>
   </Popover>
-
+    
 const FeedbackButton = () => (
   <Button
     variant="ghost"
