@@ -191,7 +191,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <HardDrive className="h-5 w-5 text-primary hidden" weight="fill" />
+              <HardDrive className="h-5 w-5 text-primary hidden " weight="fill" />
               <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
             </div>
             {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
