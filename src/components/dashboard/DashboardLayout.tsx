@@ -213,9 +213,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
           />
         </div>
-      </div>
-    </div>
-  </PopoverContent>
+
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-1">Invite Members</label>
           <input
@@ -229,8 +227,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           You can add or remove team members anytime later.
         </div>
       </div>
-    </div>
-
 
       {/* CTA */}
       <Button
@@ -241,11 +237,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         Create Team
       </Button>
     </div>
-  
   </PopoverContent>
-</Popover>
-  </Popover>
-    
+</Popover> 
+
 const FeedbackButton = () => (
   <Button
     variant="ghost"
