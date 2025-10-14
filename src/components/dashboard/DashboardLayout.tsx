@@ -178,69 +178,72 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
   };
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
-  const StoragePopover = () => <Popover>
-
-  <PopoverTrigger asChild>
-    <Button
-      variant="ghost"
-      size="icon"
-      className="relative h-9 w-9 hover:bg-accent transition-colors"
-    >
-      <UsersThree className="h-5 w-5 text-blue-500 dark:text-blue-400" weight="fill" />
-    </Button>
-  </PopoverTrigger>
-
-  <PopoverContent className="w-80 p-0" align="end">
-    <div className="p-5 space-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <UsersThree className="h-5 w-5 text-blue-500" weight="fill" />
-          <h3 className="text-base font-heading font-semibold text-foreground">Create Team</h3>
-        </div>
-        <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
-          New
-        </Badge>
-      </div>
-
-      {/* Form Section */}
-      <div className="space-y-3">
-        <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">Team Name</label>
-          <input
-            type="text"
-            placeholder="e.g. Fabel Developers"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">Invite Members</label>
-          <input
-            type="email"
-            placeholder="Enter email to invite"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-          />
-        </div>
-        
-
-        <div className="text-xs text-muted-foreground">
-          You can add or remove team members anytime later.
-        </div>
-      </div>
-    
-
-      {/* CTA */}
+ const StoragePopover = () => (
+  <Popover>
+    <PopoverTrigger asChild>
       <Button
-        size="sm"
-        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-0"
-      > 
-        <UsersThree className="h-4 w-4 mr-2" weight="fill" />
-        Create Team
+        variant="ghost"
+        size="icon"
+        className="relative h-9 w-9 hover:bg-accent transition-colors"
+      >
+        <UsersThree className="h-5 w-5 text-blue-500 dark:text-blue-400" weight="fill" />
       </Button>
-    </div>
-  </PopoverContent>
-</Popover> 
+    </PopoverTrigger>
+
+    <PopoverContent className="w-80 p-0" align="end">
+      <div className="p-5 space-y-5">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <UsersThree className="h-5 w-5 text-blue-500" weight="fill" />
+            <h3 className="text-base font-heading font-semibold text-foreground">Create Team</h3>
+          </div>
+          <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
+            New
+          </Badge>
+        </div>
+
+        {/* Form Section */}
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
+              Team Name
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. Fabel Developers"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
+              Invite Members
+            </label>
+            <input
+              type="email"
+              placeholder="Enter email to invite"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            />
+          </div>
+
+          <div className="text-xs text-muted-foreground">
+            You can add or remove team members anytime later.
+          </div>
+        </div>
+
+        {/* CTA */}
+        <Button
+          size="sm"
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-0"
+        >
+          <UsersThree className="h-4 w-4 mr-2" weight="fill" />
+          Create Team
+        </Button>
+      </div>
+    </PopoverContent>
+  </Popover>
+);
 
     
 
