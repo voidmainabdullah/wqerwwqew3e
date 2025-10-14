@@ -318,6 +318,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     </p>
                   </div>
                 </div>
+                
               </div>
               
               <div className="flex items-center gap-2">
@@ -325,7 +326,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <div className="flex items-center gap-1 bg-neutral-900 ">
                   <NotificationPopover />
                   <StoragePopover />
-                  <HelpPopover />
+                
                   
                   {/* Separator */}
                   <div className="hidden sm:block w-px h-6 bg-border mx-2"></div>
