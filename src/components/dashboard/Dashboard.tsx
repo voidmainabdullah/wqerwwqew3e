@@ -734,7 +734,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button asChild variant="outline" className="w-full bg-emerald-700/50 border-emerald-600 text-emerald-300 hover:bg-emerald-600/50">
+              <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-emerald-300 hover:bg-emerald-600/50">
                 <Link to="/dashboard/analytics">
                   View Analytics
                 </Link>
