@@ -20,7 +20,7 @@ interface UserProfile {
   storage_limit: number;
   subscription_tier: string;
 }
-const navigation = [{ 
+const navigation = [{  
   name: 'Dashboard',
   href: '/dashboard',
   icon: 'dashboard'
