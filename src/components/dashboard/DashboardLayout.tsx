@@ -252,7 +252,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </div>
   </PopoverContent>
 </Popover>
-
+;
  const FeedbackButton = () => (
   <Button
     variant="ghost"
