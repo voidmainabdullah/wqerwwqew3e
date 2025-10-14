@@ -125,7 +125,7 @@ export const Dashboard: React.FC = () => {
   <div className="px-8 py-6 rounded-xl  bg-zinc-900">
     <div className="flex items-center justify-between">
       {/* Dashboard Title */}
-      <div className="hidden md:block space-y-1">
+      <div className=" md:block space-y-1">
         <div className="flex items-center gap-4">
           <h1 className="text-3xl font-bold bg-gradient-to-r  from-gray-100 to-gray-300 bg-clip-text text-transparent">
             Dashboard
