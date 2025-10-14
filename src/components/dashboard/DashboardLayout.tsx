@@ -376,18 +376,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   </Popover>
 </div>
 
-// Outside component state & handler:
-const [error, setError] = React.useState<string | null>(null);
-
-const handleConnect = (service: string) => {
-  const success = Math.random() > 0.5; // simulate success/failure
-  if (!success) {
-    setError(`Failed to connect to ${service}`);
-  } else {
-    setError(null);
-    alert(`${service} connected successfully!`);
-  }
-};
 
               
               <div className="flex items-center gap-2">
