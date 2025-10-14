@@ -227,6 +227,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             />
           </div>
         </div>
+      </div>
 
           <div className="text-xs text-muted-foreground">
             You can add or remove team members anytime later.
