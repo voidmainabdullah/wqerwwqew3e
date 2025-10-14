@@ -321,7 +321,7 @@ const FeedbackButton = () => (
   >
     <a href="#" className="flex items-center gap-2 text-black no-underline">
       <Crown
-        className="h-4 w-4 fill-white transition-all duration-300 group-hover:scale-110"
+        className="h-4 w-4 fill-white text-amber-400 transition-all duration-300 group-hover:scale-110"
         weight="duotone"
       />
       <span className="text-sm hidden sm:inline font-semibold">
