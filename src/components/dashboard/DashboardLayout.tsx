@@ -299,25 +299,32 @@ const FeedbackButton = () => (
   <Button
     variant="ghost"
     size="sm"
-    className="group relative h-auto px-5 py-2.5 rounded-full border-none 
-    font-semibold text-white bg-[linear-gradient(15deg,#007bff,#005eff,#003cff,#007bff)]
-    bg-[length:300%_100%] bg-left shadow-[0_20px_10px_-10px_rgba(0,123,255,0.3)]
-    transition-all duration-300 ease-in-out hover:bg-[length:320%_100%] 
-    hover:bg-right hover:-translate-y-0.5"
     asChild
+    className="
+      group relative h-auto px-5 py-2.5 rounded-full border-none
+      font-semibold text-black
+      bg-[linear-gradient(15deg,#ddff00,#b8d100,#93a300,#6e7500,#ddff00,#b8d100,#93a300,#6e7500)]
+      bg-[length:300%_100%]
+      bg-left
+      shadow-[0_30px_10px_-20px_rgba(221,255,0,0.2)]
+      text-shadow-[2px_2px_3px_rgba(221,255,0,0.3)]
+      transition-all duration-300 ease-in-out
+      hover:bg-[length:320%_100%]
+      hover:bg-right
+      hover:-translate-y-0.5
+    "
   >
-    <a href="#" className="flex items-center gap-2">
-      <Users className="h-5 w-5 text-sky-300 group-hover:text-white transition-colors" weight="fill" />
-      <span className="text-sm text-white font-medium group-hover:text-blue-100 transition-colors">
-        Create Team
+    <a href="#" className="flex items-center gap-2 text-black no-underline">
+      <Crown
+        className="h-4 w-4 fill-black transition-all duration-300 group-hover:scale-110"
+        weight="duotone"
+      />
+      <span className="text-sm hidden sm:inline font-semibold">
+        Upgrade
       </span>
-      <span className="text-lg font-bold text-sky-300 group-hover:text-white transition-all duration-200">
-        +
-      </span>
-    </a>
+    </a> 
   </Button>
 );
-
 
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
