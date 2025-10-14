@@ -315,7 +315,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <span className="text-sm font-medium">Create Team</span>
     </Link>
   </Button>
-);
 
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
