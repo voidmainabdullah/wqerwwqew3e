@@ -238,7 +238,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Popover>;
   const HelpPopover = () => <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9 bg-red-600 hover:bg-accent transition-colors">
+        <Button variant="ghost" size="icon" className="h-9 w-9 hidden hover:bg-accent transition-colors">
           <Question className="h-5 w-5 text-muted-foreground" weight="fill" />
         </Button>
       </PopoverTrigger>
