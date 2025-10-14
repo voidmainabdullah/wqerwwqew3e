@@ -324,6 +324,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </span>
     </a>
   </Button>
+); 
 
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
