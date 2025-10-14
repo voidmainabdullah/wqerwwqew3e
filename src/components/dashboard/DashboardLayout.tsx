@@ -178,27 +178,80 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
   };
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
- const CreateTeamButton = () => (
-  <Button
-    asChild
-    className="
-      group relative h-9 px-5 rounded-full border-0 
-      font-semibold text-white
-      bg-[linear-gradient(90deg,#2563eb,#1e40af,#2563eb)]
-      bg-[length:300%_100%]
-      shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)]
-      transition-all duration-300 ease-in-out
-      hover:bg-[length:320%_100%]
-      hover:scale-[1.03]
-      hover:shadow-[0_6px_25px_-8px_rgba(37,99,235,0.7)]
-    "
-  >
-    <Link to="/dashboard/teams" className="flex items-center gap-2">
-      <Users className="h-4 w-4 text-blue-200 group-hover:text-white transition-colors" weight="fill" />
-      <span className="text-sm font-medium">Create Team</span>
-    </Link>
-  </Button>
-);
+  const StoragePopover = () => <Popover>
+  <PopoverTrigger asChild>
+    <Button
+      variant="ghost"
+      size="icon"
+      className="relative h-9 w-9 hover:bg-accent transition-colors"
+    >
+      <UsersThree className="h-5 w-5 text-muted-foreground" weight="fill" />
+    </Button>
+  </PopoverTrigger>
+
+  <PopoverContent className="w-80 p-0" align="end">
+    <div className="p-4 space-y-4">
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        <UsersThree className="h-5 w-5 text-primary" weight="fill" />
+        <h3 className="text-base font-heading font-semibold text-foreground">
+          Create New Team
+        </h3>
+      </div>
+
+      {/* Input Section */}
+      <div className="space-y-3">
+        <div className="flex flex-col space-y-2">
+          <label
+            htmlFor="teamName"
+            className="text-sm text-muted-foreground font-body"
+          >
+            Team Name
+          </label>
+          <input
+            id="teamName"
+            type="text"
+            placeholder="Enter your team name"
+            className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+          />
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label
+            htmlFor="teamDesc"
+            className="text-sm text-muted-foreground font-body"
+          >
+            Description (Optional)
+          </label>
+          <textarea
+            id="teamDesc"
+            rows="2"
+            placeholder="Add a short team description..."
+            className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
+          ></textarea>
+        </div>
+      </div>
+
+      {/* Create Button */}
+      <div className="pt-2">
+        <Button
+          size="sm"
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold transition-all"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Create Team
+        </Button>
+      </div>
+
+      {/* Hint / Info */}
+      <div className="pt-1 text-center">
+        <p className="text-xs text-muted-foreground font-body">
+          Invite members after creating your team.
+        </p>
+      </div>
+    </div>
+  </PopoverContent>
+</Popover>
 
  const FeedbackButton = () => (
   <Button
