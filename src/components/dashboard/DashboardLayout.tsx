@@ -295,12 +295,37 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </PopoverContent>
     </Popover>;
-  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
-      <a href="#" className="flex items-center gap-2 bg-blue-800">
-        <Crown className="h-4 w-4 text-amber-400 group-hover:text-amber-600  transition-colors" weight="duotone" />
-        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
-      </a>
-    </Button>;
+const FeedbackButton = () => (
+  <Button
+    variant="ghost"
+    size="sm"
+    asChild
+    className="
+      group relative h-auto px-5 py-2.5 rounded-full border-none
+      font-semibold text-black
+      bg-[linear-gradient(15deg,#ddff00,#b8d100,#93a300,#6e7500,#ddff00,#b8d100,#93a300,#6e7500)]
+      bg-[length:300%_100%]
+      bg-left
+      shadow-[0_30px_10px_-20px_rgba(221,255,0,0.2)]
+      text-shadow-[2px_2px_3px_rgba(221,255,0,0.3)]
+      transition-all duration-300 ease-in-out
+      hover:bg-[length:320%_100%]
+      hover:bg-right
+      hover:-translate-y-0.5
+    "
+  >
+    <a href="#" className="flex items-center gap-2 text-black no-underline">
+      <Crown
+        className="h-4 w-4 fill-black transition-all duration-300 group-hover:scale-110"
+        weight="duotone"
+      />
+      <span className="text-sm hidden sm:inline font-semibold">
+        Upgrade
+      </span>
+    </a>
+  </Button>
+);
+
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
