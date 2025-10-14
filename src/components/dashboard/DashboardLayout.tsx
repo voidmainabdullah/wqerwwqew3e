@@ -267,7 +267,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <p className="font-heading font-semibold text-sm text-foreground">Support Center</p>
                   <p className="text-xs text-muted-foreground font-body">Get help from our team</p>
                 </div>
-               </a>
+              </a>
             </Button>
             
             <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
@@ -295,28 +295,27 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </PopoverContent>
     </Popover>;
- const CreateTeamButton = () => (
-  <Button
-    asChild
-    className="
-      group relative h-9 px-5 rounded-full border-0 
-      font-semibold text-white
-      bg-[linear-gradient(90deg,#2563eb,#1e40af,#2563eb)]
-      bg-[length:300%_100%]
-      shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)]
-      transition-all duration-300 ease-in-out
-      hover:bg-[length:320%_100%]
-      hover:scale-[1.03]
-      hover:shadow-[0_6px_25px_-8px_rgba(37,99,235,0.7)]
-    "
-  >
-    <Link to="/dashboard/teams" className="flex items-center gap-2">
-      <Users className="h-4 w-4 text-blue-200 group-hover:text-white transition-colors" weight="fill" />
-      <span className="text-sm font-medium">Create Team</span>
-    </Link>
-  </Button>
-); 
-
+  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
+      <a href="#" className="flex items-center gap-2 bg-blue-800">
+        <Crown className="h-4 w-4 text-amber-400 group-hover:text-amber-600  transition-colors" weight="duotone" />
+        <span className="
+  group relative h-auto px-5 py-2.5 rounded-full border-none
+  font-semibold text-white
+  bg-[linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6,#60a5fa,#93c5fd)]
+  bg-[length:250%_100%]
+  bg-left
+  shadow-[0_20px_10px_-15px_rgba(37,99,235,0.4)]
+  text-shadow-[1px_1px_2px_rgba(0,0,0,0.4)]
+  transition-all duration-300 ease-in-out
+  hover:bg-[length:270%_100%]
+  hover:bg-right
+  hover:shadow-[0_25px_15px_-15px_rgba(59,130,246,0.6)]
+  hover:-translate-y-0.5
+  focus:outline-none
+"
+>Upgrade</span>
+      </a>
+    </Button>;
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
