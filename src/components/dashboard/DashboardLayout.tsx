@@ -232,6 +232,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </div>
       </div>
+    </PopoverContent>
 
         {/* CTA */}
         <Button
