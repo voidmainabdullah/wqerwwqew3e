@@ -179,7 +179,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
-     <Popover>
+  
   <PopoverTrigger asChild>
     <Button
       variant="ghost"
