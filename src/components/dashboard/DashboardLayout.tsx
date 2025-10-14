@@ -227,7 +227,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           You can add or remove team members anytime later.
         </div>
       </div>
-    </div>
+    
 
       {/* CTA */}
       <Button
