@@ -685,7 +685,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Bottom Action Cards */}
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-blue-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-neutral-600/50 hover:border-blue-500/50 transition-all duration-300">
             <CardHeader>
               <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-blue-400" />
@@ -704,7 +704,7 @@ export const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-purple-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-neutral-600/50 hover:border-purple-500/50 transition-all duration-300">
             <CardHeader>
               <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-purple-400" />
@@ -723,7 +723,7 @@ export const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
             <CardHeader>
               <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4 ">
                 <ChartLineUp className="w-6 h-6 text-emerald-400" />
