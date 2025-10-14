@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'; 
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, GoogleDriveLogo, GitHubLogo, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover'; 
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -347,51 +347,7 @@ const FeedbackButton = () => (
                   <img src="/skie.png" alt="SkieShare Logo" className="h-8 w-auto object-contain" />
                 </div>
                 
-               {/* Connect Popover */}
-<div className="hidden lg:flex items-center justify-end w-full">
-  <Popover>
-    <PopoverTrigger asChild>
-      <Button
-        variant="ghost"
-        className="text-sm font-semibold hover:bg-accent/30 transition-all"
-      >
-        Connect
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-60 p-4">
-      <h3 className="text-sm font-semibold text-foreground mb-2">Connect Services</h3>
-
-      <div className="flex gap-3 mb-2">
-        <button
-          onClick={() => handleConnect('GitHub')}
-          className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-zinc-800 transition-all w-24"
-        >
-          <GithubLogo className="h-6 w-6 text-gray-200" />
-          <span className="text-xs text-muted-foreground mt-1">GitHub</span>
-        </button>
-
-        <button
-          onClick={() => handleConnect('Google Drive')}
-          className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-zinc-800 transition-all w-24"
-        >
-          <GoogleDriveLogo className="h-6 w-6 text-green-400" />
-          <span className="text-xs text-muted-foreground mt-1">Drive</span>
-        </button>
-      </div>
-
-      {/* Error Message */}
-      {error && (
-        <p className="text-xs text-destructive font-body mt-2">
-          {error}
-        </p>
-      )}
-    </PopoverContent>
-  </Popover>
-</div>
-              </div>
-              
-
-
+                
               
               <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
