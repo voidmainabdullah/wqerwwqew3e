@@ -295,12 +295,28 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </PopoverContent>
     </Popover>;
-  const FeedbackButton = () => <Button variant="ghost" size="sm" className="h-9 px-3 hover:bg-accent transition-colors group" asChild>
-      <a href="#" className="flex items-center gap-2 bg-blue-800">
-        <Crown className="h-4 w-4 text-amber-400 group-hover:text-amber-600  transition-colors" weight="duotone" />
-        <span className="text-sm text-muted-foreground group-hover:text-foreground font-body hidden sm:inline transition-colors">Upgrade</span>
-      </a>
-    </Button>;
+ const CreateTeamButton = () => (
+  <Button
+    asChild
+    className="
+      group relative h-9 px-5 rounded-full border-0 
+      font-semibold text-white
+      bg-[linear-gradient(90deg,#2563eb,#1e40af,#2563eb)]
+      bg-[length:300%_100%]
+      shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)]
+      transition-all duration-300 ease-in-out
+      hover:bg-[length:320%_100%]
+      hover:scale-[1.03]
+      hover:shadow-[0_6px_25px_-8px_rgba(37,99,235,0.7)]
+    "
+  >
+    <Link to="/dashboard/teams" className="flex items-center gap-2">
+      <Users className="h-4 w-4 text-blue-200 group-hover:text-white transition-colors" weight="fill" />
+      <span className="text-sm font-medium">Create Team</span>
+    </Link>
+  </Button>
+);
+
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
