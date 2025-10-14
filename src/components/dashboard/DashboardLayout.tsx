@@ -182,7 +182,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative h-9 w-40 rounded-full  bg-zinc-800 hover:bg-accent transition-colors">
           <Users className="h-5 w-5 text-muted-foreground" weight="fill" />
-  <span className="font-body text-sm text-foreground"></span>
+  <span className="font-body text-sm text-foreground">Create Team</span>
   <span className="text-sm font-bold text-neutral-400">+</span>
           {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
               <span className="text-[10px] text-warning-foreground  font-bold">!</span>
