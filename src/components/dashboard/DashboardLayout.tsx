@@ -322,7 +322,7 @@ const FeedbackButton = () => (
         className="h-4 w-4 text-amber-400 transition-all duration-300 group-hover:scale-110"
         weight="duotone"
       />
-      <span className="text-sm hidden sm:inline font-semibold">
+      <span className="text-sm  text-whitehidden sm:inline font-semibold">
         Upgrade
       </span>
     </a>
