@@ -191,7 +191,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <HardDrive className="h-5 w-5 text-primary" weight="fill" />
+              <HardDrive className="h-5 w-5 text-primary hidden" weight="fill" />
               <h3 className="text-base font-heading font-semibold text-foreground">Storage Usage</h3>
             </div>
             {profile?.subscription_tier === 'pro' && <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
@@ -283,7 +283,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <div className="pt-2 border-t border-border">
               <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent transition-colors" asChild>
                 <a href="#" className="flex items-start gap-3">
-                  <ChatCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" weight="fill" />
+                  <ChatCircle className="h-5 w-5 text-primary mt-0.5  flex-shrink-0" weight="fill" />
                   <div className="text-left flex-1">
                     <p className="font-heading font-semibold text-sm text-foreground">Live Chat</p>
                     <p className="text-xs text-muted-foreground font-body">Chat with our support team</p>
