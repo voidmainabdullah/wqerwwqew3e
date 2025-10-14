@@ -303,18 +303,21 @@ const FeedbackButton = () => (
     size="sm"
     asChild
     className="
-      group relative h-auto px-5 py-2.5 rounded-full border-none
-      font-semibold text-black
-      bg-[linear-gradient(15deg,#ddff00,#b8d100,#93a300,#6e7500,#ddff00,#b8d100,#93a300,#6e7500)]
-      bg-[length:300%_100%]
-      bg-left
-      shadow-[0_30px_10px_-20px_rgba(221,255,0,0.2)]
-      text-shadow-[2px_2px_3px_rgba(221,255,0,0.3)]
-      transition-all duration-300 ease-in-out
-      hover:bg-[length:320%_100%]
-      hover:bg-right
-      hover:-translate-y-0.5
-    "
+  group relative h-auto px-5 py-2.5 rounded-full border-none
+  font-semibold text-white
+  bg-[linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6,#60a5fa,#93c5fd)]
+  bg-[length:250%_100%]
+  bg-left
+  shadow-[0_20px_10px_-15px_rgba(37,99,235,0.4)]
+  text-shadow-[1px_1px_2px_rgba(0,0,0,0.4)]
+  transition-all duration-300 ease-in-out
+  hover:bg-[length:270%_100%]
+  hover:bg-right
+  hover:shadow-[0_25px_15px_-15px_rgba(59,130,246,0.6)]
+  hover:-translate-y-0.5
+  focus:outline-none
+"
+
   >
     <a href="#" className="flex items-center gap-2 text-black no-underline">
       <Crown
