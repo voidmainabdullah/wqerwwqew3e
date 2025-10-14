@@ -150,7 +150,7 @@ export const NotificationPopover: React.FC = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative bg-zinc-900">
+        <Button variant="ghost" size="icon" className="relative bg-zinc-800">
           <Bell className="h-5 w-5 hiiden:md" weight="duotone" />
           {unreadCount > 0 && ( 
             <Badge 
