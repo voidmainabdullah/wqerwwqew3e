@@ -696,7 +696,7 @@ export const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button asChild variant="outline" className="w-full bg-neutral-700/50 border-blue-600 text-blue-300 hover:bg-blue-600/50">
+              <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-blue-300 hover:bg-blue-600/50">
                 <Link to="/dashboard/settings">
                   Configure Security
                 </Link>
