@@ -409,4 +409,3 @@ export const SharedLinks: React.FC = () => {
           )}
         </CardContent>
       </Card>
-  })}
