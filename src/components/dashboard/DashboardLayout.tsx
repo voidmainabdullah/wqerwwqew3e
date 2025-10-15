@@ -421,35 +421,35 @@ const FeedbackButton = () => (
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-border" />
                     
-                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-red-800 focus:bg-blue-800">
+                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-red-800 focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <UserGear className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Account</span>
                       </Link>
                     </DropdownMenuItem>
 
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ChartBar className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Analytic</span>
                       </Link>
                     </DropdownMenuItem>
 
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <ClockCounterClockwise className="h-4 w-4 text-primary " weight="fill" />
                         <span className="font-body">Backup</span>
                       </Link>
                     </DropdownMenuItem>
 
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <HardDrives className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Storage</span>
                       </Link>
                     </DropdownMenuItem>
  <DropdownMenuSeparator className="bg-border" />
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <Gear className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Settings</span>
@@ -457,7 +457,7 @@ const FeedbackButton = () => (
                     </DropdownMenuItem>
                     
 
-                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
                       <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
                         <Headset className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Support 24/7</span>
@@ -466,7 +466,7 @@ const FeedbackButton = () => (
                     
                     {profile?.subscription_tier !== 'pro' && <>
                <DropdownMenuSeparator className="bg-border" />
-                        <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                        <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
                           <Link to="/subscription" className="flex items-center gap-3 py-2.5">
                             <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="fill" />
                             <span className="font-body">Subscription</span>
