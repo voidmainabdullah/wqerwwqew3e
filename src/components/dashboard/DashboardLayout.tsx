@@ -421,7 +421,7 @@ const FeedbackButton = () => (
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-border" />
                     
-                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:bg-accent">
+                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-red-800 focus:bg-accent">
                       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
                         <UserGear className="h-4 w-4 text-primary" weight="fill" />
                         <span className="font-body">Account</span>
