@@ -319,7 +319,7 @@ export const SharedLinks: React.FC = () => {
                     </div>
                   </div>
 
-                  {link.message && <div className="p-3 rounded-2xl border bg-blue-200/40 ">
+                  {link.message && <div className="p-3 rounded-2xl border bg-blue-400/40 ">
                       <p className="text-xs md:text-sm text-muted-foreground break-words">
                         <span className="font-medium">Message:</span> {link.message}
                       </p>
