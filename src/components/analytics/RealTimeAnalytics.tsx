@@ -157,7 +157,7 @@ export const RealTimeAnalytics: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-amber-600/20 to-amber-900/10 border border-amber-700/40 hover:shadow-amber-500/20 hover:shadow-md transition-all">
+        <Card className="bg-gradient-to-br from-zinc-600/20 to-zinc-900/10 border border-amber-700/40 hover:shadow-amber-500/20 hover:shadow-md transition-all">
           <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm text-gray-300 font-medium">Total Files</CardTitle>
             <Files size={22} className="text-amber-400" />
@@ -191,7 +191,7 @@ export const RealTimeAnalytics: React.FC = () => {
 
       {/* Activity & Popular Files */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="bg-red-800/70 border border-slate-700 hover:border-slate-600 transition-all">
+        <Card className="bg-slate-800/70 border border-slate-700 hover:border-slate-600 transition-all">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-200 font-medium">
               <TrendUp size={20} className="text-emerald-400" /> Popular Files
