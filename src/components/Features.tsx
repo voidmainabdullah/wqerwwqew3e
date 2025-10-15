@@ -97,7 +97,7 @@ const Features = () => {
           </p>
         </motion.div>
 {/* Image Section */}
-<section className="w-full px-4 sm:px-8 lg:px-16 py-10">
+<section className="w-full px-8 sm:px-8 lg:px-16 py-10">
   <div className="max-w-7xl mx-auto">
     <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/30">
       <img
