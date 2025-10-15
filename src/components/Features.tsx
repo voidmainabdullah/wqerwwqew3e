@@ -180,7 +180,7 @@ const Features = () => {
       <img
         src="/showcase2.png"
         alt="Descriptive Alt Text"
-        className="w-full h-[100vh]  md:h-[500px] sm:h-[400px] h-[250px]"
+        className="w-full h-100  md:h-[500px] sm:h-[400px] h-[250px]"
       />
     </div>
   </div>
