@@ -88,7 +88,7 @@ const HeroSection = () => {
             </Button>
             
             {/* Anonymous Share Button - Distinctive Design */}
-            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
+            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-16 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
               <a href="/code" className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
