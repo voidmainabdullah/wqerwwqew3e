@@ -180,7 +180,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-9 w-40 rounded-full  bg-gradient-to-br from-blue-950 via-zinc-900 to-blue-800 hover:bg-zinc-700 transition-colors">
+        <Button variant="ghost" size="icon" className="relative h-9 w-40 rounded-full  bg-gradient-to-br from-zinc-950 via-neutral-900 to-stone-800 hover:bg-zinc-700 transition-colors">
           <Users className="h-5 w-5 text-muted-foreground" weight="fill" />
   <span className="font-body text-sm text-foreground">Create Team</span>
   <span className="text-sm font-bold text-neutral-400">+</span>
