@@ -289,7 +289,7 @@ export const SharedLinks: React.FC = () => {
                           <Shield className="w-3 h-3 mr-1" />
                           Protected
                         </Badge>}
-                      {link.files.is_public ? <Badge variant="default" className="text-white text-xs bg-emerald-400">
+                      {link.files.is_public ? <Badge variant="default" className="text-white text-xs bg-emerald-600">
                           <Globe className="w-3 h-3 mr-1" />
                           Public
                         </Badge> : <Badge variant="secondary" className="text-xs">
