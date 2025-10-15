@@ -135,7 +135,7 @@ export const RealTimeAnalytics: React.FC = () => {
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-gradient-to-br from-emerald-600/20 to-emerald-900/10 border border-emerald-700/40 hover:shadow-emerald-500/20 hover:shadow-md transition-all">
+        <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-400/10 border border-zinc-700/40 hover:shadow-emerald-500/20 hover:shadow-md transition-all">
           <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm text-gray-300 font-medium">Total Downloads</CardTitle>
             <DownloadSimple size={22} className="text-emerald-400" />
