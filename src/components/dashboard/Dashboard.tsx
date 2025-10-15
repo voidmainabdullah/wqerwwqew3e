@@ -351,7 +351,7 @@ export const Dashboard: React.FC = () => {
                   <span className="text-emerald-400 text-sm"> This Month : 287</span>
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-md flex items-center justify-center bg-zinc-700 ">
+              <div className="w-12 h-12 rounded-md flex items-center justify-center bg-red-700 ">
                 <Files className="h-6 w-6 text-white bg-inherit" />
               </div>
             </CardHeader>
