@@ -46,7 +46,7 @@ const navigation = [{
   href: '/dashboard/shared',
   icon: 'link '
 }, {
-  name: 'Analytics',
+  name: 'Analytics', 
   href: '/dashboard/analytics',
   icon: 'analytics'
 }, {
