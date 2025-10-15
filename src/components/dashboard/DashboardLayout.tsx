@@ -43,7 +43,7 @@ const navigation = [{
 }, {
   name: 'Shared Links',
   href: '/dashboard/shared',
-  icon: 'linksimple '
+  icon: 'linkSimple '
 }, {
   name: 'Analytics', 
   href: '/dashboard/analytics',
