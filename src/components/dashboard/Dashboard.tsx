@@ -122,7 +122,7 @@ export const Dashboard: React.FC = () => {
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
      {/* Professional Header */}
 <div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
-  <div className="px-8 py-6 rounded-xl  bg-red-900">
+  <div className="px-8 py-6 rounded-xl  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
     <div className="flex items-center justify-between">
       {/* Dashboard Title */}
       <div className=" md:block space-y-1">
