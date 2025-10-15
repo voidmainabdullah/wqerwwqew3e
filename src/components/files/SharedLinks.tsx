@@ -359,17 +359,17 @@ export const SharedLinks: React.FC = () => {
                           {!link.is_active ? (
                             <span className="flex items-center gap-1">
                               <Lock className="w-3 h-3" />
-                              Locked
+                          
                             </span>
                           ) : (
                             <span className="flex items-center gap-1">
                               <Globe className="w-3 h-3" />
-                              Unlocked
+                            
                             </span>
                           )}
                         </Label>
                         {!link.password_hash && (
-                          <span className="text-xs text-muted-foreground italic">(Password required)</span>
+                          <span className="text-xs text-muted-foreground italic"></span>
                         )}
                       </div>
                       
