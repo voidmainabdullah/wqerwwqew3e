@@ -121,7 +121,7 @@ export const Dashboard: React.FC = () => {
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
      {/* Professional Header */}
-<div className="border-b border-neutral-800 bg-red-950/80 backdrop-blur-md rounded-full">
+<div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
   <div className="px-8 py-6 rounded-xl  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
     <div className="flex items-center justify-between">
       {/* Dashboard Title */}
@@ -175,7 +175,7 @@ export const Dashboard: React.FC = () => {
 
     {/* Top Bar (Ad Label + Dropdown Menu) */}
     <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
-      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-neutral-950/80 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
+      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-red-950/80 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
         Ad · Sponsored
       </span>
 
