@@ -55,7 +55,7 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-zinc-900">
+  return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
       <SidebarHeader className="flex-shrink-0 px-3 py-3">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative">
@@ -73,7 +73,7 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-zinc-900">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
         {/* Navigation */}
         <SidebarGroup className="w-60">
           <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
@@ -338,7 +338,7 @@ const FeedbackButton = () => (
         <div className="flex-1 flex flex-col">
           {/* Header */}
           <header className="border-b border-border/60 bg-background/95 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
-            <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-zinc-900">
+            <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="hover:bg-accent/80 transition-colors" />
                 
@@ -487,7 +487,7 @@ const FeedbackButton = () => (
 
           {/* Main Content */}
           <main className="flex-1 overflow-auto bg-background">
-            <div className="p-4 md:p-6 lg:p-8 bg-zinc-900">
+            <div className="p-4 md:p-6 lg:p-8 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
               {children}
             </div>
           </main>
