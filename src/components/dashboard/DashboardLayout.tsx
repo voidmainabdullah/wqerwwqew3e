@@ -168,7 +168,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
-    }
+    } 
   };
   const formatFileSize = (bytes: number): string => {
     if (!bytes) return '0 Bytes';
