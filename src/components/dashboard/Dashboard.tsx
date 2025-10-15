@@ -119,10 +119,10 @@ export const Dashboard: React.FC = () => {
   }
   const isPro = stats?.subscriptionTier === "pro";
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
-  return <div className="min-h-screen text-white rounded-xl bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
+  return <div className="min-h-screen text-white rounded-xl bg-inherit">
      {/* Professional Header */}
 <div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
-  <div className="px-8 py-6 rounded-xl  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
+  <div className="px-8 py-6 rounded-xl  bg-zinc-900">
     <div className="flex items-center justify-between">
       {/* Dashboard Title */}
       <div className=" md:block space-y-1">
@@ -171,11 +171,11 @@ export const Dashboard: React.FC = () => {
         allowFullScreen
       ></iframe> 
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
-    </div> 
+    </div>
 
     {/* Top Bar (Ad Label + Dropdown Menu) */}
     <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
-      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-neutra-950/80 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
+      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-neutral-950/80 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
         Ad · Sponsored
       </span>
 
@@ -333,12 +333,12 @@ export const Dashboard: React.FC = () => {
 </style>
 
 
-      <div className="p-8 space-y-8 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
+      <div className="p-8 space-y-8 bg-zinc-900">
         {/* Main Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Files Card */}
-          <Card className="bg-gradient-to-brfrom-zinc-600/20 to-neutral-400/10 border border-zinc-700/40hover:border-slate-500/50 transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between pb-3"> 
+          <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-400/10 border border-zinc-700/40 hover:border-slate-500/50 transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
                 <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
                   Total Files
