@@ -90,11 +90,11 @@ const HeroSection = () => {
            {/* Anonymous Share Button - Premium Gradient Style */}
 <Button
   variant="ghost"
-  className="relative overflow-hidden group w-20 sm:w-auto h-14 md:h-16 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-heading font-semibold text-base md:text-lg shadow-md hover:shadow-blue-500/30 transition-all duration-300"
+  className="relative overflow-hidden group w-full sm:w-auto h-14 md:h-16 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-heading font-semibold text-base md:text-lg shadow-md hover:shadow-blue-500/30 transition-all duration-300"
   asChild
 >
   <a href="/code" className="flex items-center gap-3">
-    {/* Upload Icon Animation */}
+    {/* Upload Icon Animation */} 
     <div className="relative flex items-center justify-center">
       <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
       <div className="absolute inset-0 w-3 h-3 rounded-full bg-blue-400 animate-ping opacity-50"></div>
