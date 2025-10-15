@@ -171,7 +171,7 @@ export const RealTimeAnalytics: React.FC = () => {
 
       {/* Storage Usage */}
       {stats?.subscriptionTier !== 'pro' && (
-        <Card className="bg-gradient-to-brfrom-zinc-600/20 to-blue-800/40 border border-zinc-700/40 hover:shadow-sky-500/20 hover:shadow-md transition-all">
+        <Card className="bg-gradient-to-brfrom-zinc-600/20 to-blue-950 border border-zinc-700/40 hover:shadow-sky-500/20 hover:shadow-md transition-all">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-200 font-medium">
               <TrendUp size={20} className="text-sky-400" /> Storage Usage
