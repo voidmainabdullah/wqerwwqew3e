@@ -367,7 +367,7 @@ const FeedbackButton = () => (
               
               <div className="flex items-center gap-2">
                 {/* Navbar Icons Group */}
-                <div className="flex items-center gap-1 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 ">
+                <div className="flex items-center gap-1 relative bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.07),transparent_60%)] before:pointer-events-none">
                   <NotificationPopover />
                   <StoragePopover />
                   <HelpPopover />
