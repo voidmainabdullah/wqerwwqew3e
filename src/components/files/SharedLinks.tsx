@@ -396,6 +396,8 @@ export const SharedLinks: React.FC = () => {
                   : 'Never expires'}
               </span>
             </div>
+          </div>
+        </CardContent>
 
             <div className="flex items-center gap-2">
               <Eye className="h-4 w-4 text-cyan-400" />
