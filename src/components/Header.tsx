@@ -1,184 +1,208 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import Logo from './Logo';
-import { Menu, X, CircleDot, LayoutDashboard, DollarSign, User, Settings, LogOut, Crown } from 'lucide-react';
+import {
+  Menu,
+  X,
+  CircleDot,
+  LayoutDashboard,
+  DollarSign,
+  Settings,
+  LogOut,
+  Crown
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
+
 const Header = () => {
-  const {
-    actualTheme
-  } = useTheme();
-  const {
-    user,
-    profile,
-    signOut
-  } = useAuth();
+  const { actualTheme } = useTheme();
+  const { user, profile, signOut } = useAuth();
+
   const [activePage, setActivePage] = useState('features');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  const handleNavClick = (page: string) => (e: React.MouseEvent) => {
-    e.preventDefault();
+
+  const handleNavClick = (page) => (e) => {
+    e?.preventDefault();
     setActivePage(page);
-    const element = document.getElementById(page);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
+    const el = document.getElementById(page);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
     setMobileMenuOpen(false);
   };
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+
+  const toggleMobileMenu = () => setMobileMenuOpen((s) => !s);
+
   const handleSignOut = async () => {
     await signOut();
     setMobileMenuOpen(false);
   };
+
   const getUserInitials = () => {
-    if (user?.user_metadata?.display_name) {
-      return user.user_metadata.display_name.charAt(0).toUpperCase();
-    }
-    if (user?.email) {
-      return user.email.charAt(0).toUpperCase();
-    }
+    if (user?.user_metadata?.display_name) return user.user_metadata.display_name.charAt(0).toUpperCase();
+    if (user?.email) return user.email.charAt(0).toUpperCase();
     return 'U';
   };
-  const getUserDisplayName = () => {
-    return user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
-  };
-  return <motion.div className={`fixed top-0 left-0 right-0 z-50 pt-2 px-4 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-background/50 shadow-lg' : 'bg-transparent'}`}>
-      {/* Animated White Glow Line at Top */}
-      <motion.div className={`absolute top-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${actualTheme === 'light' ? 'via-neutral-800' : 'via-neutral-800'}`} initial={{
-      width: "0%"
-    }} animate={{
-      width: "100%"
-    }} transition={{
-      duration: 2,
-      ease: "easeInOut"
-    }} style={{
-      boxShadow: actualTheme === 'light' ? "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)" : "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)"
-    }} />
-      
-      {/* Background decorative elements */}
+
+  const getUserDisplayName = () => user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
+
+  return (
+    <motion.div
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-background/50 shadow-lg' : 'bg-transparent'}`}
+      initial={false}
+    >
+      {/* Thin animated glow line (touching top) */}
+      <motion.div
+        className={`absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent to-transparent`}
+        initial={{ width: '0%' }}
+        animate={{ width: '100%' }}
+        transition={{ duration: 1.6, ease: 'easeInOut' }}
+        style={{
+          boxShadow:
+            actualTheme === 'light'
+              ? '0 0 20px rgba(38,38,38,0.08), 0 0 40px rgba(38,38,38,0.04)'
+              : '0 0 20px rgba(38,38,38,0.12), 0 0 40px rgba(38,38,38,0.06)'
+        }}
+        aria-hidden
+      />
+
+      {/* Decorative floating shapes (pointer-events-none so they never block clicks) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating boxes with low opacity */}
-        <div className={`absolute top-4 left-20 w-8 h-8 rounded-lg rotate-12 ${actualTheme === 'light' ? 'bg-neutral-800/5' : 'bg-white/5'} animate-float`} style={{
-        animationDelay: '0s'
-      }} />
-        <div className={`absolute top-6 right-32 w-6 h-6 rounded-md rotate-45 ${actualTheme === 'light' ? 'bg-neutral-700/8' : 'bg-white/8'} animate-float`} style={{
-        animationDelay: '2s'
-      }} />
-        <div className={`absolute top-8 left-1/3 w-4 h-4 rounded-full ${actualTheme === 'light' ? 'bg-neutral-600/6' : 'bg-white/6'} animate-float`} style={{
-        animationDelay: '1s'
-      }} />
-        <div className={`absolute top-5 right-1/4 w-5 h-5 rounded-lg rotate-30 ${actualTheme === 'light' ? 'bg-neutral-800/7' : 'bg-white/7'} animate-float`} style={{
-        animationDelay: '3s'
-      }} />
-        <div className={`absolute top-7 left-2/3 w-3 h-3 rounded-md rotate-60 ${actualTheme === 'light' ? 'bg-neutral-700/5' : 'bg-white/5'} animate-float`} style={{
-        animationDelay: '1.5s'
-      }} />
+        <div className={`absolute top-3 left-16 w-8 h-8 rounded-lg rotate-12 ${actualTheme === 'light' ? 'bg-neutral-800/5' : 'bg-white/5'} animate-float`} style={{ animationDelay: '0s' }} />
+        <div className={`absolute top-5 right-28 w-6 h-6 rounded-md rotate-45 ${actualTheme === 'light' ? 'bg-neutral-700/8' : 'bg-white/8'} animate-float`} style={{ animationDelay: '2s' }} />
+        <div className={`absolute top-8 left-1/3 w-4 h-4 rounded-full ${actualTheme === 'light' ? 'bg-neutral-600/6' : 'bg-white/6'} animate-float`} style={{ animationDelay: '1s' }} />
+        <div className={`absolute top-4 right-1/4 w-5 h-5 rounded-lg rotate-30 ${actualTheme === 'light' ? 'bg-neutral-800/7' : 'bg-white/7'} animate-float`} style={{ animationDelay: '3s' }} />
+        <div className={`absolute top-7 left-2/3 w-3 h-3 rounded-md rotate-60 ${actualTheme === 'light' ? 'bg-neutral-700/5' : 'bg-white/5'} animate-float`} style={{ animationDelay: '1.5s' }} />
       </div>
-        
-        <header className="w-full max-w-7xl px-4 md:px-6 flex items-center justify-between h-14 rounded-none bg-inherit mx-0 lg:px-0 py-0">
-        <div className="p-2">
-          <motion.div initial={{
-          opacity: 0,
-          x: -20
-        }} animate={{
-          opacity: 1,
-          x: 0
-        }} transition={{
-          duration: 0.6
-        }}>
+
+      {/* Header inner container - touches top of page */}
+      <header className="w-full max-w-7xl mx-auto flex items-center justify-between h-16 px-4 md:px-6 lg:px-0">
+        {/* Left: Logo */}
+        <div className="flex items-center gap-3">
+          <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.45 }}>
             <div className="logo-float">
-              <Logo />
+              <Link to="/" aria-label="Home">
+                <Logo />
+              </Link>
             </div>
           </motion.div>
         </div>
-        
-        {/* Mobile menu button */}
-        <button className="lg:hidden p-2 rounded-xl text-muted-foreground hover:text-foreground" onClick={toggleMobileMenu}>
+
+        {/* Mobile menu toggle (visible on small screens) */}
+        <button
+          className="lg:hidden p-2 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
+          onClick={toggleMobileMenu}
+          aria-expanded={mobileMenuOpen}
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+        >
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-        
-        {/* Desktop navigation with dropdowns */}
+
+        {/* Desktop Nav (centered) */}
         <nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2">
-          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border shadow-lg rounded-xl font-heading">
-            <ToggleGroup type="single" value={activePage} onValueChange={value => value && setActivePage(value)}>
-              <ToggleGroupItem value="features" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'features' ? 'text-accent-foreground bg-red-400' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('features')}>
+          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border rounded-xl font-heading shadow-sm">
+            <ToggleGroup type="single" value={activePage} onValueChange={(v) => v && setActivePage(v)}>
+              <ToggleGroupItem
+                value="features"
+                onClick={handleNavClick('features')}
+                className={cn(
+                  'px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2',
+                  activePage === 'features' ? 'text-accent-foreground bg-accent/20' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                )}
+              >
                 <span className="material-icons md-18">star</span>
-                Features
-              </ToggleGroupItem> 
-              
-              {/* Products Dropdown */}
-              <div className="relative group">
-                <ToggleGroupItem value="products" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+                <span>Features</span>
+              </ToggleGroupItem>
+
+              {/* Products dropdown */}
+              <div className="relative group inline-block">
+                <ToggleGroupItem
+                  value="products"
+                  className={cn('px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2', 'text-muted-foreground hover:text-foreground hover:bg-muted')}
+                >
                   <span className="material-icons md-18">dashboard</span>
-                  Products
+                  <span>Products</span>
                 </ToggleGroupItem>
-                <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+
+                <div className="absolute top-full left-0 mt-2 w-52 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="p-2">
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">storage</span> 
-                       File Storage
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">storage</span>
+                      File Storage
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">groups</span>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">groups</span>
                       Team Collaboration
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">security</span>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">security</span>
                       Enterprise Security
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">api</span>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">api</span>
                       API Platform
                     </a>
                   </div>
                 </div>
               </div>
 
-              <ToggleGroupItem value="pricing" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", activePage === 'pricing' ? 'text-accent-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-muted')} onClick={handleNavClick('pricing')}>
+              <ToggleGroupItem
+                value="pricing"
+                onClick={handleNavClick('pricing')}
+                className={cn(
+                  'px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2',
+                  activePage === 'pricing' ? 'text-accent-foreground bg-accent/20' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                )}
+              >
                 <span className="material-icons md-18">payments</span>
-                Pricing
+                <span>Pricing</span>
               </ToggleGroupItem>
 
-              {/* Resources Dropdown */}
-              <div className="relative group">
-                <ToggleGroupItem value="resources" className={cn("px-3 py-1.5 rounded-full transition-colors relative text-sm icon-text", 'text-muted-foreground hover:text-foreground hover:bg-muted')}>
+              {/* Resources dropdown */}
+              <div className="relative group inline-block">
+                <ToggleGroupItem
+                  value="resources"
+                  className={cn('px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2', 'text-muted-foreground hover:text-foreground hover:bg-muted')}
+                >
                   <span className="material-icons md-18">arrow_drop_down</span>
-                  Resources
+                  <span>Resources</span>
                 </ToggleGroupItem>
+
                 <div className="absolute top-full left-0 mt-2 w-44 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="p-2">
-                    <a href="/docs" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">description</span>
+                    <a href="/docs" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">description</span>
                       Documentation
                     </a>
-                    <a href="/blog" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">article</span>
+                    <a href="/blog" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">article</span>
                       Blog
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">business</span>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">business</span>
                       Case Studies
                     </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors icon-text">
-                      <span className="material-icons md-18">support</span>
+                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                      <span className="material-icons md-18 align-middle mr-2">support</span>
                       Support
                     </a>
                   </div>
@@ -187,144 +211,176 @@ const Header = () => {
             </ToggleGroup>
           </div>
         </nav>
-        
-        {/* Mobile navigation */}
-        {mobileMenuOpen && <div className="lg:hidden absolute top-14 left-4 right-4 bg-background/95 backdrop-blur-md py-3 px-4 border border-border rounded-xl shadow-lg z-50">
+
+        {/* Mobile menu panel */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden absolute top-16 left-4 right-4 bg-background/95 backdrop-blur-md py-3 px-4 border border-border rounded-xl shadow-lg z-50">
             <div className="flex flex-col gap-2">
-              <a href="#features" className={`px-2 py-1.5 text-sm rounded-md transition-colors ${activePage === 'features' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`} onClick={handleNavClick('features')}>
-                <CircleDot size={14} className="inline-block mr-1" /> Features
+              <a
+                href="#features"
+                onClick={handleNavClick('features')}
+                className={`px-2 py-1.5 text-sm rounded-md transition-colors ${activePage === 'features' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
+              >
+                <CircleDot size={14} className="inline-block mr-2" />
+                Features
               </a>
-              <a href="#pricing" className={`px-2 py-1.5 text-sm rounded-md transition-colors ${activePage === 'pricing' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`} onClick={handleNavClick('pricing')}>
-                <DollarSign size={14} className="inline-block mr-1" /> Pricing
+
+              <a
+                href="#pricing"
+                onClick={handleNavClick('pricing')}
+                className={`px-2 py-1.5 text-sm rounded-md transition-colors ${activePage === 'pricing' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
+              >
+                <DollarSign size={14} className="inline-block mr-2" />
+                Pricing
               </a>
+
               <div className="border-t border-border pt-2 mt-2">
                 <a href="#" className="block px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">Products</a>
                 <a href="#" className="block px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">Resources</a>
                 <a href="#" className="block px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">Support</a>
               </div>
-              
-              {/* Mobile CTA Buttons */}
+
+              {/* Mobile CTA */}
               <div className="border-t border-border pt-3 mt-3 space-y-2">
-                {user ? <>
+                {user ? (
+                  <>
                     <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
                       <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-                          {getUserInitials()}
-                        </AvatarFallback>
+                        <AvatarFallback className="bg-primary text-primary-foreground text-sm">{getUserInitials()}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{getUserDisplayName()}</p>
                         <div className="flex items-center space-x-2">
                           <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
-                            {profile?.subscription_tier === 'pro' ? <>
+                            {profile?.subscription_tier === 'pro' ? (
+                              <>
                                 <Crown className="w-3 h-3 mr-1" />
                                 Pro
-                              </> : 'Free'}
+                              </>
+                            ) : (
+                              'Free'
+                            )}
                           </Badge>
                         </div>
                       </div>
                     </div>
+
                     <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
-                      <Link to="/dashboard">
+                      <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
                         <LayoutDashboard className="mr-2 h-4 w-4" />
                         Dashboard
                       </Link>
                     </Button>
-                    <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" onClick={handleSignOut}>
+
+                    <Button
+                      variant="ghost"
+                      onClick={handleSignOut}
+                      className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300"
+                    >
                       <LogOut className="mr-2 h-4 w-4" />
                       Sign Out
                     </Button>
-                  </> : <>
+                  </>
+                ) : (
+                  <>
                     <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" asChild>
-                      <a href="/auth">
-                        Log in
-                      </a>
+                      <a href="/auth">Log in</a>
                     </Button>
                     <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
-                      <a href="/auth">
-                        Get Started
-                      </a>
+                      <a href="/auth">Get Started</a>
                     </Button>
-                  </>}
+                  </>
+                )}
               </div>
             </div>
-          </div>}
-        
+          </div>
+        )}
+
+        {/* Right: Auth / Profile (desktop) */}
         <div className="hidden lg:flex items-center gap-3">
-          {user ? <div className="flex items-center gap-3">
+          {user ? (
+            <div className="flex items-center gap-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-accent/50 transition-all duration-200">
+                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-accent/10 transition-all duration-200">
                     <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-primary text-primary-foreground">
-                        {getUserInitials()}
-                      </AvatarFallback>
+                      <AvatarFallback className="bg-primary text-primary-foreground">{getUserInitials()}</AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col items-start">
+                    <div className="flex flex-col items-start leading-tight">
                       <span className="text-sm font-medium">{getUserDisplayName()}</span>
                       <div className="flex items-center">
                         <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
-                          {profile?.subscription_tier === 'pro' ? <>
+                          {profile?.subscription_tier === 'pro' ? (
+                            <>
                               <Crown className="w-3 h-3 mr-1" />
                               Pro
-                            </> : 'Free'}
+                            </>
+                          ) : (
+                            'Free'
+                          )}
                         </Badge>
                       </div>
-                    </div> 
+                    </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" forceMount className="w-56 bg-zinc-900 border-none ">
+
+                <DropdownMenuContent align="end" forceMount className="w-56 bg-zinc-900 border-none">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {getUserDisplayName()}
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user.email}
-                      </p>
+                      <p className="text-sm font-medium leading-none">{getUserDisplayName()}</p>
+                      <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
                     </div>
                   </DropdownMenuLabel>
+
                   <DropdownMenuSeparator />
+
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard">
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
+
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard/settings">
                       <Settings className="mr-2 h-4 w-4" />
                       Settings
                     </Link>
                   </DropdownMenuItem>
-                  {profile?.subscription_tier !== 'pro' && <DropdownMenuItem asChild>
+
+                  {profile?.subscription_tier !== 'pro' && (
+                    <DropdownMenuItem asChild>
                       <Link to="/subscription">
                         <Crown className="mr-2 h-4 w-4" />
                         Upgrade to Pro
                       </Link>
-                    </DropdownMenuItem>}
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuSeparator />
+
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div> : <div className="flex gap-3 rounded-xl"> 
+            </div>
+          ) : (
+            <div className="flex gap-3 rounded-xl">
               <Button variant="ghost" className="h-8 px-4 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm text-left transition-all duration-300" asChild>
-                <a href="/auth" className="bg-neutral-300">
-                  Log in
-                </a>
+                <a href="/auth">Log in</a>
               </Button>
-              <Button variant="default" className="h-8 px-3 font-medium text-sm text-left" asChild>
-                <a href="/auth" className="bg-neutral-600">
-                  Get Started
-                </a>
-              </Button>
-            </div>}
-        </div>
 
+              <Button variant="default" className="h-8 px-3 font-medium text-sm text-left" asChild>
+                <a href="/auth">Get Started</a>
+              </Button>
+            </div>
+          )}
+        </div>
       </header>
-    </motion.div>;
+    </motion.div>
+  );
 };
+
 export default Header;
