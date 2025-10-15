@@ -273,7 +273,7 @@ const Header = () => {
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" forceMount className="w-56 bg-zinc-900 border-none ">
+                <DropdownMenuContent align="end" forceMount className="w-56 bg-red-900 border-none ">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
