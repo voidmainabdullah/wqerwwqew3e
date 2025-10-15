@@ -233,7 +233,7 @@ export const SharedLinks: React.FC = () => {
         <div className="grid gap-4">
           {[...Array(3)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader>
-                <div className="h-4 bg-muted rounded w-48"></div>
+                <div className="h-4 bg-red-600 rounded w-48"></div>
                 <div className="h-3 bg-muted rounded w-32"></div>
               </CardHeader>
               <CardContent>
