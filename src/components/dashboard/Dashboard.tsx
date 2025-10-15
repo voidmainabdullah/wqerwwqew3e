@@ -171,11 +171,11 @@ export const Dashboard: React.FC = () => {
         allowFullScreen
       ></iframe> 
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
-    </div>
+    </div> 
 
     {/* Top Bar (Ad Label + Dropdown Menu) */}
     <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
-      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-red-950/80 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
+      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-neutra-950/80 backdrop-blur-sm px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
         Ad · Sponsored
       </span>
 
