@@ -191,7 +191,7 @@ export const RealTimeAnalytics: React.FC = () => {
 
       {/* Activity & Popular Files */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="bg-slate-800/70 border border-slate-700 hover:border-slate-600 transition-all">
+        <Card className="bg-red-800/70 border border-slate-700 hover:border-slate-600 transition-all">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-200 font-medium">
               <TrendUp size={20} className="text-emerald-400" /> Popular Files
