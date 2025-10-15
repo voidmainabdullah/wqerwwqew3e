@@ -109,36 +109,49 @@ const HeroSection = () => {
           duration: 0.6,
           delay: 0.8
         }}>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-primary">security</span>
-              </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">AWS-259 Encryption</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">cloud</span>
-              </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Unlimited bandwidth</span>
-              <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">admin_panel_settings</span>
-              </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Fully Access</span>
-              </div>
-              <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">admin_panel_settings</span>
-              </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Fully Access</span>
-              </div>
-              <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                <span className="material-icons md-18 text-accent">admin_panel_settings</span>
-              </div>
-              <span className="text-xs sm:text-sm font-body font-medium text-muted-foreground">Fully Access</span>
-              </div>
-            </div>
+            {/* Hero Badges Section */}
+<div className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-center">
+  {/* Security Badge */}
+  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
+    <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+      <span className="material-icons md-18 text-blue-400">lock</span>
+    </div>
+    <span className="text-xs sm:text-sm font-medium text-slate-300">256-Bit Encryption</span>
+  </div>
+
+  {/* Cloud Storage Badge */}
+  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
+    <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+      <span className="material-icons md-18 text-cyan-400">cloud_upload</span>
+    </div>
+    <span className="text-xs sm:text-sm font-medium text-slate-300">Unlimited Cloud Storage</span>
+  </div>
+
+  {/* Access Control Badge */}
+  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
+    <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+      <span className="material-icons md-18 text-indigo-400">admin_panel_settings</span>
+    </div>
+    <span className="text-xs sm:text-sm font-medium text-slate-300">Smart Access Control</span>
+  </div>
+
+  {/* Analytics Badge */}
+  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
+    <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+      <span className="material-icons md-18 text-green-400">analytics</span>
+    </div>
+    <span className="text-xs sm:text-sm font-medium text-slate-300">File Insights & Analytics</span>
+  </div>
+
+  {/* Speed Badge */}
+  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
+    <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+      <span className="material-icons md-18 text-purple-400">speed</span>
+    </div>
+    <span className="text-xs sm:text-sm font-medium text-slate-300">Lightning-Fast Uploads</span>
+  </div>
+</div>
+
           </motion.div>
         </div>
 
