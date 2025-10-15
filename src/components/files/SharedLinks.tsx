@@ -425,9 +425,7 @@ export const SharedLinks: React.FC = () => {
                   )}
                 </Label>
               </div>
-            </div>
-          </div>
-        </CardContent>
+        
               <Button
                 variant="ghost"
                 size="sm"
