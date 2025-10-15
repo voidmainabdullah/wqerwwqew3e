@@ -266,146 +266,154 @@ export const SharedLinks: React.FC = () => {
             </Button>
           </CardContent>
         </Card> : <div className="grid gap-4">
-  {sharedLinks.map((link, index) => {
-    const expired = isExpired(link.expires_at);
-    const limitReached = isLimitReached(link.download_limit, link.download_count);
-    const inactive = expired || limitReached;
+          {sharedLinks.map((link, index) => {
+        const expired = isExpired(link.expires_at);
+        const limitReached = isLimitReached(link.download_limit, link.download_count);
+        const inactive = expired || limitReached;
+        return <Card key={link.id} className={`transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 animate-fade-in ${inactive ? 'opacity-60' : ''} overflow-hidden`} style={{
+          animationDelay: `${index * 0.1}s`
+        }}>
+                <CardHeader className="pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-base md:text-lg flex items-center truncate">
+                        <ShareNetwork className="mr-2 h-5 w-5" />
+                        <span className="truncate">{link.files.original_name}</span>
+                      </CardTitle>
+                      <CardDescription className="mt-1 text-xs md:text-sm">
+                        {formatFileSize(link.files.file_size)} • Created {new Date(link.created_at).toLocaleDateString()}
+                      </CardDescription>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                      {link.password_hash && <Badge variant="secondary">
+                          <Shield className="w-3 h-3 mr-1" />
+                          Protected
+                        </Badge>}
+                      {link.files.is_public ? <Badge variant="default" className="text-white text-xs bg-emerald-400">
+                          <Globe className="w-3 h-3 mr-1" />
+                          Public
+                        </Badge> : <Badge variant="secondary" className="text-xs">
+                          <LockSimple className="w-3 h-3 mr-1" />
+                          Private
+                        </Badge>}
+                      {expired && <Badge variant="destructive" className="text-xs">Expired</Badge>}
+                      {limitReached && <Badge variant="destructive" className="text-xs">Limit Reached</Badge>}
+                      {!inactive && link.is_active && <Badge variant="default" className="text-xs bg-green-500/10 text-green-600 border-green-500/20">Unlocked</Badge>}
+                      {!link.is_active && <Badge variant="destructive" className="text-xs">Locked</Badge>}
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3 pt-0">
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Input value={`${window.location.origin}/share/${link.share_token}`} readOnly className="font-mono text-xs md:text-sm flex-1 min-w-0 bg-black" />
+                    <div className="flex gap-1 sm:gap-2">
+                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} className="hover:bg-functions-share/10 hover:text-functions-share transition-all duration-300 flex-shrink-0">
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} className="hover:bg-primary/10 hover:text-primary transition-all duration-300 flex-shrink-0">
+                      <ArrowSquareOut className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => shortenLink(link.share_token)} className="hover:bg-secondary/10 hover:text-secondary transition-all duration-300 flex-shrink-0" title="Shorten link">
+                      <LinkIcon className="h-4 w-4" />
+                    </Button>
+                    </div>
+                  </div>
 
-    return (
-      <Card
-        key={link.id}
-        className={`transition-all duration-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:scale-[1.01] animate-fade-in ${inactive ? 'opacity-60' : ''} overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 border border-zinc-800/50`}
-        style={{ animationDelay: `${index * 0.1}s` }}
-      >
-        <CardHeader className="pb-2">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">
-              <CardTitle className="text-base md:text-lg flex items-center truncate text-white">
-                <ShareNetwork className="mr-2 h-5 w-5 text-cyan-400" />
-                <span className="truncate">{link.files.original_name}</span>
-              </CardTitle>
-              <CardDescription className="mt-0.5 text-xs md:text-sm text-muted-foreground">
-                {formatFileSize(link.files.file_size)} • {new Date(link.created_at).toLocaleDateString()}
-              </CardDescription>
-            </div>
+                  {link.message && <div className="p-3 rounded-2xl border bg-inherit ">
+                      <p className="text-xs md:text-sm text-muted-foreground break-words">
+                        <span className="font-medium">Message:</span> {link.message}
+                      </p>
+                    </div>}
 
-            <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-              {link.password_hash && (
-                <Badge variant="secondary">
-                  <Shield className="w-3 h-3 mr-1" />
-                  Protected
-                </Badge>
-              )}
-              {link.files.is_public ? (
-                <Badge variant="default" className="text-white text-xs bg-emerald-400">
-                  <Globe className="w-3 h-3 mr-1" /> Public
-                </Badge>
-              ) : (
-                <Badge variant="secondary" className="text-xs">
-                  <LockSimple className="w-3 h-3 mr-1" /> Private
-                </Badge>
-              )}
-              {expired && <Badge variant="destructive" className="text-xs">Expired</Badge>}
-              {limitReached && <Badge variant="destructive" className="text-xs">Limit Reached</Badge>}
-              {!inactive && link.is_active && (
-                <Badge variant="default" className="text-xs bg-green-500/10 text-green-600 border-green-500/20">
-                  Unlocked
-                </Badge>
-              )}
-              {!link.is_active && <Badge variant="destructive" className="text-xs">Locked</Badge>}
-            </div>
-          </div>
-        </CardHeader>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs md:text-sm">
+                    <div className="flex items-center gap-2">
+                      <Download className="h-4 w-4 mr-2 text-muted-foreground" />
+                      <span className="truncate">
+                        {link.download_count} / {link.download_limit || '∞'} downloads
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
+                      <span className="truncate">
+                        {link.expires_at ? `Expires ${new Date(link.expires_at).toLocaleDateString()}` : 'Never expires'}
+                      </span>
+                    </div>
 
-        <CardContent className="space-y-2 pt-0 pb-3">
-          {/* Compact Top Controls */}
-          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-            <Input
-              value={`${window.location.origin}/share/${link.share_token}`}
-              readOnly
-              className="font-mono text-xs md:text-sm flex-1 min-w-0 bg-black/30 border-zinc-700/50"
-            />
-            <div className="flex gap-1 sm:gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => copyToClipboard(link.share_token)}
-                className="hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-300 flex-shrink-0"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => window.open(`/share/${link.share_token}`, '_blank')}
-                className="hover:bg-blue-500/10 hover:text-blue-400 transition-all duration-300 flex-shrink-0"
-              >
-                <ArrowSquareOut className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => shortenLink(link.share_token)}
-                className="hover:bg-purple-500/10 hover:text-purple-400 transition-all duration-300 flex-shrink-0"
-                title="Shorten link"
-              >
-                <LinkIcon className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4 mr-2 text-muted-foreground" />
+                      <span className="truncate">
+                        {link.password_hash ? 'Password protected' : 'Public access'}
+                      </span>
+                    </div>
 
-          {/* Quick Info Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs md:text-sm mt-1">
-            <div className="flex items-center gap-2">
-              <Download className="h-4 w-4 text-muted-foreground" />
-              <span className="truncate">
-                {link.download_count} / {link.download_limit || '∞'} downloads
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <span className="truncate">
-                {link.expires_at ? `Expires ${new Date(link.expires_at).toLocaleDateString()}` : 'Never expires'}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Eye className="h-4 w-4 text-muted-foreground" />
-              <span className="truncate">
-                {link.password_hash ? 'Password protected' : 'Public access'}
-              </span>
-            </div>
-            <div className="flex justify-end sm:justify-start gap-2 items-center">
-              <Switch
-                checked={!link.is_active}
-                onCheckedChange={(checked) => toggleSharedLinkStatus(link.id, !checked)}
-                disabled={!link.password_hash}
-              />
-              <Label className="text-xs whitespace-nowrap">
-                {!link.is_active ? (
-                  <span className="flex items-center gap-1"><Lock className="w-3 h-3" /> Locked</span>
-                ) : (
-                  <span className="flex items-center gap-1"><Globe className="w-3 h-3" /> Unlocked</span>
-                )}
-              </Label>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => deleteSharedLink(link.id)}
-                className="text-functions-delete hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 hover:scale-105 flex-shrink-0"
-              >
-                <Trash className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                      {/* Lock/Unlock Toggle - Only enabled if file has password protection */}
+                      <div className="flex items-center space-x-2">
+                        <Switch 
+                          checked={!link.is_active} 
+                          onCheckedChange={(checked) => toggleSharedLinkStatus(link.id, !checked)}
+                          disabled={!link.password_hash}
+                        />
+                        <Label className="text-xs whitespace-nowrap">
+                          {!link.is_active ? (
+                            <span className="flex items-center gap-1">
+                              <Lock className="w-3 h-3" />
+                              Locked
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <Globe className="w-3 h-3" />
+                              Unlocked
+                            </span>
+                          )}
+                        </Label>
+                        {!link.password_hash && (
+                          <span className="text-xs text-muted-foreground italic">(Password required)</span>
+                        )}
+                      </div>
+                      
+                      <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} className="text-functions-delete hover:text-functions-deleteGlow hover:bg-functions-delete/10 transition-all duration-300 hover:scale-105 flex-shrink-0">
+                        <Trash className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>;
+      })}
+        </div>}
 
-          {/* Optional Message Section (smaller) */}
-          {link.message && (
-            <div className="p-2 rounded-xl border border-zinc-700/40 bg-zinc-800/40 mt-1">
-              <p className="text-xs md:text-sm text-muted-foreground break-words">
-                <span className="font-medium">Message:</span> {link.message}
-              </p>
-            </div>;
-      
-          )};
-        </CardContent>
-      </Card>
+      {/* Edit Link Settings Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Shared Link Settings</DialogTitle>
+          </DialogHeader>
+          
+          {editingLink && <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Switch checked={editingLink.is_active} onCheckedChange={checked => setEditingLink({
+              ...editingLink,
+              is_active: checked
+            })} />
+                <Label>Link Active</Label>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <Switch checked={editingLink.files.is_public} onCheckedChange={checked => toggleFilePublicStatus(editingLink.file_id, checked)} />
+                <Label>File Public</Label>
+              </div>
+            </div>}
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={saveEditedLink}>
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent> 
+      </Dialog>
+    </div>;
+};
