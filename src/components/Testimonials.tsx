@@ -25,19 +25,6 @@ const Testimonials = () => {
     position: "Operations Director at CreativeStudio",
     avatar: "bg-primary/40"
   }];
-  {/* Image Section */}
-<section className="w-full px-4 sm:px-8 lg:px-16 py-10">
-  <div className="max-w-7xl mx-auto">
-    <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/30">
-      <img
-        src="/showcase.png"
-        alt="Descriptive Alt Text"
-        className="w-full h-auto object-cover md:h-[500px] sm:h-[400px] h-[250px]"
-      />
-    </div>
-  </div>
-</section>
-
   return <section className="w-full py-20 px-6 md:px-12 bg-card relative overflow-hidden" ref={ref}>
       {/* Background grid */}
       <div className="absolute inset-0 cosmic-grid opacity-20"></div>
@@ -91,6 +78,19 @@ const Testimonials = () => {
             </motion.div>)}
         </div>
       </div>
+    {/* Image Section */}
+<section className="w-full px-4 sm:px-8 lg:px-16 py-10">
+  <div className="max-w-7xl mx-auto">
+    <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/30">
+      <img
+        src="/your-image.jpg"
+        alt="Descriptive Alt Text"
+        className="w-full h-auto object-cover md:h-[500px] sm:h-[400px] h-[250px]"
+      />
+    </div>
+  </div>
+</section>
+
     </section>;
 };
 export default Testimonials;
