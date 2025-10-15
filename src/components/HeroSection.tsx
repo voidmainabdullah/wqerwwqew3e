@@ -87,18 +87,37 @@ const HeroSection = () => {
               </a>
             </Button>
             
-            {/* Anonymous Share Button - Distinctive Design */}
-            <Button variant="ghost" className="anonymous-share-btn text-base md:text-lg h-16 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto relative overflow-hidden group border-2 border-dashed" asChild>
-              <a href="/code" className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
-                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-current animate-ping opacity-75"></div>
-                </div> 
-                <span className="material-icons md-1">upload</span>
-                <span>Upload File  </span>
-                <div className="text-xs opacity-75 font-body"></div>
-              </a>
-            </Button>
+           {/* Anonymous Share Button - Premium Gradient Style */}
+<Button
+  variant="ghost"
+  className="relative overflow-hidden group w-full sm:w-auto h-14 md:h-16 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-heading font-semibold text-base md:text-lg shadow-md hover:shadow-blue-500/30 transition-all duration-300"
+  asChild
+>
+  <a href="/code" className="flex items-center gap-3">
+    {/* Upload Icon Animation */}
+    <div className="relative flex items-center justify-center">
+      <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+      <div className="absolute inset-0 w-3 h-3 rounded-full bg-blue-400 animate-ping opacity-50"></div>
+    </div>
+
+    {/* Icon */}
+    <span className="material-icons text-blue-400 group-hover:scale-110 transition-transform duration-300">
+      upload
+    </span>
+
+    {/* Text */}
+    <span className="relative z-10 group-hover:text-blue-400 transition-colors duration-300">
+      Upload File
+    </span>
+
+    {/* Background Glow on Hover */}
+    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-cyan-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 blur-xl transition duration-500"></div>
+
+    {/* Dashed Border Animation */}
+    <div className="absolute inset-0 rounded-xl border-2 border-dashed border-blue-500/40 group-hover:border-blue-400/60 transition-all duration-300"></div>
+  </a>
+</Button>
+
           </motion.div>
 
           <motion.div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4" initial={{
