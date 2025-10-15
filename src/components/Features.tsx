@@ -101,7 +101,7 @@ const Features = () => {
   <div className="max-w-7xl mx-auto">
     <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/30">
       <img
-        src="/your-image.jpg"
+        src="/sky.png"
         alt="Descriptive Alt Text"
         className="w-full h-auto object-cover md:h-[500px] sm:h-[400px] h-[250px]"
       />
