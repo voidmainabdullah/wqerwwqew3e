@@ -237,7 +237,7 @@ export const SharedLinks: React.FC = () => {
                 <div className="h-3 bg-muted rounded w-32"></div>
               </CardHeader>
               <CardContent>
-                <div className="h-10 bg-red-600 rounded"></div>
+                <div className="h-10 bg-muted rounded"></div>
               </CardContent>
             </Card>)}
         </div> 
