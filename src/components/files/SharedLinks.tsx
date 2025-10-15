@@ -240,7 +240,7 @@ export const SharedLinks: React.FC = () => {
                 <div className="h-10 bg-red-600 rounded"></div>
               </CardContent>
             </Card>)}
-        </div>
+        </div> 
       </div>;
   } 
   return <div className="space-y-6 p-4 max-w-7xl mx-auto">
