@@ -396,7 +396,7 @@ const FeedbackButton = () => (
                         </Badge>}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" forceMount className="w-64 border-none shadow-lg border-c rounded-2xl bg-red-800">
+                  <DropdownMenuContent align="end" forceMount className="w-64 border-none shadow-lg border-c rounded-2xl  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70">
                     <DropdownMenuLabel className="font-normal pb-3">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-12 w-12 ring-2 ring-border">
