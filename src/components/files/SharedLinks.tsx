@@ -410,5 +410,3 @@ export const SharedLinks: React.FC = () => {
       </Card>
     );
   })}
-</div>
- 
