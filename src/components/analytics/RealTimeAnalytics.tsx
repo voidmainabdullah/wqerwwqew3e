@@ -146,7 +146,7 @@ export const RealTimeAnalytics: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-indigo-600/20 to-indigo-900/10 border border-indigo-700/40 hover:shadow-indigo-500/20 hover:shadow-md transition-all">
+        <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-400/10 border border-zinc-700/40 hover:shadow-indigo-500/20 hover:shadow-md transition-all">
           <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm text-gray-300 font-medium">Shared Links</CardTitle>
             <ShareNetwork size={22} className="text-indigo-400" />
