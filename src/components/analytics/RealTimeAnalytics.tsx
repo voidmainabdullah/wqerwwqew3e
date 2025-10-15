@@ -157,7 +157,7 @@ export const RealTimeAnalytics: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-900/10 border border-amber-700/40 hover:shadow-amber-500/20 hover:shadow-md transition-all">
+        <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-400/10 border border-amber-700/40 hover:shadow-amber-500/20 hover:shadow-md transition-all">
           <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm text-gray-300 font-medium">Total Files</CardTitle>
             <Files size={22} className="text-amber-400" />
