@@ -405,8 +405,8 @@ export const SharedLinks: React.FC = () => {
                 <span className="font-medium">Message:</span> {link.message}
               </p>
             </div>
+      
           )}
         </CardContent>
       </Card>
-    );
   })}
