@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'; 
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown, unink } from 'phosphor-react';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown, LinkSimple } from 'phosphor-react';
 import { NotificationPopover } from './NotificationPopover'; 
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -43,7 +43,7 @@ const navigation = [{
 }, {
   name: 'Shared Links',
   href: '/dashboard/shared',
-  icon: 'unlink '
+  icon: 'LinkSimple '
 }, {
   name: 'Analytics', 
   href: '/dashboard/analytics',
