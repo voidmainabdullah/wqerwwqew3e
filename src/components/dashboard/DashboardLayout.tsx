@@ -47,7 +47,7 @@ const navigation = [{
 }, {
   name: 'Analytics', 
   href: '/dashboard/analytics',
-  icon: 'analytics'
+  icon: 'analytics' 
 }, {
   name: 'Settings',
   href: '/dashboard/settings',
