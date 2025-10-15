@@ -322,7 +322,7 @@ export const Dashboard: React.FC = () => {
   animation: pulse-slow 6s ease-in-out infinite;
 }
 
-@keyframes fadeIn {
+@keyframes fadeIn { 
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
 }
