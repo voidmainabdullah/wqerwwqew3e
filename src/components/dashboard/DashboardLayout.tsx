@@ -486,7 +486,7 @@ const FeedbackButton = () => (
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 overflow-auto bg-background">
+          <main className="flex-1 overflow-auto bg-red-600">
             <div className="p-4 md:p-6 lg:p-8 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
               {children}
             </div>
