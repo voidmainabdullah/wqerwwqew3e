@@ -400,7 +400,7 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           {/* Storage Card */}
-          <Card className="bg-gradient-to-br from-zinc-600/20 to-blue-800/90 border border-zinc-700/40  hover:border-slate-500/50 transition-all duration-300">
+          <Card className="bg-gradient-to-br from-zinc-600/20 to-blue-800/80 border border-zinc-700/40  hover:border-slate-500/50 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
                 <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
