@@ -323,13 +323,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         
-        <div className="flex-1 flex flex-col">
+       <div className="flex-1 flex flex-col pt-2"> {/* upar se thoda padding do */}
           {/* Header */}
           <header className="border-b border-border/60 bg-background/95 backdrop-blur-xl sticky top-2 z-40 shadow-sm">
-            <div className="flex items-center rounded-tl-xl justify-between h-16 px-4 md:px-6 bg-stone-950"> 
+    <div className="flex items-center rounded-tl-xl justify-between h-16 px-4 md:px-6 bg-stone-950">
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="hover:bg-accent/80 transition-colors" /> 
-                 
+                  
                 {/* Mobile Logo */}
                 <div className="md:hidden flex items-center gap-3">
                   <img src="/skie.png" alt="SkieShare Logo" className="h-8 w-auto object-contain" />
