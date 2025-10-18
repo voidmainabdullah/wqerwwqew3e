@@ -121,8 +121,8 @@ export const Dashboard: React.FC = () => {
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
      {/* Professional Header */}
-<div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
-  <div className="px-8 py-6 rounded-xl  bg-zinc-900">
+    <div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
+  <div className="px-8 py-6 rounded-xl bg-stone-950">
     <div className="flex items-center justify-between">
       {/* Dashboard Title */}
       <div className=" md:block space-y-1">
@@ -130,20 +130,10 @@ export const Dashboard: React.FC = () => {
           <h1 className="text-3xl font-bold bg-gradient-to-r  from-gray-100 to-gray-300 bg-clip-text text-transparent">
             Dashboard
           </h1>
-          <Badge
-            className={`px-3 py-1 text-sm font-medium ${
-              isPro
-                ? "bg-gradient-to-r from-amber-500 to-orange-400 text-white border-0"
-                : "bg-neutral-800 text-gray-300 border border-neutral-700"
-            }`}
-          >
-            {isPro ? (
-              <>
+          <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-400 text-white border-0" : "bg-neutral-800 text-gray-300 border border-neutral-700"}`}>
+            {isPro ? <>
                 <Crown className="w-4 h-4 mr-1" /> Pro +
-              </>
-            ) : (
-              "Basic"
-            )}
+              </> : "Basic"}
           </Badge>
         </div>
         <p className="text-gray-500">
@@ -152,24 +142,17 @@ export const Dashboard: React.FC = () => {
       </div>
     </div>
   </div>
-</div>
+    </div>
 
-{/* Ultra Professional Ad Layout */}
-<div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4">
+    {/* Ultra Professional Ad Layout */}
+    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4">
 
   {/* Interactive Video Ad Card */}
   <div className="relative overflow-hidden  bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
 
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
-      <iframe
-        className="w-full h-80 object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0"
-        title="Ad Video"
-        frameBorder="0"
-        allow="autoplay; encrypted-media"
-        allowFullScreen
-      ></iframe> 
+      <iframe className="w-full h-80 object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0" title="Ad Video" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe> 
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
     </div>
 
@@ -180,30 +163,18 @@ export const Dashboard: React.FC = () => {
       </span>
 
       <div className="relative">
-        <button
-          onClick={() => {
-            const el = document.getElementById("adDropdown");
-            el.classList.toggle("hidden");
-            el.classList.toggle("animate-fadeIn");
-          }}
-          className="text-gray-300 hover:text-gray-100 transition"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+        <button onClick={() => {
+              const el = document.getElementById("adDropdown");
+              el.classList.toggle("hidden");
+              el.classList.toggle("animate-fadeIn");
+            }} className="text-gray-300 hover:text-gray-100 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
 
         {/* Dropdown Menu - Professional Key Points */}
-        <div
-          id="adDropdown"
-          className="hidden absolute right-0 mt-3 w-64 bg-neutral-950/95 border border-neutral-800 rounded-2xl p-4 shadow-2xl backdrop-blur-md z-30"
-        >
+        <div id="adDropdown" className="hidden absolute right-0 mt-3 w-64 bg-neutral-950/95 border border-neutral-800 rounded-2xl p-4 shadow-2xl backdrop-blur-md z-30">
           <h4 className="text-gray-100 text-sm font-semibold mb-3 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20h9" />
@@ -233,12 +204,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Hover Title */}
-    <a
-      href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500"
-    >
+    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500">
       <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-2xl font-semibold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
         Cloud Sync Pro — Lightning Fast Uploads
       </h3>
@@ -246,21 +212,9 @@ export const Dashboard: React.FC = () => {
 
     {/* Visit Now CTA */}
     <div className="absolute bottom-5 right-5 z-20">
-      <a
-        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-neutral-900/80 text-gray-100 font-semibold border border-neutral-700 hover:bg-neutral-800 hover:border-gray-600 shadow-md hover:shadow-gray-500/20 transition-all duration-300 overflow-hidden"
-      >
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-neutral-900/80 text-gray-100 font-semibold border border-neutral-700 hover:bg-neutral-800 hover:border-gray-600 shadow-md hover:shadow-gray-500/20 transition-all duration-300 overflow-hidden">
         <span className="relative z-10">Visit Now</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
       </a>
@@ -274,11 +228,7 @@ export const Dashboard: React.FC = () => {
   {/* Right Side Preview Card */}
   <div className="hidden md:flex relative flex-col justify-between bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-xl h-80 w-full md:w-1/3 p-6 hover:shadow-gray-500/20 transition-all duration-500">
     <div className="relative overflow-hidden rounded-2xl mb-5">
-      <img
-        src="/skie.png"
-        alt="Ad Preview"
-        className="w-full h-48 object-cover rounded-2xl hover:scale-105 transition-transform duration-500"
-      />
+      <img src="/skie.png" alt="Ad Preview" className="w-full h-48 object-cover rounded-2xl hover:scale-105 transition-transform duration-500" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 rounded-2xl"></div>
     </div>
 
@@ -290,30 +240,18 @@ export const Dashboard: React.FC = () => {
     </div>
 
     <div className="mt-5">
-      <a
-        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-850 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300"
-      >
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-850 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300">
         Learn More
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
       </a>
     </div>
   </div>
-</div>
+    </div>
 
-<style>
-{`
+    <style>
+      {`
 @keyframes pulse-slow {
   0%, 100% { transform: scale(1); opacity: 0.5; }
   50% { transform: scale(1.2); opacity: 0.9; }
@@ -330,10 +268,10 @@ export const Dashboard: React.FC = () => {
   animation: fadeIn 0.3s ease-in-out;
 }
 `}
-</style>
+    </style>
 
 
-      <div className="p-8 space-y-8 bg-zinc-900">
+      <div className="p-8 space-y-8 bg-stone-950">
         {/* Main Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Files Card */}

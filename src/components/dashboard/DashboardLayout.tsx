@@ -4,12 +4,12 @@ import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'; 
-import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell,Headset, HardDrive,ClockCounterClockwise,HardDrives, Question,UserGear, ChatCircle, Crown, Share } from 'phosphor-react';
-import { NotificationPopover } from './NotificationPopover'; 
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, Headset, HardDrive, ClockCounterClockwise, HardDrives, Question, UserGear, ChatCircle, Crown, Share } from 'phosphor-react';
+import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress'; 
+import { Progress } from '@/components/ui/progress';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
 interface DashboardLayoutProps {
@@ -20,7 +20,7 @@ interface UserProfile {
   storage_limit: number;
   subscription_tier: string;
 }
-const navigation = [{  
+const navigation = [{
   name: 'Dashboard',
   href: '/dashboard',
   icon: 'dashboard'
@@ -45,9 +45,9 @@ const navigation = [{
   href: '/dashboard/shared',
   icon: 'share '
 }, {
-  name: 'Analytics', 
+  name: 'Analytics',
   href: '/dashboard/analytics',
-  icon: 'analytics' 
+  icon: 'analytics'
 }, {
   name: 'Settings',
   href: '/dashboard/settings',
@@ -168,11 +168,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
-    } 
+    }
   };
   const formatFileSize = (bytes: number): string => {
     if (!bytes) return '0 Bytes';
-    const k = 1024; 
+    const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
@@ -297,12 +297,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </PopoverContent>
     </Popover>;
-const FeedbackButton = () => (
-  <Button
-    variant="ghost"
-    size="sm"
-    asChild
-    className="
+  const FeedbackButton = () => <Button variant="ghost" size="sm" asChild className="
   group relative h-auto px-5 py-2.5 rounded-full border-none
   font-semibold text-white
   bg-[linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6,#60a5fa,#93c5fd)]
@@ -316,21 +311,14 @@ const FeedbackButton = () => (
   hover:shadow-[0_25px_15px_-15px_rgba(59,130,246,0.6)]
   hover:-translate-y-0.5
   focus:outline-none
-"
-
-  >
+">
     <a href="#" className="flex items-center gap-2 text-white no-underline">
-      <Crown
-        className="h-4 w-4 fill text-amber-400 transition-all duration-300 group-hover:scale-110"
-        weight="duotone"
-      />
+      <Crown className="h-4 w-4 fill text-amber-400 transition-all duration-300 group-hover:scale-110" weight="duotone" />
       <span className="text-sm hidden sm:inline font-semibold">
         Upgrade
       </span>
     </a> 
-  </Button>
-);
-
+  </Button>;
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
@@ -338,7 +326,7 @@ const FeedbackButton = () => (
         <div className="flex-1 flex flex-col">
           {/* Header */}
           <header className="border-b border-border/60 bg-background/95 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
-            <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
+            <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-slate-200">
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="hover:bg-accent/80 transition-colors" />
                 
@@ -487,7 +475,7 @@ const FeedbackButton = () => (
 
           {/* Main Content */}
           <main className="flex-1 overflow-auto bg-background">
-            <div className="p-4 md:p-6 lg:p-8 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
+            <div className="p-4 md:p-6 lg:p-8 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 bg-stone-950">
               {children}
             </div>
           </main>
