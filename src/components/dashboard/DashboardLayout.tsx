@@ -479,7 +479,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Main Content */}
           <main className="flex-1 overflow-auto bg-background">
-            <div className="p-4 md:p-6 lg:p-8 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 bg-stone-950">
+            <div className="p-4 md:p-6 lg:p-8  bg-[#1c1917]">
               {children}
             </div>
           </main>
