@@ -325,10 +325,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="border-b border-border/60 bg-red-600 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
+          <header className="border-b border-border/60 bg-background/95 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
             <div className="flex items-center justify-between h-16 px-4 md:px-6 bg-stone-950">
               <div className="flex items-center gap-4">
-                <SidebarTrigger className="hover:bg-accent/80 transition-colors" />
+                <SidebarTrigger className="hover:bg-accent/80 transition-colors" /> 
                 
                 {/* Mobile Logo */}
                 <div className="md:hidden flex items-center gap-3">
