@@ -323,13 +323,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="min-h-screen flex w-full bg-[#1c1917]">
         <AppSidebar />
         
-    <div className="flex-1 flex flex-col relative px-4"> {/* px adds left+right gap safely */}
+    <div className="flex-1 flex flex-col relative px-2"> {/* px adds left+right gap safely */}
   {/* Space above header */}
   <div className="h-2" />
 
   {/* Header */}
   <header className="border-b rounded-xl border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
-    <div className="flex items-center justify-between h-16 px-4 md:px-6">
+    <div className="flex items-center justify-between h-16 px-2 md:px-6">
   
       {/* content */} 
               <div className="flex items-center gap-4">
