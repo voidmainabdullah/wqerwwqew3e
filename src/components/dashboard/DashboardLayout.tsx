@@ -55,7 +55,7 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
+  return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-[#1c1917]">
       <SidebarHeader className="flex-shrink-0 px-3 py-3">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative">
