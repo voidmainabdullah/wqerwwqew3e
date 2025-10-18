@@ -148,7 +148,7 @@ export const Dashboard: React.FC = () => {
     <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4">
 
   {/* Interactive Video Ad Card */}
-  <div className="relative overflow-hidden  bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
+  <div className="relative overflow-hidden  bg-stone-950 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
 
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
@@ -226,7 +226,7 @@ export const Dashboard: React.FC = () => {
   </div>
 
   {/* Right Side Preview Card */}
-  <div className="hidden md:flex relative flex-col justify-between bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 rounded-3xl border border-neutral-800 shadow-xl h-80 w-full md:w-1/3 p-6 hover:shadow-gray-500/20 transition-all duration-500">
+  <div className="hidden md:flex relative flex-col justify-between bg-stone-950 rounded-3xl border border-neutral-800 shadow-xl h-80 w-full md:w-1/3 p-6 hover:shadow-gray-500/20 transition-all duration-500">
     <div className="relative overflow-hidden rounded-2xl mb-5">
       <img src="/skie.png" alt="Ad Preview" className="w-full h-48 object-cover rounded-2xl hover:scale-105 transition-transform duration-500" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 rounded-2xl"></div>
@@ -514,7 +514,7 @@ export const Dashboard: React.FC = () => {
           {/* Right Column - Activity and Actions */}
           <div className="space-y-8">
             {/* Quick Actions */}
-            <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-slate-600/50">
+            <Card className="bg-stone-950 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Lightning className="w-5 h-5 text-amber-400" />
@@ -623,7 +623,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Bottom Action Cards */}
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-neutral-600/50 hover:border-blue-500/50 transition-all duration-300">
+          <Card className="bg-stone-950 border-neutral-600/50 hover:border-blue-500/50 transition-all duration-300">
             <CardHeader>
               <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-blue-400" />
@@ -642,7 +642,7 @@ export const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-neutral-600/50 hover:border-purple-500/50 transition-all duration-300">
+          <Card className="bg-stone-950 border-neutral-600/50 hover:border-purple-500/50 transition-all duration-300">
             <CardHeader>
               <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-purple-400" />
@@ -661,7 +661,7 @@ export const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
+          <Card className="bg-stone-950 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
             <CardHeader>
               <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4 ">
                 <ChartLineUp className="w-6 h-6 text-emerald-400" />
