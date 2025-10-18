@@ -339,7 +339,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <div className="hidden lg:block">
                   <div className="space-y-0.5">
                     <h2 className="text-base xl:text-lg font-heading font-semibold text-foreground">
-                      Welcome back, {user.user_metadata?.display_name || user.email?.split('@')[0]}
+                      Welcome bak, {user.user_metadata?.display_name || user.email?.split('@')[0]}
                     </h2>
                     <p className="text-xs xl:text-sm text-muted-foreground font-body">
                       {new Date().toLocaleDateString('en-US', {
