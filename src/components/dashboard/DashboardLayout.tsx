@@ -73,7 +73,7 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-900">
         {/* Navigation */}
         <SidebarGroup className="w-60">
           <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
