@@ -383,7 +383,7 @@ export const Dashboard: React.FC = () => {
                     </CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600">
+                    <Button variant="outline" size="sm" className="bg-[#1c1917] border-slate-600 text-slate-300 hover:bg-slate-600">
                       7 Days
                     </Button>
                     <Button variant="outline" size="sm" className="bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600">
