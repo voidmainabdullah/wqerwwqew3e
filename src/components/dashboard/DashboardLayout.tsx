@@ -320,7 +320,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </a> 
   </Button>;
   return <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full bg-green-400">
         <AppSidebar />
         
        <div className="flex-1 flex flex-col relative">
