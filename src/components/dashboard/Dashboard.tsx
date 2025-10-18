@@ -437,7 +437,7 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Real-time Analytics Component */}
-            <div className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-850 border-slate-600/50 rounded-xl p-6 bg-inherit">
+            <div className="bg-[#1c1917] border-slate-600/50 rounded-xl p-6 bg-inherit">
               <div className="space-y-6">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
