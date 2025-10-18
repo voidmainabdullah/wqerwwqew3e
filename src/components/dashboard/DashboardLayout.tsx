@@ -328,7 +328,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   <div className="h-2" />
 
   {/* Header */}
-  <header className="border-b rounded-xl border-white/10 bg-[#1c1917]/95 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
+  <header className="border-b rounded-xl border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
     <div className="flex items-center justify-between h-16 px-4 md:px-6">
   
       {/* content */} 
