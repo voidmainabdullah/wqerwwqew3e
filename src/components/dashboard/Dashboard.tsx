@@ -121,8 +121,8 @@ export const Dashboard: React.FC = () => {
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
   return <div className="min-h-screen text-white rounded-xl bg-inherit">
      {/* Professional Header */}
-    <div className="border-b border-neutral-800 bg-red-600 backdrop-blur-md rounded-full">
-  <div className="px-8 py-6 rounded-xl bg-stone-950">
+    <div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
+  <div className="px-8 py-6 rounded-xl bg-red-950">
     <div className="flex items-center justify-between">
       {/* Dashboard Title */}
       <div className=" md:block space-y-1">
