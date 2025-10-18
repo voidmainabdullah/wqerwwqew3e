@@ -394,7 +394,7 @@ export const Dashboard: React.FC = () => {
               </CardHeader>
               <CardContent>
                 {/* Simulated Chart Area */}
-                <div className="h-64 bg-neutral-900/50 rounded-xl p-6 relative overflow-hidden">
+                <div className="h-64 bg-[#1c1917] rounded-xl p-6 relative overflow-hidden">
                   {/* Chart Background Grid */}
                   <div className="absolute inset-0 opacity-20">
                     <div className="w-full h-full" style={{
