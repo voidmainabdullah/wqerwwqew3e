@@ -119,17 +119,16 @@ export const Dashboard: React.FC = () => {
   }
   const isPro = stats?.subscriptionTier === "pro";
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
-  return <div className="min-h-screen text-white bg-stone-950 rounded-xl">
+  return <div className="min-h-screen text-white bg-stone-950 flex flex-col">
   {/* Professional Header */}
-  <div className="w-full border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-t-xl">
-    <div className="w-full border border-[#ffffff10] rounded-t-xl bg-stone-950 py-[8px] px-[20px]  -mt-8">
-      <div className="flex items-center justify-between w-full">
+  <header className="w-full border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-t-xl">
+    <div className="w-full max-w-7xl mx-auto border border-[#ffffff10] bg-stone-950 rounded-t-xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 w-full">
         {/* Dashboard Title */}
-        <div className="md:block space-y-1">
-          <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent">
-              Dashboard
-            </h1>  
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent">
+            Dashboard
+          </h1> 
           <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-400 text-white border-0" : "bg-neutral-800 text-gray-300 border border-neutral-700"}`}>
             {isPro ? <>
                 <Crown className="w-4 h-4 mr-1" /> Pro +
