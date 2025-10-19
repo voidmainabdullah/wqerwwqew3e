@@ -115,7 +115,7 @@ export const Dashboard: React.FC = () => {
               </CardHeader>
             </Card>)}
         </div>
-      </div>;
+      </div>; 
   }
   const isPro = stats?.subscriptionTier === "pro";
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
