@@ -142,7 +142,7 @@ export const Dashboard: React.FC = () => {
       </div>
     </div>
   </div>
-  </div>
+  
   
 
     {/* Ultra Professional Ad Layout */}
