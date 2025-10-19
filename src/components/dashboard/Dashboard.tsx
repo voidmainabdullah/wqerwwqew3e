@@ -141,7 +141,8 @@ export const Dashboard: React.FC = () => {
       </div>
     </div>
   </div>
-    </div>
+  </div>
+  
 
     {/* Ultra Professional Ad Layout */}
     <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4 bg-transparent">
