@@ -128,7 +128,7 @@ export const Dashboard: React.FC = () => {
       <div className=" md:block space-y-1">
         <div className="flex items-center gap-4">
           <h1 className="text-3xl font-bold bg-gradient-to-r  from-gray-100 to-gray-300 bg-clip-text text-transparent">
-            Dashboard
+            Dashboard 
           </h1>
           <Badge className={`px-3 py-1 text-sm font-medium ${isPro ? "bg-gradient-to-r from-amber-500 to-orange-400 text-white border-0" : "bg-neutral-800 text-gray-300 border border-neutral-700"}`}>
             {isPro ? <>
