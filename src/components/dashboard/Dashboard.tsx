@@ -677,7 +677,7 @@ export const Dashboard: React.FC = () => {
                   View Analytics
                 </Link>
               </Button>
-            </CardContent>
+            </CardContent> 
           </Card>
         </div>
       </div>
