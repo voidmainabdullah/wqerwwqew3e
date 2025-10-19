@@ -104,7 +104,7 @@ export const Dashboard: React.FC = () => {
   if (loading) {
     return <div className="space-y-8">
         <div className="space-y-2">
-          <div className="h-8 bg-muted rounded-lg w-48 animate-pulse"></div>
+          <div className="h-8 bg-muted w-48 animate-pulse rounded-none"></div>
           <div className="h-4 bg-muted rounded w-96 animate-pulse"></div>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -122,7 +122,7 @@ export const Dashboard: React.FC = () => {
   return <div className="min-h-screen text-white bg-stone-950 rounded-xl">
   {/* Professional Header */}
   <div className="w-full border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-t-xl">
-    <div className="w-full border border-[#ffffff10] rounded-t-xl bg-stone-950 py-[8px] px-[20px]  -mt-8">
+    <div className="w-full border border-[#ffffff10] rounded-none bg-stone-950 py-[8px] px-[20px]  -mt-8">
       <div className="flex items-center justify-between w-full">
         {/* Dashboard Title */}
         <div className="md:block space-y-1">
