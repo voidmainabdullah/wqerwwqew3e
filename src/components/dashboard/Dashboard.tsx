@@ -271,7 +271,7 @@ export const Dashboard: React.FC = () => {
     </style>
 
 
-      <div className="p-8 space-y-8 bg-yellow-950">
+      <div className="p-8 space-y-8 bg-green-950">
         {/* Main Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Files Card */}
