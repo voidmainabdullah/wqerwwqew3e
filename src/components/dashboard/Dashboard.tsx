@@ -119,7 +119,7 @@ export const Dashboard: React.FC = () => {
   }
   const isPro = stats?.subscriptionTier === "pro";
   const storageProgress = stats && !isPro ? stats.storageUsed / stats.storageLimit * 100 : 0;
-  return <div className="min-h-screen text-white rounded-xl bg-stone-950"> 
+  return <div className="min-h-screen text-white rounded-xl bg-red-950"> 
      {/* Professional Header */}
     <div className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-full">
   <div className="px-4 py-4  rounded-xl border border-[#ffffff10] bg-red-950 -mt-8 ">
