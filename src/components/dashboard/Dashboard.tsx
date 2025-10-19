@@ -122,7 +122,7 @@ export const Dashboard: React.FC = () => {
   return <div className="min-h-screen text-white bg-stone-950 rounded-xl">
   {/* Professional Header */}
   <div className="w-full border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-t-xl">
-    <div className="w-full border border-[#ffffff10] rounded-t-xl bg-stone-950 py-[2px] px-[40px] my-0 mx-0 -mt-6">
+    <div className="w-full border border-[#ffffff10] rounded-t-xl bg-stone-950 py-[2px] px-[40px] my-0 mx-0 -mt-8">
       <div className="flex items-center justify-between w-full">
         {/* Dashboard Title */}
         <div className="md:block space-y-1">
