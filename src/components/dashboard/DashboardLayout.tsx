@@ -323,7 +323,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="min-h-screen flex w-full bg-[#1c1917]">
         <AppSidebar />
         
-    <div className="flex-1 flex flex-col relative mx-0 px-[4px]"> {/* px adds left+right gap safely */}
+    <div className="flex-1 flex flex-col relative mx-0 px-[6px]"> {/* px adds left+right gap safely */}
   {/* Space above header */}
   <div className="h-2" />
 
