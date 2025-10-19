@@ -25,11 +25,8 @@ import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
 import { SubscriptionSuccess } from "./pages/SubscriptionSuccess";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-
 const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <TooltipProvider>
         <AuthProvider>
@@ -41,71 +38,53 @@ const App = () => (
               <Route path="/" element={<Index />} />
               
               {/* Public Routes */}
-              <Route path="/auth" element={
-                <AuthGuard requireAuth={false}>
+              <Route path="/auth" element={<AuthGuard requireAuth={false}>
                   <AuthPage />
-                </AuthGuard>
-              } />
+                </AuthGuard>} />
               <Route path="/subscription" element={<SubscriptionPage />} />
               <Route path="/subscription-success" element={<SubscriptionSuccess />} />
               <Route path="/share/:token" element={<PublicSharePage />} />
               <Route path="/code" element={<CodePage />} />
               
               {/* Protected Dashboard Routes */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
+              <Route path="/dashboard" element={<ProtectedRoute>
                   <DashboardLayout>
-                    <Dashboard />
+                    <Dashboard className="bg-stone-950 my-0 px-0 mx-0 py-0" />
                   </DashboardLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/upload" element={
-                <ProtectedRoute>
+                </ProtectedRoute>} />
+              <Route path="/dashboard/upload" element={<ProtectedRoute>
                   <DashboardLayout>
                     <FileUpload />
                   </DashboardLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/files" element={
-                <ProtectedRoute>
+                </ProtectedRoute>} />
+              <Route path="/dashboard/files" element={<ProtectedRoute>
                   <DashboardLayout>
                     <FileManager />
                   </DashboardLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/receive" element={
-                <ProtectedRoute>
+                </ProtectedRoute>} />
+              <Route path="/dashboard/receive" element={<ProtectedRoute>
                   <DashboardLayout>
                     <FileReceiver />
                   </DashboardLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/teams" element={
-                <ProtectedRoute>
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams" element={<ProtectedRoute>
                   <EnterpriseTeamsManager />
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/shared" element={
-                <ProtectedRoute>
+                </ProtectedRoute>} />
+              <Route path="/dashboard/shared" element={<ProtectedRoute>
                   <DashboardLayout>
                     <SharedLinks />
                   </DashboardLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/analytics" element={
-                <ProtectedRoute>
+                </ProtectedRoute>} />
+              <Route path="/dashboard/analytics" element={<ProtectedRoute>
                   <DashboardLayout>
                     <Analytics />
                   </DashboardLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/settings" element={
-                <ProtectedRoute>
+                </ProtectedRoute>} />
+              <Route path="/dashboard/settings" element={<ProtectedRoute>
                   <DashboardLayout>
                     <Settings />
                   </DashboardLayout>
-                </ProtectedRoute>
-              } />
+                </ProtectedRoute>} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
@@ -114,7 +93,5 @@ const App = () => (
         </AuthProvider>
       </TooltipProvider>
     </ThemeProvider>
-  </QueryClientProvider>
-);
-
+  </QueryClientProvider>;
 export default App;

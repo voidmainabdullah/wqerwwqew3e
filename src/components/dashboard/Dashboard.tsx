@@ -122,7 +122,7 @@ export const Dashboard: React.FC = () => {
   return <div className="min-h-screen text-white bg-blue-950 rounded-xl">
   {/* Professional Header */}
   <div className="w-full border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md rounded-t-xl">
-    <div className="w-full px-6 py-4 border border-[#ffffff10] rounded-t-xl bg-stone-950">
+    <div className="w-full border border-[#ffffff10] rounded-t-xl bg-stone-950 py-[2px] px-[40px] my-0 mx-0">
       <div className="flex items-center justify-between w-full">
         {/* Dashboard Title */}
         <div className="md:block space-y-1">
@@ -145,7 +145,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Ultra Professional Ad Layout */}
-    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4 bg-stone-950">
+    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4 bg-transparent">
 
   {/* Interactive Video Ad Card */}
   <div className="relative overflow-hidden  bg-stone-950 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
