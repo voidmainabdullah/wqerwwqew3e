@@ -323,7 +323,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="min-h-screen flex w-full bg-[#1c1917]">
         <AppSidebar />
         
-    <div className="flex-1 flex flex-col relative px-12"> {/* px adds left+right gap safely */}
+    <div className="flex-1 flex flex-col relative mx-0 px-[4px]"> {/* px adds left+right gap safely */}
   {/* Space above header */}
   <div className="h-2" />
 
@@ -480,7 +480,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Main Content */}
           <main className="flex-1 overflow-auto bg-background">
-            <div className="p-4 md:p-6 lg:p-8  bg-[#1c1917]">
+            <div className="p-4 md:p-6 lg:p-8 bg-[#1c1917] mx-0 py-[2px] px-0">
               {children}
             </div>
           </main>
