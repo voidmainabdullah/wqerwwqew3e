@@ -56,7 +56,7 @@ const navigation = [{
 const AppSidebar = () => {
   const location = useLocation();
   return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-[#1c1917]">
-      <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-900">
+      <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-neutral-900">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative">
             <img src="/skie.png" alt="SkieShare Logo" className="h-10 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
@@ -323,7 +323,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="min-h-screen flex w-full bg-[#1c1917]">
         <AppSidebar />
         
-    <div className="flex-1 flex flex-col relative mx-0 px-[6px]"> {/* px adds left+right gap safely */}
+    <div className="flex-1 flex flex-col relative mx-0 px-[6px] bg-transparent"> {/* px adds left+right gap safely */}
   {/* Space above header */}
   <div className="h-2" />
 
