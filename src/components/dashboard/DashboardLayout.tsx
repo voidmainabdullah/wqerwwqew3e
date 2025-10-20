@@ -475,7 +475,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </div>
     </SidebarProvider>
-  );
-}
+  
 
 };
