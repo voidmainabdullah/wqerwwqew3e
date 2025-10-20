@@ -17,6 +17,8 @@ import {
   IconSettings,
   IconSend
 } from "@tabler/icons-react";
+import { IconQrcode } from "@tabler/icons-react";
+
 
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
@@ -135,10 +137,14 @@ const AppSidebar = () => {
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
-                  <Link to="/code">
-                    <span className="material-icons md-18">qr_code</span>
-                    <span className="font-body text-sm">Receive Now</span>
-                  </Link>
+                  <Link
+  to="/code"
+  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-accent/50 transition-all duration-200"
+>
+  <IconQrcode size={18} stroke={1.8} className="text-gray-300" />
+  <span className="font-body text-sm">Receive Now</span>
+</Link>
+
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
