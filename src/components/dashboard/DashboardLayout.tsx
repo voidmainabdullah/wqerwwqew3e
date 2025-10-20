@@ -12,7 +12,7 @@ import {
   IconFolder,
   IconUsers,
   IconFolderShare,
-  transition-bottom,
+  IconShare,
   IconChartBar,
   IconSettings,
   IconSend
@@ -30,7 +30,7 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 interface UserProfile {
-  storage_used: number;
+  storage_used: number; 
   storage_limit: number;
   subscription_tier: string;
 }
