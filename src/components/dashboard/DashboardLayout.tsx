@@ -12,7 +12,7 @@ import {
   IconFolder,
   IconUsers,
   IconFolderShare,
-  link-minus,
+  IconShare,
   IconChartBar,
   IconSettings,
   IconSend
@@ -64,7 +64,7 @@ const navigation = [
   {
     name: 'Shared Links',
     href: '/dashboard/shared',
-    icon: link-minus,
+    icon: IconShare3,
   },
   {
     name: 'Analytics',
