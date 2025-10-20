@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-
+import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, Headset, HardDrive, ClockCounterClockwise, HardDrives, Question, UserGear, ChatCircle, Crown, Share } from 'phosphor-react';
 import {
   IconDashboard,
   IconUpload,
@@ -104,15 +104,25 @@ const AppSidebar = () => {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
-              {navigation.map(item => <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton asChild isActive={location.pathname === item.href} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
-                    <Link to={item.href}>
-                      <span className="material-icons md-18">{item.icon}</span>
-                      <span className="font-body text-sm">{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>)}
-            </SidebarMenu>
+      {navigation.map((item) => (
+        <SidebarMenuItem key={item.name}>
+          <SidebarMenuButton
+            asChild
+            isActive={location.pathname === item.href}
+            className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200"
+          >
+            <Link to={item.href} className="flex items-center gap-2">
+              <item.icon
+                size={18}
+                stroke={1.8}
+                className="text-gray-300 group-hover:text-white transition-colors duration-150"
+              />
+              <span className="font-body text-sm">{item.name}</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
         
