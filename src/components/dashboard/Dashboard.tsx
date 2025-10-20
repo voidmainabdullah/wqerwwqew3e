@@ -145,7 +145,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Ultra Professional Ad Layout */}
-    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4 bg-transparent">
+    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4 bg-neutral-950">
 
   {/* Interactive Video Ad Card */}
   <div className="relative overflow-hidden  bg-stone-950 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
@@ -397,13 +397,13 @@ export const Dashboard: React.FC = () => {
                 <div className="h-64 bg-[#1c1917] rounded-xl p-6 relative overflow-hidden">
                   {/* Chart Background Grid */}
                   <div className="absolute inset-0 opacity-20">
-                    <div className="w-full h-full" style={{
+                    <div style={{
                     backgroundImage: `
                         linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px)
                       `,
                     backgroundSize: '40px 40px'
-                  }} />
+                  }} className="w-full h-full bg-stone-950" />
                   </div>
                   
                   {/* Simulated Chart Line */}
@@ -418,7 +418,7 @@ export const Dashboard: React.FC = () => {
                   
                   {/* Chart Stats Overlay */}
                   <div className="absolute top-4 left-4">
-                    <div className="bg-neutral-800/80 backdrop-blur-sm rounded-lg p-3 border border-slate-600/50">
+                    <div className="backdrop-blur-sm rounded-lg p-3 border border-slate-600/50 bg-stone-800">
                       <div className="flex items-center gap-2 mb-1">
                         <div className="w-3 h-3 rounded-full bg-blue-400"></div>
                         <span className="text-white text-sm font-medium">Downloads</span>
@@ -438,7 +438,7 @@ export const Dashboard: React.FC = () => {
 
             {/* Real-time Analytics Component */}
             <div className="bg-[#1c1917] border-slate-600/50 rounded-xl p-6 bg-inherit">
-              <div className="space-y-6">
+              <div className="space-y-6 bg-transparent">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
                   <div>
