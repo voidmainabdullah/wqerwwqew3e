@@ -181,6 +181,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const StoragePopover = () => <Popover>
      <PopoverTrigger asChild>
   <div className="flex overflow-hidden border divide-x rounded-full bg-[#1c1917] border-zinc-700 divide-zinc-700 hover:border-zinc-600 transition-colors duration-200">
+    {/* Left Button */}
     <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
       <svg
         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -198,6 +199,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </svg>
     </button>
 
+    {/* Middle Button - TEAM ICON */}
     <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
       <svg
         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -208,13 +210,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
-          strokeLinejoin="round"
+          d="M16 14c1.657 0 3 1.343 3 3v1H5v-1c0-1.657 1.343-3 3-3h8zM8.5 11a3.5 3.5 0 110-7 3.5 3.5 0 010 7zM15.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z"
           strokeLinecap="round"
+          strokeLinejoin="round"
         ></path>
       </svg>
     </button>
 
+    {/* Right Button */}
     <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800 relative">
       <svg
         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -239,6 +242,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </button>
   </div>
 </PopoverTrigger>
+
 
       <PopoverContent className="w-80 p-0" align="end">
         <div className="p-4 space-y-4">
