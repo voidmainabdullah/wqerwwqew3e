@@ -32,39 +32,50 @@ interface UserProfile {
   storage_limit: number;
   subscription_tier: string;
 }
-const navigation = [{
-  name: 'Dashboard',
-  href: '/dashboard',
-  icon: 'dashboard'
-}, {
-  name: 'Upload',
-  href: '/dashboard/upload',
-  icon: 'upload'
-}, {
-  name: 'My Files',
-  href: '/dashboard/files',
-  icon: 'folder'
-}, {
-  name: 'Teams',
-  href: '/dashboard/teams',
-  icon: 'groups'
-}, {
-  name: 'Team Files',
-  href: '/dashboard/team-files',
-  icon: 'send'
-}, {
-  name: 'Shared Links', 
-  href: '/dashboard/shared',
-  icon: 'share '
-}, {
-  name: 'Analytics',
-  href: '/dashboard/analytics',
-  icon: 'analytics'
-}, {
-  name: 'Settings',
-  href: '/dashboard/settings',
-  icon: 'settings'
-}];
+
+const navigation = [
+  {
+    name: 'Dashboard',
+    href: '/dashboard',
+    icon: IconDashboard,
+  },
+  {
+    name: 'Upload',
+    href: '/dashboard/upload',
+    icon: IconUpload,
+  },
+  {
+    name: 'My Files',
+    href: '/dashboard/files',
+    icon: IconFolder,
+  },
+  {
+    name: 'Teams',
+    href: '/dashboard/teams',
+    icon: IconUsers,
+  },
+  {
+    name: 'Team Files',
+    href: '/dashboard/team-files',
+    icon: IconSend,
+  },
+  {
+    name: 'Shared Links',
+    href: '/dashboard/shared',
+    icon: IconShare3,
+  },
+  {
+    name: 'Analytics',
+    href: '/dashboard/analytics',
+    icon: IconChartBar,
+  },
+  {
+    name: 'Settings',
+    href: '/dashboard/settings',
+    icon: IconSettings,
+  },
+];
+
 const AppSidebar = () => {
   const location = useLocation();
   return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-[#1c1917]">
