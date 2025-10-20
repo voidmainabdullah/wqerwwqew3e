@@ -212,7 +212,7 @@ export const Dashboard: React.FC = () => {
 
     {/* Visit Now CTA */}
     <div className="absolute bottom-5 right-5 z-20">
-      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-neutral-900/80 text-gray-100 font-semibold border border-neutral-700 hover:bg-neutral-800 hover:border-gray-600 shadow-md hover:shadow-gray-500/20 transition-all duration-300 overflow-hidden">
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="relative inline-flex items-center gap-2 text-sm sm:text-base px-4 py-2 rounded-full bg-blue-600/20 text-gray-100 font-semibold border border-neutral-700 hover:bg-neutral-800 hover:border-gray-600 shadow-md hover:shadow-gray-500/20 transition-all duration-300 overflow-hidden">
         <span className="relative z-10">Visit Now</span>
         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
