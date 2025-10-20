@@ -232,7 +232,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </svg>
   </button>
 </div>
-
+      </PopoverTrigger>
           {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
               <span className="text-[10px] text-warning-foreground  font-bold">!</span>
             </div>} 
