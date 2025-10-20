@@ -39,9 +39,9 @@ const navigation = [{
 }, {
   name: 'Team Files',
   href: '/dashboard/team-files',
-  icon: 'headset'
+  icon: 'send'
 }, {
-  name: 'Shared Links',
+  name: 'Shared Links', 
   href: '/dashboard/shared',
   icon: 'share '
 }, {
