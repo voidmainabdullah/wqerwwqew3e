@@ -104,10 +104,10 @@ export const Dashboard: React.FC = () => {
   if (loading) {
     return <div className="space-y-8">
         <div className="space-y-2">
-          <div className="h-8 bg-muted w-48 animate-pulse rounded-none"></div>
+          <div className="h-8 bg-muted w-48 animate-pulse rounded-none mx-0"></div>
           <div className="h-4 bg-muted rounded w-96 animate-pulse"></div>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mx-0">
           {[...Array(4)].map((_, i) => <Card key={i} className="animate-pulse">
               <CardHeader className="pb-3">
                 <div className="h-4 bg-muted rounded w-24"></div>
@@ -136,7 +136,7 @@ export const Dashboard: React.FC = () => {
               </> : "Basic"}
           </Badge>
         </div>
-        <p className="text-gray-500">
+        <p className="text-neutral-400">
           Welcome back, {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
         </p>
       </div>
