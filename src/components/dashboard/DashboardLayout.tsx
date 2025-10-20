@@ -12,6 +12,7 @@ import {
   IconFolder,
   IconUsers,
   IconFolderShare,
+  IconShare3,
   IconShare,
   IconChartBar,
   IconSettings,
