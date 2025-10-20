@@ -12,7 +12,7 @@ import {
   IconFolder,
   IconUsers,
   IconFolderShare,
-  IconShare,
+  transition-bottom,
   IconChartBar,
   IconSettings,
   IconSend
