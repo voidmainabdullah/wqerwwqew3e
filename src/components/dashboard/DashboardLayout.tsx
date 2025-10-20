@@ -180,10 +180,59 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-9 w-40 rounded-full  bg-[#1c1917] hover:bg-zinc-700 transition-colors">
-          <Users className="h-5 w-5 text-muted-foreground" weight="fill" />
-  <span className="font-body text-sm text-foreground">Create Team</span>
-  <span className="text-sm font-bold text-neutral-400">+</span>
+        <div className="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse dark:bg-gray-900 dark:border-gray-700 dark:divide-gray-700">
+  <button className="px-4 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+    <svg
+      className="w-5 h-5 sm:w-6 sm:h-6"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      ></path>
+    </svg>
+  </button>
+
+  <button className="px-4 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+    <svg
+      className="w-5 h-5 sm:w-6 sm:h-6"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      ></path>
+    </svg>
+  </button>
+
+  <button className="px-4 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+    <svg
+      className="w-5 h-5 sm:w-6 sm:h-6"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      ></path>
+    </svg>
+  </button>
+</div>
+
           {profile?.subscription_tier !== 'pro' && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
               <span className="text-[10px] text-warning-foreground  font-bold">!</span>
             </div>} 
