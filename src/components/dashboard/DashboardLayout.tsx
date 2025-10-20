@@ -68,7 +68,7 @@ const navigation = [
     name: 'Analytics',
     href: '/dashboard/analytics',
     icon: IconChartBar,
-  },
+  }, 
   {
     name: 'Settings',
     href: '/dashboard/settings',
