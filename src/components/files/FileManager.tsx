@@ -351,7 +351,7 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6 bg-zinc-900">
+        <CardContent className="p-6 bg-stone-900">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <span className="material-icons md-18 absolute left-2 top-2.5 text-muted-foreground">search</span>
