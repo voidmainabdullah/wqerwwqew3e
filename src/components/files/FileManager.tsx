@@ -351,11 +351,11 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6 bg-stone-900">
+        <CardContent className="p-6 bg-zinc-900">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <span className="material-icons md-18 absolute left-2 top-2.5 text-muted-foreground">search</span>
-              <Input placeholder="Search files and folders..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 font-body" />
+              <Input placeholder="Search files and folders..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 font-body border-none" />
             </div>
             <div className="w-full sm:w-48">
               <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input bg-background rounded-md font-body">
@@ -416,7 +416,7 @@ export function FileManager() {
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Folders */}
           {filteredFolders.map(folder => <Card key={`folder-${folder.id}`} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer">
-              <CardContent className="p-4 bg-zinc-800 rounded-2xl rounded-tr-6xl">
+              <CardContent className="p-4 bg-zinc-800 rounded-2xl">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1" onClick={() => navigateToFolder(folder.id, folder.name)}>
                     <div className="w-12 h-12 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-xl flex items-center justify-center border border-amber-500/20 bg-transparent">
