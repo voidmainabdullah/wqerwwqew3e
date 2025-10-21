@@ -88,11 +88,7 @@ const HeroSection = () => {
             </Button>
             
            {/* Anonymous Share Button - Premium Gradient Style */}
-<Button
-  variant="ghost"
-  className="relative overflow-hidden group w-full sm:w-auto h-14 md:h-16 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-heading font-semibold text-base md:text-lg shadow-md hover:shadow-blue-500/30 transition-all duration-300"
-  asChild
->
+          <Button variant="ghost" className="relative overflow-hidden group w-full sm:w-auto h-14 md:h-16 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-heading font-semibold text-base md:text-lg shadow-md hover:shadow-blue-500/30 transition-all duration-300" asChild>
   <a href="/code" className="flex items-center gap-3">
     {/* Upload Icon Animation */} 
     <div className="relative flex items-center justify-center">
@@ -116,7 +112,7 @@ const HeroSection = () => {
     {/* Dashed Border Animation */}
     <div className="absolute inset-0 rounded-xl border-2 border-dashed border-blue-500/40 group-hover:border-blue-400/60 transition-all duration-300"></div>
   </a>
-</Button>
+          </Button>
 
           </motion.div>
 
@@ -129,47 +125,47 @@ const HeroSection = () => {
           delay: 0.8
         }}>
             {/* Hero Badges Section */}
-<div className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-center">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-center">
   {/* Security Badge */}
-  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
-    <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-      <span className="material-icons md-18 text-blue-400">lock</span>
+  <div className="flex items-center gap-2 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition bg-zinc-800">
+    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-600">
+      <span className="material-icons md-18 text-neutral-300">lock</span>
     </div>
     <span className="text-xs sm:text-sm font-medium text-slate-300">256-Bit Encryption</span>
   </div>
 
   {/* Cloud Storage Badge */}
-  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
-    <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-      <span className="material-icons md-18 text-cyan-400">cloud_upload</span>
+  <div className="flex items-center gap-2 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition bg-zinc-800">
+    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-600">
+      <span className="material-icons md-18 text-neutral-300">cloud_upload</span>
     </div>
     <span className="text-xs sm:text-sm font-medium text-slate-300">Unlimited Cloud Storage</span>
   </div>
 
   {/* Access Control Badge */}
-  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
-    <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-      <span className="material-icons md-18 text-indigo-400">admin_panel_settings</span>
+  <div className="flex items-center gap-2 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition mx-0 bg-zinc-800">
+    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-600">
+      <span className="material-icons md-18 text-neutral-300">admin_panel_settings</span>
     </div>
     <span className="text-xs sm:text-sm font-medium text-slate-300">Smart Access Control</span>
   </div>
 
   {/* Analytics Badge */}
-  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
-    <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
-      <span className="material-icons md-18 text-green-400">analytics</span>
+  <div className="flex items-center gap-2 border border-slate-700/40 rounded-xl shadow-sm hover:shadow-md transition px-px bg-zinc-800 py-[7px]">
+    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-600">
+      <span className="material-icons md-18 text-neutral-300">analytics</span>
     </div>
     <span className="text-xs sm:text-sm font-medium text-slate-300">File Insights & Analytics</span>
   </div>
 
   {/* Speed Badge */}
-  <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition">
-    <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-      <span className="material-icons md-18 text-purple-400">speed</span>
+  <div className="flex items-center gap-2 border border-slate-700/40 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition bg-zinc-800">
+    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-600">
+      <span className="material-icons md-18 text-neutral-300">speed</span>
     </div>
     <span className="text-xs sm:text-sm font-medium text-slate-300">Lightning-Fast Uploads</span>
   </div>
-</div>
+          </div>
 
           </motion.div>
         </div>
