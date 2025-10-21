@@ -6,21 +6,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, Headset, HardDrive, ClockCounterClockwise, HardDrives, Question, UserGear, ChatCircle, Crown, Share } from 'phosphor-react';
-import {
-  IconLayoutDashboard,
-  IconUpload,
-  IconFolder,
-  IconUsers,
-  IconFolderShare,
-  IconShare3,
-  IconShare,
-  IconChartBar,
-  IconSettings,
-  IconSend
-} from "@tabler/icons-react";
+import { IconLayoutDashboard, IconUpload, IconFolder, IconUsers, IconFolderShare, IconShare3, IconShare, IconChartBar, IconSettings, IconSend } from "@tabler/icons-react";
 import { IconQrcode } from "@tabler/icons-react";
-
-
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -31,54 +18,43 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 interface UserProfile {
-  storage_used: number; 
+  storage_used: number;
   storage_limit: number;
   subscription_tier: string;
 }
-
-const navigation = [
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: IconLayoutDashboard,
-  },
-  {
-    name: 'Upload',
-    href: '/dashboard/upload',
-    icon: IconUpload,
-  },
-  {
-    name: 'My Files',
-    href: '/dashboard/files',
-    icon: IconFolder,
-  },
-  {
-    name: 'Teams',
-    href: '/dashboard/teams',
-    icon: IconUsers,
-  },
-  {
-    name: 'Team Files',
-    href: '/dashboard/team-files',
-    icon: IconSend,
-  },
-  {
-    name: 'Shared Links',
-    href: '/dashboard/shared',
-    icon: IconShare3,
-  },
-  {
-    name: 'Analytics',
-    href: '/dashboard/analytics',
-    icon: IconChartBar,
-  }, 
-  {
-    name: 'Settings',
-    href: '/dashboard/settings',
-    icon: IconSettings,
-  },
-];
-
+const navigation = [{
+  name: 'Dashboard',
+  href: '/dashboard',
+  icon: IconLayoutDashboard
+}, {
+  name: 'Upload',
+  href: '/dashboard/upload',
+  icon: IconUpload
+}, {
+  name: 'My Files',
+  href: '/dashboard/files',
+  icon: IconFolder
+}, {
+  name: 'Teams',
+  href: '/dashboard/teams',
+  icon: IconUsers
+}, {
+  name: 'Team Files',
+  href: '/dashboard/team-files',
+  icon: IconSend
+}, {
+  name: 'Shared Links',
+  href: '/dashboard/shared',
+  icon: IconShare3
+}, {
+  name: 'Analytics',
+  href: '/dashboard/analytics',
+  icon: IconChartBar
+}, {
+  name: 'Settings',
+  href: '/dashboard/settings',
+  icon: IconSettings
+}];
 const AppSidebar = () => {
   const location = useLocation();
   return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-[#1c1917]">
@@ -107,24 +83,14 @@ const AppSidebar = () => {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
-      {navigation.map((item) => (
-        <SidebarMenuItem key={item.name}>
-          <SidebarMenuButton
-            asChild
-            isActive={location.pathname === item.href}
-            className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200"
-          >
+      {navigation.map(item => <SidebarMenuItem key={item.name}>
+          <SidebarMenuButton asChild isActive={location.pathname === item.href} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
             <Link to={item.href} className="flex items-center gap-2">
-              <item.icon
-                size={18}
-                stroke={1.8}
-                className="text-gray-300 group-hover:text-white transition-colors duration-150"
-              />
+              <item.icon size={18} stroke={1.8} className="text-gray-300 group-hover:text-white transition-colors duration-150" />
               <span className="font-body text-sm">{item.name}</span>
             </Link>
           </SidebarMenuButton>
-        </SidebarMenuItem>
-      ))}
+        </SidebarMenuItem>)}
     </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -138,13 +104,10 @@ const AppSidebar = () => {
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
-                  <Link
-  to="/code"
-  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-accent/50 transition-all duration-200"
->
+                  <Link to="/code" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-accent/50 transition-all duration-200">
   <IconQrcode size={18} stroke={1.8} className="text-gray-300" />
   <span className="font-body text-sm">Receive Now</span>
-</Link>
+                </Link>
 
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -223,65 +186,30 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   <div className="flex overflow-hidden border divide-x rounded-full bg-[#1c1917] border-zinc-700 divide-zinc-700 hover:border-zinc-600 transition-colors duration-200">
     {/* Left Button */}
     <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
-      <svg
-        className="w-5 h-5 sm:w-6 sm:h-6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        ></path>
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" strokeLinejoin="round" strokeLinecap="round"></path>
       </svg>
     </button>
 
     {/* Middle Button - TEAM ICON */}
     <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
-      <svg
-        className="w-5 h-5 sm:w-6 sm:h-6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M16 14c1.657 0 3 1.343 3 3v1H5v-1c0-1.657 1.343-3 3-3h8zM8.5 11a3.5 3.5 0 110-7 3.5 3.5 0 010 7zM15.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 14c1.657 0 3 1.343 3 3v1H5v-1c0-1.657 1.343-3 3-3h8zM8.5 11a3.5 3.5 0 110-7 3.5 3.5 0 010 7zM15.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" strokeLinecap="round" strokeLinejoin="round"></path>
       </svg>
     </button>
 
     {/* Right Button */}
     <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800 relative">
-      <svg
-        className="w-5 h-5 sm:w-6 sm:h-6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        ></path>
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeLinejoin="round" strokeLinecap="round"></path>
       </svg>
 
-      {profile?.subscription_tier !== "pro" && storageProgress > 80 && (
-        <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-yellow-500 flex items-center justify-center animate-pulse">
+      {profile?.subscription_tier !== "pro" && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-yellow-500 flex items-center justify-center animate-pulse">
           <span className="text-[10px] text-black font-bold">!</span>
-        </div>
-      )}
+        </div>}
     </button>
   </div>
-</PopoverTrigger>
+    </PopoverTrigger>
 
 
       <PopoverContent className="w-80 p-0" align="end">
@@ -423,7 +351,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   <div className="h-2" />
 
   {/* Header */}
-  <header className="border-b border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-xl mx-[34px] rounded-tl-xl  rounded-tr-xl rounded-none">
+  <header className="border-b border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-xl rounded-tl-xl rounded-tr-xl rounded-none mx-0">
     <div className="flex items-center justify-between h-16 px-12z md:px-6 mx-[35px]">
   
       {/* content */} 
@@ -569,7 +497,5 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </main>
         </div>
       </div>
-    </SidebarProvider>
-  
-
+    </SidebarProvider>;
 };
