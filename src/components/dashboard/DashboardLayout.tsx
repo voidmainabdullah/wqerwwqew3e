@@ -185,22 +185,22 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
      <PopoverTrigger asChild>
   <div className="flex overflow-hidden border divide-x rounded-full bg-[#1c1917] border-zinc-700 divide-zinc-700 hover:border-zinc-600 transition-colors duration-200">
     {/* Left Button */}
-    <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
-      <svg className="w-5 h-5 sm:w-6 sm:h-6" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
+      <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" strokeLinejoin="round" strokeLinecap="round"></path>
       </svg>
     </button>
 
     {/* Middle Button - TEAM ICON */}
-    <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
-      <svg className="w-5 h-5 sm:w-6 sm:h-6" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
+      <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16 14c1.657 0 3 1.343 3 3v1H5v-1c0-1.657 1.343-3 3-3h8zM8.5 11a3.5 3.5 0 110-7 3.5 3.5 0 010 7zM15.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" strokeLinecap="round" strokeLinejoin="round"></path>
       </svg>
     </button>
 
     {/* Right Button */}
-    <button className="px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800 relative">
-      <svg className="w-5 h-5 sm:w-6 sm:h-6" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800 relative">
+      <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeLinejoin="round" strokeLinecap="round"></path>
       </svg>
 
@@ -321,7 +321,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </PopoverContent>
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" asChild className="
-  group relative h-auto px-5 py-2.5 rounded-full border-none
+  group relative h-auto px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border-none
   font-semibold text-white
   bg-[linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6,#60a5fa,#93c5fd)]
   bg-[length:250%_100%]
@@ -335,12 +335,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   hover:-translate-y-0.5
   focus:outline-none
 ">
-    <a href="#" className="flex items-center gap-2 text-white no-underline">
+    <Link to="/subscription" className="flex items-center gap-1 sm:gap-2 text-white no-underline">
       <Crown className="h-4 w-4 fill text-amber-400 transition-all duration-300 group-hover:scale-110" weight="duotone" />
-      <span className="text-sm hidden sm:inline font-semibold">
+      <span className="text-xs sm:text-sm hidden sm:inline font-semibold">
         Upgrade
       </span>
-    </a> 
+    </Link>
   </Button>;
   return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-[#1c1917]">
@@ -352,50 +352,54 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   {/* Header */}
   <header className="border-b border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-xl rounded-tl-xl rounded-tr-xl rounded-none mx-0">
-    <div className="flex items-center justify-between h-16 px-12z md:px-6 mx-[35px]">
-  
-      {/* content */} 
-              <div className="flex items-center gap-4">
-                <SidebarTrigger className="hover:bg-accent/80 transition-colors" /> 
-                  
+    <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6 lg:mx-[35px]">
+
+      {/* content */}
+              <div className="flex items-center gap-2 sm:gap-4">
+                <SidebarTrigger className="hover:bg-accent/80 transition-colors" />
+
                 {/* Mobile Logo */}
-                <div className="md:hidden flex items-center gap-3">
-                  <img src="/skie.png" alt="SkieShare Logo" className="h-8 w-auto object-contain" />
+                <div className="md:hidden flex items-center gap-2">
+                  <img src="/skie.png" alt="SkieShare Logo" className="h-7 sm:h-8 w-auto object-contain" />
                 </div>
-                
+
                 {/* Desktop Welcome Message */}
                 <div className="hidden lg:block">
-                  
+
                 </div>
               </div>
-              
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-1 sm:gap-2">
                 {/* Navbar Icons Group */}
-                <div className="flex items-center gap-1 bg-stone-950 before:absolute before:inset-0 before:bg-[radial- gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70 ">
+                <div className="flex items-center gap-0.5 sm:gap-1 bg-stone-950 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70">
                   <NotificationPopover />
-                  <StoragePopover />
+                  <div className="hidden sm:block">
+                    <StoragePopover />
+                  </div>
                   <HelpPopover />
-                  
+
                   {/* Separator */}
-                  <div className="hidden sm:block w-px h-6 bg-border mx-2"></div>
-                  
+                  <div className="hidden sm:block w-px h-6 bg-border mx-1 sm:mx-2"></div>
+
                   {/* Feedback Button */}
-                  <FeedbackButton />
-                  
+                  <div className="hidden sm:block">
+                    <FeedbackButton />
+                  </div>
+
                   {/* Separator */}
-                  <div className="w-px h-6 bg-border mx-2"></div>
+                  <div className="w-px h-6 bg-border mx-1 sm:mx-2"></div>
                 </div>
                 
                 {/* User Profile Dropdown with Badge */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
-                      <Avatar className="h-9 w-9 ring-2 ring-border">
-                        <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold">
+                    <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
+                      <Avatar className="h-7 w-7 sm:h-9 sm:w-9 ring-2 ring-border">
+                        <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold text-xs sm:text-sm">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
-                      {profile?.subscription_tier === 'pro' && <Badge className="absolute -top-1 -right-1 h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] border-2 border-background">
+                      {profile?.subscription_tier === 'pro' && <Badge className="absolute -top-1 -right-1 h-4 sm:h-5 px-1 sm:px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] sm:text-[10px] border-2 border-background">
                           PRO
                         </Badge>}
                     </Button>
