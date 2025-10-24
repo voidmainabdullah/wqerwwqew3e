@@ -57,37 +57,51 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  return <Sidebar className="border-r border-border/50 h-screen flex flex-col bg-[#1c1917]">
+  const { state, isMobile } = useSidebar();
+
+  return <Sidebar
+    collapsible="offcanvas"
+    className="border-r border-border/50 h-screen flex flex-col bg-[#1c1917] transition-all duration-300 ease-in-out"
+  >
       <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-900">
         <div className="flex items-center space-x-3 px-2 py-1 group">
-          <div className="relative">
-            <img src="/skie.png" alt="SkieShare Logo" className="h-10 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
+          <div className="relative flex-shrink-0">
+            <img
+              src="/skie.png"
+              alt="SkieShare Logo"
+              className="h-8 w-auto object-contain transition-all duration-300 group-hover:scale-110"
+            />
             <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
-              <img src="/skie.png" alt="SkieShare Logo Glow" className="h-10 w-auto object-contain" />
+              <img src="/skie.png" alt="SkieShare Logo Glow" className="h-8 w-auto object-contain" />
             </div>
           </div>
-          <div className="hidden xl:block">
-            <span className="font-heading font-bold text-base bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+          <div className="group-data-[collapsible=icon]:hidden transition-all duration-300 overflow-hidden">
+            <span className="font-heading font-bold text-sm bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent whitespace-nowrap">
               SkieShare
             </span>
-            <p className="text-xs text-muted-foreground font-body">Secure Transfer</p>
+            <p className="text-xs text-muted-foreground font-body whitespace-nowrap">Secure Transfer</p>
           </div>
         </div>
       </SidebarHeader>
       
       <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-900">
         {/* Navigation */}
-        <SidebarGroup className="w-60">
+        <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
-          <SidebarMenuButton asChild isActive={location.pathname === item.href} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
+          <SidebarMenuButton
+            asChild
+            isActive={location.pathname === item.href}
+            tooltip={state === 'collapsed' ? item.name : undefined}
+            className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
+          >
             <Link to={item.href} className="flex items-center gap-2">
-              <item.icon size={18} stroke={1.8} className="text-gray-300 group-hover:text-white transition-colors duration-150" />
-              <span className="font-body text-sm">{item.name}</span>
+              <item.icon size={18} stroke={1.8} className="text-gray-300 group-hover:text-white transition-colors duration-150 flex-shrink-0" />
+              <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>)}
@@ -103,20 +117,27 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
-                  <Link to="/code" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-accent/50 transition-all duration-200">
-  <IconQrcode size={18} stroke={1.8} className="text-gray-300" />
-  <span className="font-body text-sm">Receive Now</span>
-                </Link>
-
+                <SidebarMenuButton
+                  asChild
+                  tooltip={state === 'collapsed' ? 'Receive Now' : undefined}
+                  className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
+                >
+                  <Link to="/code" className="flex items-center gap-2">
+                    <IconQrcode size={18} stroke={1.8} className="text-gray-300 flex-shrink-0" />
+                    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive Now</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
-                  <Link to="/dashboard/receive">
-                    <span className="material-icons md-18">inbox</span>
-                    <span className="font-body text-sm">Receive File</span>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={state === 'collapsed' ? 'Receive File' : undefined}
+                  className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
+                >
+                  <Link to="/dashboard/receive" className="flex items-center gap-2">
+                    <span className="material-icons md-18 flex-shrink-0">inbox</span>
+                    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -133,18 +154,24 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200">
-                  <Link to="/subscription">
-                    <span className="material-icons md-18">payments</span>
-                    <span className="font-body text-sm">Pricing</span>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={state === 'collapsed' ? 'Pricing' : undefined}
+                  className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
+                >
+                  <Link to="/subscription" className="flex items-center gap-2">
+                    <span className="material-icons md-18 flex-shrink-0">payments</span>
+                    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Pricing</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      {/* Rail for easy sidebar expansion on desktop */}
+      <SidebarRail />
     </Sidebar>;
 };
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
@@ -342,16 +369,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </span>
     </Link>
   </Button>;
-  return <SidebarProvider>
+  return <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full bg-[#1c1917]">
         <AppSidebar />
-        
-    <div className="flex-1 flex flex-col relative mx-0 px-[6px] bg-transparent"> {/* px adds left+right gap safely */}
-  {/* Space above header */}
-  <div className="h-2" />
 
-  {/* Header */}
-  <header className="border-b border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-xl rounded-tl-xl rounded-tr-xl rounded-none mx-0">
+    {/* Main Content Area - Responsive */}
+    <div className="flex-1 flex flex-col relative w-full min-w-0 bg-transparent">
+      {/* Space above header - Hidden on mobile for better space usage */}
+      <div className="h-0 md:h-2" />
+
+      {/* Header - Fully Responsive */}
+      <header className="border-b border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-xl md:rounded-tl-xl md:rounded-tr-xl mx-0">
     <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6 lg:mx-[35px]">
 
       {/* content */}
@@ -493,9 +521,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
           </header>
 
-          {/* Main Content */}
-          <main className="flex-1 overflow-auto bg-background">
-            <div className="p-4 md:p-6 lg:p-8 bg-[#1c1917] mx-0 py-[2px] px-0">
+          {/* Main Content - Responsive padding */}
+          <main className="flex-1 overflow-auto bg-background w-full">
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-[#1c1917] mx-0">
               {children}
             </div>
           </main>
