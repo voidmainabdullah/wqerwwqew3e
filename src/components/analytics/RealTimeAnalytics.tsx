@@ -1,10 +1,23 @@
+// analytics.tsx
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { DownloadSimple, ShareNetwork, Files, TrendUp, Calendar } from 'phosphor-react';
+import {
+  DownloadSimple,
+  ShareNetwork,
+  Files,
+  TrendUp,
+  Calendar,
+} from 'phosphor-react';
 
 interface RealTimeStats {
   totalFiles: number;
@@ -83,17 +96,29 @@ export const RealTimeAnalytics: React.FC = () => {
 
     const fileChannel = supabase
       .channel('files-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'files', filter: `user_id=eq.${user?.id}` }, fetchAnalytics)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'files', filter: `user_id=eq.${user?.id}` },
+        fetchAnalytics
+      )
       .subscribe();
 
     const downloadChannel = supabase
       .channel('download-logs-changes')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'download_logs' }, fetchAnalytics)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'download_logs' },
+        fetchAnalytics
+      )
       .subscribe();
 
     const shareChannel = supabase
       .channel('shared-links-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'shared_links' }, fetchAnalytics)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'shared_links' },
+        fetchAnalytics
+      )
       .subscribe();
 
     return () => {
@@ -101,6 +126,7 @@ export const RealTimeAnalytics: React.FC = () => {
       supabase.removeChannel(downloadChannel);
       supabase.removeChannel(shareChannel);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
   const formatFileSize = (bytes: number): string => {
@@ -115,12 +141,15 @@ export const RealTimeAnalytics: React.FC = () => {
     return (
       <div className="grid gap-4 md:grid-cols-3">
         {[...Array(3)].map((_, i) => (
-          <Card key={i} className="animate-pulse bg-slate-800 border border-slate-700">
+          <Card
+            key={i}
+            className="animate-pulse bg-zinc-800 border border-zinc-700 rounded-xl p-4"
+          >
             <CardHeader>
-              <div className="h-4 bg-slate-700 rounded w-24"></div>
+              <div className="h-4 bg-zinc-700 rounded w-24" />
             </CardHeader>
             <CardContent>
-              <div className="h-8 bg-slate-700 rounded w-16"></div>
+              <div className="h-8 bg-zinc-700 rounded w-20" />
             </CardContent>
           </Card>
         ))}
@@ -133,119 +162,151 @@ export const RealTimeAnalytics: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Summary Cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-400/10 border border-zinc-700/40 hover:shadow-emerald-500/20 hover:shadow-md transition-all">
-          <CardHeader className="flex justify-between items-center pb-2">
-            <CardTitle className="text-sm text-gray-300 font-medium">Total Downloads</CardTitle>
-            <DownloadSimple size={22} className="text-emerald-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-semibold text-white">{stats?.totalDownloads || 0}</div>
-            <p className="text-xs text-gray-400 mt-1">All-time downloads</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-400/10 border border-zinc-700/40 hover:shadow-indigo-500/20 hover:shadow-md transition-all">
-          <CardHeader className="flex justify-between items-center pb-2">
-            <CardTitle className="text-sm text-gray-300 font-medium">Shared Links</CardTitle>
-            <ShareNetwork size={22} className="text-indigo-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-semibold text-white">{stats?.totalShares || 0}</div>
-            <p className="text-xs text-gray-400 mt-1">Active share links</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-zinc-600/20 to-neutral-400/10 border border-zinc-700/40 hover:shadow-amber-500/20 hover:shadow-md transition-all">
-          <CardHeader className="flex justify-between items-center pb-2">
-            <CardTitle className="text-sm text-gray-300 font-medium">Total Files</CardTitle>
-            <Files size={22} className="text-amber-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-semibold text-white">{stats?.totalFiles || 0}</div>
-            <p className="text-xs text-gray-400 mt-1">Files in your account</p>
-          </CardContent>
-        </Card>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-heading font-semibold text-white">Analytics</h2>
+          <p className="text-sm text-neutral-400">Overview of your files, shares, and downloads.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          {/* Example action buttons or filters could go here — kept minimal per request */}
+          <div className="text-xs text-neutral-400">Last updated: <span className="text-neutral-300 ml-1">{new Date().toLocaleString()}</span></div>
+        </div>
       </div>
 
-      {/* Storage Usage */}
-      {stats?.subscriptionTier !== 'pro' && (
-        <Card className="bg-gradient-to-brfrom-zinc-600/20 to-zinc- border border-zinc-700/40 hover:shadow-sky-500/20 hover:shadow-md transition-all">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-200 font-medium">
-              <TrendUp size={20} className="text-sky-400" /> Storage Usage
-            </CardTitle>
-            <CardDescription className="text-gray-400 text-sm">
-              {formatFileSize(stats?.storageUsed || 0)} of {formatFileSize(stats?.storageLimit || 0)} used
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Progress value={storageProgress} className="h-2 bg-slate-700" />
-            <p className="text-xs text-gray-400 mt-2">
-              {(100 - storageProgress).toFixed(1)}% remaining
-            </p>
-          </CardContent>
-        </Card>
-      )}
+      {/* Grid layout: left main (2 cols) + right side (1 col) on large screens */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* LEFT: Main summary & storage (span 2 on large screens) */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-800/60 to-zinc-900/40 shadow-sm hover:shadow-lg transition-shadow">
+              <CardHeader className="flex justify-between items-center pb-2">
+                <CardTitle className="text-sm text-neutral-300 font-medium">Total Downloads</CardTitle>
+                <DownloadSimple size={22} className="text-emerald-400" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-semibold text-white">{stats?.totalDownloads || 0}</div>
+                <p className="text-xs text-neutral-400 mt-1">All-time downloads</p>
+              </CardContent>
+            </Card>
 
-      {/* Activity & Popular Files */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card className="bg-slate-800/70 border border-slate-700 hover:border-slate-600 transition-all">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-200 font-medium">
-              <TrendUp size={20} className="text-emerald-400" /> Popular Files
-            </CardTitle>
-            <CardDescription className="text-gray-400 text-sm">
-              Your most downloaded files
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {stats?.popularFiles.length ? (
-              <div className="space-y-3">
-                {stats.popularFiles.map((file, i) => (
-                  <div key={i} className="flex justify-between items-center">
-                    <span className="truncate max-w-[180px] text-sm text-gray-300">{file.name}</span>
-                    <Badge className="bg-emerald-500/20 text-emerald-400 border border-emerald-700/40">
-                      {file.downloads} downloads
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500">No downloads yet</p>
-            )}
-          </CardContent>
-        </Card>
+            <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-800/60 to-zinc-900/40 shadow-sm hover:shadow-lg transition-shadow">
+              <CardHeader className="flex justify-between items-center pb-2">
+                <CardTitle className="text-sm text-neutral-300 font-medium">Shared Links</CardTitle>
+                <ShareNetwork size={22} className="text-indigo-400" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-semibold text-white">{stats?.totalShares || 0}</div>
+                <p className="text-xs text-neutral-400 mt-1">Active share links</p>
+              </CardContent>
+            </Card>
 
-        <Card className="bg-slate-800/70 border border-slate-700 hover:border-slate-600 transition-all">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-200 font-medium">
-              <Calendar size={20} className="text-indigo-400" /> Recent Downloads
-            </CardTitle>
-            <CardDescription className="text-gray-400 text-sm">
-              Latest file activity
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {stats?.recentDownloads.length ? (
-              <div className="space-y-3">
-                {stats.recentDownloads.map((d, i) => (
-                  <div key={i} className="flex justify-between items-center">
-                    <span className="truncate max-w-[180px] text-sm text-gray-300">
-                      {d.files?.original_name || 'Unknown file'}
-                    </span>
-                    <Badge variant="outline" className="border border-slate-600 text-slate-300 text-xs">
-                      {new Date(d.downloaded_at).toLocaleDateString()}
-                    </Badge>
+            <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-800/60 to-zinc-900/40 shadow-sm hover:shadow-lg transition-shadow">
+              <CardHeader className="flex justify-between items-center pb-2">
+                <CardTitle className="text-sm text-neutral-300 font-medium">Total Files</CardTitle>
+                <Files size={22} className="text-amber-400" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-semibold text-white">{stats?.totalFiles || 0}</div>
+                <p className="text-xs text-neutral-400 mt-1">Files in your account</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Storage Usage (only for non-pro) */}
+          {stats?.subscriptionTier !== 'pro' && (
+            <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 p-4 shadow-sm hover:shadow-lg transition-shadow">
+              <CardHeader className="flex items-center justify-between pb-2">
+                <div className="flex items-center gap-2">
+                  <TrendUp size={20} className="text-sky-400" />
+                  <CardTitle className="text-sm text-neutral-200 font-medium">Storage Usage</CardTitle>
+                </div>
+                <CardDescription className="text-sm text-neutral-400">
+                  {formatFileSize(stats?.storageUsed || 0)} of {formatFileSize(stats?.storageLimit || 0)} used
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="w-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-xs text-neutral-400">Used</div>
+                    <div className="text-xs text-neutral-400">{storageProgress.toFixed(1)}%</div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500">No downloads yet</p>
-            )}
-          </CardContent>
-        </Card>
+                  <Progress value={storageProgress} className="h-2 rounded-full bg-zinc-700" />
+                  <div className="text-xs text-neutral-400 mt-3">
+                    {(100 - storageProgress).toFixed(1)}% remaining
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* (Optional) You can add additional charts or widgets here in future */}
+        </div>
+
+        {/* RIGHT: Activity panels (Popular & Recent) */}
+        <div className="space-y-6">
+          <Card className="rounded-xl border border-zinc-700 bg-zinc-900/50 shadow-sm hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-neutral-200 font-medium">
+                <TrendUp size={20} className="text-emerald-400" /> Popular Files
+              </CardTitle>
+              <CardDescription className="text-neutral-400 text-sm">Your most downloaded files</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {stats?.popularFiles?.length ? (
+                <div className="flex flex-col gap-3">
+                  {stats.popularFiles.map((file, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between gap-3 bg-zinc-800/40 p-3 rounded-lg"
+                    >
+                      <div className="truncate max-w-[220px] text-sm text-neutral-300">{file.name}</div>
+                      <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-700/30">
+                        {file.downloads} downloads
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-neutral-500">No downloads yet</p>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-xl border border-zinc-700 bg-zinc-900/50 shadow-sm hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-neutral-200 font-medium">
+                <Calendar size={20} className="text-indigo-400" /> Recent Downloads
+              </CardTitle>
+              <CardDescription className="text-neutral-400 text-sm">Latest file activity</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {stats?.recentDownloads?.length ? (
+                <div className="flex flex-col gap-3">
+                  {stats.recentDownloads.map((d, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between gap-3 bg-zinc-800/40 p-3 rounded-lg"
+                    >
+                      <div className="truncate max-w-[220px] text-sm text-neutral-300">
+                        {d.files?.original_name || 'Unknown file'}
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className="border border-zinc-600 text-zinc-300 text-xs px-2 py-1"
+                      >
+                        {new Date(d.downloaded_at).toLocaleDateString()}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-neutral-500">No downloads yet</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
