@@ -12,6 +12,7 @@ import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { useSidebar, SidebarProvider, Sidebar, SidebarContent, SidebarHeader } from "@/components/sidebar";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
 interface DashboardLayoutProps {
