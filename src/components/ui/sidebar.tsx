@@ -186,12 +186,13 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
 });
 SidebarTrigger.displayName = "SidebarTrigger";
 
-// SidebarRail, SidebarInset, SidebarInput, SidebarHeader, SidebarFooter, SidebarSeparator, SidebarContent
+// 
 // Keep the rest of your components as-is but ensure they all use `useSidebar()` for collapse awareness
 
 export {
   Sidebar,
   SidebarProvider,
   SidebarTrigger,
-  useSidebar
+  useSidebar,
+  SidebarRail, SidebarInset, SidebarInput, SidebarHeader, SidebarFooter, SidebarSeparator, SidebarContent
 };
