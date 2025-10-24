@@ -6,27 +6,37 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Gear, User, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'phosphor-react';
-import { useTheme } from '@/contexts/ThemeContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTheme } from '@/contexts/ThemeContext';
+import { Separator } from '@/components/ui/separator';
+import { User, PaintBrush, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'phosphor-react';
+
 export const Settings: React.FC = () => {
-  const {
-    user,
-    signOut
-  } = useAuth();
-  const {
-    theme,
-    setTheme,
-    actualTheme
-  } = useTheme();
-  const {
-    toast
-  } = useToast();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+  const { theme, setTheme, actualTheme } = useTheme();
+
   const [profile, setProfile] = useState<any>(null);
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      fetchProfile();
+      setDisplayName(user.user_metadata?.display_name || user.email?.split('@')[0] || '');
+    }
+  }, [user]);
+
+  const fetchProfile = async () => {
+    try {
+      const { data } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
+      setProfile(data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
+
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -34,255 +44,251 @@ export const Settings: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
-  useEffect(() => {
-    if (user) {
-      fetchProfile();
-      setDisplayName(user.user_metadata?.display_name || user.email?.split('@')[0] || '');
-    }
-  }, [user]);
-  const fetchProfile = async () => {
-    try {
-      const {
-        data
-      } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
-      setProfile(data);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    }
-  };
+
   const updateDisplayName = async () => {
     if (!user) return;
     setLoading(true);
     try {
-      const {
-        error
-      } = await supabase.auth.updateUser({
-        data: {
-          display_name: displayName
-        }
+      const { error } = await supabase.auth.updateUser({
+        data: { display_name: displayName },
       });
       if (error) throw error;
       toast({
         title: 'Profile updated',
-        description: 'Your display name has been updated successfully.'
+        description: 'Your display name has been updated successfully.',
       });
     } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Update failed',
-        description: error.message
+        description: error.message,
       });
     } finally {
       setLoading(false);
     }
   };
+
   const deleteAccount = async () => {
     if (!user) return;
-    const confirmed = window.confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your files and data.');
+    const confirmed = window.confirm(
+      'Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your files and data.'
+    );
     if (!confirmed) return;
+
     try {
-      const {
-        data: files
-      } = await supabase.from('files').select('storage_path').eq('user_id', user.id);
+      const { data: files } = await supabase.from('files').select('storage_path').eq('user_id', user.id);
       if (files) {
-        const filePaths = files.map(f => f.storage_path);
+        const filePaths = files.map((f) => f.storage_path);
         if (filePaths.length > 0) {
           await supabase.storage.from('files').remove(filePaths);
         }
       }
+
       await supabase.from('profiles').delete().eq('id', user.id);
       await supabase.from('files').delete().eq('user_id', user.id);
       toast({
         title: 'Account deleted',
-        description: 'Your account and all data have been permanently deleted.'
+        description: 'Your account and all data have been permanently deleted.',
       });
       await signOut();
     } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Deletion failed',
-        description: error.message
+        description: error.message,
       });
     }
   };
-  return <div className="space-y-8 px-6 py-8 bg-zinc-900">
-      <div>
-        <h1 className="text-4xl font-heading font-bold text-primary">Settings</h1>
-        <p className="font-body text-muted-foreground">Manage your account settings and preferences with ease.</p>
+
+  return (
+    <div className="min-h-screen bg-zinc-950 text-white px-6 py-10">
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl font-heading font-bold text-blue-500">Settings</h1>
+        <p className="text-neutral-400 font-body">
+          Manage your profile, theme, and account preferences.
+        </p>
       </div>
 
-      <div className="space-y-6">
-        {/* Profile Information */}
-        <Card className="border-neutral-700 bg-neutral-800">
-          <CardHeader className="bg-neutral-800 rounded-3xl">
-            <CardTitle className="text-white font-heading font-medium flex items-center">
-              <span className="material-icons md-18 mr-2 text-blue-500">person</span>
-              Profile Information
-            </CardTitle>
-            <CardDescription className="font-body text-muted-foreground">
-              Update your personal information and account details.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 bg-neutral-800">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="font-heading">Email</Label>
-              <Input id="email" value={user?.email || ''} disabled className="bg-muted font-body" />
-              <p className="text-xs font-body text-muted-foreground">
-                Email cannot be changed. Contact support if you need to update your email.
-              </p>
-            </div>
+      {/* Two-column grid layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            <div className="space-y-2">
-              <Label htmlFor="displayName" className="font-heading">Display Name</Label>
-              <div className="flex gap-2 items-center">
-                <Input id="displayName" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Enter your display name" className="flex-grow font-body" />
-                <Button onClick={updateDisplayName} disabled={loading} className="flex-shrink-0 font-heading">
-                  Update
-                </Button>
+        {/* LEFT COLUMN */}
+        <div className="space-y-8">
+
+          {/* Profile Card */}
+          <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+                <User className="text-blue-400" size={20} /> Profile Information
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Update your personal details and display name.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label className="font-heading">Email</Label>
+                <Input value={user?.email || ''} disabled className="bg-zinc-800 text-neutral-400" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Theme Settings */}
-        <Card className="border-neutral-700 bg-neutral-800">
-          <CardHeader className="bg-neutral-800 rounded-3xl">
-            <CardTitle className="text-white font-heading font-medium flex items-center">
-              <span className="material-icons md-18 mr-2 text-yellow-400">
-                {actualTheme === 'dark' ? 'dark_mode' : 'light_mode'}
-              </span>
-              Appearance
-            </CardTitle>
-            <CardDescription className="font-body text-muted-foreground">
-              Customize the appearance of the application.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 bg-neutral-800">
-            <div className="space-y-2">
-              <Label htmlFor="theme" className="font-heading">Theme</Label>
-              <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}>
-                <SelectTrigger className="w-full bg-muted">
+              <div>
+                <Label className="font-heading">Display Name</Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    placeholder="Enter your display name"
+                    className="bg-zinc-800"
+                  />
+                  <Button
+                    onClick={updateDisplayName}
+                    disabled={loading}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Update
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Subscription Card */}
+          <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+                <Crown className="text-yellow-400" size={20} /> Subscription
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Manage your current plan and storage usage.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-heading font-medium">Current Plan</p>
+                  <p className="text-sm text-neutral-400">
+                    {profile?.subscription_tier === 'pro' ? 'Pro Plan' : 'Free Plan'}
+                  </p>
+                </div>
+                <Badge
+                  variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'}
+                  className="bg-zinc-800"
+                >
+                  {profile?.subscription_tier === 'pro' ? 'Pro' : 'Free'}
+                </Badge>
+              </div>
+
+              <div>
+                <p className="font-heading font-medium">Storage Usage</p>
+                <p className="text-sm text-neutral-400">
+                  {profile?.subscription_tier === 'pro'
+                    ? `${formatFileSize(profile?.storage_used || 0)} used (unlimited)`
+                    : `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(
+                        profile?.storage_limit || 6442450944
+                      )} used`}
+                </p>
+              </div>
+
+              {profile?.subscription_tier !== 'pro' && (
+                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white w-full">
+                  <a href="/subscription" className="flex items-center gap-2">
+                    <Crown size={18} /> Upgrade to Pro
+                  </a>
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="space-y-8">
+
+          {/* Theme Settings */}
+          <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+                <PaintBrush className="text-blue-400" size={20} /> Appearance
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Customize the look and feel of your app.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Label className="font-heading mb-2 block">Theme</Label>
+              <Select value={theme} onValueChange={(v: 'light' | 'dark' | 'system') => setTheme(v)}>
+                <SelectTrigger className="bg-zinc-800 w-full">
                   <SelectValue placeholder="Select theme" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="light">
+                <SelectContent className="bg-zinc-900 border-zinc-700">
+                  <SelectItem value="light" className="text-neutral-300">
                     <div className="flex items-center gap-2">
-                      <span className="material-icons md-18">light_mode</span>
-                      <span className="font-body">Light</span>
+                      <Sun size={18} /> Light
                     </div>
                   </SelectItem>
-                  <SelectItem value="dark">
+                  <SelectItem value="dark" className="text-neutral-300">
                     <div className="flex items-center gap-2">
-                      <span className="material-icons md-18">dark_mode</span>
-                      <span className="font-body">Dark</span>
+                      <Moon size={18} /> Dark
                     </div>
                   </SelectItem>
-                  <SelectItem value="system">
+                  <SelectItem value="system" className="text-neutral-300">
                     <div className="flex items-center gap-2">
-                      <span className="material-icons md-18">computer</span>
-                      <span className="font-body">System</span>
+                      <Monitor size={18} /> System
                     </div>
                   </SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </CardContent>
+          </Card>
 
-            
-          </CardContent>
-        </Card>
-
-        {/* Subscription */}
-        <Card className="bg-neutral-800">
-          <CardHeader className="bg-neutral-800 rounded-full">
-            <CardTitle className="text-xl text-blue-500 font-heading font-semibold flex items-center">
-              <span className="material-icons md-18 mr-2">crown</span>
-              Subscription
-            </CardTitle>
-            <CardDescription className="font-body text-muted-foreground">
-              Your current subscription plan and usage.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-heading font-medium">Current Plan</p>
-                <p className="text-sm font-body text-muted-foreground">
-                  {profile?.subscription_tier === 'pro' ? 'Pro Plan' : 'Free Plan'}
-                </p>
-              </div>
-              <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="bg-stone-800">
-                {profile?.subscription_tier === 'pro' ? 'Pro' : 'Free'}
-              </Badge>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-heading font-medium">Storage Usage</p>
-                <p className="text-sm font-body text-muted-foreground">
-                  {profile?.subscription_tier === 'pro' ? `${formatFileSize(profile?.storage_used || 0)} used (unlimited)` : `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(profile?.storage_limit || 6442450944)} used`}
-                </p>
-              </div>
-            </div>
-
-            {profile?.subscription_tier !== 'pro' && <Button asChild>
-                <a href="/subscription" className="flex items-center font-heading icon-text">
-                  <span className="material-icons md-18">upgrade</span>
-                  Upgrade to Pro
-                </a>
-              </Button>}
-          </CardContent>
-        </Card>
-
-        {/* Security */}
-        <Card className="border-neutral-700 bg-zinc-800">
-          <CardHeader className="bg-neutral-800 rounded-3xl">
-            <CardTitle className="text-white font-heading font-medium flex items-center">
-              <span className="material-icons md-18 mr-2 text-blue-500">security</span>
-              Security
-            </CardTitle>
-            <CardDescription className="font-body text-muted-foreground">
-              Manage your account security settings.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 bg-neutral-800">
-            <div>
-              <p className="font-heading font-medium mb-2">Account Security</p>
-              <p className="text-sm font-body text-muted-foreground mb-4">
-                Your account is secured with email authentication. All file uploads and shares are encrypted.
+          {/* Security */}
+          <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+                <Shield className="text-blue-400" size={20} /> Security
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Manage your account safety options.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-neutral-400 text-sm">
+                Your account is secured with email authentication. File uploads are encrypted.
               </p>
-              <Button variant="outline" onClick={() => signOut()} className="font-heading icon-text">
-                <span className="material-icons md-18">logout</span>
+              <Button
+                variant="outline"
+                onClick={() => signOut()}
+                className="border-blue-600 text-blue-500 hover:bg-blue-600/10 font-heading"
+              >
                 Sign Out
               </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        {/* Danger Zone */}
-        <Card className="bg-neutral-900 border-destructive">
-          <CardHeader className="bg-neutral-800 rounded-lg">
-            <CardTitle className="flex items-center text-white font-heading">
-              <span className="material-icons md-18 mr-2 text-yellow-500">warning</span>
-              Danger Zone
-            </CardTitle>
-            <CardDescription className="font-body text-muted-foreground">
-              Permanently delete your account and all associated data.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="bg-neutral-800">
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm font-body text-muted-foreground">
-                  Once you delete your account, there is no going back. Please be certain.
-                </p>
-              </div>
-              <Button variant="destructive" onClick={deleteAccount} className="w-full font-heading icon-text">
-                <span className="material-icons md-18">delete_forever</span>
-                Delete Account Permanently
+          {/* Danger Zone */}
+          <Card className="border border-red-800 bg-zinc-900/70 hover:border-red-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold text-red-500">
+                <Warning size={20} /> Danger Zone
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Permanently delete your account and data.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-neutral-400">
+                Once deleted, your data cannot be recovered. Please proceed with caution.
+              </p>
+              <Button
+                variant="destructive"
+                onClick={deleteAccount}
+                className="w-full font-heading"
+              >
+                <Trash size={18} className="mr-1" /> Delete Account
               </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>;
+    </div>
+  );
 };
