@@ -171,4 +171,4 @@ export const FileReceiver: React.FC = () => {
       </Card>
     </div>
   );
-};
+}; 
