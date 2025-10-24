@@ -160,7 +160,7 @@ export default function CodePage() {
           {!file ? (
             <>
               <div>
-                <Label htmlFor="shareCode">Share Code</Label>
+                <Label htmlFor="shareCode">Shareeeeeeeeee Code</Label>
                 <Input
                   id="shareCode"
                   placeholder="Enter 8-character code"
