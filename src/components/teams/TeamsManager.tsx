@@ -328,7 +328,7 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
                       </CardDescription>
                     </div>
                   </div>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
                     <Button
                       variant="ghost"
                       size="sm"
