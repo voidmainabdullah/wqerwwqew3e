@@ -341,7 +341,7 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
                       title="Share File"
                     >
                       <Share className="h-4 w-4" weight="duotone" />
-                    </Button>
+                    </Button> 
                     {team.admin_id === user?.id && (
                       <Button
                         variant="ghost"
