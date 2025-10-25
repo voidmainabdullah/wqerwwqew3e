@@ -5,10 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Users, Plus, UserPlus, Crown, Shield, User, Trash, GearSix } from 'phosphor-react';
+import { Users, Plus, UserPlus, Crown, Shield, User, Trash, GearSix, Share } from 'phosphor-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { ShareFileToTeamDialog } from './ShareFileToTeamDialog';
 
 interface Team {
   id: string;
@@ -41,6 +42,8 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [teamToDelete, setTeamToDelete] = useState<Team | null>(null);
+  const [shareFileDialogOpen, setShareFileDialogOpen] = useState(false);
+  const [selectedTeamForSharing, setSelectedTeamForSharing] = useState<Team | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -325,16 +328,31 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
                       </CardDescription>
                     </div>
                   </div>
-                  {team.admin_id === user?.id && (
-                    <Button 
-                      variant="ghost" 
+                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
                       size="sm"
-                      onClick={() => setTeamToDelete(team)}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedTeamForSharing(team);
+                        setShareFileDialogOpen(true);
+                      }}
+                      className="text-primary hover:text-primary"
+                      title="Share File"
                     >
-                      <Trash className="h-4 w-4" weight="duotone" />
+                      <Share className="h-4 w-4" weight="duotone" />
                     </Button>
-                  )}
+                    {team.admin_id === user?.id && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setTeamToDelete(team)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash className="h-4 w-4" weight="duotone" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
                 <Badge 
                   variant={getRoleBadgeVariant(team.admin_id === user?.id, team.admin_id === user?.id ? 'admin' : 'member')}
@@ -431,6 +449,19 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Share File Dialog */}
+      {selectedTeamForSharing && (
+        <ShareFileToTeamDialog
+          isOpen={shareFileDialogOpen}
+          onClose={() => {
+            setShareFileDialogOpen(false);
+            setSelectedTeamForSharing(null);
+          }}
+          teamId={selectedTeamForSharing.id}
+          teamName={selectedTeamForSharing.name}
+        />
+      )}
     </div>
   );
 }
