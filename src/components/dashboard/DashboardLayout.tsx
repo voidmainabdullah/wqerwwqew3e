@@ -388,7 +388,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="h-0 md:h-2" />
 
       {/* Header - Fully Responsive */}
-      <header className="border-b border-white/10 bg-stone-950 opacity-80 backdrop-blur-xl sticky top-0 z-40 shadow-xl md:rounded-tl-xl md:rounded-tr-xl mx-0">
+      <header className="border-b border-white/10 bg-stone-950 opacity-90 backdrop-blur-xl sticky top-0 z-40 shadow-xl md:rounded-tl-xl md:rounded-tr-xl mx-0">
     <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6">
 
       {/* content */}
