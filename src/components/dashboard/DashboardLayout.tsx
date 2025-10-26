@@ -60,7 +60,7 @@ const AppSidebar = () => {
   const { state, isMobile } = useSidebar();
 
   return <Sidebar
-    collapsible="offcanvas"
+    collapsible="icon"
     className="border-r border-border/50 h-screen flex flex-col bg-[#1c1917] transition-all duration-300 ease-in-out"
   >
       <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-900">
@@ -96,7 +96,7 @@ const AppSidebar = () => {
           <SidebarMenuButton
             asChild
             isActive={location.pathname === item.href}
-            tooltip={state === 'collapsed' ? item.name : undefined}
+            tooltip={item.name}
             className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
           >
             <Link to={item.href} className="flex items-center gap-2">
@@ -119,7 +119,7 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  tooltip={state === 'collapsed' ? 'Receive Now' : undefined}
+                  tooltip="Receive Now"
                   className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
                 >
                   <Link to="/code" className="flex items-center gap-2">
@@ -132,7 +132,7 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  tooltip={state === 'collapsed' ? 'Receive File' : undefined}
+                  tooltip="Receive File"
                   className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
                 >
                   <Link to="/dashboard/receive" className="flex items-center gap-2">
@@ -156,7 +156,7 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  tooltip={state === 'collapsed' ? 'Pricing' : undefined}
+                  tooltip="Pricing"
                   className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
                 >
                   <Link to="/subscription" className="flex items-center gap-2">
