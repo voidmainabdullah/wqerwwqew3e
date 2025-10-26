@@ -406,7 +406,7 @@ export const Dashboard: React.FC = () => {
                         linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px)
                       `,
                     backgroundSize: '40px 40px'
-                  }} className="w-full h-full bg-stone-950" />
+                  }} className="w-full h-full bg-red-950" />
                   </div>
                   
                   {/* Simulated Chart Line */}
