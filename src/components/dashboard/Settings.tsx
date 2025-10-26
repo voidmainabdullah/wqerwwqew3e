@@ -299,7 +299,8 @@ export const Settings: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-
+    </div>
+    
 
         
         {/* RIGHT COLUMN */}
