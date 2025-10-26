@@ -309,7 +309,7 @@ export const Dashboard: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                  <span className="text-purple-400 text-sm">+8.1%</span>
+                  <span className="text-purple-400 text-sm">Total Shared Links</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
