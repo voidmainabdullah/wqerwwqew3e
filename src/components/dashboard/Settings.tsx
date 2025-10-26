@@ -296,10 +296,10 @@ export const Settings: React.FC = () => {
           <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl font-semibold">
-                <CloudArrowUp className="text-blue-400" size={20} /> Backup Request
+                <CloudArrowUp className="text-blue-400" size={20} /> Get Storage
               </CardTitle>
               <CardDescription className="text-neutral-400">
-                Create a new backup of your uploaded files.
+                Buy more storage to save your Data
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -322,7 +322,7 @@ export const Settings: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <CloudArrowUp size={18} /> Request Backup
+                    <CloudArrowUp size={18} /> Get Storage
                   </>
                 )}
               </Button>
