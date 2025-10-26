@@ -224,7 +224,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Glow Orbs */}
-    <div className="absolute -top-10 -right-10 w-32 h-32 bg-neutral-600/15 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-r from-blue-800/40 via-stone-950 to-stone-950 rounded-full blur-3xl animate-pulse-slow"></div>
     <div className="absolute bottom-0 left-0 w-40 h-40 bg-neutral-500/10 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
   </div>
 
