@@ -172,8 +172,8 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
     toggleSidebar();
   }} {...props}>
       
-      <Menu className="sr-only">Toggle Sidebar</Menu>
-    </Button>;
+      <Menu className="sr-only">Toggle Sidebar</span>
+    </Button>; 
 });
 SidebarTrigger.displayName = "SidebarTrigger";
 const SidebarRail = React.forwardRef<HTMLButtonElement, React.ComponentProps<"button">>(({
