@@ -50,7 +50,7 @@ const sidebarNavigation = [
   },
   {
     name: 'Receive Files',
-    href: '/dashboard/teams/receive',
+    value: 'audit',
     icon: Inbox,
     description: 'View received files'
   },
