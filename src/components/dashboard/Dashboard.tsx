@@ -308,8 +308,8 @@ export const Dashboard: React.FC = () => {
                   {stats?.totalShares?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
-                  <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                  <span className="text-purple-400 text-sm">Total Shared Links</span>
+                  <div className="w-2 h-2 rounded-full bg-zinc-400"></div>
+                  <span className="text-zinc-400 text-sm">Total Shared Links</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
@@ -329,8 +329,8 @@ export const Dashboard: React.FC = () => {
                   {stats?.totalDownloads?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                  <span className="text-emerald-400 text-sm">+15.3%</span>
+                  <div className="w-2 h-2 rounded-full bg-zinc-400"></div>
+                  <span className="text-zinc-400 text-sm">Total Downlaod</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-zinc-700 flex items-center justify-center">
