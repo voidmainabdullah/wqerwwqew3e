@@ -96,7 +96,7 @@ export function EnterpriseTeamsManager() {
 
               {selectedTeamId && (
                 <>
-                  <TabsContent value="spaces" className="mt-0">
+                  <TabsContent value="spacs" className="mt-0">
                     <TeamSpacesManager teamId={selectedTeamId} />
                   </TabsContent>
 
