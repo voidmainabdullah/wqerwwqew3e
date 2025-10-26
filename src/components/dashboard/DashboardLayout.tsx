@@ -100,7 +100,11 @@ const AppSidebar = () => {
             className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
           >
             <Link to={item.href} className="flex items-center gap-2">
-              <item.icon size={18} stroke={1.8} className="text-gray-300 group-hover:text-white transition-colors duration-150 flex-shrink-0" />
+              <item.icon
+                size={18}
+                stroke={1.8}
+                className="text-gray-300 group-hover:text-white transition-all duration-150 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6"
+              />
               <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
             </Link>
           </SidebarMenuButton>
@@ -123,7 +127,11 @@ const AppSidebar = () => {
                   className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
                 >
                   <Link to="/code" className="flex items-center gap-2">
-                    <IconQrcode size={18} stroke={1.8} className="text-gray-300 flex-shrink-0" />
+                    <IconQrcode
+                      size={18}
+                      stroke={1.8}
+                      className="text-gray-300 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6"
+                    />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
@@ -136,7 +144,7 @@ const AppSidebar = () => {
                   className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
                 >
                   <Link to="/dashboard/receive" className="flex items-center gap-2">
-                    <span className="material-icons md-18 flex-shrink-0">inbox</span>
+                    <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">inbox</span>
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
@@ -160,7 +168,7 @@ const AppSidebar = () => {
                   className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
                 >
                   <Link to="/subscription" className="flex items-center gap-2">
-                    <span className="material-icons md-18 flex-shrink-0">payments</span>
+                    <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">payments</span>
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Pricing</span>
                   </Link>
                 </SidebarMenuButton>
@@ -380,7 +388,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
       {/* Header - Fully Responsive */}
       <header className="border-b border-white/10 bg-stone-950 backdrop-blur-xl sticky top-0 z-40 shadow-xl md:rounded-tl-xl md:rounded-tr-xl mx-0">
-    <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6 lg:mx-[35px]">
+    <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6">
 
       {/* content */}
               <div className="flex items-center gap-2 sm:gap-4">
@@ -523,7 +531,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Main Content - Responsive padding */}
           <main className="flex-1 overflow-auto bg-background w-full">
-            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-[#1c1917] mx-0">
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-[#1c1917]">
               {children}
             </div>
           </main>

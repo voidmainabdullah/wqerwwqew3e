@@ -133,9 +133,15 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & {
   }
   if (isMobile) {
     return <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-          <SheetContent data-sidebar="sidebar" data-mobile="true" className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden" style={{
-        "--sidebar-width": SIDEBAR_WIDTH_MOBILE
-      } as React.CSSProperties} side={side}>
+          <SheetContent
+            data-sidebar="sidebar"
+            data-mobile="true"
+            className="w-[--sidebar-width] bg-[#1c1917] p-0 text-sidebar-foreground [&>button]:hidden border-r border-border/50"
+            style={{
+              "--sidebar-width": SIDEBAR_WIDTH_MOBILE
+            } as React.CSSProperties}
+            side={side}
+          >
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
         </Sheet>;
@@ -161,12 +167,11 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
   const {
     toggleSidebar
   } = useSidebar();
-  return <Button ref={ref} data-sidebar="trigger" variant="ghost" size="icon" className={cn("h-7 w-7", className)} onClick={event => {
+  return <Button ref={ref} data-sidebar="trigger" variant="ghost" size="icon" className={cn("h-9 w-9", className)} onClick={event => {
     onClick?.(event);
     toggleSidebar();
   }} {...props}>
-      <PanelLeft />
-    <Menu className="h-4 w-4" />
+      <Menu className="h-5 w-5" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>;
 });
