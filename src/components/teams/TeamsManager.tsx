@@ -337,10 +337,11 @@ export function TeamsManager({ onSelectTeam }: TeamsManagerProps = {}) {
                         setSelectedTeamForSharing(team);
                         setShareFileDialogOpen(true);
                       }}
-                      className="text-primary hover:text-primary"
+                      className="text-primary hover:text-primary" 
                       title="Share File"
                     >
                       <Share className="h-4 w-4" weight="duotone" />
+                      Share File
                     </Button> 
                     {team.admin_id === user?.id && (
                       <Button
