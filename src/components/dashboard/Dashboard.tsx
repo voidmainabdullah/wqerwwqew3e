@@ -136,9 +136,10 @@ export const Dashboard: React.FC = () => {
               </> : "Basic"}
           </Badge>
         </div>
-        <p className="text-neutral-400 text-sm hidden sm:block">
-          Hello! - {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
-        </p>
+       <p className="hidden sm:block text-sm font-semibold bg-gradient-to-r from-blue-400 via-cyan-400 to-violet-400 bg-clip-text text-transparent">
+  Hello! – {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
+</p>
+
       </div>
     </div>
   </div>
