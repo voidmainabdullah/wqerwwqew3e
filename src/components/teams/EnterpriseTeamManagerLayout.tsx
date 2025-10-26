@@ -238,7 +238,7 @@ export const EnterpriseTeamManagerLayout: React.FC<EnterpriseTeamManagerLayoutPr
               >
                 <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
                   <Avatar className="h-10 w-10 ring-2 ring-blue-500/30">
-                    <AvatarFallback className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white font-bold">
+                    <AvatarFallback className="bg-zinc-800 text-white font-bold">
                       {getUserInitials()}
                     </AvatarFallback>
                   </Avatar>
@@ -270,7 +270,7 @@ export const EnterpriseTeamManagerLayout: React.FC<EnterpriseTeamManagerLayoutPr
                 exit={{ opacity: 0 }}
               >
                 <Avatar className="h-10 w-10 mx-auto ring-2 ring-blue-500/30">
-                  <AvatarFallback className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white font-bold">
+                  <AvatarFallback className="bg-zinc-800 text-white font-bold">
                     {getUserInitials()}
                   </AvatarFallback>
                 </Avatar>
@@ -342,7 +342,7 @@ export const EnterpriseTeamManagerLayout: React.FC<EnterpriseTeamManagerLayoutPr
               <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-stone-950">
                 <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl mb-3">
                   <Avatar className="h-10 w-10 ring-2 ring-blue-500/30">
-                    <AvatarFallback className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white font-bold">
+                    <AvatarFallback className="bg-zinc-800 text-white font-bold">
                       {getUserInitials()}
                     </AvatarFallback>
                   </Avatar>
@@ -417,7 +417,7 @@ export const EnterpriseTeamManagerLayout: React.FC<EnterpriseTeamManagerLayoutPr
                     className="flex items-center gap-3 hover:bg-white/10 h-auto py-2 px-3"
                   >
                     <Avatar className="h-8 w-8 ring-2 ring-blue-500/30">
-                      <AvatarFallback className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white font-bold text-sm">
+                      <AvatarFallback className="bg-zinc-800 text-white font-bold text-sm">
                         {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>
