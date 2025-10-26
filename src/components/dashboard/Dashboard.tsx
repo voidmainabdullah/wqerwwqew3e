@@ -123,7 +123,7 @@ export const Dashboard: React.FC = () => {
   {/* Professional Header */}
   <div className="w-full border-b border-neutral-800 bg-neutral-950/8 backdrop-blur-md rounded-t-xl">
     <div className="w-full border border-[#ffffff10] rounded-none bg-red-950 py-2 sm:py-[8px] px-3  sm:px-6 md:px-6 -mt-8"> 
-      <div className="flex flex-col bg-green-400 sm:flex-row items-start sm:items-center justify-between w-full mx-0 my-0 px-0 gap-2 sm:gap-0">
+      <div className="flex flex-col  sm:flex-row items-start sm:items-center justify-between w-full mx-0 my-0 px-0 gap-2 sm:gap-0">
         {/* Dashboard Title */}
         <div className="space-y-1">
           <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
