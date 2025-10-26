@@ -292,6 +292,44 @@ export const Settings: React.FC = () => {
             </CardContent>
           </Card>
 
+           {/* Backup Request Card */}
+          <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+                <CloudArrowUp className="text-blue-400" size={20} /> Backup Request
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Create a new backup of your uploaded files.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-neutral-400 text-sm">
+                Last backup:{' '}
+                {lastBackup ? (
+                  <span className="text-blue-400">{lastBackup}</span>
+                ) : (
+                  'No backups yet'
+                )}
+              </p>
+              <Button
+                onClick={requestBackup}
+                disabled={backupLoading}
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full flex items-center justify-center gap-2"
+              >
+                {backupLoading ? (
+                  <>
+                    <span className="animate-spin">◌</span> Processing...
+                  </>
+                ) : (
+                  <>
+                    <CloudArrowUp size={18} /> Request Backup
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+          
+
           {/* Theme Settings */}
           <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
             <CardHeader>
