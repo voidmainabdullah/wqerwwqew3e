@@ -14,14 +14,14 @@ export function AuditPage() {
       <div className="space-y-6">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+            <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center shadow-lg shadow-blue-500/20">
               <Activity className="h-6 w-6 text-white" />
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-white">Audit Log</h1>
               <p className="text-gray-400 text-sm md:text-base">
                 Track team activities and changes
-              </p>
+              </p> 
             </div>
           </div>
         </div>
