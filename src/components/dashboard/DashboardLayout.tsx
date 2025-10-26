@@ -61,7 +61,7 @@ const AppSidebar = () => {
 
   return <Sidebar
     collapsible="icon"
-    className="border-r border-border/50 h-screen flex flex-col bg-red-600 transition-all duration-300 ease-in-out"
+    className="border-r border-border/50 h-screen flex flex-col bg-transparent transition-all duration-300 ease-in-out"
   >
       <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-900">
         <div className="flex items-center space-x-3 px-2 py-1 group">
