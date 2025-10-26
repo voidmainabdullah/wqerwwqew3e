@@ -10,7 +10,7 @@ export function DashboardPage() {
       value: '12',
       icon: Users,
       trend: '+2 this month',
-      color: 'from-blue-600 to-cyan-600'
+      color: 'zinc-800'
     },
     {
       label: 'Active Members',
