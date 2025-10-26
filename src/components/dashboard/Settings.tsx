@@ -10,20 +10,35 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Separator } from '@/components/ui/separator';
-import { User, PaintBrush, Shield, Trash, Crown, Warning, Sun, Moon, Monitor } from 'phosphor-react';
+import {
+  User,
+  PaintBrush,
+  Shield,
+  Trash,
+  Crown,
+  Warning,
+  Sun,
+  Moon,
+  Monitor,
+  CloudArrowUp,
+  CheckCircle,
+} from 'phosphor-react';
 
 export const Settings: React.FC = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
-  const { theme, setTheme, actualTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const [profile, setProfile] = useState<any>(null);
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [backupLoading, setBackupLoading] = useState(false);
+  const [lastBackup, setLastBackup] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
       fetchProfile();
+      fetchLastBackup();
       setDisplayName(user.user_metadata?.display_name || user.email?.split('@')[0] || '');
     }
   }, [user]);
@@ -34,6 +49,50 @@ export const Settings: React.FC = () => {
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
+    }
+  };
+
+  const fetchLastBackup = async () => {
+    try {
+      const { data } = await supabase
+        .from('backups')
+        .select('created_at')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (data) setLastBackup(new Date(data.created_at).toLocaleString());
+    } catch (error) {
+      console.warn('No backups yet.');
+    }
+  };
+
+  const requestBackup = async () => {
+    if (!user) return;
+    setBackupLoading(true);
+    try {
+      // Create a new backup request (simulate backend process)
+      const { error } = await supabase.from('backups').insert([
+        { user_id: user.id, status: 'pending', created_at: new Date().toISOString() },
+      ]);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Backup Requested',
+        description: 'Your files are being backed up. You’ll be notified when it’s ready.',
+      });
+
+      setLastBackup(new Date().toLocaleString());
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Backup Failed',
+        description: error.message,
+      });
+    } finally {
+      setBackupLoading(false);
     }
   };
 
@@ -109,12 +168,9 @@ export const Settings: React.FC = () => {
         </p>
       </div>
 
-      {/* Two-column grid layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
         {/* LEFT COLUMN */}
         <div className="space-y-8">
-
           {/* Profile Card */}
           <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
             <CardHeader>
@@ -130,7 +186,6 @@ export const Settings: React.FC = () => {
                 <Label className="font-heading">Email</Label>
                 <Input value={user?.email || ''} disabled className="bg-zinc-800 text-neutral-400" />
               </div>
-
               <div>
                 <Label className="font-heading">Display Name</Label>
                 <div className="flex gap-2">
@@ -177,7 +232,6 @@ export const Settings: React.FC = () => {
                   {profile?.subscription_tier === 'pro' ? 'Pro' : 'Free'}
                 </Badge>
               </div>
-
               <div>
                 <p className="font-heading font-medium">Storage Usage</p>
                 <p className="text-sm text-neutral-400">
@@ -188,7 +242,6 @@ export const Settings: React.FC = () => {
                       )} used`}
                 </p>
               </div>
-
               {profile?.subscription_tier !== 'pro' && (
                 <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white w-full">
                   <a href="/subscription" className="flex items-center gap-2">
@@ -202,6 +255,42 @@ export const Settings: React.FC = () => {
 
         {/* RIGHT COLUMN */}
         <div className="space-y-8">
+          {/* Backup Request Card */}
+          <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+                <CloudArrowUp className="text-blue-400" size={20} /> Backup Request
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Create a new backup of your uploaded files.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-neutral-400 text-sm">
+                Last backup:{' '}
+                {lastBackup ? (
+                  <span className="text-blue-400">{lastBackup}</span>
+                ) : (
+                  'No backups yet'
+                )}
+              </p>
+              <Button
+                onClick={requestBackup}
+                disabled={backupLoading}
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full flex items-center justify-center gap-2"
+              >
+                {backupLoading ? (
+                  <>
+                    <span className="animate-spin">⏳</span> Processing...
+                  </>
+                ) : (
+                  <>
+                    <CloudArrowUp size={18} /> Request Backup
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
 
           {/* Theme Settings */}
           <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
@@ -291,4 +380,6 @@ export const Settings: React.FC = () => {
       </div>
     </div>
   );
-}; 
+};
+
+export default Settings;
