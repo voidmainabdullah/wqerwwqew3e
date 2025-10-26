@@ -287,8 +287,8 @@ export const Dashboard: React.FC = () => {
                   {stats?.totalFiles?.toLocaleString() || 0}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400"></div> 
-                  <span className="text-emerald-400 text-sm"> This Month : 287</span>
+                  <div className="w-2 h-2 rounded-full bg-neutral-400"></div> 
+                  <span className="text-zinc-400 text-sm">Files in your Account</span>
                 </div>
               </div>
               <div className="w-12 h-12 rounded-md flex items-center justify-center bg-zinc-700 ">
