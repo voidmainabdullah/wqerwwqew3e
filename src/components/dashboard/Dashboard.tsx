@@ -207,7 +207,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Hover Title */}
-    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500">
+    <a href="https://www.youtube.com/watch?v=gb5yinCW8hs" target="_blank" rel="noopener noreferrer" className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500">
       <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-2xl font-semibold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
         Cloud Sync Pro — Lightning Fast Uploads
       </h3>
@@ -215,7 +215,7 @@ export const Dashboard: React.FC = () => {
 
     {/* Visit Now CTA */}
     <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 z-20">
-      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="relative inline-flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-400/20 text-gray-100 font-semibold border border-neutral-700 hover:bg-blue-600 hover:border-gray-600 shadow-md hover:shadow-gray-500/20 transition-all duration-300 overflow-hidden">
+      <a href="https://www.youtube.com/watch?v=gb5yinCW8hs" target="_blank" rel="noopener noreferrer" className="relative inline-flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-400/20 text-gray-100 font-semibold border border-neutral-700 hover:bg-blue-600 hover:border-gray-600 shadow-md hover:shadow-gray-500/20 transition-all duration-300 overflow-hidden">
         <span className="relative z-10">Visit Now</span>
         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -243,7 +243,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     <div className="mt-5">
-      <a href="https://www.youtube.com/watch?v=gb5yinCW8hs" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-850 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300">
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-850 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300">
         Learn More
         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
