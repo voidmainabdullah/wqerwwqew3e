@@ -281,7 +281,7 @@ export const Settings: React.FC = () => {
               >
                 {backupLoading ? (
                   <>
-                    <span className="animate-spin h-20">◌</span> Processing...
+                    <span className="animate-spin ">◌</span> Processing...
                   </>
                 ) : (
                   <>
