@@ -182,7 +182,7 @@ export const EnterpriseTeamManagerLayout: React.FC<EnterpriseTeamManagerLayoutPr
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative',
                   isActive
-                    ? 'bg-zinc-400/10  text-white shadow-lg shadow-blue-500/20'
+                    ? 'bg-zinc-400/10  text-white'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 )}
               >
