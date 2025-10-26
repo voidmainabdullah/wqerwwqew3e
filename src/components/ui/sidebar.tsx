@@ -152,7 +152,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & {
         <div className={cn("duration-200 fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex", side === "left" ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]" : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
     // Adjust the padding for floating and inset variants.
     variant === "floating" || variant === "inset" ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]" : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l", className)} {...props}>
-          <div data-sidebar="sidebar" className="flex h-full w-auto flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow bg-red-600">
+          <div data-sidebar="sidebar" className="flex h-full w-auto flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow bg-zinc-900">
             {children}
           </div>
         </div>
@@ -171,8 +171,8 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
     onClick?.(event);
     toggleSidebar();
   }} {...props}>
-      <Menu className="h-5 w-5" />
-      <span className="sr-only">Toggle Sidebar</span>
+      
+      <Menu className="sr-only">Toggle Sidebar</Menu>
     </Button>;
 });
 SidebarTrigger.displayName = "SidebarTrigger";
