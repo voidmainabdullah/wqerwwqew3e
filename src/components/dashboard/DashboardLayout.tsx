@@ -88,7 +88,7 @@ const AppSidebar = () => {
         {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
-            Navigation
+            Navigation [Ctrl + B]
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
