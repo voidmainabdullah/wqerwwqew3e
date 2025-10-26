@@ -253,6 +253,7 @@ export const Settings: React.FC = () => {
           </Card>
         </div>
       </div>
+    </div>
 
 
           {/* Subscription Card */}
