@@ -19,6 +19,14 @@ import { SharedLinks } from "@/components/files/SharedLinks";
 import { FileReceiver } from "@/components/files/FileReceiver";
 import { EnterpriseTeamsManager } from "./components/teams/EnterpriseTeamsManager";
 import { TeamFileSharePage } from "./components/teams/TeamFileSharePage";
+import { DashboardPage } from "./components/teams/pages/DashboardPage";
+import { TeamsPage } from "./components/teams/pages/TeamsPage";
+import { ReceiveFilesPage } from "./components/teams/pages/ReceiveFilesPage";
+import { ShareFilesPage } from "./components/teams/pages/ShareFilesPage";
+import { InvitesPage } from "./components/teams/pages/InvitesPage";
+import { PoliciesPage } from "./components/teams/pages/PoliciesPage";
+import { AuditPage } from "./components/teams/pages/AuditPage";
+import { SettingsPage as TeamSettingsPage } from "./components/teams/pages/SettingsPage";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
 import CodePage from "./pages/CodePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
@@ -68,7 +76,28 @@ const App = () => <QueryClientProvider client={queryClient}>
                   </DashboardLayout>
                 </ProtectedRoute>} />
               <Route path="/dashboard/teams" element={<ProtectedRoute>
-                  <EnterpriseTeamsManager />
+                  <DashboardPage />
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams/manage" element={<ProtectedRoute>
+                  <TeamsPage />
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams/receive" element={<ProtectedRoute>
+                  <ReceiveFilesPage />
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams/share" element={<ProtectedRoute>
+                  <ShareFilesPage />
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams/invites" element={<ProtectedRoute>
+                  <InvitesPage />
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams/policies" element={<ProtectedRoute>
+                  <PoliciesPage />
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams/audit" element={<ProtectedRoute>
+                  <AuditPage />
+                </ProtectedRoute>} />
+              <Route path="/dashboard/teams/settings" element={<ProtectedRoute>
+                  <TeamSettingsPage />
                 </ProtectedRoute>} />
               <Route path="/dashboard/shared" element={<ProtectedRoute>
                   <DashboardLayout>
