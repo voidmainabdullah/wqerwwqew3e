@@ -253,6 +253,55 @@ export const Settings: React.FC = () => {
           </Card>
         </div>
 
+
+          {/* Subscription Card */}
+          <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+                <Crown className="text-yellow-400" size={20} /> Subscription
+              </CardTitle>
+              <CardDescription className="text-neutral-400">
+                Manage your current plan and storage usage.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-heading font-medium">Current Plan</p>
+                  <p className="text-sm text-neutral-400">
+                    {profile?.subscription_tier === 'pro' ? 'Pro Plan' : 'Free Plan'}
+                  </p>
+                </div>
+                <Badge
+                  variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'}
+                  className="bg-zinc-800"
+                >
+                  {profile?.subscription_tier === 'pro' ? 'Pro' : 'Free'}
+                </Badge>
+              </div>
+              <div>
+                <p className="font-heading font-medium">Storage Usage</p>
+                <p className="text-sm text-neutral-400">
+                  {profile?.subscription_tier === 'pro'
+                    ? `${formatFileSize(profile?.storage_used || 0)} used (unlimited)`
+                    : `${formatFileSize(profile?.storage_used || 0)} / ${formatFileSize(
+                        profile?.storage_limit || 6442450944
+                      )} used`}
+                </p>
+              </div>
+              {profile?.subscription_tier !== 'pro' && (
+                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white w-full">
+                  <a href="/subscription" className="flex items-center gap-2">
+                    <Crown size={18} /> Upgrade to Pro
+                  </a>
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+
+        
         {/* RIGHT COLUMN */}
         <div className="space-y-8">
           {/* Backup Request Card */}
