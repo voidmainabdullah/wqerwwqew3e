@@ -252,6 +252,7 @@ export const Settings: React.FC = () => {
             </CardContent>
           </Card>
         </div>
+      </div>
 
 
           {/* Subscription Card */}
@@ -279,6 +280,7 @@ export const Settings: React.FC = () => {
                   {profile?.subscription_tier === 'pro' ? 'Pro' : 'Free'}
                 </Badge>
               </div>
+            
               <div>
                 <p className="font-heading font-medium">Storage Usage</p>
                 <p className="text-sm text-neutral-400">
@@ -289,6 +291,7 @@ export const Settings: React.FC = () => {
                       )} used`}
                 </p>
               </div>
+  
               {profile?.subscription_tier !== 'pro' && (
                 <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white w-full">
                   <a href="/subscription" className="flex items-center gap-2">
