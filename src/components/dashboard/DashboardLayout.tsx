@@ -63,7 +63,7 @@ const AppSidebar = () => {
     collapsible="icon"
     className="border-r border-border/50 h-screen flex flex-col bg-transparent transition-all duration-300 ease-in-out"
   >
-      <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-[#1c1917]">
+      <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-900">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative flex-shrink-0">
             <img
@@ -219,7 +219,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
      <PopoverTrigger asChild>
-  <div className="flex overflow-hidden border divide-x rounded-full bg-[#1c1917] border-zinc-700 divide-zinc-700 hover:border-zinc-600 transition-colors duration-200">
+  <div className="flex overflow-hidden border divide-x rounded-full bg-red-600 border-zinc-700 divide-zinc-700 hover:border-zinc-600 transition-colors duration-200">
     {/* Left Button */}
     <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
       <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
