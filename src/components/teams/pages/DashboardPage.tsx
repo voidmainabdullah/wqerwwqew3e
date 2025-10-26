@@ -17,21 +17,21 @@ export function DashboardPage() {
       value: '48',
       icon: Users,
       trend: '+8 this week',
-      color: 'from-green-600 to-emerald-600'
+      color: 'zinc-600'
     },
     {
       label: 'Shared Files',
       value: '234',
       icon: Files,
       trend: '+15 today',
-      color: 'from-orange-600 to-amber-600'
+      color: 'zinc-600'
     },
     {
       label: 'Security Score',
       value: '98%',
       icon: Shield,
       trend: '+2% improvement',
-      color: 'from-red-600 to-pink-600'
+      color: 'zinc-600'
     }
   ];
 
