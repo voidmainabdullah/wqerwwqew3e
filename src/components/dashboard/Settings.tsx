@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Mail, CloudArrowUp, FileText, History, Info, Shield } from "phosphor-react";
+import { Mail, CloudArrowUp, FileText,  Info, Shield } from "phosphor-react";
 
 export const FileBackupPage: React.FC = () => {
   const { user } = useAuth();
@@ -167,7 +167,7 @@ export const FileBackupPage: React.FC = () => {
       <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all max-w-5xl mx-auto">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold">
-            <History className="text-blue-400" size={20} /> Request History
+            <Mail className="text-blue-400" size={20} /> Request History
           </CardTitle>
           <CardDescription className="text-neutral-400">
             Track your recent file backup requests.
