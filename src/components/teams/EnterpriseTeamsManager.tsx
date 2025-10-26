@@ -94,9 +94,9 @@ export function EnterpriseTeamsManager() {
                 <TeamsManager onSelectTeam={setSelectedTeamId} />
               </TabsContent>
 
-              {selectedTeamId && (
+              {selectedTeamId && ( 
                 <>
-                  <TabsContent value="spacs" className="mt-0">
+                  <TabsContent value="spaces" className="mt-0">
                     <TeamSpacesManager teamId={selectedTeamId} />
                   </TabsContent>
 
