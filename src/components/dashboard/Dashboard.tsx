@@ -479,7 +479,7 @@ export const Dashboard: React.FC = () => {
                   </Link>
                 </Button>
                 
-                <Button asChild variant="outline" className="w-full bg-white border text-slate-800 hover:bg-slate-600 h-12">
+                <Button asChild variant="outline" className="w-full bg-white border text-slate-800 hover:bg-white/80 h-12">
                   <Link to="/dashboard/shared" className="flex items-center gap-2">
                     <ShareNetwork className="w-5 h-5" />
                     Manage Shares
