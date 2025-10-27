@@ -358,7 +358,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" asChild className="
   group relative h-auto px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border 
-  font-thin text-white
+  font-light
+  text-white
   bg-neutral-900
   text-shadow-[1px_1px_2px_rgba(0,0,0,0.4)]
   transition-all duration-300 ease-in-out
