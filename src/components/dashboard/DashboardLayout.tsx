@@ -371,7 +371,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 ">
     <Link to="/subscription" className="flex items-center gap-1 sm:gap-2 text-white no-underline">
       <Crown className="h-4 w-4 fill text-amber-400 transition-all duration-300 group-hover:scale-110" weight="duotone" />
-      <span className="text-xs sm:text-sm hidden sm:inline font-light">
+      <span className="text-sm sm:text-sm hidden sm:inline font-light ">
         Upgrade
       </span>
     </Link>
