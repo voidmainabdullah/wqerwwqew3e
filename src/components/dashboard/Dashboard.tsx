@@ -465,7 +465,7 @@ export const Dashboard: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white border-0 h-12">
+                <Button asChild className="w-full bg-stone-950 hover:bg-blue-700 text-white border-0 h-12">
                   <Link to="/dashboard/upload" className="flex items-center gap-2">
                     <Upload className="w-5 h-5" />
                     Upload Files
