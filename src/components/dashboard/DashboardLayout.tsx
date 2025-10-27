@@ -379,7 +379,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Link>
   </Button>;
   return <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-[#1c1917]">
+      <div className="min-h-screen flex w-full bg-stone-950">
         <AppSidebar />
 
     {/* Main Content Area - Responsive */}
@@ -532,7 +532,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Main Content - Responsive padding */}
           <main className="flex-1 overflow-auto bg-background w-full">
-            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-[#1c1917]">
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-stone-950">
               {children}
             </div>
           </main>
