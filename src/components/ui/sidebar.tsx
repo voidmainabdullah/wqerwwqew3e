@@ -136,7 +136,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & {
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-[#1c1917] p-0 text-sidebar-foreground [&>button]:hidden border-r border-border/50"
+            className="w-[--sidebar-width] bg-stone-950 p-0 text-sidebar-foreground [&>button]:hidden border-r border-border/50"
             style={{
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE
             } as React.CSSProperties}
