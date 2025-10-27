@@ -366,7 +366,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   hover:bg-transparent
   hover:text-white                              
   hover:shadow-sm
-  hover:-translate-y-0.1
   focus:outline-none
 ">
     <Link to="/subscription" className="flex items-center gap-1 sm:gap-2 text-white no-underline">
