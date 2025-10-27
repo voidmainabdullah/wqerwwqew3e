@@ -472,7 +472,7 @@ export const Dashboard: React.FC = () => {
                   </Link>
                 </Button>
                 
-                <Button asChild variant="outline" className="w-full bg-stone-950 border  text-slate-300 hover:bg-stone-950 h-12 shadow-none">
+                <Button asChild variant="outline" className="w-full bg-stone-950 border  text-slate-300 hover:bg-stone-950 hober:text-white h-12 shadow-none">
                   <Link to="/code" className="flex items-center gap-2">
                     <Download className="w-5 h-5" />
                     Receive Files
