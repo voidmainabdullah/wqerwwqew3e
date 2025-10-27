@@ -24,14 +24,8 @@ interface FileComparisonData {
 }
 
 const COLORS = [
-  '#10b981',
-  '#3b82f6',
-  '#8b5cf6',
-  '#f59e0b',
-  '#ef4444',
-  '#06b6d4',
-  '#ec4899',
-  '#14b8a6',
+  '#10b981', '#3b82f6', '#8b5cf6', '#f59e0b',
+  '#ef4444', '#06b6d4', '#ec4899', '#14b8a6',
 ];
 
 export const DownloadComparison: React.FC = () => {
@@ -42,14 +36,13 @@ export const DownloadComparison: React.FC = () => {
 
   const fetchComparisonData = async () => {
     if (!user?.id) return;
-
     try {
       const { data: userFiles } = await supabase
         .from('files')
         .select('id, original_name')
         .eq('user_id', user.id);
 
-      if (!userFiles || userFiles.length === 0) {
+      if (!userFiles?.length) {
         setLoading(false);
         return;
       }
@@ -68,34 +61,33 @@ export const DownloadComparison: React.FC = () => {
         .eq('is_active', true);
 
       const downloadCounts = new Map<string, number>();
-      downloads?.forEach((d) => {
-        downloadCounts.set(d.file_id, (downloadCounts.get(d.file_id) || 0) + 1);
-      });
+      downloads?.forEach((d) =>
+        downloadCounts.set(d.file_id, (downloadCounts.get(d.file_id) || 0) + 1)
+      );
 
       const shareCounts = new Map<string, number>();
-      shares?.forEach((s) => {
-        shareCounts.set(s.file_id, (shareCounts.get(s.file_id) || 0) + 1);
-      });
+      shares?.forEach((s) =>
+        shareCounts.set(s.file_id, (shareCounts.get(s.file_id) || 0) + 1)
+      );
 
       const fileData = userFiles
-        .map((file, index) => ({
-          name: file.original_name.length > 20
-            ? file.original_name.substring(0, 20) + '...'
+        .map((file, i) => ({
+          name: file.original_name.length > 16
+            ? file.original_name.substring(0, 16) + '...'
             : file.original_name,
           downloads: downloadCounts.get(file.id) || 0,
           shares: shareCounts.get(file.id) || 0,
-          color: COLORS[index % COLORS.length],
+          color: COLORS[i % COLORS.length],
         }))
         .filter((f) => f.downloads > 0 || f.shares > 0)
         .sort((a, b) => b.downloads - a.downloads)
-        .slice(0, 8);
+        .slice(0, 6);
 
       const total = fileData.reduce((sum, f) => sum + f.downloads, 0);
-
       setComparisonData(fileData);
       setTotalDownloads(total);
-    } catch (error) {
-      console.error('Error fetching comparison data:', error);
+    } catch (e) {
+      console.error('Error fetching comparison data:', e);
     } finally {
       setLoading(false);
     }
@@ -103,31 +95,17 @@ export const DownloadComparison: React.FC = () => {
 
   useEffect(() => {
     fetchComparisonData();
-
-    const interval = setInterval(() => {
-      fetchComparisonData();
-    }, 60000);
-
+    const interval = setInterval(fetchComparisonData, 60000);
     return () => clearInterval(interval);
   }, [user?.id]);
 
   const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       return (
-        <div className="bg-zinc-900 border border-zinc-700 rounded-lg p-3 shadow-xl">
-          <p className="text-sm font-medium text-white mb-2">
-            {payload[0].payload.name}
-          </p>
-          <div className="space-y-1">
-            <p className="text-sm text-emerald-400">
-              Downloads: {payload[0].value}
-            </p>
-            {payload[1] && (
-              <p className="text-sm text-blue-400">
-                Shares: {payload[1].value}
-              </p>
-            )}
-          </div>
+        <div className="bg-zinc-900 border border-zinc-700 rounded-md p-2 shadow-lg text-xs">
+          <p className="text-white mb-1">{payload[0].payload.name}</p>
+          <p className="text-emerald-400">Downloads: {payload[0].value}</p>
+          {payload[1] && <p className="text-blue-400">Shares: {payload[1].value}</p>}
         </div>
       );
     }
@@ -136,133 +114,112 @@ export const DownloadComparison: React.FC = () => {
 
   if (loading) {
     return (
-      <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 shadow-lg">
+      <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-3">
         <CardHeader>
-          <div className="h-6 bg-zinc-700 rounded w-48 animate-pulse" />
-          <div className="h-4 bg-zinc-700 rounded w-64 mt-2 animate-pulse" />
+          <div className="h-4 bg-zinc-700 rounded w-32 animate-pulse" />
         </CardHeader>
         <CardContent>
-          <div className="h-80 bg-zinc-800/50 rounded-lg animate-pulse" />
+          <div className="h-48 bg-zinc-800/50 rounded-md animate-pulse" />
         </CardContent>
       </Card>
     );
   }
 
-  if (comparisonData.length === 0) {
+  if (!comparisonData.length) {
     return (
-      <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 shadow-lg">
+      <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-4">
         <CardHeader>
-          <CardTitle className="text-xl font-semibold text-white flex items-center gap-2">
-            <FileText className="w-5 h-5 text-emerald-400" />
-            File Performance Comparison
+          <CardTitle className="text-base font-semibold text-white flex items-center gap-1.5">
+            <FileText className="w-4 h-4 text-emerald-400" />
+            File Performance
           </CardTitle>
-          <CardDescription className="text-sm text-zinc-400 mt-1">
-            Compare downloads and shares across files
+          <CardDescription className="text-xs text-zinc-400 mt-1">
+            No data yet — start sharing files to see stats
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="text-center py-12">
-            <FileText className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-            <p className="text-zinc-400">No download data available yet</p>
-            <p className="text-sm text-zinc-500 mt-1">
-              Start sharing files to see performance metrics
-            </p>
-          </div>
+        <CardContent className="py-6 text-center">
+          <FileText className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
+          <p className="text-sm text-zinc-400">No download data available</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardHeader>
+    <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-4 shadow-lg hover:shadow-xl transition-all duration-300">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl font-semibold text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-emerald-400" />
-              File Performance Comparison
+            <CardTitle className="text-base font-semibold text-white flex items-center gap-2">
+              <FileText className="w-4 h-4 text-emerald-400" />
+              File Comparison
             </CardTitle>
-            <CardDescription className="text-sm text-zinc-400 mt-1">
-              Compare downloads and shares across your top files
+            <CardDescription className="text-xs text-zinc-400">
+              Downloads vs Shares
             </CardDescription>
           </div>
-          <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-700/30">
+          <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-700/30 text-xs px-2 py-0.5">
             <TrendingUp className="w-3 h-3 mr-1" />
-            {totalDownloads} total
+            {totalDownloads}
           </Badge>
         </div>
       </CardHeader>
 
-      <CardContent>
-        <div className="w-full h-96 mt-4">
+      <CardContent className="pt-2">
+        <div className="w-full h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={comparisonData}
-              margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+              margin={{ top: 10, right: 10, left: 0, bottom: 40 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" vertical={false} />
               <XAxis
                 dataKey="name"
                 stroke="#71717a"
-                tick={{ fill: '#a1a1aa', fontSize: 11 }}
+                tick={{ fill: '#a1a1aa', fontSize: 10 }}
                 angle={-45}
                 textAnchor="end"
-                height={80}
+                height={60}
               />
               <YAxis
                 stroke="#71717a"
-                tick={{ fill: '#a1a1aa', fontSize: 12 }}
+                tick={{ fill: '#a1a1aa', fontSize: 10 }}
                 allowDecimals={false}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Legend
-                wrapperStyle={{ paddingTop: '20px' }}
-                iconType="circle"
-              />
-              <Bar
-                dataKey="downloads"
-                fill="#10b981"
-                radius={[8, 8, 0, 0]}
-                animationDuration={1000}
-              >
+              <Legend wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} iconType="circle" />
+              <Bar dataKey="downloads" fill="#10b981" radius={[4, 4, 0, 0]}>
                 {comparisonData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Bar>
-              <Bar
-                dataKey="shares"
-                fill="#3b82f6"
-                radius={[8, 8, 0, 0]}
-                animationDuration={1000}
-              />
+              <Bar dataKey="shares" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-zinc-700">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-white">{comparisonData.length}</p>
-              <p className="text-xs text-zinc-400 mt-1">Files Tracked</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-emerald-400">{totalDownloads}</p>
-              <p className="text-xs text-zinc-400 mt-1">Total Downloads</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-blue-400">
-                {comparisonData.reduce((sum, f) => sum + f.shares, 0)}
-              </p>
-              <p className="text-xs text-zinc-400 mt-1">Total Shares</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-purple-400">
-                {comparisonData.length > 0
-                  ? Math.round(totalDownloads / comparisonData.length)
-                  : 0}
-              </p>
-              <p className="text-xs text-zinc-400 mt-1">Avg per File</p>
-            </div>
+        <div className="mt-4 pt-3 border-t border-zinc-700 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div>
+            <p className="text-lg font-semibold text-white">{comparisonData.length}</p>
+            <p className="text-[11px] text-zinc-400">Files</p>
+          </div>
+          <div>
+            <p className="text-lg font-semibold text-emerald-400">{totalDownloads}</p>
+            <p className="text-[11px] text-zinc-400">Downloads</p>
+          </div>
+          <div>
+            <p className="text-lg font-semibold text-blue-400">
+              {comparisonData.reduce((s, f) => s + f.shares, 0)}
+            </p>
+            <p className="text-[11px] text-zinc-400">Shares</p>
+          </div>
+          <div>
+            <p className="text-lg font-semibold text-purple-400">
+              {comparisonData.length > 0
+                ? Math.round(totalDownloads / comparisonData.length)
+                : 0}
+            </p>
+            <p className="text-[11px] text-zinc-400">Avg/File</p>
           </div>
         </div>
       </CardContent>
