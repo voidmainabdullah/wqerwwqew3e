@@ -63,7 +63,7 @@ const AppSidebar = () => {
     collapsible="icon"
     className="border-r border-border/50 h-screen flex flex-col bg-transparent transition-all duration-300 ease-in-out"
   >
-      <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-900">
+      <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-red-900">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative flex-shrink-0">
             <img
@@ -84,7 +84,7 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-900">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-green-900">
         {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
