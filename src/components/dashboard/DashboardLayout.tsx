@@ -365,6 +365,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   transition-all duration-300 ease-in-out
   hover:bg-[length:270%_100%]
   hover:bg-transparent
+  hover:text-white                              
   hover:shadow-[0_25px_15px_-15px_rgba(59,130,246,0.6)]
   hover:-translate-y-0.5
   focus:outline-none
