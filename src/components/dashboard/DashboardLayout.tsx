@@ -359,7 +359,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const FeedbackButton = () => <Button variant="ghost" size="sm" asChild className="
   group relative h-auto px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border-none
   font-semibold text-white
-  bg-stone-950
+  bg-stone-900
   shadow-[0_20px_10px_-15px_rgba(37,99,235,0.4)]
   text-shadow-[1px_1px_2px_rgba(0,0,0,0.4)]
   transition-all duration-300 ease-in-out
