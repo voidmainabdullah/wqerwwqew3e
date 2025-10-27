@@ -461,7 +461,7 @@ export const Dashboard: React.FC = () => {
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Lightning className="w-5 h-5 text-amber-400" />
-                  Quick Action
+                  Quick Actions
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
