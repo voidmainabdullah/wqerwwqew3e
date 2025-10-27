@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Files, ShareNetwork, Download, Upload, Cloud, Crown, Activity, PaperPlaneTilt, Lightning, TrendUp, Users, Calendar, Eye, Shield, ChartLineUp, ArrowUpRight, Database, Globe } from "phosphor-react";
+import { DownloadHeatmap } from "@/components/analytics/DownloadHeatmap";
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
@@ -375,69 +376,8 @@ export const Dashboard: React.FC = () => {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Left Column - Charts and Analytics */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Performance Chart */}
-            <Card className="bg-[#1c1917] border-slate-600/50">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-white text-xl">File Transfer Analytics</CardTitle>
-                    <CardDescription className="text-slate-400">
-                      Your file sharing performance over time
-                    </CardDescription>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="bg-[#1c1917] border-slate-600 text-slate-300 hover:bg-slate-600">
-                      7 Days
-                    </Button>
-                    <Button variant="outline" size="sm" className="bg-[#1c1917] border-slate-600 text-slate-300 hover:bg-slate-600">
-                      30 Days
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {/* Simulated Chart Area */}
-                <div className="h-64 bg-[#1c1917] rounded-xl p-6 relative overflow-hidden">
-                  {/* Chart Background Grid */}
-                  <div className="absolute inset-0 opacity-20">
-                    <div style={{
-                    backgroundImage: `
-                        linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px)
-                      `,
-                    backgroundSize: '40px 40px'
-                  }} className="w-full h-full bg-red-950" />
-                  </div>
-                  
-                  {/* Simulated Chart Line */}
-                  <div className="relative h-full flex items-end justify-between px-4">
-                    {[65, 45, 78, 92, 67, 89, 76, 95, 82, 88, 94, 87].map((height, i) => <div key={i} className="flex flex-col items-center gap-2">
-                        <div className="w-6 bg-gradient-to-t from-neutral-500 to-neutral-400 rounded-t-sm transition-all duration-1000" style={{
-                      height: `${height}%`
-                    }} />
-                        <span className="text-xs text-slate-500">{i + 1}</span>
-                      </div>)}
-                  </div>
-                  
-                  {/* Chart Stats Overlay */}
-                  <div className="absolute top-4 left-4">
-                    <div className="backdrop-blur-sm rounded-lg p-3 border border-slate-600/50 bg-stone-800">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                        <span className="text-white text-sm font-medium">Downloads</span>
-                      </div>
-                      <div className="text-2xl font-bold text-white">
-                        {stats?.totalDownloads?.toLocaleString() || 0}
-                      </div>
-                      <div className="flex items-center gap-1 mt-1">
-                        <TrendUp className="w-3 h-3 text-emerald-400" />
-                        <span className="text-emerald-400 text-xs">+23.5%</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Download Activity Heatmap */}
+            <DownloadHeatmap />
 
             {/* Real-time Analytics Component */}
             <div className="bg-[#1c1917] border-slate-600/50 rounded-xl p-6 bg-inherit">
