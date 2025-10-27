@@ -517,7 +517,7 @@ export const Dashboard: React.FC = () => {
                     </>}
                 </div>
                 
-                {!isPro && <Button asChild className="w-full bg-stone-950 text-white hover:from-blue-400 hover:to-blue-800 text-white border-0">
+                {!isPro && <Button asChild className="w-full bg-stone-950 text-white text-white border-0">
                     <Link to="/subscription" className="flex items-center gap-2 ">
                       <Crown className="w-4 h-4 text-amber-300" />
                       Upgrade to Pro 
