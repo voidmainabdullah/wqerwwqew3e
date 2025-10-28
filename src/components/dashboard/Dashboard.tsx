@@ -565,64 +565,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Bottom Action Cards */}
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card className="bg-stone-950 border-neutral-600/50 hover:border-blue-500/50 transition-all duration-300">
-            <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-blue-400" />
-              </div>
-              <CardTitle className="text-white">Enhanced Security</CardTitle>
-              <CardDescription className="text-slate-400">
-                Advanced encryption and access controls for your files
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-blue-300 hover:bg-blue-600/50">
-                <Link to="/dashboard/settings" className="text-white">
-                  Configure Security
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-stone-950 border-neutral-600/50 hover:border-purple-500/50 transition-all duration-300">
-            <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-purple-400" />
-              </div>
-              <CardTitle className="text-white">Team Collaboration</CardTitle>
-              <CardDescription className="text-slate-400">
-                Share files and collaborate with your team members
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-purple-300 hover:bg-neutral-600/50">
-                <Link to="/dashboard/teams" className="text-white">
-                  Manage Teams
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-stone-950 border-neutral-600/50 hover:border-emerald-500/50 transition-all duration-300">
-            <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-neutral-500/20 flex items-center justify-center mb-4 ">
-                <ChartLineUp className="w-6 h-6 text-emerald-400" />
-              </div>
-              <CardTitle className="text-white">Analytics & Insights</CardTitle>
-              <CardDescription className="text-slate-400">
-                Track performance and optimize your file sharing
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-emerald-300 hover:bg-emerald-600/50">
-                <Link to="/dashboard/analytics" className="text-white">
-                  View Analytics
-                </Link>
-              </Button>
-            </CardContent> 
-          </Card>
-        </div>
+        
       </div>
     </div>;
 };
