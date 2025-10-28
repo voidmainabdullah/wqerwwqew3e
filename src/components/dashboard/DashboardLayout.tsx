@@ -140,7 +140,7 @@ const AppSidebar = () => {
                <SidebarMenuButton
   asChild
   tooltip="Upgrade"
-  className="h-9 px-3 rounded-lg bg-inherit border text-purple-300 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
+  className="h-9 px-3 rounded-lg bg-accent/10  border text-purple-300 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
 >
   <Link to="/subscription" className="flex items-center gap-2">
     <DiamondsFour className="w-4 h-4 flex-shrink-0 text-primary group-data-[collapsible=icon]:text-2xl" />
