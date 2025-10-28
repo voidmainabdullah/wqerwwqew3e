@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => ({
       "react-transition-group",
       "@radix-ui/react-dialog",
       "decimal.js-light",
+      "@tabler/icons-react",
     ],
   },
 
