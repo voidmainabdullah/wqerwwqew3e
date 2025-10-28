@@ -390,7 +390,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 {/* User Profile Dropdown with Badge */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 to-pink-500 hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
+                    <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 via-indigo-600 to-blue-500 hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
                       <Avatar className="h-7 w-7 sm:h-9 sm:w-9 ">
                         <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-white   font-semibold text-xs sm:text-sm">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
