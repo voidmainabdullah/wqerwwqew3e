@@ -336,12 +336,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   hover:shadow-sm
   focus:outline-none
 ">
-    <Link to="/subscription" className="flex items-center gap-1 sm:gap-2 text-white no-underline">
-      <Crown className="h-4 w-4 fill text-amber-400 transition-all duration-300 group-hover:scale-110" weight="duotone" />
-      <span className="text-sm sm:text-sm hidden sm:inline font-light ">
-        Upgrade
-      </span>
-    </Link>
+    
   </Button>;
   return <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full bg-stone-950">
@@ -373,7 +368,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
               <div className="flex items-center gap-1 sm:gap-2">
                 {/* Navbar Icons Group */}
-                <div className="flex items-center gap-0.5 sm:gap-1 bg-stone-950 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70">
+                <div className="flex items-center gap-0.2 sm:gap-1 bg-stone-950 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70">
                   <NotificationPopover />
                   <div className="hidden sm:block">
                     <StoragePopover />
@@ -389,7 +384,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   </div>
 
                   {/* Separator */}
-                  <div className="w-px h-6 bg-border mx-1 sm:mx-2"></div>
+                  
                 </div>
                 
                 {/* User Profile Dropdown with Badge */}
