@@ -146,7 +146,7 @@ const AppSidebar = () => {
       <Link to="/subscription" className="flex items-center gap-2">
     <DiamondsFour className="w-4 h-4 flex-shrink-0 text-primary group-data-[collapsible=icon]:text-2xl" />
     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">
-      Upgrade Plan
+      FeedBack
     </span>
                   </Link>
   </Link>
