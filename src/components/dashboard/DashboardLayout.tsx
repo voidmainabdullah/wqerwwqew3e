@@ -306,7 +306,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <Question className="h-5 w-5 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" weight="fill" />
                 <div className="text-left flex-1">
                   <p className="font-heading font-semibold text-sm text-foreground">FAQ</p>
-                  <p className="text-xs text-muted-foreground font-body">Common questions</p>
+                  
                 </div>
               </a>
             </Button>
