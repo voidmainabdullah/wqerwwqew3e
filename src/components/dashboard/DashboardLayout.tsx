@@ -136,7 +136,7 @@ const AppSidebar = () => {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
-              <SidebarMenuItem>
+              <SidebarMenuItem> 
                <SidebarMenuButton
   asChild
   tooltip="Upgrade"
