@@ -392,7 +392,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
                       <Avatar className="h-7 w-7 sm:h-9 sm:w-9 ring-2 ring-border">
-                        <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold text-xs sm:text-sm">
+                        <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-primary-foreground font-semibold text-xs sm:text-sm">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
