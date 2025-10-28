@@ -74,20 +74,20 @@ const AppSidebar = () => {
             <span className="font-heading font-bold text-sm bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent whitespace-nowrap">
               SkieShare
             </span>
-            <p className="text-xs text-muted-foreground font-body whitespace-nowrap">Secure Transfer</p>
+            <p className="text-xs text-muted-foreground font-body whitespace-nowrap text-neutral-400 mx-0 my-0 py-0 px-px">Secure Transfer</p>
           </div>
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-950">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-950 text-stone-950 hover:text-neutral-400 ">
         {/* Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-1">
+          <SidebarGroupLabel className="text-xs font-heading font-semibold tracking-wider px-2 mb-1 text-neutral-400">
             Navigation 
             <span className="text-xs font-heading  font-semibold  text-neutral-600 uppercase tracking-wider px-2 mb-1">| (ctrl + B)</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-0.5">
+            <SidebarMenu className="space-y-0.5 text-neutral-400">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
           <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
             <Link to={item.href} className="flex items-center gap-2">
@@ -354,7 +354,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
       {/* Header - Fully Responsive */}
       <header className="border-b border-white/10 bg-stone-950 opacity-90 backdrop-blur-xl sticky top-0 z-40 shadow-xl md:rounded-tl-xl md:rounded-tr-xl mx-0">
-    <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6 bg-black">
+    <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6">
 
       {/* content */}
               <div className="flex items-center gap-2 sm:gap-4">
@@ -497,7 +497,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Main Content - Responsive padding */}
           <main className="flex-1 overflow-auto bg-background w-full">
-            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-stone-950 ">
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-stone-950">
               {children}
             </div>
           </main>
