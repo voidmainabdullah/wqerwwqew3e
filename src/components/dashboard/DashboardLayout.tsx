@@ -79,7 +79,7 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-950 text-stone-950 hover:text-neutral-400 ">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-950 ">
         {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-heading font-semibold tracking-wider px-2 mb-1 text-neutral-400">
