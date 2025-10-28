@@ -405,7 +405,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <DropdownMenuLabel className="font-normal pb-3">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-12 w-12 ring-2 ring-border">
-                          <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-lg text-blue-700 font-extrabold">
+                          <AvatarFallback className="bg-gradient-to-br bg-gradient-to-br from-black to-black/70  text-lg text-blue-700 font-extrabold">
                             {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
