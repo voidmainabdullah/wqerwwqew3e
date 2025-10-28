@@ -139,8 +139,8 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Pricing" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/subscription" className="flex items-center gap-2">
-                    <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">payments</span>
-                    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Pricing</span>
+                    <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">Arrow_up</span>
+                    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Upgrade</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
