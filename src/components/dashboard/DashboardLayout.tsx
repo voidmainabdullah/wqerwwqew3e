@@ -4,7 +4,7 @@ import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Sidebar,  SidebarRail, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, useSidebar, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Sidebar, SidebarRail, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, useSidebar, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, Headset, HardDrive, ClockCounterClockwise, HardDrives, Question, UserGear, ChatCircle, Crown, Share } from 'phosphor-react';
 import { IconLayoutDashboard, IconUpload, IconFolder, IconUsers, IconFolderShare, IconShare3, IconShare, IconChartBar, IconSettings, IconSend } from "@tabler/icons-react";
 import { IconQrcode } from "@tabler/icons-react";
@@ -57,20 +57,15 @@ const navigation = [{
 }];
 const AppSidebar = () => {
   const location = useLocation();
-  const { state, isMobile } = useSidebar();
-
-  return <Sidebar
-    collapsible="icon"
-    className="border-r border-border/50 h-screen flex flex-col bg-transparent transition-all duration-300 ease-in-out"
-  >
+  const {
+    state,
+    isMobile
+  } = useSidebar();
+  return <Sidebar collapsible="icon" className="border-r border-border/50 h-screen flex flex-col bg-transparent transition-all duration-300 ease-in-out">
       <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-950">
         <div className="flex items-center space-x-3 px-2 py-1 group">
           <div className="relative flex-shrink-0">
-            <img
-              src="/skie.png"
-              alt="SkieShare Logo"
-              className="h-8 w-auto object-contain transition-all duration-300 group-hover:scale-110"
-            />
+            <img src="/skie.png" alt="SkieShare Logo" className="h-8 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
             <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
               <img src="/skie.png" alt="SkieShare Logo Glow" className="h-8 w-auto object-contain" />
             </div>
@@ -94,18 +89,9 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
-          <SidebarMenuButton
-            asChild
-            isActive={location.pathname === item.href}
-            tooltip={item.name}
-            className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
-          >
+          <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
             <Link to={item.href} className="flex items-center gap-2">
-              <item.icon
-                size={18}
-                stroke={1.8}
-                className="text-gray-300 group-hover:text-white transition-all duration-150 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6"
-              />
+              <item.icon size={18} stroke={1.8} className="text-gray-300 group-hover:text-white transition-all duration-150 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
               <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
             </Link>
           </SidebarMenuButton>
@@ -122,28 +108,16 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  tooltip="Receive Now"
-                  className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
-                >
+                <SidebarMenuButton asChild tooltip="Receive Now" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/code" className="flex items-center gap-2">
-                    <IconQrcode
-                      size={18}
-                      stroke={1.8}
-                      className="text-gray-300 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6"
-                    />
+                    <IconQrcode size={18} stroke={1.8} className="text-gray-300 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  tooltip="Receive File"
-                  className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
-                >
+                <SidebarMenuButton asChild tooltip="Receive File" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/dashboard/receive" className="flex items-center gap-2">
                     <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">inbox</span>
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive File</span>
@@ -163,11 +137,7 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  tooltip="Pricing"
-                  className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
-                >
+                <SidebarMenuButton asChild tooltip="Pricing" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/subscription" className="flex items-center gap-2">
                     <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">payments</span>
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Pricing</span>
@@ -384,7 +354,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
       {/* Header - Fully Responsive */}
       <header className="border-b border-white/10 bg-stone-950 opacity-90 backdrop-blur-xl sticky top-0 z-40 shadow-xl md:rounded-tl-xl md:rounded-tr-xl mx-0">
-    <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6">
+    <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6 bg-black">
 
       {/* content */}
               <div className="flex items-center gap-2 sm:gap-4">
@@ -527,7 +497,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Main Content - Responsive padding */}
           <main className="flex-1 overflow-auto bg-background w-full">
-            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-stone-950">
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-stone-950 ">
               {children}
             </div>
           </main>

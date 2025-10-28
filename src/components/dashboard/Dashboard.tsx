@@ -123,7 +123,7 @@ export const Dashboard: React.FC = () => {
   return <div className="min-h-screen text-white bg-stone-950 rounded-xl">
   {/* Professional Header */}   
   <div className="w-full border-b border-neutral-800 bg-neutral-950/8 backdrop-blur-md rounded-t-xl">  
-    <div className="w-full border border-[#ffffff10] rounded-none bg-stone-950 py-2 sm:py-[8px] px-3  sm:px-6 md:px-6 -mt-8">  
+    <div className="w-full  border-none rounded-none bg-stone-950 py-2 sm:py-[8px] px-3  sm:px-6 md:px-6 -mt-8">  
       <div className="flex flex-col  sm:flex-row items-start sm:items-center justify-between w-full mx-0 my-0 px-0 gap-2 sm:gap-0">
         {/* Dashboard Title */}
         <div className="space-y-1">
@@ -137,9 +137,9 @@ export const Dashboard: React.FC = () => {
               </> : "Basic"}
           </Badge>
         </div>
-       <p className="hidden sm:block text-sm font-semibold bg-gradient-to-r from-blue-400 via-cyan-400 to-violet-400 bg-clip-text text-transparent">
+       <p className="hidden sm:block text-sm font-semibold bg-gradient-to-r from-blue-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
   Hello! – {user?.user_metadata?.display_name || user?.email?.split("@")[0]}
-</p>
+            </p>
 
       </div>
     </div>
@@ -147,7 +147,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Ultra Professional Ad Layout */}
-    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4  bg-stone-950 to-stone-950">
+    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4  bg-stone-950 to-stone-950 border-none">
 
   {/* Interactive Video Ad Card */}
   <div className="relative overflow-hidden  bg-stone-950 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
@@ -155,7 +155,7 @@ export const Dashboard: React.FC = () => {
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe className="w-full h-80 object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0" title="Ad Video" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe> 
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px] bg-inherit"></div>
     </div>
 
     {/* Top Bar (Ad Label + Dropdown Menu) */}
@@ -165,7 +165,7 @@ export const Dashboard: React.FC = () => {
       </span>
 
       <div className="relative">
-        <button onClick={(e) => {
+        <button onClick={e => {
               const el = document.getElementById("adDropdown");
               if (el) {
                 el.classList.toggle("hidden");
@@ -226,7 +226,7 @@ export const Dashboard: React.FC = () => {
 
     {/* Glow Orbs */}
     <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-r from-blue-800/40 via-stone-950 to-stone-950 rounded-full blur-3xl animate-pulse-slow"></div>
-    <div className="absolute bottom-0 left-0 w-40 h-40 bg-neutral-500/10 rounded-full blur-3xl animate-pulse-slow delay-1500"></div>
+    <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full blur-3xl animate-pulse-slow delay-1500 bg-black"></div>
   </div>
 
   {/* Right Side Preview Card */}
@@ -365,7 +365,7 @@ export const Dashboard: React.FC = () => {
                     <Progress value={storageProgress} className="h-2 bg-slate-600" />
                   </div>}
               </div>
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-zinc-700">
                 <Cloud className="h-6 w-6 text-white-400" />
               </div>
             </CardHeader>
@@ -380,7 +380,7 @@ export const Dashboard: React.FC = () => {
             <DownloadHeatmap />
 
             {/* Real-time Analytics Component */}
-            <div className="bg-stone-950 border-slate-600/50 rounded-xl p-6 bg-inherit">
+            <div className="border rounded-xl p-6 bg-neutral-900">
               <div className="space-y-6 bg-transparent">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
@@ -393,9 +393,9 @@ export const Dashboard: React.FC = () => {
                 
                 {/* Analytics Cards Grid */}
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                  <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
                         <Download className="w-5 h-5 text-emerald-400" />
                       </div>
                       <div>
@@ -405,9 +405,9 @@ export const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                  <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
                         <ShareNetwork className="w-5 h-5 text-purple-400" />
                       </div>
                       <div>
@@ -417,9 +417,9 @@ export const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                  <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
                         <Files className="w-5 h-5 text-blue-400" />
                       </div>
                       <div>
@@ -431,7 +431,7 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 {/* Popular Files */}
-                <div className="rounded-lg p-4 border border-slate-600/30 bg-neutral-800">
+                <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
                   <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                     <TrendUp className="w-4 h-4 text-emerald-400" />
                     Popular Files
@@ -446,7 +446,7 @@ export const Dashboard: React.FC = () => {
                             {file.original_name}
                           </span>
                         </div>
-                        <span className="text-emerald-400 text-sm">{file.download_count} downloads</span>
+                        <span className="text-sm text-stone-400">{file.download_count} downloads</span>
                       </div>) : <p className="text-slate-400 text-sm">No files uploaded yet</p>}
                   </div>
                 </div>
@@ -457,23 +457,23 @@ export const Dashboard: React.FC = () => {
           {/* Right Column - Activity and Actions */}
           <div className="space-y-8">
             {/* Quick Actions */}
-            <Card className="bg-stone-950 border-slate-600/50">
-              <CardHeader>
+            <Card className="bg-stone-950 border">
+              <CardHeader className="border-none border-t">
                 <CardTitle className="text-white flex items-center gap-2">
                   <Lightning className="w-5 h-5 text-amber-400" />
                   Quick Actions
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 ">
                 <Button asChild className="w-full bg-stone-950 hover:bg-stone-700 text-white border-0 h-12">
-                  <Link to="/dashboard/upload" className="flex items-center gap-2">
+                  <Link to="/dashboard/upload" className="flex items-center gap-2 ">
                     <Upload className="w-5 h-5" />
                     Upload Files
                   </Link>
                 </Button>
                 
                 <Button asChild variant="outline" className="w-full bg-stone-950 border  text-slate-300 hover:bg-stone-950 hober:text-white h-12 shadow-none">
-                  <Link to="/code" className="flex items-center gap-2">
+                  <Link to="/code" className="flex items-center gap-2 bg-neutral-700 hover:text-white">
                     <Download className="w-5 h-5" />
                     Receive Files
                   </Link>
@@ -490,7 +490,7 @@ export const Dashboard: React.FC = () => {
 
             {/* Storage Overview */}
             <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50 text-white bg-neutral-800">
-              <CardHeader className="bg-zinc-800">
+              <CardHeader className="bg-zinc-800 rounded-lg">
                 <CardTitle className="text-white flex items-center gap-2">
                   <Database className="w-5 h-5 text-blue-400" />
                   Storage Overview
@@ -578,7 +578,7 @@ export const Dashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-blue-300 hover:bg-blue-600/50">
-                <Link to="/dashboard/settings">
+                <Link to="/dashboard/settings" className="text-white">
                   Configure Security
                 </Link>
               </Button>
@@ -597,7 +597,7 @@ export const Dashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-purple-300 hover:bg-neutral-600/50">
-                <Link to="/dashboard/teams">
+                <Link to="/dashboard/teams" className="text-white">
                   Manage Teams
                 </Link>
               </Button>
@@ -616,7 +616,7 @@ export const Dashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <Button asChild variant="outline" className="w-full from-neutral-950 via-neutral-900 to-neutral-850 text-emerald-300 hover:bg-emerald-600/50">
-                <Link to="/dashboard/analytics">
+                <Link to="/dashboard/analytics" className="text-white">
                   View Analytics
                 </Link>
               </Button>
@@ -625,4 +625,4 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
     </div>;
-}; 
+};
