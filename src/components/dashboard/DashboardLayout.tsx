@@ -404,7 +404,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <DropdownMenuContent align="end" forceMount className="w-64 border-none shadow-lg border-c rounded-2xl  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70">
                     <DropdownMenuLabel className="font-normal pb-3">
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-12 w-12 ">
+                        <Avatar className="h-12 w-12 border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 to-pink-500">
                           <AvatarFallback className="bg-gradient-to-br bg-gradient-to-br from-black to-black/70  text-lg text-white font-extrabold">
                             {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                           </AvatarFallback>
