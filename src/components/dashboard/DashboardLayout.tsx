@@ -80,7 +80,7 @@ const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-heading font-semibold tracking-wider px-2 mb-1 text-neutral-400">
             Navigation 
-            <span className="text-xs font-heading  font-semibold  text-neutral-600 uppercase tracking-wider px-2 mb-1">| (ctrl + B)</span>
+            <span className="text-xs font-heading  font-semibold  text-neutral-600 uppercase tracking-wider px-2 mb-1"> (ctrl + B)</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5 text-neutral-400">
@@ -133,11 +133,7 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem> 
-               <SidebarMenuButton
-  asChild
-  tooltip="Upgrade"
-  className="h-9 px-3 rounded-xl bg-accent/10  border text-neutral-200 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center"
->
+               <SidebarMenuButton asChild tooltip="Upgrade" className="h-9 px-3 rounded-xl bg-accent/10  border text-neutral-200 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
   <Link to="/subscription" className="flex items-center gap-2">
     <DiamondsFour className="w-4 h-4 flex-shrink-0 text-primary group-data-[collapsible=icon]:text-2xl" />
     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">

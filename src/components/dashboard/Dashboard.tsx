@@ -490,7 +490,7 @@ export const Dashboard: React.FC = () => {
 
             {/* Storage Overview */}
             <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50 text-white bg-neutral-800">
-              <CardHeader className="bg-zinc-800 rounded-lg">
+              <CardHeader className="bg-zinc-800 ">
                 <CardTitle className="text-white flex items-center gap-2">
                   <Database className="w-5 h-5 text-blue-400" />
                   Storage Overview
