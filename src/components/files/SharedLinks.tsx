@@ -283,7 +283,7 @@ export const SharedLinks: React.FC = () => {
   };
   return <div className="space-y-6 p-4 max-w-7xl mx-auto">
       {/* Header + Filters */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-red-400/20 mx-0 my-0 py-0 px-0">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-stone-400/20 mx-0 my-0 px-0 py-0">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Shared Links</h1>
           <p className="text-sm md:text-base text-muted-foreground">
