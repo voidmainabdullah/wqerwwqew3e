@@ -326,7 +326,7 @@ export function FileManager() {
             New Folder
           </Button>
           <Button asChild className="font-heading bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300">
-            <a href="/dashboard/upload" className="flex items-center gap-2">
+            <a href="/dashboard/upload" className="flex items-center gap-2 ">
               <span className="material-icons md-18">upload</span>
               Upload Files
             </a>
