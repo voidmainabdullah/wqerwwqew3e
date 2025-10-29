@@ -6,10 +6,8 @@ import { DownloadHeatmap } from '@/components/analytics/DownloadHeatmap';
 import { DownloadComparison } from '@/components/analytics/DownloadComparison';
 import { LiveDownloadFeed } from '@/components/analytics/LiveDownloadFeed';
 import { ExportAnalytics } from '@/components/analytics/ExportAnalytics';
-
 export const Analytics: React.FC = () => {
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white">Analytics</h1>
@@ -34,7 +32,6 @@ export const Analytics: React.FC = () => {
         </div>
       </div>
 
-      <RealTimeAnalytics />
-    </div>
-  );
+      
+    </div>;
 };
