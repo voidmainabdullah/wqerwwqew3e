@@ -283,7 +283,7 @@ export const SharedLinks: React.FC = () => {
   };
   return <div className="space-y-6 p-4 max-w-7xl mx-auto">
       {/* Header + Filters */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-stone-400/20 mx-0 my-0 px-0 py-0">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-stone-600/20 mx-0 my-0 px-0 py-0">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Shared Links</h1>
           <p className="text-sm md:text-base text-muted-foreground">
@@ -294,9 +294,7 @@ export const SharedLinks: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <Input placeholder="Search by file name" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="min-w-0" />
-            <Button variant="ghost" onClick={() => setSearchQuery('')}>
-              Clear
-            </Button>
+            <Button variant="ghost" onClick={() => setSearchQuery('')} className="bg-transparent border text-neutral-200">Clear</Button>
           </div>
 
           <div className="flex items-center gap-2">
@@ -304,7 +302,7 @@ export const SharedLinks: React.FC = () => {
             <Input type="date" value={dateFrom || ''} onChange={e => setDateFrom(e.target.value || null)} className="max-w-[150px]" />
             <Label className="text-xs">To</Label>
             <Input type="date" value={dateTo || ''} onChange={e => setDateTo(e.target.value || null)} className="max-w-[150px]" />
-            <Button variant="ghost" onClick={clearFilters}>
+            <Button variant="ghost" onClick={clearFilters} className="bg-zinc-300 hover:bg-zinc-200 text-stone-600">
               Reset
             </Button>
           </div>

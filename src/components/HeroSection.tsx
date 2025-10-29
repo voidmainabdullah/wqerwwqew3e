@@ -25,7 +25,7 @@ const HeroSection = () => {
   return <section className="relative w-full min-h-screen px-6 md:px-12 flex items-center overflow-hidden bg-background">
       {/* Geometric background pattern */}
      <div className="absolute inset-0 light-box-grid opacity-20"></div>
-      <div className="absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl bg-stone-800"></div>
+      <div className="absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl bg-zinc-900"></div>
       <div className="absolute bottom-20 left-10 w-72 h-72 rounded-full bg-accent/5 blur-3xl"></div>
       
       <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 mx-0 my-[120px]">
