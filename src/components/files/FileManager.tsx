@@ -351,11 +351,11 @@ export function FileManager() {
 
       {/* Search and Filter */}
       <Card>
-        <CardContent className="p-6 bg-stone-900">
+        <CardContent className="p-6 bg-stone-950">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <span className="material-icons md-18 absolute left-2 top-2.5 text-muted-foreground">search</span>
-              <Input placeholder="Search files and folders..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 font-body border-none" />
+              <Input placeholder="Search files and folders..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-8 font-body border border-input bg-stone-900/50" />
             </div>
             <div className="w-full sm:w-48">
               <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full p-2 border border-input bg-background rounded-md font-body">
@@ -465,7 +465,7 @@ export function FileManager() {
           {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
               <CardContent className="p-4 bg-zinc-800 rounded-2xl">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-blue-500/20 bg-blue-950">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-blue-500/20 bg-black">
                     <span className="text-blue-600 dark:text-blue-400 font-heading font-bold text-xs">
                       {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
@@ -477,7 +477,7 @@ export function FileManager() {
                         <span className="material-icons md-18 mr-1">download</span>
                         {file.download_count}
                       </Badge>
-                      <Badge variant="secondary" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                      <Badge variant="secondary" className="text-xs text-zinc-500 border-neutral-600 my-0 py-px px-[4px] mx-0 bg-transparent">
                         <span className="material-icons md-18 mr-1">share</span>
                         {file.share_count || 0} shares
                       </Badge>
@@ -506,10 +506,7 @@ export function FileManager() {
                       <span className="material-icons md-18 mr-1">lock</span>
                       Protected
                     </Badge>}
-                  {!file.is_public && <Badge variant="secondary" className="text-xs">
-                      <span className="material-icons md-18 mr-1">visibility_off</span>
-                      Private
-                    </Badge>}
+                  {!file.is_public}
                 </div>
 
                 {/* Action Buttons Section */}
