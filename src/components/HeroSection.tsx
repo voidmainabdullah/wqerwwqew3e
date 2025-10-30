@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
-/* ================== Hero Section ================== */
+/* ================== Upgraded Hero Section ================== */
 const HeroSection = () => {
   const { actualTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
@@ -18,72 +18,72 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative w-full min-h-screen px-6 md:px-12 flex items-center overflow-hidden bg-background">
-      {/* Background Elements */}
-      <div className="absolute inset-0 light-box-grid opacity-20"></div>
-      <div className="absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl bg-zinc-900"></div>
-      <div className="absolute bottom-20 left-10 w-72 h-72 rounded-full bg-accent/5 blur-3xl"></div>
+    <section className="relative w-full min-h-screen flex flex-col justify-center px-6 sm:px-10 md:px-16 overflow-hidden bg-background">
+      {/* Background Effects */}
+      <div className="absolute inset-0 light-box-grid opacity-[0.15] pointer-events-none"></div>
+      <div className="absolute top-32 right-20 w-96 h-96 bg-zinc-900 rounded-full blur-[160px] opacity-40"></div>
+      <div className="absolute bottom-10 left-10 w-64 h-64 bg-accent/10 rounded-full blur-[120px]"></div>
 
-      {/* Main Layout */}
-      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 my-[120px]">
+      {/* Content Wrapper */}
+      <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center z-10 py-24 sm:py-28 md:py-32">
         {/* Left Section */}
-        <div className="space-y-6 md:space-y-8 px-4 md:px-0">
-          {/* Headline */}
+        <div className="space-y-6 sm:space-y-8">
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-6xl tracking-tight text-foreground font-heading font-bold leading-[1.1]"
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-foreground tracking-tight"
           >
-            Ultimate Transfer Globally
-            <br />
-            Secure. Fast. In Your Control
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"></span>
+            Effortless. Secure.{" "}
+            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              File Sharing
+            </span>
+            <br /> that Scales with You.
           </motion.h1>
 
-          {/* Subtitle */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-muted-foreground max-w-lg text-base md:text-lg font-body leading-relaxed"
+            className="text-muted-foreground max-w-lg text-base sm:text-lg leading-relaxed font-body"
           >
-            Revolutionary file sharing platform that puts security, speed, and
-            collaboration at the forefront of your workflow.
+            Experience the next generation of file sharing. Built for teams,
+            creators, and professionals who value privacy, control, and speed —
+            all in one sleek platform.
           </motion.p>
 
-          {/* Buttons */}
+          {/* Action Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 items-start"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 pt-2"
           >
             <Button
               variant="default"
-              className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto icon-text"
+              className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-slate-100 text-neutral-800 w-full sm:w-auto"
               asChild
             >
-              <a href="/auth" className="bg-slate-100 text-neutral-700">
-                <span className="material-icons md-18">arrow_right</span>
+              <a href="/auth" className="flex items-center gap-2">
+                <span className="material-icons">arrow_forward</span>
                 Get Started
               </a>
             </Button>
 
             <Button
               variant="outline"
-              className="border-2 border-neutral-300 text-foreground hover:bg-neutral-100 hover:text-foreground dark:border-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-800 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 rounded-xl font-heading font-semibold transition-all duration-300 w-full sm:w-auto icon-text"
+              className="border-2 border-neutral-300 dark:border-neutral-700 text-foreground hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-xl font-semibold w-full sm:w-auto"
               asChild
             >
-              <a href="/auth" className="bg-white">
-                <span className="material-icons md-24">dashboard</span>
-                Go To Dashboard
+              <a href="/auth" className="flex items-center gap-2">
+                <span className="material-icons">dashboard</span>
+                Go to Dashboard
               </a>
             </Button>
 
             <Button
               variant="ghost"
-              className="relative overflow-hidden group w-full sm:w-auto h-14 md:h-16 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-heading font-semibold text-base md:text-lg shadow-md hover:shadow-blue-500/30 transition-all duration-300"
+              className="relative group overflow-hidden h-12 sm:h-14 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-semibold shadow-md hover:shadow-blue-500/30 w-full sm:w-auto transition-all"
               asChild
             >
               <a href="/code" className="flex items-center gap-3">
@@ -91,22 +91,22 @@ const HeroSection = () => {
                   <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
                   <div className="absolute inset-0 w-3 h-3 rounded-full bg-blue-400 animate-ping opacity-50"></div>
                 </div>
-                <span className="material-icons text-blue-400 group-hover:scale-110 transition-transform duration-300">
+                <span className="material-icons text-blue-400 group-hover:scale-110 transition-transform">
                   upload
                 </span>
-                <span className="relative z-10 group-hover:text-blue-400 transition-colors duration-300">
+                <span className="group-hover:text-blue-400 transition-colors">
                   Upload File
                 </span>
               </a>
             </Button>
           </motion.div>
 
-          {/* Feature Highlights */}
+          {/* Features Row */}
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
+            className="flex flex-wrap items-center gap-3 sm:gap-5 pt-6"
           >
             {[
               ["lock", "256-Bit Encryption"],
@@ -117,21 +117,17 @@ const HeroSection = () => {
             ].map(([icon, text], i) => (
               <div
                 key={i}
-                className="flex items-center gap-2 border border-slate-700/40 rounded-xl px-3 py-2 bg-zinc-800 shadow-sm hover:shadow-md transition"
+                className="flex items-center gap-2 border border-slate-700/40 bg-zinc-800/70 rounded-xl px-3 py-2 text-slate-300 shadow-sm hover:shadow-md hover:bg-zinc-700/60 transition-all duration-200"
               >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-600">
-                  <span className="material-icons md-18 text-neutral-300">
-                    {icon}
-                  </span>
-                </div>
-                <span className="text-xs sm:text-sm font-medium text-slate-300">
-                  {text}
+                <span className="material-icons md-18 text-neutral-300">
+                  {icon}
                 </span>
+                <span className="text-xs sm:text-sm font-medium">{text}</span>
               </div>
             ))}
           </motion.div>
 
-          {/* Feature Card */}
+          {/* Statistic Card */}
           <motion.div
             className="pt-10 flex justify-center sm:justify-start"
             initial={{ opacity: 0, y: 30 }}
@@ -144,34 +140,36 @@ const HeroSection = () => {
 
         {/* Right Section */}
         <motion.div
-          className="relative px-4 md:px-0"
-          initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
+          className="relative"
         >
-          <div className="space-y-4">
+          <div className="space-y-5">
             {/* Project Files Card */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-400">
+              <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <span className="material-icons md-24 text-primary">
-                      folder
-                    </span>
+                    <span className="material-icons text-primary">folder</span>
                   </div>
                   <div>
-                    <h3 className="text-sm md:text-base font-heading font-semibold text-foreground">
+                    <h3 className="text-base font-semibold text-foreground">
                       Project Files
                     </h3>
-                    <p className="text-xs md:text-sm font-body text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       24 files • 2.3 GB
                     </p>
                   </div>
                 </div>
                 <div className="flex -space-x-2">
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card bg-rose-400"></div>
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card bg-blue-500"></div>
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-card flex items-center justify-center text-xs font-heading font-medium bg-zinc-800">
+                  {["rose-400", "blue-500"].map((c, i) => (
+                    <div
+                      key={i}
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-${c}`}
+                    ></div>
+                  ))}
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-zinc-800 flex items-center justify-center text-xs font-semibold">
                     +3
                   </div>
                 </div>
@@ -182,27 +180,23 @@ const HeroSection = () => {
                     key={i}
                     className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center"
                   >
-                    <span className="material-icons md-18 text-primary">
-                      {icon}
-                    </span>
+                    <span className="material-icons text-primary">{icon}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Secure Upload Card */}
-            <div className="bg-card border border-border rounded-2xl p-4 shadow-lg translate-x-8 hover:translate-x-0 transition-all duration-500">
+            {/* Secure Upload Mini Card */}
+            <div className="bg-card border border-border rounded-2xl p-4 shadow-lg translate-x-4 hover:translate-x-0 transition-all duration-500">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                  <span className="material-icons md-18 text-accent">
-                    security
-                  </span>
+                  <span className="material-icons text-accent">security</span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-heading font-medium text-foreground">
+                  <p className="text-sm font-medium text-foreground">
                     Secure Upload
                   </p>
-                  <p className="text-xs font-body text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     End-to-end encrypted
                   </p>
                 </div>
@@ -217,47 +211,41 @@ const HeroSection = () => {
 
       {/* Bottom Glow Line */}
       <motion.div
-        className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent ${
-          actualTheme === "light" ? "via-neutral-800" : "via-neutral-800"
-        }`}
+        className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent"
         style={{
           width: glowWidth,
           opacity: glowOpacity,
           boxShadow:
-            "0 0 20px rgba(38, 38, 38, 0.8), 0 0 40px rgba(38, 38, 38, 0.4)",
+            "0 0 25px rgba(38,38,38,0.8), 0 0 40px rgba(38,38,38,0.4)",
         }}
       />
     </section>
   );
 };
 
-/* ================== Card Component (Converted to Tailwind) ================== */
+/* ================== Floating Stats Card ================== */
 const Card = () => {
   return (
-    <div className="relative w-[300px] h-[250px] rounded-xl p-[1px] bg-gradient-radial from-gray-100 via-gray-800 to-black">
-      {/* Animated Dot */}
-      <div className="absolute w-[5px] aspect-square bg-white rounded-full shadow-[0_0_10px_#ffffff] animate-[moveDot_6s_linear_infinite]"></div>
+    <div className="relative w-[300px] sm:w-[320px] h-[250px] rounded-xl p-[1px] bg-gradient-radial from-gray-100 via-gray-800 to-black overflow-hidden">
+      <div className="absolute w-[6px] aspect-square bg-white rounded-full shadow-[0_0_12px_#ffffff] animate-[moveDot_6s_linear_infinite]"></div>
 
-      {/* Inner Card */}
-      <div className="relative w-full h-full flex flex-col items-center justify-center rounded-lg border border-neutral-800 bg-gradient-radial from-gray-500 to-black text-white overflow-hidden">
-        <div className="absolute w-[220px] h-[45px] bg-gray-200 opacity-40 rounded-full blur-md rotate-[40deg] top-0 left-0"></div>
-        <div className="text-6xl font-extrabold bg-gradient-to-r from-black/10 via-white to-black bg-clip-text text-transparent">
+      <div className="relative w-full h-full flex flex-col items-center justify-center rounded-lg border border-neutral-800 bg-gradient-radial from-gray-600 to-black text-white overflow-hidden">
+        <div className="absolute w-[200px] h-[40px] bg-gray-200 opacity-40 rounded-full blur-md rotate-[35deg] top-0 left-0"></div>
+        <div className="text-5xl sm:text-6xl font-extrabold bg-gradient-to-r from-gray-200 via-white to-gray-200 bg-clip-text text-transparent">
           1.2M+
         </div>
-        <div>Files Shared</div>
+        <div className="text-sm sm:text-base">Files Shared</div>
 
-        {/* Lines */}
+        {/* Subtle Grid Lines */}
         <div className="absolute top-[10%] left-0 w-full h-[1px] bg-gradient-to-r from-gray-400 to-gray-800"></div>
         <div className="absolute bottom-[10%] left-0 w-full h-[1px] bg-gray-700"></div>
         <div className="absolute left-[10%] top-0 h-full w-[1px] bg-gradient-to-b from-gray-500 to-gray-800"></div>
         <div className="absolute right-[10%] top-0 h-full w-[1px] bg-gray-800"></div>
       </div>
 
-      {/* Animation Keyframes */}
       <style jsx>{`
         @keyframes moveDot {
-          0%,
-          100% {
+          0%, 100% {
             top: 10%;
             right: 10%;
           }
