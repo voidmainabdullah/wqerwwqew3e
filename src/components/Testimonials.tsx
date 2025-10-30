@@ -36,6 +36,7 @@ const NEON = "shadow-[0_0_30px_rgba(16,185,129,0.12)]";
 
 /* ---------------------------
    Testimonial data (6)
+   
    --------------------------- */
 const testimonials = [ 
   {
@@ -195,7 +196,7 @@ const NetworkBackground: React.FC = () => {
    Testimonial Card (big, cinematic)
    --------------------------- */
 const TestimonialCard: React.FC<{
-  testimonial: typeof TESTIMONIALS[number];
+  testimonial: typeof testimonials[number];
   index: number;
   inView: boolean;
 }> = ({ testimonial, index, inView }) => {
@@ -371,13 +372,13 @@ const Testimonials : React.FC = () => {
             animate={inView ? "show" : "hidden"}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {TESTIMONIALS.slice(0, 4).map((t, i) => (
+              {testimonials.slice(0, 4).map((t, i) => (
                 <TestimonialCard key={i} testimonial={t} index={i} inView={inView} />
               ))}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {TESTIMONIALS.slice(4, 6).map((t, i) => (
+              {testimonials.slice(4, 6).map((t, i) => (
                 <TestimonialCard key={`b-${i}`} testimonial={t} index={i + 4} inView={inView} />
               ))}
             </div>
