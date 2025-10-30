@@ -145,7 +145,7 @@ const Testimonials = () => {
                     className="h-12 w-auto flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 grayscale hover:grayscale-0"
                   >
                     <img
-                      src="/testi.png"
+                      src="/testi.logo.png"
                       alt="Brand Logo"
                       className="h-12 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.7)]"
                     />
@@ -173,7 +173,7 @@ const Testimonials = () => {
                     className="h-12 w-auto flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 grayscale hover:grayscale-0"
                   >
                     <img
-                      src="/testi.png"
+                      src="/testi.logo.png"
                       alt="Brand Logo"
                       className="h-12 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
                     />
@@ -192,4 +192,3 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
- 
