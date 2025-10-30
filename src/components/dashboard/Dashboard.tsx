@@ -527,7 +527,7 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Recent Activity */}
-            <Card className="bg-gradient-to-br from-stone-800 to-neutral-700 border-slate-600/50">  
+            <Card className="bg-gradient-to-br from-stone-900 to-zin-800 border-slate-600/50">  
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Activity className="w-5 h-5 text-emerald-400" />
