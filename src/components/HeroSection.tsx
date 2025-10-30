@@ -61,8 +61,8 @@ const HeroSection = () => {
           >
             <Button
               variant="default"
-              className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-slate-100 text-neutral-800 w-full sm:w-auto"
-              asChild
+              className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-zinc-600 text-neutral-800 w-full sm:w-auto"
+              asChild 
             >
               <a href="/auth" className="flex items-center gap-2">
                 <span className="material-icons">arrow_forward</span>
@@ -78,7 +78,7 @@ const HeroSection = () => {
               <a href="/auth" className="flex items-center gap-2">
                 <span className="material-icons">dashboard</span>
                 Go to Dashboard
-              </a>
+              </a> 
             </Button>
 
             <Button
