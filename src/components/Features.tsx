@@ -1,191 +1,121 @@
-import React, { useState } from "react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  ChevronDown,
-  Files,
-  Shield,
-  Users,
-  Share2,
-  Lock,
-  Zap,
-} from "lucide-react";
+import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { Shield, Users, Files, Lock, Share2, Zap } from "lucide-react";
 
 const Features = () => {
-  const [openFeature, setOpenFeature] = useState<number | null>(null);
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
 
   const features = [
     {
+      icon: <Shield size={26} />,
       title: "Secure File Storage",
       description:
-        "Enterprise-grade encryption and security for all your important files and documents.",
-      expandedDescription:
-        "Store files with military-grade AES-256 encryption. All files are encrypted both in transit and at rest. Access controls ensure only authorized team members can view sensitive documents. Automated backups and version history keep your data safe.",
-      icon: <Shield size={26} />,
+        "All files are encrypted with AES-256 both in transit and at rest. Enterprise-grade security ensures your documents remain safe, private, and always accessible to authorized users.",
     },
     {
-      title: "Real-time Collaboration",
-      description:
-        "Work together seamlessly with real-time file sharing and collaboration tools.",
-      expandedDescription:
-        "Share files instantly with team members and external collaborators. Real-time notifications keep everyone updated on file changes. Comment on files, assign tasks, and track project progress all within the platform.",
       icon: <Users size={26} />,
+      title: "Real-Time Collaboration",
+      description:
+        "Work with your team in real time. Share files instantly, leave comments, assign roles, and track progress without switching tools or losing context.",
     },
     {
+      icon: <Files size={26} />,
       title: "Smart File Organization",
       description:
-        "AI-powered organization and search to find files faster than ever before.",
-      expandedDescription:
-        "Automatically categorize and tag files based on content. Smart folders organize files by project, date, or custom criteria. Advanced search finds files instantly using content, metadata, or visual recognition.",
-      icon: <Files size={26} />,
+        "AI automatically categorizes your uploads by project, content, and context — making search effortless and your workspace always organized.",
     },
     {
-      title: "Access Control",
-      description:
-        "Granular permissions and access controls to keep sensitive files secure.",
-      expandedDescription:
-        "Set detailed permissions for each file and folder. Control who can view, edit, or share files. Time-limited access links expire automatically. Audit trails track all file access and modifications.",
       icon: <Lock size={26} />,
+      title: "Advanced Access Control",
+      description:
+        "Granular permission settings give you full control. Decide who can view, edit, or share — and keep your confidential files secure at every level.",
     },
     {
+      icon: <Share2 size={26} />,
       title: "Instant Sharing",
       description:
-        "Share files with anyone, anywhere with secure links and real-time updates.",
-      expandedDescription:
-        "Generate secure sharing links with custom expiration dates. Password protect sensitive files. Real-time sync ensures everyone has the latest version. Share directly from your workflow without interruption.",
-      icon: <Share2 size={26} />,
+        "Create secure share links in seconds. Set expiration dates, protect with passwords, and manage visibility from a single dashboard.",
     },
     {
-      title: "Lightning Fast",
-      description:
-        "Optimized performance for instant uploads, downloads, and file operations.",
-      expandedDescription:
-        "Advanced compression and CDN delivery ensure lightning-fast file transfers. Resume interrupted uploads automatically. Background sync keeps files updated across all devices. Optimized for teams of any size.",
       icon: <Zap size={26} />,
+      title: "Lightning Fast Performance",
+      description:
+        "Powered by global CDN and smart compression, uploads and downloads are instant — no matter your location or file size.",
     },
   ];
-
-  const toggleFeature = (index: number) => {
-    setOpenFeature(openFeature === index ? null : index);
-  };
 
   return (
     <section
       id="features"
-      className="w-full py-16 md:py-24 px-4 md:px-8 bg-card/30 backdrop-blur-sm"
+      className="w-full py-20 md:py-28 px-6 md:px-10 bg-card/30 backdrop-blur-sm"
       ref={ref}
     >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          className="mb-14 text-center"
+      <div className="max-w-6xl mx-auto text-center">
+        <motion.h2
+          className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-5"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-            Built for the Future of File Sharing
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Experience next-generation features designed to revolutionize how
-            teams collaborate and share files securely.
-          </p>
-        </motion.div>
-{/* Image Section */}
-<section className="w-full px-4 sm:px-8 lg:px-16 py-10"> 
-  <div className="max-w-7xl mx-auto">
-    <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/30">
-      <img
-        src="/showcase2.png"
-        alt="Descriptive Alt Text"
-        className="w-full h-40 object-cover md:h-[500px] sm:h-[400px] h-[250px]"
-      />
-    </div>
-  </div>
-</section>
-        
+          Built for the Future of Secure File Sharing
+        </motion.h2>
 
-        {/* Feature Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <div className="relative group bg-card border border-border/60 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary/40 hover:-translate-y-1.5">
-                {/* Icon */}
-                <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-primary/10 text-primary mb-5 group-hover:scale-110 transition-transform duration-300">
-                  {feature.icon}
-                </div>
-
-                <Collapsible
-                  open={openFeature === index}
-                  onOpenChange={() => toggleFeature(index)}
-                >
-                  <CollapsibleTrigger className="w-full text-left">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                          {feature.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {feature.description}
-                        </p>
-                      </div>
-                      <ChevronDown
-                        size={20}
-                        className={`text-muted-foreground ml-3 transition-transform duration-300 ${
-                          openFeature === index ? "rotate-180 text-primary" : ""
-                        }`}
-                      />
-                    </div>
-                  </CollapsibleTrigger>
-
-                  <CollapsibleContent className="mt-3">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={
-                        openFeature === index ? { opacity: 1, y: 0 } : {}
-                      }
-                      transition={{ duration: 0.4 }}
-                    >
-                      <p className="text-sm text-muted-foreground border-t border-border/60 pt-4 leading-relaxed mb-4">
-                        {feature.expandedDescription}
-                      </p>
-                      <button className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors text-sm">
-                        Learn more
-                        <span className="material-icons text-sm">
-                          arrow_forward
-                        </span>
-                      </button>
-                    </motion.div>
-                  </CollapsibleContent>
-                </Collapsible>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <motion.p
+          className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-14"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          SkyShare combines top-tier encryption, real-time collaboration, and
+          intelligent automation — empowering teams to share, manage, and
+          protect their data effortlessly.
+        </motion.p>
       </div>
-      {/* Image Section */}
-<section className="w-full px-4 sm:px-8 lg:px-16 py-10">
-  <div className="max-w-7xl mx-auto">
-    <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/30">
-      <img
-        src="/showcase2.png"
-        alt="Descriptive Alt Text"
-        className="w-full h-full  md:h-[500px] sm:h-[400px] h-[250px]"
-      />
-    </div>
-  </div>
-</section>
 
+      {/* Image Section */}
+      <motion.section
+        className="w-full px-4 sm:px-8 lg:px-16 py-10"
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/30">
+            <img
+              src="/showcase2.png"
+              alt="SkyShare platform showcasing secure collaboration"
+              className="w-full h-full md:h-[500px] sm:h-[400px] h-[250px] object-cover"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Textual Feature List */}
+      <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 mt-10">
+        {features.map((feature, index) => (
+          <motion.div
+            key={index}
+            className="flex items-start gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+          >
+            <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-xl bg-primary/10 text-primary">
+              {feature.icon}
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                {feature.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                {feature.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </section>
   );
 };
