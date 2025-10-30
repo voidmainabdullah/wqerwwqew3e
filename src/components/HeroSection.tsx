@@ -234,75 +234,127 @@ const HeroSection = () => {
 /* ================== Card Component ================== */
 const Card = () => {
   return (
-    <div className="flex justify-center items-center p-6">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[20px] shadow-lg overflow-hidden w-[330px] text-white transition-all duration-300 ease-in-out cursor-pointer hover:-translate-y-1.5 hover:shadow-xl">
-        <div className="flex flex-col items-start p-7">
-          <div className="bg-green-500/15 rounded-full p-3.5 mb-3.5">
-            <svg
-              width={28}
-              height={29}
-              viewBox="0 0 28 29"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M23.7222 9.04435V6.71102C23.7222 5.42235 22.6775 4.37769 21.3888 4.37769L6.61106 4.37769C5.32239 4.37769 4.27773 5.42235 4.27773 6.71102V9.04435C4.27773 10.333 5.32239 11.3777 6.61106 11.3777H21.3888C22.6775 11.3777 23.7222 10.333 23.7222 9.04435Z"
-                stroke="#23C55E"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M23.7222 21.4888V19.1555C23.7222 17.8668 22.6775 16.8221 21.3888 16.8221H15.9444C14.6557 16.8221 13.6111 17.8668 13.6111 19.1555V21.4888C13.6111 22.7775 14.6557 23.8221 15.9444 23.8221H21.3888C22.6775 23.8221 23.7222 22.7775 23.7222 21.4888Z"
-                stroke="#23C55E"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-
-          <div className="text-xl font-semibold text-green-500 my-3">
-            Fast & Secure Sharing
-          </div>
-
-          <div className="text-[0.95rem] leading-relaxed opacity-85">
-            Transfer large files instantly with AES-256 encryption and cloud
-            backup protection.
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-green-500 transition-all duration-300 hover:text-green-600 hover:translate-x-1 group">
-            Learn More
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 18 19"
-              height={19}
-              width={18}
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            >
-              <path
-                stroke="currentColor"
-                fill="currentColor"
-                d="M3 9.09985C3 9.23792 2.88807 9.34985 2.75 9.34985C2.61193 9.34985 2.5 9.23792 2.5 9.09985C2.5 8.96178 2.61193 8.84985 2.75 8.84985C2.88807 8.84985 3 8.96178 3 9.09985Z"
-              />
-              <path
-                stroke="currentColor"
-                fill="currentColor"
-                d="M9.25 2.84985C9.25 2.98792 9.13807 3.09985 9 3.09985C8.86193 3.09985 8.75 2.98792 8.75 2.84985C8.75 2.71178 8.86193 2.59985 9 2.59985C9.13807 2.59985 9.25 2.71178 9.25 2.84985Z"
-              />
-              <path
-                strokeLinejoin="round"
-                stroke="currentColor"
-                fill="currentColor"
-                d="M5.5 9.09985H14.5L10.5 5.09985L11.5 4.09985L17 9.59985L11.5 15.0999L10.5 14.0999L14.5 10.0999H5.5V9.09985Z"
-              />
-            </svg>
-          </div>
+    <StyledWrapper>
+      <div className="outer">
+        <div className="dot" />
+        <div className="card">
+          <div className="ray" />
+          <div className="text">750k</div>
+          <div>Views</div>
+          <div className="line topl" />
+          <div className="line leftl" />
+          <div className="line bottoml" />
+          <div className="line rightl" />
         </div>
       </div>
-    </div>
+    </StyledWrapper>
   );
-};
+}
+
+const StyledWrapper = styled.div`
+  .outer {
+    width: 300px;
+    height: 250px;
+    border-radius: 10px;
+    padding: 1px;
+    background: radial-gradient(circle 230px at 0% 0%, #ffffff, #0c0d0d);
+    position: relative;
+  }
+
+  .dot {
+    width: 5px;
+    aspect-ratio: 1;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 0 10px #ffffff;
+    border-radius: 100px;
+    z-index: 2;
+    right: 10%;
+    top: 10%;
+    animation: moveDot 6s linear infinite;
+  }
+
+  @keyframes moveDot {
+    0%,
+    100% {
+      top: 10%;
+      right: 10%;
+    }
+    25% {
+      top: 10%;
+      right: calc(100% - 35px);
+    }
+    50% {
+      top: calc(100% - 30px);
+      right: calc(100% - 35px);
+    }
+    75% {
+      top: calc(100% - 30px);
+      right: 10%;
+    }
+  }
+
+  .card {
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 9px;
+    border: solid 1px #202222;
+    background-size: 20px 20px;
+    background: radial-gradient(circle 280px at 0% 0%, #444444, #0c0d0d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+    color: #fff;
+  }
+  .ray {
+    width: 220px;
+    height: 45px;
+    border-radius: 100px;
+    position: absolute;
+    background-color: #c7c7c7;
+    opacity: 0.4;
+    box-shadow: 0 0 50px #fff;
+    filter: blur(10px);
+    transform-origin: 10%;
+    top: 0%;
+    left: 0;
+    transform: rotate(40deg);
+  }
+
+  .card .text {
+    font-weight: bolder;
+    font-size: 4rem;
+    background: linear-gradient(45deg, #000000 4%, #fff, #000);
+    background-clip: text;
+    color: transparent;
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    background-color: #2c2c2c;
+  }
+  .topl {
+    top: 10%;
+    background: linear-gradient(90deg, #888888 30%, #1d1f1f 70%);
+  }
+  .bottoml {
+    bottom: 10%;
+  }
+  .leftl {
+    left: 10%;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, #747474 30%, #222424 70%);
+  }
+  .rightl {
+    right: 10%;
+    width: 1px;
+    height: 100%;
+  }`;
 
 export default HeroSection;
