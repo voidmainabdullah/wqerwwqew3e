@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
-import styled from "styled-components";
 
 /* ================== Hero Section ================== */
 const HeroSection = () => {
@@ -235,10 +234,10 @@ const HeroSection = () => {
 /* ================== Card Component ================== */
 const Card = () => {
   return (
-    <StyledWrapper>
-      <div className="card">
-        <div className="containers">
-          <div className="icon">
+    <div className="flex justify-center items-center p-6">
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[20px] shadow-lg overflow-hidden w-[330px] text-white transition-all duration-300 ease-in-out cursor-pointer hover:-translate-y-1.5 hover:shadow-xl">
+        <div className="flex flex-col items-start p-7">
+          <div className="bg-green-500/15 rounded-full p-3.5 mb-3.5">
             <svg
               width={28}
               height={29}
@@ -263,14 +262,16 @@ const Card = () => {
             </svg>
           </div>
 
-          <div className="title my-3">Fast & Secure Sharing</div>
+          <div className="text-xl font-semibold text-green-500 my-3">
+            Fast & Secure Sharing
+          </div>
 
-          <div className="subtitle">
+          <div className="text-[0.95rem] leading-relaxed opacity-85">
             Transfer large files instantly with AES-256 encryption and cloud
             backup protection.
           </div>
 
-          <div className="linkMore mt-3">
+          <div className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-green-500 transition-all duration-300 hover:text-green-600 hover:translate-x-1 group">
             Learn More
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -278,103 +279,30 @@ const Card = () => {
               viewBox="0 0 18 19"
               height={19}
               width={18}
+              className="transition-transform duration-300 group-hover:translate-x-1"
             >
               <path
-                stroke="#072713"
-                fill="#072713"
+                stroke="currentColor"
+                fill="currentColor"
                 d="M3 9.09985C3 9.23792 2.88807 9.34985 2.75 9.34985C2.61193 9.34985 2.5 9.23792 2.5 9.09985C2.5 8.96178 2.61193 8.84985 2.75 8.84985C2.88807 8.84985 3 8.96178 3 9.09985Z"
               />
               <path
-                stroke="#072713"
-                fill="#072713"
+                stroke="currentColor"
+                fill="currentColor"
                 d="M9.25 2.84985C9.25 2.98792 9.13807 3.09985 9 3.09985C8.86193 3.09985 8.75 2.98792 8.75 2.84985C8.75 2.71178 8.86193 2.59985 9 2.59985C9.13807 2.59985 9.25 2.71178 9.25 2.84985Z"
               />
               <path
                 strokeLinejoin="round"
-                stroke="#072713"
-                fill="#072713"
+                stroke="currentColor"
+                fill="currentColor"
                 d="M5.5 9.09985H14.5L10.5 5.09985L11.5 4.09985L17 9.59985L11.5 15.0999L10.5 14.0999L14.5 10.0999H5.5V9.09985Z"
               />
             </svg>
           </div>
         </div>
       </div>
-    </StyledWrapper>
+    </div>
   );
 };
-
-/* ================== Styled Components ================== */
-const StyledWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 24px;
-
-  .card {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    border-radius: 20px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-    overflow: hidden;
-    width: 330px;
-    color: #fff;
-    transition: 0.3s ease-in-out;
-    cursor: pointer;
-
-    &:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-    }
-
-    .containers {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 28px;
-
-      .icon {
-        background: rgba(35, 197, 94, 0.15);
-        border-radius: 50%;
-        padding: 14px;
-        margin-bottom: 14px;
-      }
-
-      .title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #22c55e;
-      }
-
-      .subtitle {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        opacity: 0.85;
-      }
-
-      .linkMore {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-top: 16px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: #22c55e;
-        transition: all 0.3s ease;
-
-        &:hover {
-          color: #16a34a;
-          transform: translateX(4px);
-        }
-
-        svg {
-          transition: transform 0.3s;
-        }
-
-        &:hover svg {
-          transform: translateX(4px);
-        }
-      }
-    }
-  }
-`;
 
 export default HeroSection;
