@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 /**
- * Testimonials.tsx
+ * TrustedBy.tsx
  * Ultra cinematic "Trusted by leading teams across the globe"
  * - black soft theme with emerald neon accent
  * - glowing grid + particle trust network background
@@ -320,7 +320,7 @@ const ShowcaseImage: React.FC<{ src?: string }> = ({ src = "/showcase.png" }) =>
 /* ---------------------------
    Main export component
    --------------------------- */
-const Testimonials: React.FC = () => {
+const Testimonials : React.FC = () => {
   const { ref, inView } = useInView({ threshold: 0.18, triggerOnce: true });
   const controls = useAnimation();
 
