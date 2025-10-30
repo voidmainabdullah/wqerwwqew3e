@@ -242,9 +242,9 @@ const Card = () => {
       <div className="relative w-full h-full flex flex-col items-center justify-center rounded-lg border border-neutral-800 bg-gradient-radial from-gray-500 to-black text-white overflow-hidden">
         <div className="absolute w-[220px] h-[45px] bg-gray-200 opacity-40 rounded-full blur-md rotate-[40deg] top-0 left-0"></div>
         <div className="text-6xl font-extrabold bg-gradient-to-r from-black via-white to-black bg-clip-text text-transparent">
-          Secure
+          1.2M+
         </div>
-        <div>E2P Encryption</div>
+        <div>Files Shared</div>
 
         {/* Lines */}
         <div className="absolute top-[10%] left-0 w-full h-[1px] bg-gradient-to-r from-gray-400 to-gray-800"></div>
