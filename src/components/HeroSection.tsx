@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 const HeroSection = () => {
   const { actualTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
-  const { scrollY } = useScroll();
+  const { scrollY } = useScroll();  
 
   const glowWidth = useTransform(scrollY, [0, 300], ["0%", "100%"]);
   const glowOpacity = useTransform(scrollY, [0, 300], [0, 1]);
