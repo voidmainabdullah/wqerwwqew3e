@@ -527,7 +527,7 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Recent Activity */}
-            <Card className="bg-gradient-to-br from-stone-800 to-neutral-700 border-slate-600/50">
+            <Card className="bg-gradient-to-br from-stone-800 to-neutral-700 border-slate-600/50">  
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Activity className="w-5 h-5 text-emerald-400" />
@@ -542,7 +542,7 @@ export const Dashboard: React.FC = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-sm font-medium truncate">
-                            {activity.files?.original_name || 'Unknown file'}
+                             {activity.files?.original_name || 'Unknown file'}
                           </p>
                           <p className="text-slate-400 text-xs">
                             {new Date(activity.downloaded_at).toLocaleDateString()}
