@@ -59,9 +59,9 @@ const Testimonials = () => {
       className="relative w-full py-24 px-6 md:px-12 bg-black overflow-hidden"
     >
       {/* Glowing Background Grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.1)_0%,transparent_70%)] opacity-20"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.12)_0%,transparent_70%)] opacity-20"></div>
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 mix-blend-overlay"></div>
-      <div className="absolute -top-1/2 left-1/2 transform -translate-x-1/2 w-[1200px] h-[1200px] bg-green-500/10 blur-[180px] rounded-full"></div>
+      <div className="absolute -top-1/2 left-1/2 transform -translate-x-1/2 w-[1200px] h-[1200px] bg-green-500/10 blur-[160px] rounded-full"></div>
 
       {/* Container */}
       <div className="max-w-7xl mx-auto relative z-10">
@@ -77,7 +77,7 @@ const Testimonials = () => {
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
             Discover why thousands of creative professionals and global teams rely on SkieShare for
-            secure, smooth, and intelligent file sharing.
+            secure, intelligent, and lightning-fast file sharing.
           </p>
         </motion.div>
 
@@ -89,15 +89,12 @@ const Testimonials = () => {
               initial={{ opacity: 0, x: -80 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.7, delay: index * 0.15 }}
-              className="relative p-6 rounded-2xl bg-gradient-to-b from-gray-900/70 to-black/80 border border-gray-800 hover:border-green-400/30 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all duration-500 backdrop-blur-sm"
+              className="relative p-6 rounded-2xl bg-gradient-to-b from-gray-900/70 to-black/80 border border-gray-800 hover:border-green-400/40 hover:shadow-[0_0_30px_rgba(34,197,94,0.25)] transition-all duration-500 backdrop-blur-sm"
             >
-              {/* Hover Glow */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-b from-green-500/10 to-transparent pointer-events-none"></div>
-
               {/* Stars */}
-              <div className="flex mb-6">
+              <div className="flex mb-5">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="material-icons text-green-400/80 mr-1 text-sm">
+                  <span key={i} className="material-icons text-green-400/90 mr-1 text-sm">
                     star
                   </span>
                 ))}
@@ -111,7 +108,7 @@ const Testimonials = () => {
               {/* Author */}
               <div className="flex items-center gap-4">
                 <div
-                  className={`h-10 w-10 rounded-full ${testimonial.avatar} border border-green-400/20`}
+                  className={`h-10 w-10 rounded-full ${testimonial.avatar} border border-green-400/20 shadow-[0_0_10px_rgba(0,0,0,0.6)]`}
                 ></div>
                 <div>
                   <h4 className="text-white font-semibold text-sm">
@@ -124,33 +121,72 @@ const Testimonials = () => {
           ))}
         </div>
 
-        {/* Looping Logos */}
-        <div className="relative mt-24 overflow-hidden">
+        {/* Brand Logos Section */}
+        <div className="relative mt-28 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black pointer-events-none"></div>
+          <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-black via-black/70 to-transparent z-10"></div>
+          <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-black via-black/70 to-transparent z-10"></div>
+
+          {/* Main Loop Row */}
           <motion.div
-            className="flex gap-12"
-            animate={{ x: ["0%", "-50%"] }}
+            className="flex gap-16 py-6"
+            animate={{ x: ["0%", "-100%"] }}
             transition={{
-              duration: 25,
+              duration: 18,
               ease: "linear",
               repeat: Infinity,
             }}
           >
-            {[...Array(12)].map((_, i) => (
-              <img
-                key={i}
-                src="/testi.logo.png"
-                alt="Brand Logo"
-                className="h-10 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300"
-              />
+            {[...Array(2)].map((_, repeatIndex) => (
+              <div key={repeatIndex} className="flex gap-16">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-12 w-auto flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 grayscale hover:grayscale-0"
+                  >
+                    <img
+                      src="/testi.logo.png"
+                      alt="Brand Logo"
+                      className="h-12 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.7)]"
+                    />
+                  </div>
+                ))}
+              </div>
             ))}
           </motion.div>
-          <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-black to-transparent"></div>
-          <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-black to-transparent"></div>
+
+          {/* Opposite Loop Row */}
+          <motion.div
+            className="flex gap-16 py-6 mt-3"
+            animate={{ x: ["-100%", "0%"] }}
+            transition={{
+              duration: 20,
+              ease: "linear",
+              repeat: Infinity,
+            }}
+          >
+            {[...Array(2)].map((_, repeatIndex) => (
+              <div key={repeatIndex} className="flex gap-16">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-12 w-auto flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 grayscale hover:grayscale-0"
+                  >
+                    <img
+                      src="/testi.logo.png"
+                      alt="Brand Logo"
+                      className="h-12 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
 
       {/* Bottom Glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-green-500/10 to-transparent pointer-events-none blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-72 bg-gradient-to-t from-green-500/15 via-transparent to-transparent blur-3xl"></div>
     </section>
   );
 };
