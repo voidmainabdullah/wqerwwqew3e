@@ -81,7 +81,7 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        {/* Testimonials */}
+        {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {testimonials.map((testimonial, index) => (
             <motion.div
@@ -121,61 +121,33 @@ const Testimonials = () => {
           ))}
         </div>
 
-        {/* Brand Logos Section */}
+        {/* Single Logo Row Loop */}
         <div className="relative mt-28 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black pointer-events-none"></div>
           <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-black via-black/70 to-transparent z-10"></div>
           <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-black via-black/70 to-transparent z-10"></div>
 
-          {/* Main Loop Row */}
+          {/* Professional Single Loop Animation */}
           <motion.div
             className="flex gap-16 py-6"
             animate={{ x: ["0%", "-100%"] }}
             transition={{
-              duration: 18,
+              duration: 14,
               ease: "linear",
               repeat: Infinity,
             }}
           >
             {[...Array(2)].map((_, repeatIndex) => (
               <div key={repeatIndex} className="flex gap-16">
-                {[...Array(10)].map((_, i) => (
+                {[...Array(12)].map((_, i) => (
                   <div
                     key={i}
-                    className="h-12 w-auto flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 grayscale hover:grayscale-0"
+                    className="h-14 flex items-center justify-center opacity-90 hover:opacity-100 transition-all duration-300 grayscale hover:grayscale-0"
                   >
                     <img
-                      src="/test.logo.png"
-                      alt="Brand Logo"
-                      className="h-12 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.7)]"
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Opposite Loop Row */}
-          <motion.div
-            className="flex gap-16 py-6 mt-3"
-            animate={{ x: ["-100%", "0%"] }}
-            transition={{
-              duration: 20,
-              ease: "linear",
-              repeat: Infinity,
-            }}
-          >
-            {[...Array(2)].map((_, repeatIndex) => (
-              <div key={repeatIndex} className="flex gap-16">
-                {[...Array(10)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-12 w-auto flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 grayscale hover:grayscale-0"
-                  >
-                    <img
-                      src="/test.logo.png"
-                      alt="Brand Logo"
-                      className="h-12 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
+                      src="/skie.png"
+                      alt="SkieShare Partner"
+                      className="h-14 w-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)] brightness-110 contrast-125"
                     />
                   </div>
                 ))}
