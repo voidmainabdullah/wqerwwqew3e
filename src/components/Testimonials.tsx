@@ -37,7 +37,7 @@ const NEON = "shadow-[0_0_30px_rgba(16,185,129,0.12)]";
 /* ---------------------------
    Testimonial data (6)
    --------------------------- */
-const testimonials = [
+const testimonials = [ 
   {
     quote:
       "Our team collaboration improved by 300% after switching to this platform. File sharing is seamless and secure.",
