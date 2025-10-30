@@ -1,195 +1,125 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { Shield, Users, Lock, Zap } from "lucide-react";
+import { motion, useAnimation, useInView } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { Shield, Users, Share2, Zap, Lock, Cloud } from "lucide-react";
 
-const DeveloperExperience = () => {
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
+const features = [
+  {
+    icon: <Shield size={26} />,
+    title: "End-to-End Encryption",
+    desc: "Your data stays yours — encrypted in transit and at rest with zero-trust architecture, ensuring unmatched privacy and control.",
+  },
+  {
+    icon: <Users size={26} />,
+    title: "Collaborate in Real Time",
+    desc: "Work with teams seamlessly. Share instantly, edit together, and manage permissions — all in one modern workspace.",
+  },
+  {
+    icon: <Cloud size={26} />,
+    title: "Smart Cloud Sync",
+    desc: "Your files stay updated everywhere. No sync errors, no outdated versions — just effortless continuity across all your devices.",
+  },
+  {
+    icon: <Lock size={26} />,
+    title: "Advanced Access Control",
+    desc: "Define who sees what. Manage visibility, expiration, and access levels with precision — from your dashboard.",
+  },
+  {
+    icon: <Share2 size={26} />,
+    title: "Secure Sharing Links",
+    desc: "Instantly create time-limited, password-protected links. Share confidently with clients, partners, and teams.",
+  },
+  {
+    icon: <Zap size={26} />,
+    title: "Fast by Design",
+    desc: "Powered by global CDN and compression intelligence — uploads and downloads feel instantaneous anywhere on the planet.",
+  },
+];
+
+const Features = () => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { threshold: 0.2 });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (inView) controls.start("visible");
+  }, [inView, controls]);
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, delay: i * 0.15, ease: "easeOut" },
+    }),
+  };
 
   return (
     <section
-      id="developer-experience"
       ref={ref}
-      className="relative w-full bg-gradient-to-b from-background via-card/20 to-background py-24 md:py-32 px-6 md:px-12 overflow-hidden"
+      className="relative w-full py-24 md:py-36 bg-black text-white overflow-hidden"
     >
-      {/* Background Glow */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent pointer-events-none"></div>
+      {/* Soft gradient glow background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a] to-black opacity-80 pointer-events-none" />
+      <div className="absolute -top-32 -left-20 w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[180px] opacity-20" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-indigo-500/30 rounded-full blur-[150px] opacity-20" />
 
-      <div className="max-w-7xl mx-auto flex flex-col items-center text-center md:text-left md:flex-col lg:flex-col gap-16">
-        {/* Headline Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto"
-        >
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground leading-tight mb-6">
-            First-class <br className="hidden md:block" />
-            file-sharing experience
-          </h2>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8 }}
+        className="max-w-5xl mx-auto text-center relative z-10 px-6"
+      >
+        <h2 className="text-3xl md:text-5xl font-bold mb-5 bg-gradient-to-r from-white via-gray-300 to-gray-400 bg-clip-text text-transparent">
+          Powering the Future of File Sharing
+        </h2>
+        <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+          SkyShare brings elegance, security, and speed together — redefining how modern teams share, collaborate, and protect their files.
+        </p>
+      </motion.div>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            We’re a team of developers obsessed with making file sharing fast,
-            secure, and enjoyable. Our goal is to build the cloud platform we’ve
-            always wanted — one that <em>just works</em> beautifully.
-          </p>
-        </motion.div>
+      {/* Image Showcase */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
+        className="max-w-7xl mx-auto px-6 md:px-12 mt-16 relative z-10"
+      >
+        <div className="rounded-2xl overflow-hidden border border-gray-800 shadow-[0_0_40px_-10px_rgba(59,130,246,0.2)]">
+          <img
+            src="/showcase2.png"
+            alt="SkyShare feature showcase"
+            className="w-full h-[280px] sm:h-[420px] md:h-[500px] object-cover object-center"
+            loading="lazy"
+          />
+        </div>
+      </motion.div>
 
-        {/* Showcase Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, delay: 0.2 }}
-          className="w-full flex flex-col lg:flex-row gap-8 items-center justify-center"
-        >
-          {/* Left “Command Console” Style Panel */}
-          <div className="w-full lg:w-1/2 bg-card border border-border/60 rounded-2xl p-6 md:p-8 text-left shadow-xl overflow-hidden backdrop-blur-sm">
-            <div className="flex items-center justify-between mb-5">
-              <div className="text-sm px-3 py-1 rounded-full bg-green-600/10 text-green-400 font-medium">
-                Connected
-              </div>
-              <div className="text-muted-foreground text-sm">SkyShare CLI</div>
+      {/* Feature Grid */}
+      <div className="relative z-10 max-w-6xl mx-auto mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 md:px-12">
+        {features.map((item, i) => (
+          <motion.div
+            key={i}
+            variants={fadeUp}
+            initial="hidden"
+            animate={controls}
+            custom={i}
+            className="group p-6 rounded-2xl bg-gradient-to-br from-[#0f0f0f] to-[#111111] border border-gray-800/60 hover:border-blue-500/40 transition-all duration-500 hover:shadow-[0_0_30px_-10px_rgba(37,99,235,0.4)]"
+          >
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 mb-5 group-hover:bg-blue-500/20 transition-all duration-500">
+              {item.icon}
             </div>
-
-            <div className="font-mono text-sm text-muted-foreground leading-relaxed space-y-2">
-              <p>
-                <span className="text-green-500">Upload:</span> "project_docs.zip" →
-                <span className="text-primary ml-1">Cloud Server #12</span>
-              </p>
-              <p>
-                <span className="text-green-500">Status:</span> 100% complete ✅
-              </p>
-              <p>
-                <span className="text-blue-400">Link generated:</span>{" "}
-                https://skyshare.io/s/project_docs
-              </p>
-              <p className="text-slate-500">
-                AES-256 encryption | 0.8s upload time | CDN optimized
-              </p>
-            </div>
-
-            <div className="mt-6 border-t border-border/40 pt-4">
-              <p className="text-muted-foreground text-xs">
-                Secure. Verified. Distributed.
-              </p>
-            </div>
-          </div>
-
-          {/* Right “Activity Log” Panel */}
-          <div className="w-full lg:w-1/2 bg-card border border-border/60 rounded-2xl p-6 md:p-8 shadow-xl overflow-hidden backdrop-blur-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-sm px-3 py-1 rounded-full bg-blue-600/10 text-blue-400 font-medium">
-                Recent Activity
-              </div>
-              <span className="text-xs text-muted-foreground">Live updates</span>
-            </div>
-
-            <div className="font-mono text-sm space-y-4">
-              <div className="flex flex-col md:flex-row md:items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                  <p>
-                    <span className="text-green-400">Delivered</span> to{" "}
-                    <span className="bg-muted px-2 py-0.5 rounded-md">
-                      team@skyshare.io
-                    </span>
-                  </p>
-                </div>
-                <p className="text-muted-foreground text-xs mt-1 md:mt-0">
-                  Oct 31 • 14:23
-                </p>
-              </div>
-
-              <div className="flex flex-col md:flex-row md:items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-violet-400"></div>
-                  <p>
-                    <span className="text-violet-400">Viewed</span> by{" "}
-                    <span className="bg-muted px-2 py-0.5 rounded-md">
-                      alex@figma.com
-                    </span>
-                  </p>
-                </div>
-                <p className="text-muted-foreground text-xs mt-1 md:mt-0">
-                  Oct 31 • 14:25
-                </p>
-              </div>
-
-              <div className="flex flex-col md:flex-row md:items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-orange-400"></div>
-                  <p>
-                    <span className="text-orange-400">Edited</span> "UI_Assets.zip"
-                  </p>
-                </div>
-                <p className="text-muted-foreground text-xs mt-1 md:mt-0">
-                  Oct 31 • 14:28
-                </p>
-              </div>
-
-              <div className="flex flex-col md:flex-row md:items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                  <p>
-                    <span className="text-red-400">Deleted</span> "draft.pdf"
-                  </p>
-                </div>
-                <p className="text-muted-foreground text-xs mt-1 md:mt-0">
-                  Oct 31 • 14:30
-                </p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Feature Highlights Section */}
-        <motion.div
-          className="max-w-6xl mx-auto mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left"
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          {[
-            {
-              icon: <Shield size={26} />,
-              title: "End-to-End Encryption",
-              text: "Your files are encrypted at rest, in transit, and in storage with military-grade AES-256 encryption.",
-            },
-            {
-              icon: <Users size={26} />,
-              title: "Built for Teams",
-              text: "Workspaces, real-time sync, and secure permissions make collaboration effortless and fast.",
-            },
-            {
-              icon: <Lock size={26} />,
-              title: "Granular Access Control",
-              text: "Decide who can view, edit, or download files. Every access event is logged for transparency.",
-            },
-            {
-              icon: <Zap size={26} />,
-              title: "Performance First",
-              text: "Optimized through CDN edge caching and smart compression — experience speed that scales globally.",
-            },
-          ].map((feature, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-start gap-3 p-6 rounded-xl bg-card/30 border border-border/60 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="p-3 rounded-lg bg-primary/10 text-primary">
-                {feature.icon}
-              </div>
-              <h3 className="text-lg font-semibold text-foreground">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {feature.text}
-              </p>
-            </div>
-          ))}
-        </motion.div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-white transition-all">
+              {item.title}
+            </h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              {item.desc}
+            </p>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
 };
 
-export default DeveloperExperience;
+export default Features;
