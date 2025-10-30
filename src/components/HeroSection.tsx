@@ -78,7 +78,7 @@ const HeroSection = () => {
               <a href="/auth" className="flex items-center gap-2">
                 <span className="material-icons">dashboard</span>
                 Go to Dashboard
-              </a> 
+              </a>  
             </Button>
 
             <Button
