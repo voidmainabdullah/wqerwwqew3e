@@ -17,21 +17,21 @@ const Testimonials = () => {
       author: "Sarah Johnson",
       position: "Product Manager at TechCorp",
       initials: "SJ",
-      color: "from-slate-600 to-slate-700"
+      color: "from-stone-600 to-stone-700"
     },
     {
       quote: "The security features give us peace of mind when sharing sensitive documents. It's enterprise-grade protection made simple.",
       author: "Michael Chen",
       position: "Head of Security at DataFlow",
       initials: "MC",
-      color: "from-slate-500 to-slate-600"
+      color: "from-stone-500 to-stone-600"
     },
     {
       quote: "We've cut our file management overhead by 60%. The AI organization is incredibly intuitive and powerful.",
       author: "Leila Rodriguez",
       position: "Operations Director at CreativeStudio",
       initials: "LR",
-      color: "from-slate-700 to-slate-800"
+      color: "from-stone-700 to-stone-800"
     }
   ];
 
@@ -52,7 +52,7 @@ const Testimonials = () => {
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
             Loved by teams worldwide
           </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg text-stone-400 max-w-2xl mx-auto">
             See how professionals and teams transform their file sharing workflow
           </p>
         </motion.div>
@@ -61,15 +61,15 @@ const Testimonials = () => {
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
-              className="group relative bg-gradient-to-br from-slate-900/50 to-slate-950 border border-slate-800/50 rounded-xl p-7 hover:border-slate-700/80 transition-all duration-300 hover:shadow-lg hover:shadow-slate-900/20"
+              className="group relative bg-gradient-to-br from-stone-900/50 to-stone-950 border border-stone-800/50 rounded-xl p-7 hover:border-stone-700/80 transition-all duration-300 hover:shadow-lg hover:shadow-stone-900/20"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-800/0 to-slate-800/0 group-hover:from-slate-800/5 group-hover:to-slate-800/10 rounded-xl transition-all duration-300 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-stone-800/0 to-stone-800/0 group-hover:from-stone-800/5 group-hover:to-stone-800/10 rounded-xl transition-all duration-300 pointer-events-none"></div>
 
               <div className="relative">
-                <p className="text-slate-300 leading-relaxed mb-6 text-base font-light">
+                <p className="text-stone-300 leading-relaxed mb-6 text-base font-light">
                   "{testimonial.quote}"
                 </p>
 
@@ -79,7 +79,7 @@ const Testimonials = () => {
                   </div>
                   <div>
                     <h4 className="text-white font-semibold text-sm tracking-tight">{testimonial.author}</h4>
-                    <p className="text-slate-400 text-xs font-light tracking-wide">{testimonial.position}</p>
+                    <p className="text-stone-400 text-xs font-light tracking-wide">{testimonial.position}</p>
                   </div>
                 </div>
               </div>
@@ -88,12 +88,12 @@ const Testimonials = () => {
         </div>
 
         <motion.div
-          className="mt-20 rounded-xl overflow-hidden border border-slate-800/50 shadow-2xl"
+          className="mt-20 rounded-xl overflow-hidden border border-stone-800/50 shadow-2xl"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          <div className="relative bg-gradient-to-br from-slate-900 to-black p-1">
+          <div className="relative bg-gradient-to-br from-stone-900 to-black p-1">
             <div className="rounded-lg overflow-hidden bg-black/80 backdrop-blur-sm">
               <img
                 src="/showcase.png"
