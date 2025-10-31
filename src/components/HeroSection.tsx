@@ -163,12 +163,8 @@ const HeroSection = () => {
                   </div>
                 </div>
                 <div className="flex -space-x-2">
-                  {["rose-400", "blue-500"].map((c, i) => (
-                    <div
-                      key={i}
-                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-${c}`}
-                    ></div>
-                  ))}
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-rose-400"></div>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-blue-500"></div>
                   <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-zinc-800 flex items-center justify-center text-xs font-semibold">
                     +3
                   </div>
