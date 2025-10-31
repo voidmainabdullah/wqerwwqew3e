@@ -13,7 +13,7 @@ const Testimonials = () => {
 
   const testimonials = [
     {
-      quote: "Our team collaboration improved by 300% after switching to this platform. File sharing is seamless and secure.",
+      quote: "O team collaboration improved by 300% after switching to this platform. File sharing is seamless and secure.",
       author: "Sarah Johnson",
       position: "Product Manager at TechCorp",
       initials: "SJ",
