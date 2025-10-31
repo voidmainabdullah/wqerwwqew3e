@@ -412,7 +412,7 @@ const SidebarGroupAction = React.forwardRef<HTMLButtonElement, React.ComponentPr
         className={cn(
           "absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
           "after:absolute after:-inset-2 after:md:hidden",
-          "group-data-[collapsible=icon]:hidden",
+          "group-data-[collapsible=icon]:opacity-100 group-data-[collapsible=icon]:pointer-events-none",
           className
         )}
         {...props}
@@ -536,7 +536,7 @@ const SidebarMenuBadge = React.forwardRef<HTMLDivElement, React.ComponentProps<"
         "peer-data-[size=sm]/menu-button:top-1",
         "peer-data-[size=default]/menu-button:top-1.5",
         "peer-data-[size=lg]/menu-button:top-2.5",
-        "group-data-[collapsible=icon]:hidden",
+        "group-data-[collapsible=icon]:opacity-100 group-data-[collapsible=icon]:pointer-events-none",
         className
       )}
       {...props}
@@ -559,7 +559,7 @@ const SidebarMenuSkeleton = React.forwardRef<HTMLDivElement, React.ComponentProp
 SidebarMenuSkeleton.displayName = "SidebarMenuSkeleton";
 
 const SidebarMenuSub = React.forwardRef<HTMLUListElement, React.ComponentProps<"ul">>(({ className, ...props }, ref) => {
-  return <ul ref={ref} data-sidebar="menu-sub" className={cn("mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5", "group-data-[collapsible=icon]:hidden", className)} {...props} />;
+  return <ul ref={ref} data-sidebar="menu-sub" className={cn("mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5", "group-data-[collapsible=icon]:opacity-100 group-data-[collapsible=icon]:pointer-events-none", className)} {...props} />;
 });
 SidebarMenuSub.displayName = "SidebarMenuSub";
 
@@ -582,7 +582,7 @@ const SidebarMenuSubButton = React.forwardRef<HTMLAnchorElement, React.Component
           "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
           size === "sm" && "text-xs",
           size === "md" && "text-sm",
-          "group-data-[collapsible=icon]:hidden",
+          "group-data-[collapsible=icon]:opacity-100 group-data-[collapsible=icon]:pointer-events-none",
           className
         )}
         {...props}
