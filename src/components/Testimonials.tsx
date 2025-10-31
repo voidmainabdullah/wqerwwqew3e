@@ -9,7 +9,7 @@ const Testimonials = () => {
   } = useInView({
     threshold: 0.2,
     triggerOnce: true
-  });
+  });  
 
   const testimonials = [
     {
