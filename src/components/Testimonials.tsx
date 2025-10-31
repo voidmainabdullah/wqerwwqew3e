@@ -38,8 +38,8 @@ const Testimonials = () => {
   return (
     <section className="w-full py-24 px-4 sm:px-6 md:px-12 bg-black relative overflow-hidden" ref={ref}>
       <div className="absolute inset-0 opacity-40 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-slate-900/30 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-tl from-slate-900/20 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-stone-900/30 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-tl from-stone-900/20 to-transparent rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
