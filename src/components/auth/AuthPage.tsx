@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -93,10 +92,159 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <StyledWrapper>
-      <form className="form" onSubmit={handleSubmit}>
+    <>
+      <style>{`
+        .auth-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          background: radial-gradient(circle at top left, #111 0%, #000 100%);
+        }
+
+        .auth-wrapper .form {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          background-color: #1f1f1f;
+          padding: 40px;
+          width: 420px;
+          border-radius: 20px;
+          box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .auth-wrapper .logo-area {
+          text-align: center;
+          margin-bottom: 10px;
+        }
+
+        .auth-wrapper .logo {
+          width: 70px;
+          height: 70px;
+          margin-bottom: 10px;
+        }
+
+        .auth-wrapper h2 {
+          color: #fff;
+          font-size: 24px;
+          font-weight: 700;
+        }
+
+        .auth-wrapper p {
+          color: #aaa;
+          font-size: 14px;
+        }
+
+        .auth-wrapper label {
+          color: #f1f1f1;
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .auth-wrapper .inputForm {
+          border: 1.5px solid #333;
+          border-radius: 10px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          padding: 0 12px;
+          background-color: #2b2b2b;
+          transition: 0.3s ease;
+        }
+
+        .auth-wrapper .inputForm:focus-within {
+          border-color: #2d79f3;
+        }
+
+        .auth-wrapper .input {
+          width: 100%;
+          background: none;
+          border: none;
+          color: #f1f1f1;
+          font-size: 15px;
+          height: 100%;
+        }
+
+        .auth-wrapper .input:focus {
+          outline: none;
+        }
+
+        .auth-wrapper .button-submit {
+          background: linear-gradient(90deg, #2d79f3, #194bd4);
+          color: white;
+          border: none;
+          height: 50px;
+          border-radius: 10px;
+          font-weight: 600;
+          font-size: 16px;
+          cursor: pointer;
+          transition: 0.3s ease;
+        }
+
+        .auth-wrapper .button-submit:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 0 10px #2d79f3;
+        }
+
+        .auth-wrapper .flex-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .auth-wrapper .span {
+          color: #2d79f3;
+          cursor: pointer;
+        }
+
+        .auth-wrapper .btn {
+          width: 48%;
+          height: 45px;
+          border-radius: 10px;
+          background: #2b2b2b;
+          color: #f1f1f1;
+          border: 1px solid #333;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          font-weight: 500;
+          transition: 0.3s ease;
+        }
+
+        .auth-wrapper .btn:hover {
+          border-color: #2d79f3;
+        }
+
+        .auth-wrapper .flex-column {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .auth-wrapper .p {
+          text-align: center;
+          margin: 0;
+        }
+
+        .auth-wrapper .p.line {
+          position: relative;
+          color: #888;
+          font-size: 12px;
+          margin: 10px 0;
+        }
+
+        @media (max-width: 480px) {
+          .auth-wrapper .form {
+            width: 90%;
+            padding: 30px;
+          }
+        }
+      `}</style>
+      <div className="auth-wrapper">
+        <form className="form" onSubmit={handleSubmit}>
         <div className="logo-area">
-          <img src="/skie.png" alt="logo" className="logo" />
+          <img src="/sky.png" alt="logo" className="logo" />
           <h2>{isSignUp ? "Join SkieShare" : "Welcome Back"}</h2>
           <p>
             {isSignUp
@@ -257,136 +405,8 @@ export const AuthPage: React.FC = () => {
           </button>
         </div>
       </form>
-    </StyledWrapper>
+      </div>
+    </>
   );
 };
-
-const StyledWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: radial-gradient(circle at top left, #111 0%, #000 100%);
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background-color: #1f1f1f;
-    padding: 40px;
-    width: 420px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-  }
-
-  .logo-area {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .logo {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 10px;
-  }
-
-  h2 {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 700;
-  }
-
-  p {
-    color: #aaa;
-    font-size: 14px;
-  }
-
-  label {
-    color: #f1f1f1;
-    font-weight: 600;
-    font-size: 14px;
-  }
-
-  .inputForm {
-    border: 1.5px solid #333;
-    border-radius: 10px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    background-color: #2b2b2b;
-    transition: 0.3s ease;
-  }
-
-  .inputForm:focus-within {
-    border-color: #2d79f3;
-  }
-
-  .input {
-    width: 100%;
-    background: none;
-    border: none;
-    color: #f1f1f1;
-    font-size: 15px;
-    height: 100%;
-  }
-
-  .input:focus {
-    outline: none;
-  }
-
-  .button-submit {
-    background: linear-gradient(90deg, #2d79f3, #194bd4);
-    color: white;
-    border: none;
-    height: 50px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-
-  .button-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 10px #2d79f3;
-  }
-
-  .flex-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .span {
-    color: #2d79f3;
-    cursor: pointer;
-  }
-
-  .btn {
-    width: 48%;
-    height: 45px;
-    border-radius: 10px;
-    background: #2b2b2b;
-    color: #f1f1f1;
-    border: 1px solid #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-weight: 500;
-    transition: 0.3s ease;
-  }
-
-  .btn:hover {
-    border-color: #2d79f3;
-  }
-
-  @media (max-width: 480px) {
-    .form {
-      width: 90%;
-      padding: 30px;
-    }
-  }
-`;
 
