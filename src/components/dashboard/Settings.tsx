@@ -53,37 +53,18 @@ export const Settings: React.FC = () => {
   };
 
   const fetchLastBackup = async () => {
-    try {
-      const { data } = await supabase
-        .from('backups')
-        .select('created_at')
-        .eq('user_id', user?.id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (data) setLastBackup(new Date(data.created_at).toLocaleString());
-    } catch (error) {
-      console.warn('No backups yet.');
-    }
+    // Backup feature placeholder - not implemented in current schema
+    setLastBackup(null);
   };
 
   const requestBackup = async () => {
     if (!user) return;
     setBackupLoading(true);
     try {
-      // Create a new backup request (simulate backend process)
-      const { error } = await supabase.from('backups').insert([
-        { user_id: user.id, status: 'pending', created_at: new Date().toISOString() },
-      ]);
-
-      if (error) throw error;
-
       toast({
-        title: 'Backup Requested',
-        description: 'Your files are being backed up. You’ll be notified when it’s ready.',
+        title: 'Backup Feature Coming Soon',
+        description: 'File backup functionality will be available in a future update.',
       });
-
       setLastBackup(new Date().toLocaleString());
     } catch (error: any) {
       toast({

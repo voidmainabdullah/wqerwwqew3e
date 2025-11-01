@@ -52,12 +52,12 @@ const App = () => <QueryClientProvider client={queryClient}>
               <Route path="/subscription" element={<SubscriptionPage />} />
               <Route path="/subscription-success" element={<SubscriptionSuccess />} />
               <Route path="/share/:token" element={<PublicSharePage />} />
-              <Route path="/code" element={<CodePage />} className="bg-stone-950" />
+              <Route path="/code" element={<CodePage />} />
               
               {/* Protected Dashboard Routes */}
               <Route path="/dashboard" element={<ProtectedRoute>
                   <DashboardLayout>
-                    <Dashboard className="bg-stone-950 my-0 px-0 mx-0 py-0" />
+                    <Dashboard />
                   </DashboardLayout>
                 </ProtectedRoute>} />
               <Route path="/dashboard/upload" element={<ProtectedRoute>

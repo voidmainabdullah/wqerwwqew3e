@@ -53,7 +53,7 @@ export const LiveDownloadFeed: React.FC = () => {
           file_name: fileMap.get(d.file_id) || 'Unknown',
           downloaded_at: d.downloaded_at,
           download_method: d.download_method,
-          downloader_ip: d.downloader_ip,
+          downloader_ip: d.downloader_ip as string | undefined,
         })) || [];
 
       setEvents(formattedEvents);

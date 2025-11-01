@@ -239,7 +239,7 @@ const Card = () => {
         <div className="absolute right-[10%] top-0 h-full w-[1px] bg-gray-800"></div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes moveDot {
           0%, 100% {
             top: 10%;

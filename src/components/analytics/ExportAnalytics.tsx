@@ -17,7 +17,7 @@ export const ExportAnalytics: React.FC = () => {
     user
   } = useAuth();
   const [open, setOpen] = useState(false);
-  const [format, setFormat] = useState<ExportFormat>('csv');
+  const [exportFormat, setExportFormat] = useState<ExportFormat>('csv');
   const [dateRange, setDateRange] = useState<DateRange>('month');
   const [customStartDate, setCustomStartDate] = useState<Date | undefined>();
   const [customEndDate, setCustomEndDate] = useState<Date | undefined>();
@@ -102,7 +102,7 @@ export const ExportAnalytics: React.FC = () => {
       }));
       const timestamp = format(new Date(), 'yyyy-MM-dd_HH-mm-ss');
       const filename = `analytics_export_${timestamp}`;
-      if (format === 'csv') {
+      if (exportFormat === 'csv') {
         exportToCSV(exportData, `${filename}.csv`);
       } else {
         exportToJSON(exportData, `${filename}.json`);
@@ -133,7 +133,7 @@ export const ExportAnalytics: React.FC = () => {
         <div className="space-y-6 py-4">
           <div className="space-y-3">
             <Label className="text-sm font-medium text-zinc-300">Export Format</Label>
-            <RadioGroup value={format} onValueChange={val => setFormat(val as ExportFormat)}>
+            <RadioGroup value={exportFormat} onValueChange={val => setExportFormat(val as ExportFormat)}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="csv" id="csv" />
                 <Label htmlFor="csv" className="text-zinc-300 cursor-pointer">

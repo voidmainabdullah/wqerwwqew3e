@@ -111,7 +111,7 @@ export const FileUpload: React.FC = () => {
         if (uploadFile.status !== 'pending') continue;
 
         setUploadFiles((prev) =>
-          prev.map((f, idx) => (idx === i ? { ...f, status: 'uploading', progress: 0 } : f))
+          prev.map((f, idx) => (idx === i ? { ...f, status: 'uploading', progress: 50 } : f))
         );
 
         try {
@@ -124,12 +124,6 @@ export const FileUpload: React.FC = () => {
             .from('files')
             .upload(fileName, uploadFile.file, {
               upsert: false,
-              onUploadProgress: (e: ProgressEvent) => {
-                const progress = Math.round((e.loaded / e.total) * 100);
-                setUploadFiles((prev) =>
-                  prev.map((f, idx) => (idx === i ? { ...f, progress } : f))
-                );
-              },
             });
           if (storageError) throw storageError;
 

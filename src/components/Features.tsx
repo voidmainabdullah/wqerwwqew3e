@@ -50,7 +50,7 @@ const features = [
 
 const Features = () => {
   const ref = useRef(null);
-  const inView = useInView(ref, { threshold: 0.15 });
+  const inView = useInView(ref, { once: false, amount: 0.15 });
   const controls = useAnimation();
 
   useEffect(() => {
@@ -59,11 +59,10 @@ const Features = () => {
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
-    visible: (i) => ({
+    visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.75, delay: i * 0.2, ease: "easeOut" },
-    }),
+    },
   };
 
   return (
@@ -85,7 +84,7 @@ const Features = () => {
               variants={fadeUp}
               initial="hidden"
               animate={controls}
-              custom={i}
+              transition={{ duration: 0.75, delay: i * 0.2 }}
               className="flex flex-col items-start space-y-3 max-w-sm"
             >
               <div className="text-gray-400 mb-2">
