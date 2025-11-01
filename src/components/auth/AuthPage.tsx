@@ -113,7 +113,7 @@ export const AuthPage: React.FC = () => {
 
         .auth-image-section img {
           width: 100%;
-          height: 100%;
+          height: 65%;
           object-fit: cover;
         }
 
