@@ -102,21 +102,26 @@ export const AuthPage: React.FC = () => {
           overflow: hidden;
         }
 
-        .auth-image-section {
-          relative;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-        }
+       .auth-image-section {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  width: 100%;
+  height: 100vh; /* full viewport height, no scroll */
+}
 
-        .auth-image-section img {
-          width: 100%;
-          height: 65%;
-          object-fit: cover;
-          margin-botton: 40px;
-        }
+.auth-image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0; /* fix any bottom spacing */
+  pointer-events: none; /* optional: prevent accidental scroll/drag */
+}
+
 
         .auth-form-section {
           display: flex;
