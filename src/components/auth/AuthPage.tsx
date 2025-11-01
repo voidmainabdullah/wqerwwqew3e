@@ -130,7 +130,7 @@ export const AuthPage: React.FC = () => {
           padding: 40px;
           background: radial-gradient(circle at top right, #2308a1b3 0%, #000 100%);
         }
-
+ 
         .auth-wrapper .form {
           display: flex;
           flex-direction: column;
