@@ -98,7 +98,7 @@ export const AuthPage: React.FC = () => {
           display: grid;
           grid-template-columns: 1fr 1fr;
           min-height: 100vh;
-          background: #ffffff;
+          background: #000;
           overflow: hidden;
         }
 
@@ -128,7 +128,7 @@ export const AuthPage: React.FC = () => {
           align-items: center;
           justify-content: center;
           padding: 40px;
-          background: radial-gradient(circle at top right, #111 0%, #000 100%);
+          background: radial-gradient(circle at top right, #2308a1b3 0%, #000 100%);
         }
 
         .auth-wrapper .form {
