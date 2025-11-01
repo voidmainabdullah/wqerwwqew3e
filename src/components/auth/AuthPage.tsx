@@ -165,7 +165,7 @@ export const AuthPage: React.FC = () => {
 
         .auth-wrapper .logo {
           width: 60px;
-          height: 60px;
+          height: 6px;
           margin-bottom: 12px;
         }
 
