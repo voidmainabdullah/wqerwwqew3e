@@ -98,7 +98,7 @@ export const AuthPage: React.FC = () => {
           display: grid;
           grid-template-columns: 1fr 1fr;
           min-height: 100vh;
-          background: #000;
+          background: #ffffff;
           overflow: hidden;
         }
 
