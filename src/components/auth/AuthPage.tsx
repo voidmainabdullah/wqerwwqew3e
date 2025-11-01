@@ -226,10 +226,10 @@ export const AuthPage: React.FC = () => {
         }
 
         .auth-wrapper .button-submit {
-          background: linear-gradient(90deg, #2d79f3, #194bd4);
+          background: linear-gradient(90deg, #000000, #194bd4);
           color: white;
           border: none;
-          height: 50px;
+          height: 36px;
           border-radius: 8px;
           font-weight: 600;
           font-size: 15px;
