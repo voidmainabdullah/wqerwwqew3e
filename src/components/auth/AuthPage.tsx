@@ -95,11 +95,34 @@ export const AuthPage: React.FC = () => {
     <>
       <style>{`
         .auth-wrapper {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          min-height: 100vh;
+          background: #000;
+          overflow: hidden;
+        }
+
+        .auth-image-section {
+          relative;
+          overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
-          min-height: 100vh;
-          background: radial-gradient(circle at top left, #111 0%, #000 100%);
+          background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        }
+
+        .auth-image-section img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .auth-form-section {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 40px;
+          background: radial-gradient(circle at top right, #111 0%, #000 100%);
         }
 
         .auth-wrapper .form {
@@ -108,43 +131,67 @@ export const AuthPage: React.FC = () => {
           gap: 16px;
           background-color: #1f1f1f;
           padding: 40px;
-          width: 420px;
-          border-radius: 20px;
-          box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+          width: 100%;
+          max-width: 380px;
+          border-radius: 16px;
+          box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+          border: 1px solid #333;
+          max-height: 85vh;
+          overflow-y: auto;
+        }
+
+        .auth-wrapper .form::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .auth-wrapper .form::-webkit-scrollbar-track {
+          background: #1f1f1f;
+          border-radius: 10px;
+        }
+
+        .auth-wrapper .form::-webkit-scrollbar-thumb {
+          background: #444;
+          border-radius: 10px;
+        }
+
+        .auth-wrapper .form::-webkit-scrollbar-thumb:hover {
+          background: #555;
         }
 
         .auth-wrapper .logo-area {
           text-align: center;
-          margin-bottom: 10px;
+          margin-bottom: 16px;
         }
 
         .auth-wrapper .logo {
-          width: 70px;
-          height: 70px;
-          margin-bottom: 10px;
+          width: 60px;
+          height: 60px;
+          margin-bottom: 12px;
         }
 
         .auth-wrapper h2 {
           color: #fff;
           font-size: 24px;
           font-weight: 700;
+          margin: 0;
         }
 
-        .auth-wrapper p {
+        .auth-wrapper .logo-area > p {
           color: #aaa;
-          font-size: 14px;
+          font-size: 13px;
+          margin: 6px 0 0 0;
         }
 
         .auth-wrapper label {
           color: #f1f1f1;
           font-weight: 600;
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .auth-wrapper .inputForm {
           border: 1.5px solid #333;
-          border-radius: 10px;
-          height: 50px;
+          border-radius: 8px;
+          height: 44px;
           display: flex;
           align-items: center;
           padding: 0 12px;
@@ -154,6 +201,7 @@ export const AuthPage: React.FC = () => {
 
         .auth-wrapper .inputForm:focus-within {
           border-color: #2d79f3;
+          box-shadow: 0 0 8px rgba(45, 121, 243, 0.2);
         }
 
         .auth-wrapper .input {
@@ -161,7 +209,7 @@ export const AuthPage: React.FC = () => {
           background: none;
           border: none;
           color: #f1f1f1;
-          font-size: 15px;
+          font-size: 14px;
           height: 100%;
         }
 
@@ -173,76 +221,137 @@ export const AuthPage: React.FC = () => {
           background: linear-gradient(90deg, #2d79f3, #194bd4);
           color: white;
           border: none;
-          height: 50px;
-          border-radius: 10px;
+          height: 44px;
+          border-radius: 8px;
           font-weight: 600;
-          font-size: 16px;
+          font-size: 15px;
           cursor: pointer;
           transition: 0.3s ease;
+          margin-top: 8px;
         }
 
-        .auth-wrapper .button-submit:hover {
+        .auth-wrapper .button-submit:hover:not(:disabled) {
           transform: translateY(-2px);
           box-shadow: 0 0 10px #2d79f3;
+        }
+
+        .auth-wrapper .button-submit:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
         }
 
         .auth-wrapper .flex-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 8px;
+          font-size: 13px;
         }
 
         .auth-wrapper .span {
           color: #2d79f3;
           cursor: pointer;
+          transition: color 0.2s;
+        }
+
+        .auth-wrapper .span:hover {
+          color: #4a8bff;
         }
 
         .auth-wrapper .btn {
-          width: 48%;
-          height: 45px;
-          border-radius: 10px;
+          flex: 1;
+          height: 40px;
+          border-radius: 8px;
           background: #2b2b2b;
           color: #f1f1f1;
           border: 1px solid #333;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
+          gap: 6px;
           font-weight: 500;
+          font-size: 13px;
           transition: 0.3s ease;
+          cursor: pointer;
         }
 
-        .auth-wrapper .btn:hover {
+        .auth-wrapper .btn:hover:not(:disabled) {
           border-color: #2d79f3;
+          background: #2d3c52;
+        }
+
+        .auth-wrapper .btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
         }
 
         .auth-wrapper .flex-column {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 6px;
         }
 
         .auth-wrapper .p {
           text-align: center;
           margin: 0;
+          font-size: 13px;
         }
 
         .auth-wrapper .p.line {
-          position: relative;
-          color: #888;
+          color: #666;
           font-size: 12px;
-          margin: 10px 0;
+          margin: 6px 0;
+          position: relative;
+        }
+
+        .auth-wrapper .remember-row {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 13px;
+          margin: 4px 0;
+        }
+
+        .auth-wrapper input[type="checkbox"] {
+          cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+          .auth-wrapper {
+            grid-template-columns: 1fr;
+          }
+
+          .auth-image-section {
+            display: none;
+          }
+
+          .auth-form-section {
+            background: radial-gradient(circle at top left, #111 0%, #000 100%);
+          }
         }
 
         @media (max-width: 480px) {
           .auth-wrapper .form {
-            width: 90%;
-            padding: 30px;
+            padding: 30px 24px;
+            border-radius: 12px;
+            max-width: 100%;
+          }
+
+          .auth-form-section {
+            padding: 20px;
+          }
+
+          .auth-wrapper h2 {
+            font-size: 20px;
           }
         }
       `}</style>
       <div className="auth-wrapper">
-        <form className="form" onSubmit={handleSubmit}>
+        <div className="auth-image-section">
+          <img src="/showcase2.png" alt="File sharing showcase" />
+        </div>
+        <div className="auth-form-section">
+          <form className="form" onSubmit={handleSubmit}>
         <div className="logo-area">
           <img src="/sky.png" alt="logo" className="logo" />
           <h2>{isSignUp ? "Join SkieShare" : "Welcome Back"}</h2>
@@ -313,9 +422,9 @@ export const AuthPage: React.FC = () => {
         )}
 
         <div className="flex-row">
-          <div>
+          <div className="remember-row">
             <input type="checkbox" id="remember" />
-            <label htmlFor="remember"> Remember me </label>
+            <label htmlFor="remember">Remember me</label>
           </div>
           <span className="span">Forgot password?</span>
         </div>
@@ -404,7 +513,8 @@ export const AuthPage: React.FC = () => {
             Apple
           </button>
         </div>
-      </form>
+          </form>
+        </div>
       </div>
     </>
   );
