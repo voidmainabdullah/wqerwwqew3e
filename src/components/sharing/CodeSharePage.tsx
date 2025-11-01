@@ -148,6 +148,9 @@ export const CodeSharePage: React.FC = () => {
             setDownloading(false);
             return;
           }
+          
+          // Password validated successfully
+          setPasswordRequired(false);
         }
       }
 
@@ -249,52 +252,63 @@ export const CodeSharePage: React.FC = () => {
             </div>
 
             {fileData && (
-                <div className="space-y-4">
-                 <div className="text-center space-y-2 p-4 bg-muted rounded-lg">
-                   <FileText className="mx-auto h-8 w-8 text-primary" />
-                   <h3 className="font-medium">{fileData.original_name}</h3>
-                   <p className="text-sm text-muted-foreground">
-                     {formatFileSize(fileData.file_size)} • {fileData.file_type}
-                   </p>
-                   
-                    {shareMessage && (
-                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
-                        <p className="text-sm text-blue-800 dark:text-blue-200">{shareMessage}</p>
-                      </div>
-                    )}
-                 </div>
+              <div className="space-y-4">
+                {passwordRequired ? (
+                  <>
+                    <Alert>
+                      <Lock className="h-4 w-4" />
+                      <AlertDescription>
+                        This file is password protected. Please enter the password to continue.
+                      </AlertDescription>
+                    </Alert>
 
-                {fileData.is_locked && (
-                  <Alert>
-                    <Lock className="h-4 w-4" />
-                    <AlertDescription>
-                      This file is password protected
-                    </AlertDescription>
-                  </Alert>
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Enter Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter password"
+                        onKeyPress={(e) => e.key === 'Enter' && downloadFile()}
+                      />
+                    </div>
+
+                    <Button 
+                      onClick={downloadFile} 
+                      disabled={downloading}
+                      className="w-full"
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      {downloading ? 'Verifying...' : 'Unlock & Download'}
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-center space-y-2 p-4 bg-muted rounded-lg">
+                      <FileText className="mx-auto h-8 w-8 text-primary" />
+                      <h3 className="font-medium">{fileData.original_name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {formatFileSize(fileData.file_size)} • {fileData.file_type}
+                      </p>
+                      
+                      {shareMessage && (
+                        <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
+                          <p className="text-sm text-blue-800 dark:text-blue-200">{shareMessage}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <Button 
+                      onClick={downloadFile} 
+                      disabled={downloading}
+                      className="w-full"
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      {downloading ? 'Downloading...' : 'Download File'}
+                    </Button>
+                  </>
                 )}
-
-                {passwordRequired && (
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Enter Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter password"
-                      onKeyPress={(e) => e.key === 'Enter' && downloadFile()}
-                    />
-                  </div>
-                )}
-
-                <Button 
-                  onClick={downloadFile} 
-                  disabled={downloading}
-                  className="w-full"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  {downloading ? 'Downloading...' : 'Download File'}
-                </Button>
               </div>
             )}
           </CardContent>

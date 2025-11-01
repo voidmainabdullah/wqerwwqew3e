@@ -184,19 +184,6 @@ export default function CodePage() {
                   />
                 </div>
 
-                {requiresPassword && (
-                  <div>
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Enter file password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                )}
-
                 <Button
                   onClick={handleCodeSubmit}
                   disabled={isLoading || !shareCode.trim()}
@@ -204,6 +191,37 @@ export default function CodePage() {
                 >
                   {isLoading ? 'Verifying...' : 'Access File'}
                 </Button>
+              </>
+            ) : requiresPassword ? (
+              <>
+                <div className="text-center p-4 bg-muted rounded-lg">
+                  <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FileText className="h-8 w-8 text-blue-500" />
+                  </div>
+                  <p className="text-sm text-muted-foreground">Password protected file found</p>
+                </div>
+
+                <div>
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter file password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && downloadFile()}
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <Button onClick={downloadFile} disabled={isLoading || !password.trim()} className="flex-1">
+                    <Download className="h-4 w-4 mr-2" />
+                    {isLoading ? 'Verifying...' : 'Unlock & Download'}
+                  </Button>
+                  <Button variant="outline" onClick={resetForm}>
+                    Cancel
+                  </Button>
+                </div>
               </>
             ) : (
               <div className="space-y-4">

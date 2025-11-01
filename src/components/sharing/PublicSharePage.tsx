@@ -332,110 +332,114 @@ export const PublicSharePage: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="text-center space-y-2">
-            <h3 className="font-medium text-lg">
-              {shareData.file?.original_name || shareData.folder?.name || 'Shared Item'}
-            </h3>
-            {shareData.file && (
-              <p className="text-sm text-muted-foreground">
-                {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
-              </p>
-            )}
-            {shareData.folder && (
-              <p className="text-sm text-muted-foreground">
-                Folder with {folderFiles.length} file{folderFiles.length !== 1 ? 's' : ''}
-              </p>
-            )}
-            
-            {shareData.message && (
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
-                <p className="text-sm text-blue-800 dark:text-blue-200">{shareData.message}</p>
-              </div>
-            )}
-            
-            {shareData.expires_at && (
-              <p className="text-xs text-muted-foreground">
-                Expires: {new Date(shareData.expires_at).toLocaleDateString()}
-              </p>
-            )}
-            
-            {shareData.download_limit && (
-              <p className="text-xs text-muted-foreground">
-                Downloads: {shareData.download_count}/{shareData.download_limit}
-              </p>
-            )}
-          </div>
+          {/* Show password prompt FIRST if required */}
+          {passwordRequired ? (
+            <>
+              <Alert>
+                <Lock className="h-4 w-4" />
+                <AlertDescription>
+                  This content is password protected. Please enter the password to continue.
+                </AlertDescription>
+              </Alert>
 
-          {shareData.password_hash && (
-            <Alert>
-              <Lock className="h-4 w-4" />
-              <AlertDescription>
-                This file is password protected
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {passwordRequired && (
-            <div className="space-y-2">
-              <Label htmlFor="password">Enter Password</Label>
-              <div className="flex space-x-2">
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  onKeyPress={(e) => e.key === 'Enter' && validatePassword()}
-                />
-                <Button onClick={validatePassword} size="sm">
-                  Unlock
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* For folders, show file list */}
-          {shareData.folder && folderFiles.length > 0 && !passwordRequired && (
-            <div className="space-y-2 max-h-64 overflow-y-auto">
-              <p className="text-sm font-medium">Files in this folder:</p>
-              {folderFiles.map((file) => (
-                <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{file.original_name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {formatFileSize(file.file_size)} • {file.file_type}
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => downloadFile(file)}
-                    disabled={downloading}
-                  >
-                    <Download className="h-4 w-4" />
+              <div className="space-y-2">
+                <Label htmlFor="password">Enter Password</Label>
+                <div className="flex space-x-2">
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter password"
+                    onKeyPress={(e) => e.key === 'Enter' && validatePassword()}
+                  />
+                  <Button onClick={validatePassword} size="sm">
+                    Unlock
                   </Button>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Only show content after password validation (or if no password required) */}
+              <div className="text-center space-y-2">
+                <h3 className="font-medium text-lg">
+                  {shareData.file?.original_name || shareData.folder?.name || 'Shared Item'}
+                </h3>
+                {shareData.file && (
+                  <p className="text-sm text-muted-foreground">
+                    {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
+                  </p>
+                )}
+                {shareData.folder && (
+                  <p className="text-sm text-muted-foreground">
+                    Folder with {folderFiles.length} file{folderFiles.length !== 1 ? 's' : ''}
+                  </p>
+                )}
+                
+                {shareData.message && (
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
+                    <p className="text-sm text-blue-800 dark:text-blue-200">{shareData.message}</p>
+                  </div>
+                )}
+                
+                {shareData.expires_at && (
+                  <p className="text-xs text-muted-foreground">
+                    Expires: {new Date(shareData.expires_at).toLocaleDateString()}
+                  </p>
+                )}
+                
+                {shareData.download_limit && (
+                  <p className="text-xs text-muted-foreground">
+                    Downloads: {shareData.download_count}/{shareData.download_limit}
+                  </p>
+                )}
+              </div>
 
-          {/* For single files, show download button */}
-          {shareData.file && (
-            <Button 
-              onClick={() => downloadFile()} 
-              disabled={downloading || passwordRequired}
-              className="w-full"
-            >
-              <Download className="mr-2 h-4 w-4" />
-              {downloading ? 'Downloading...' : 'Download File'}
-            </Button>
-          )}
+              {/* For folders, show file list */}
+              {shareData.folder && folderFiles.length > 0 && (
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  <p className="text-sm font-medium">Files in this folder:</p>
+                  {folderFiles.map((file) => (
+                    <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{file.original_name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatFileSize(file.file_size)} • {file.file_type}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => downloadFile(file)}
+                        disabled={downloading}
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
 
-          {/* For empty folders */}
-          {shareData.folder && folderFiles.length === 0 && !passwordRequired && (
-            <div className="text-center py-4 text-muted-foreground">
-              <p className="text-sm">This folder is empty</p>
-            </div>
+              {/* For single files, show download button */}
+              {shareData.file && (
+                <Button 
+                  onClick={() => downloadFile()} 
+                  disabled={downloading}
+                  className="w-full"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  {downloading ? 'Downloading...' : 'Download File'}
+                </Button>
+              )}
+
+              {/* For empty folders */}
+              {shareData.folder && folderFiles.length === 0 && (
+                <div className="text-center py-4 text-muted-foreground">
+                  <p className="text-sm">This folder is empty</p>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>
