@@ -1,48 +1,32 @@
-import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Navigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/hooks/use-toast';
-import { AnimatedBackground } from '@/components/ui/animated-background';
-import { useTheme } from '@/contexts/ThemeContext';
-import { Eye, EyeSlash, Envelope, Lock, User, ArrowRight, Shield, Lightning, ArrowLeft } from 'phosphor-react';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useAuth } from "@/contexts/AuthContext";
+import { Navigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "@/contexts/ThemeContext";
+
 export const AuthPage: React.FC = () => {
-  const {
-    user,
-    signIn,
-    signUp,
-    signInWithGoogle
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
-  const {
-    actualTheme
-  } = useTheme();
+  const { user, signIn, signUp, signInWithGoogle } = useAuth();
+  const { toast } = useToast();
+  const { actualTheme } = useTheme();
+
   const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Redirect if already authenticated
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  if (user) return <Navigate to="/dashboard" replace />;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!email || !password) {
       toast({
         variant: "destructive",
         title: "Missing fields",
-        description: "Please fill in all required fields"
+        description: "Please fill in all required fields",
       });
       return;
     }
@@ -50,7 +34,7 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Passwords don't match",
-        description: "Please make sure your passwords match"
+        description: "Please make sure your passwords match",
       });
       return;
     }
@@ -58,30 +42,27 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Password too short",
-        description: "Password must be at least 6 characters long"
+        description: "Password must be at least 6 characters long",
       });
       return;
     }
+
     setLoading(true);
     try {
       if (isSignUp) {
-        const {
-          error
-        } = await signUp(email, password, displayName);
+        const { error } = await signUp(email, password, displayName);
         if (!error) {
           toast({
-            title: "Account created successfully!",
-            description: "Please check your email to verify your account."
+            title: "Account created!",
+            description: "Please verify your email to continue.",
           });
         }
       } else {
-        const {
-          error
-        } = await signIn(email, password);
+        const { error } = await signIn(email, password);
         if (!error) {
           toast({
             title: "Welcome back!",
-            description: "You have been signed in successfully."
+            description: "You have been signed in successfully.",
           });
         }
       }
@@ -89,12 +70,13 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Authentication failed",
-        description: error.message || "An error occurred during authentication"
+        description: error.message || "An error occurred during authentication",
       });
     } finally {
       setLoading(false);
     }
   };
+
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
@@ -103,179 +85,308 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Google sign-in failed",
-        description: error.message || "Failed to sign in with Google"
+        description: error.message || "Failed to sign in with Google",
       });
     } finally {
       setLoading(false);
     }
   };
-  return <div className="min-h-screen flex items-center justify-center relative bg-background">
 
-      {/* Animated Background */}
-      <div className="absolute inset-0">
-        <AnimatedBackground />
-      </div>
-      
-      {/* Content Container */}
-      <div className="relative z-20 w-full max-w-md mx-auto p-4">
-          {/* Back to Home Button */}
-          <div className="mb-8">
-            <Button variant="ghost" className="flex items-center gap-2 text-muted-foreground hover:text-foreground group transition-all duration-300 hover:scale-105" onClick={() => window.location.href = '/'}>
-              <ArrowLeft className="h-4 w-4" />
-              <span className="relative">
-                Back to Home
-              </span>
-            </Button>
+  return (
+    <StyledWrapper>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="logo-area">
+          <img src="/skie.png" alt="logo" className="logo" />
+          <h2>{isSignUp ? "Join SkieShare" : "Welcome Back"}</h2>
+          <p>
+            {isSignUp
+              ? "Create your account and start sharing securely"
+              : "Sign in to your SkieShare dashboard"}
+          </p>
+        </div>
+
+        {isSignUp && (
+          <div className="flex-column">
+            <label>Display Name</label>
+            <div className="inputForm">
+              <input
+                type="text"
+                className="input"
+                placeholder="Enter your name"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+              />
+            </div>
           </div>
+        )}
 
-          <Card className="backdrop-blur-md bg-card/90 border border-border/60 shadow-xl">
-              
-              <CardHeader className="text-center space-y-4">
-                {/* Logo with enhanced effects */}
-                <div className="mx-auto relative">
-                  <div className="relative w-20 h-20 mx-auto group">
-                    <img 
-                      src="/skie.png" 
-                      alt="SkieShare Logo" 
-                      className="w-20 h-20 object-contain transition-all duration-500 group-hover:scale-110" 
-                    />
-                    <div className="absolute inset-0 blur-md opacity-0 group-hover:opacity-40 transition-all duration-500">
-                      <img src="/skie.png" alt="SkieShare Logo Glow" className="w-20 h-20 object-contain" />
-                    </div>
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                </div>
-                
-                <div>
-                  <CardTitle className="text-3xl font-heading font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                    {isSignUp ? 'Join SkieShare' : 'Welcome Back'}
-                  </CardTitle>
-                  <CardDescription className="text-lg font-body mt-3 text-muted-foreground">
-                    {isSignUp ? 'Create your account and start sharing files securely' : 'Sign in to access your secure file sharing dashboard'}
-                  </CardDescription>
-                </div>
-              </CardHeader>
+        <div className="flex-column">
+          <label>Email</label>
+          <div className="inputForm">
+            <input
+              type="email"
+              className="input"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+        </div>
 
-              <CardContent className="space-y-6">
-                {/* Google Sign In with enhanced styling */}
-                <div>
-                  <Button variant="outline" className={`w-full h-14 text-base font-medium border-2 transition-all duration-300 relative overflow-hidden group ${actualTheme === 'light' ? 'border-slate-300 hover:bg-slate-50 hover:border-indigo-400' : 'hover:bg-accent/50'} font-heading icon-text`} onClick={handleGoogleSignIn} disabled={loading}>
-                    <svg className="w-6 h-6" viewBox="0 0 24 24">
-                      <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                      <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                      <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                      <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                    </svg>
-                    <span>Continue with Google</span>
-                  </Button>
-                </div>
+        <div className="flex-column">
+          <label>Password</label>
+          <div className="inputForm">
+            <input
+              type="password"
+              className="input"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+        </div>
 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <Separator className="w-full" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-4 py-1 font-body text-muted-foreground rounded-full border border-border/50">
-                      Or continue with email
-                    </span>
-                  </div>
-                </div>
+        {isSignUp && (
+          <div className="flex-column">
+            <label>Confirm Password</label>
+            <div className="inputForm">
+              <input
+                type="password"
+                className="input"
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+        )}
 
-                {/* Enhanced Email/Password Form */}
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  {isSignUp && <div className="space-y-2">
-                      <Label htmlFor="displayName" className="text-sm font-heading font-medium">
-                        Display Name
-                      </Label>
-                      <div className="relative group">
-                        <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">person</span>
-                        <Input id="displayName" type="text" placeholder="Enter your name" value={displayName} onChange={e => setDisplayName(e.target.value)} className="pl-11 h-14 text-base font-body" />
-                      </div>
-                    </div>}
+        <div className="flex-row">
+          <div>
+            <input type="checkbox" id="remember" />
+            <label htmlFor="remember"> Remember me </label>
+          </div>
+          <span className="span">Forgot password?</span>
+        </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-heading font-medium">
-                      Email Address
-                    </Label>
-                    <div className="relative group">
-                      <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">email</span>
-                      <Input id="email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} className="pl-11 h-14 text-base font-body" required />
-                    </div>
-                  </div>
+        <button
+          type="submit"
+          className="button-submit"
+          disabled={loading}
+        >
+          {loading
+            ? isSignUp
+              ? "Creating Account..."
+              : "Signing In..."
+            : isSignUp
+            ? "Create Account"
+            : "Sign In"}
+        </button>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="password" className="text-sm font-heading font-medium">
-                      Password
-                    </Label>
-                    <div className="relative group">
-                      <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">lock</span>
-                      <Input id="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} className="pl-11 pr-11 h-14 text-base font-body" required />
-                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                        <span className={`material-icons md-24 ${actualTheme === 'light' ? 'text-black' : 'text-primary'}`}>
-                          {showPassword ? 'visibility_off' : 'visibility'}
-                        </span>
-                      </button>
-                    </div>
-                  </div>
+        <p className="p">
+          {isSignUp ? (
+            <>
+              Already have an account?
+              <span
+                className="span"
+                onClick={() => {
+                  setIsSignUp(false);
+                  setEmail("");
+                  setPassword("");
+                  setConfirmPassword("");
+                }}
+              >
+                Sign In
+              </span>
+            </>
+          ) : (
+            <>
+              Don’t have an account?
+              <span
+                className="span"
+                onClick={() => {
+                  setIsSignUp(true);
+                  setEmail("");
+                  setPassword("");
+                  setConfirmPassword("");
+                }}
+              >
+                Sign Up
+              </span>
+            </>
+          )}
+        </p>
 
-                  {isSignUp && <div className="space-y-2">
-                      <Label htmlFor="confirmPassword" className="text-sm font-heading font-medium">
-                        Confirm Password
-                      </Label>
-                      <div className="relative group">
-                        <span className="material-icons md-18 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">lock</span>
-                        <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Confirm your password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="pl-11 pr-11 h-14 text-base font-body" required />
-                        <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                          <span className="material-icons md-18">
-                            {showConfirmPassword ? 'visibility_off' : 'visibility'}
-                          </span>
-                        </button>
-                      </div>
-                    </div>}
+        <p className="p line">Or With</p>
 
-                  <div>
-                    <Button type="submit" className={`w-full h-14 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group ${actualTheme === 'light' ? 'bg-black hover:bg-neutral-800 text-white hover:shadow-black/20' : 'bg-white hover:bg-neutral-200 text-black hover:shadow-white/20'} font-heading icon-text`} disabled={loading}>
-                      {loading ? <div className="flex items-center gap-3">
-                          <div className={`w-5 h-5 border-2 border-t-transparent rounded-full animate-spin ${actualTheme === 'light' ? 'border-white' : 'border-primary-foreground'}`} />
-                          <span>
-                            {isSignUp ? 'Creating Account...' : 'Signing In...'}
-                          </span>
-                        </div> : <div className="flex items-center gap-3">
-                          <span className="material-icons md-18">arrow_forward</span>
-                          <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
-                        </div>}
-                    </Button>
-                  </div>
-                </form>
+        <div className="flex-row">
+          <button
+            type="button"
+            className="btn google"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+          >
+            <svg
+              version="1.1"
+              width={20}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path
+                fill="#FBBB00"
+                d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256
+	              c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644..."
+              />
+            </svg>
+            Google
+          </button>
 
-                {/* Toggle between Sign In and Sign Up */}
-                <div className="text-center">
-                  <button onClick={() => {
-              setIsSignUp(!isSignUp);
-              setEmail('');
-              setPassword('');
-              setConfirmPassword('');
-              setDisplayName('');
-            }} className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors">
-                    {isSignUp ? <>
-                        Already have an account?{' '}
-                        <span className="text-primary font-heading font-medium">
-                          Sign in
-                        </span>
-                      </> : <>
-                        Don't have an account?{' '}
-                        <span className="text-primary font-heading font-medium">
-                          Sign up
-                        </span>
-                      </>}
-                  </button>
-                </div>
-
-                {/* Enhanced Security Notice */}
-                
-              </CardContent>
-          </Card>
-      </div>
-
-    </div>;
+          <button type="button" className="btn apple">
+            <svg
+              version="1.1"
+              width={20}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 22.773 22.773"
+            >
+              <path d="M15.769,0c0.053,0,0.106,0,0.162,0c0.13,1.606-0.483,2.806-1.228,3.675..." />
+            </svg>
+            Apple
+          </button>
+        </div>
+      </form>
+    </StyledWrapper>
+  );
 };
+
+const StyledWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #111 0%, #000 100%);
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: #1f1f1f;
+    padding: 40px;
+    width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  }
+
+  .logo-area {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  p {
+    color: #aaa;
+    font-size: 14px;
+  }
+
+  label {
+    color: #f1f1f1;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .inputForm {
+    border: 1.5px solid #333;
+    border-radius: 10px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    background-color: #2b2b2b;
+    transition: 0.3s ease;
+  }
+
+  .inputForm:focus-within {
+    border-color: #2d79f3;
+  }
+
+  .input {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #f1f1f1;
+    font-size: 15px;
+    height: 100%;
+  }
+
+  .input:focus {
+    outline: none;
+  }
+
+  .button-submit {
+    background: linear-gradient(90deg, #2d79f3, #194bd4);
+    color: white;
+    border: none;
+    height: 50px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .button-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px #2d79f3;
+  }
+
+  .flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .span {
+    color: #2d79f3;
+    cursor: pointer;
+  }
+
+  .btn {
+    width: 48%;
+    height: 45px;
+    border-radius: 10px;
+    background: #2b2b2b;
+    color: #f1f1f1;
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: 0.3s ease;
+  }
+
+  .btn:hover {
+    border-color: #2d79f3;
+  }
+
+  @media (max-width: 480px) {
+    .form {
+      width: 90%;
+      padding: 30px;
+    }
+  }
+`;
+
