@@ -363,7 +363,7 @@ export const AuthPage: React.FC = () => {
           <img src="/showcase2.png" alt="File sharing showcase" />
         </div>
         <div className="auth-form-section">
-          <form onSubmit={handleSubmit} className="mx-0">
+          <form onSubmit={handleSubmit} className="form mx-0">
         <div className="logo-area">
           <img src="/skie.png" alt="logo" className="logo" />
           <h2>{isSignUp ? "Join SkieShare" : "Welcome Back"}</h2>
@@ -408,7 +408,7 @@ export const AuthPage: React.FC = () => {
           <span className="span">Forgot password?</span>
         </div>
 
-        <button type="submit" disabled={loading} className="bg-white p-2 rounded-xl text-base font-bold text-zinc-600">
+        <button type="submit" disabled={loading} className="bg-transparent">
           {loading ? isSignUp ? "Creating Account..." : "Signing In..." : isSignUp ? "Create Account" : "Sign In"}
         </button>
 
