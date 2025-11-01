@@ -49,6 +49,7 @@ export default function CodePage() {
         .from('shared_links')
         .select('password_hash, share_token')
         .eq('file_id', fileData.id)
+        .eq('link_type', 'code')
         .maybeSingle();
 
       const hasPasswordProtection = fileData.is_locked || sharedLink?.password_hash;
