@@ -231,7 +231,7 @@ export const AuthPage: React.FC = () => {
           border: none;
           height: 36px;
           border-radius: 8px;
-          font-weight: 600;
+          font-weight: 600; 
           font-size: 15px;
           cursor: pointer;
           transition: 0.3s ease;
