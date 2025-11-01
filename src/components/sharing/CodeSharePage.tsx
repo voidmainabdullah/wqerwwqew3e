@@ -74,10 +74,10 @@ export const CodeSharePage: React.FC = () => {
 
       setFileData(data);
 
-      // Get share message from shared_links table
+      // Get share message and password protection from shared_links table
       const { data: shareData } = await supabase
         .from('shared_links')
-        .select('message')
+        .select('message, password_hash')
         .eq('file_id', data.id)
         .eq('link_type', 'code')
         .maybeSingle();
@@ -86,7 +86,8 @@ export const CodeSharePage: React.FC = () => {
         setShareMessage(shareData.message);
       }
 
-      if (data.is_locked) {
+      // Check if password is required (either file is locked OR share has password)
+      if (data.is_locked || shareData?.password_hash) {
         setPasswordRequired(true);
       }
 
@@ -108,7 +109,8 @@ export const CodeSharePage: React.FC = () => {
   const downloadFile = async () => {
     if (!fileData) return;
 
-    if (fileData.is_locked && passwordRequired && !password.trim()) {
+    // Check if password is required before downloading
+    if (passwordRequired && !password.trim()) {
       toast({
         variant: "destructive",
         title: "Password required",

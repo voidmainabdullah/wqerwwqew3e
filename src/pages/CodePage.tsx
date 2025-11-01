@@ -44,20 +44,23 @@ export default function CodePage() {
         return;
       }
 
-      if (fileData.is_locked && !password) {
+      // Check if file has password protection via shared_links or is_locked
+      const { data: sharedLink } = await supabase
+        .from('shared_links')
+        .select('password_hash, share_token')
+        .eq('file_id', fileData.id)
+        .maybeSingle();
+
+      const hasPasswordProtection = fileData.is_locked || sharedLink?.password_hash;
+
+      if (hasPasswordProtection && !password) {
+        setFile(fileData);
         setRequiresPassword(true);
         toast.error('This file is password protected');
         return;
       }
 
-      if (fileData.is_locked && password) {
-        const { data: sharedLink } = await supabase
-          .from('shared_links')
-          .select('password_hash, share_token')
-          .eq('file_id', fileData.id)
-          .not('password_hash', 'is', null)
-          .maybeSingle();
-
+      if (hasPasswordProtection && password) {
         if (sharedLink?.password_hash) {
           const { data: isValidPassword } = await supabase.rpc('validate_share_password', {
             token: sharedLink.share_token,
@@ -87,9 +90,9 @@ export default function CodePage() {
   const downloadFile = async () => {
     if (!file) return;
 
-    if (file.is_locked && !password) {
+    // If password is still required, prevent download
+    if (requiresPassword && !password) {
       toast.error('This file is password protected. Please enter the password.');
-      setRequiresPassword(true);
       return;
     }
 
