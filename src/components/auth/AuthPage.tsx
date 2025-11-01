@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 export const AuthPage: React.FC = () => {
   const { user, signIn, signUp, signInWithGoogle } = useAuth();
-  const { toast } = useToast();
+  const { toast } = useToast(); 
   const { actualTheme } = useTheme();
 
   const [isSignUp, setIsSignUp] = useState(false);
