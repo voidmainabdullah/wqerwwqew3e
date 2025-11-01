@@ -353,7 +353,7 @@ export const AuthPage: React.FC = () => {
         <div className="auth-form-section">
           <form className="form" onSubmit={handleSubmit}>
         <div className="logo-area">
-          <img src="/sky.png" alt="logo" className="logo" />
+          <img src="/skie.png" alt="logo" className="logo" />
           <h2>{isSignUp ? "Join SkieShare" : "Welcome Back"}</h2>
           <p>
             {isSignUp
