@@ -223,7 +223,7 @@ export const AuthPage: React.FC = () => {
           background: linear-gradient(90deg, #2d79f3, #194bd4);
           color: white;
           border: none;
-          height: 66px;
+          height: 50px;
           border-radius: 8px;
           font-weight: 600;
           font-size: 15px;
