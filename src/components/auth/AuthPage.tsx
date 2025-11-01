@@ -458,12 +458,12 @@ export const AuthPage: React.FC = () => {
                   setConfirmPassword("");
                 }}
               >
-                Sign In
+                 Sign In
               </span>
             </>
           ) : (
             <>
-              Don’t have an account?
+              Don’t have an account? 
               <span
                 className="span"
                 onClick={() => {
