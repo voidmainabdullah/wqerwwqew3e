@@ -3,29 +3,33 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/contexts/ThemeContext";
-
 export const AuthPage: React.FC = () => {
-  const { user, signIn, signUp, signInWithGoogle } = useAuth();
-  const { toast } = useToast();  
-  const { actualTheme } = useTheme();
-
+  const {
+    user,
+    signIn,
+    signUp,
+    signInWithGoogle
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
+  const {
+    actualTheme
+  } = useTheme();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
-
   if (user) return <Navigate to="/dashboard" replace />;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!email || !password) {
       toast({
         variant: "destructive",
         title: "Missing fields",
-        description: "Please fill in all required fields",
+        description: "Please fill in all required fields"
       });
       return;
     }
@@ -33,7 +37,7 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Passwords don't match",
-        description: "Please make sure your passwords match",
+        description: "Please make sure your passwords match"
       });
       return;
     }
@@ -41,27 +45,30 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Password too short",
-        description: "Password must be at least 6 characters long",
+        description: "Password must be at least 6 characters long"
       });
       return;
     }
-
     setLoading(true);
     try {
       if (isSignUp) {
-        const { error } = await signUp(email, password, displayName);
+        const {
+          error
+        } = await signUp(email, password, displayName);
         if (!error) {
           toast({
             title: "Account created!",
-            description: "Please verify your email to continue.",
+            description: "Please verify your email to continue."
           });
         }
       } else {
-        const { error } = await signIn(email, password);
+        const {
+          error
+        } = await signIn(email, password);
         if (!error) {
           toast({
             title: "Welcome back!",
-            description: "You have been signed in successfully.",
+            description: "You have been signed in successfully."
           });
         }
       }
@@ -69,13 +76,12 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Authentication failed",
-        description: error.message || "An error occurred during authentication",
+        description: error.message || "An error occurred during authentication"
       });
     } finally {
       setLoading(false);
     }
   };
-
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
@@ -84,15 +90,13 @@ export const AuthPage: React.FC = () => {
       toast({
         variant: "destructive",
         title: "Google sign-in failed",
-        description: error.message || "Failed to sign in with Google",
+        description: error.message || "Failed to sign in with Google"
       });
     } finally {
       setLoading(false);
     }
   };
-
-  return (
-    <>
+  return <>
       <style>{`
         .auth-wrapper {
           display: grid;
@@ -355,166 +359,95 @@ export const AuthPage: React.FC = () => {
         }
       `}</style>
       <div className="auth-wrapper">
-        <div className="auth-image-section">
+        <div className="auth-image-section rounded-2xl">
           <img src="/showcase2.png" alt="File sharing showcase" />
         </div>
         <div className="auth-form-section">
-          <form className="form" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="form mx-0">
         <div className="logo-area">
           <img src="/skie.png" alt="logo" className="logo" />
           <h2>{isSignUp ? "Join SkieShare" : "Welcome Back"}</h2>
           <p>
-            {isSignUp
-              ? "Create your account and start sharing securely"
-              : "Sign in to your SkieShare dashboard"}
+            {isSignUp ? "Create your account and start sharing securely" : "Sign in to your SkieShare dashboard"}
           </p>
         </div>
 
-        {isSignUp && (
-          <div className="flex-column">
+        {isSignUp && <div className="flex-column">
             <label>Display Name</label>
             <div className="inputForm">
-              <input
-                type="text"
-                className="input"
-                placeholder="Enter your name"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-              />
+              <input type="text" className="input" placeholder="Enter your name" value={displayName} onChange={e => setDisplayName(e.target.value)} />
             </div>
-          </div>
-        )}
+          </div>}
 
         <div className="flex-column">
           <label>Email</label>
           <div className="inputForm">
-            <input
-              type="email"
-              className="input"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <input type="email" className="input" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} required />
           </div>
         </div>
 
         <div className="flex-column">
           <label>Password</label>
           <div className="inputForm">
-            <input
-              type="password"
-              className="input"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <input type="password" className="input" placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} required />
           </div>
         </div>
 
-        {isSignUp && (
-          <div className="flex-column">
+        {isSignUp && <div className="flex-column">
             <label>Confirm Password</label>
             <div className="inputForm">
-              <input
-                type="password"
-                className="input"
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <input type="password" className="input" placeholder="Confirm your password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
             </div>
-          </div>
-        )}
+          </div>}
 
         <div className="flex-row">
           <div className="remember-row">
-            <input type="checkbox" id="remember" />
-            <label htmlFor="remember">Remember me</label>
+            
+            
           </div>
           <span className="span">Forgot password?</span>
         </div>
 
-        <button
-          type="submit"
-          className="button-submit"
-          disabled={loading}
-        >
-          {loading
-            ? isSignUp
-              ? "Creating Account..."
-              : "Signing In..."
-            : isSignUp
-            ? "Create Account"
-            : "Sign In"}
+        <button type="submit" disabled={loading} className="bg-transparent">
+          {loading ? isSignUp ? "Creating Account..." : "Signing In..." : isSignUp ? "Create Account" : "Sign In"}
         </button>
 
         <p className="p">
-          {isSignUp ? (
-            <>
+          {isSignUp ? <>
               Already have an account?
-              <span
-                className="span"
-                onClick={() => {
-                  setIsSignUp(false);
-                  setEmail("");
-                  setPassword("");
-                  setConfirmPassword("");
-                }}
-              >
+              <span className="span" onClick={() => {
+                setIsSignUp(false);
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+              }}>
                  Sign In
               </span>
-            </>
-          ) : (
-            <>
+            </> : <>
               Don’t have an account? 
-              <span
-                className="span"
-                onClick={() => {
-                  setIsSignUp(true);
-                  setEmail("");
-                  setPassword("");
-                  setConfirmPassword("");
-                }}
-              >
+              <span onClick={() => {
+                setIsSignUp(true);
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+              }} className="span text-left mx-[5px]">
                 Sign Up
               </span>
-            </>
-          )}
+            </>}
         </p>
 
         <p className="p line">Or With</p>
 
         <div className="flex-row">
-          <button
-            type="button"
-            className="btn google"
-            onClick={handleGoogleSignIn}
-            disabled={loading}
-          >
-            <svg
-              version="1.1"
-              width={20}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-            >
-              <path
-                fill="#FBBB00"
-                d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256 c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644c-5.317,15.501-8.215,32.141-8.215,49.456 C103.821,274.792,107.225,292.797,113.47,309.408z"
-              />
+          <button type="button" className="btn google" onClick={handleGoogleSignIn} disabled={loading}>
+            <svg version="1.1" width={20} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="#FBBB00" d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256 c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644c-5.317,15.501-8.215,32.141-8.215,49.456 C103.821,274.792,107.225,292.797,113.47,309.408z" />
             </svg>
             Google
           </button>
 
           <button type="button" className="btn apple">
-            <svg
-              version="1.1"
-              width={20}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 22.773 22.773"
-            >
+            <svg version="1.1" width={20} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.773 22.773">
               <path d="M15.769,0c0.053,0,0.106,0,0.162,0c0.13,1.606-0.483,2.806-1.228,3.675..." />
             </svg>
             Apple
@@ -523,7 +456,5 @@ export const AuthPage: React.FC = () => {
           </form>
         </div>
       </div>
-    </>
-  );
+    </>;
 };
-
