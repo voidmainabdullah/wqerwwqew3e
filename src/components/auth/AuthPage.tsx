@@ -115,6 +115,7 @@ export const AuthPage: React.FC = () => {
           width: 100%;
           height: 65%;
           object-fit: cover;
+          margin-botton: 40px;
         }
 
         .auth-form-section {
