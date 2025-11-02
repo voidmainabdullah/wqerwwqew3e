@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast'; 
 import {
   Card,
   CardContent,
@@ -633,6 +633,7 @@ const Sparkline: React.FC<{ value: number }> = ({ value }) => {
 };
 
 // ---------------------
+// ---------------------
 // Edit Link Settings Dialog
 const EditDialog: React.FC<{
   editingLink: SharedLink;
@@ -641,7 +642,14 @@ const EditDialog: React.FC<{
   setIsOpen: (open: boolean) => void;
   saveEditedLink: () => void;
   toggleFilePublicStatus: (fileId: string, isPublic: boolean) => Promise<void>;
-}> = ({ editingLink, setEditingLink, isOpen, setIsOpen, saveEditedLink, toggleFilePublicStatus }) => {
+}> = ({
+  editingLink,
+  setEditingLink,
+  isOpen,
+  setIsOpen,
+  saveEditedLink,
+  toggleFilePublicStatus
+}) => {
   const [local, setLocal] = useState<SharedLink | null>(editingLink);
 
   useEffect(() => setLocal(editingLink), [editingLink]);
@@ -657,39 +665,52 @@ const EditDialog: React.FC<{
 
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
-            <Switch checked={local.is_active} onCheckedChange={(checked) => setLocal({ ...local, is_active: !!checked })} />
+            <Switch
+              checked={local.is_active}
+              onCheckedChange={(checked) =>
+                setLocal({ ...local, is_active: !!checked })
+              }
+            />
             <Label>Link Active</Label>
           </div>
 
           <div className="flex items-center space-x-2">
-            <Switch checked={local.files.is_public} onCheckedChange={(checked) => {
-              // Immediately update file public status via RPC and local state
-              toggleFilePublicStatus(local.file_id, !!checked);
-              setLocal({ ...local, files: { ...local.files, is_public: !!checked } });
-            }} />
+            <Switch
+              checked={local.files.is_public}
+              onCheckedChange={(checked) =>
+                toggleFilePublicStatus(local.file_id, !!checked)
+              }
+            />
             <Label>File Public</Label>
           </div>
 
-          <div className="grid grid-cols-1 gap-2">
-            <Label className="text-xs">Expiry date</Label>
-            <Input type="date" value={local.expires_at ? new Date(local.expires_at).toISOString().slice(0, 10) : ''} onChange={(e) => {
-              const v = e.target.value;
-              setLocal({ ...local, expires_at: v ? new Date(v).toISOString() : null });
-            }} />
+          <div className="flex items-center space-x-2">
+            <Input
+              placeholder="Optional message"
+              value={local.message || ''}
+              onChange={(e) =>
+                setLocal({ ...local, message: e.target.value })
+              }
+            />
+          </div>
 
-            <Label className="text-xs">Download limit (leave empty for unlimited)</Label>
-            <Input type="number" min={1} value={local.download_limit || ''} onChange={(e) => {
-              const v = e.target.value;
-              setLocal({ ...local, download_limit: v ? parseInt(v, 10) : null });
-            }} />
+          <div className="text-xs text-muted-foreground">
+            Created on {new Date(local.created_at).toLocaleString()}
           </div>
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => { setIsOpen(false); setEditingLink(null); }}>
+          <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={saveEditedLink}>Save Changes</Button>
+          <Button
+            onClick={() => {
+              setEditingLink(local);
+              saveEditedLink();
+            }}
+          >
+            Save Changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
