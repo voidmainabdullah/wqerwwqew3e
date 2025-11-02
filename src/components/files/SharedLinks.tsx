@@ -419,5 +419,282 @@ const LinksGrid = ({
             </div>
           </CardHeader>
 
-          <CardContent className="py-2 space-y-2">
-            <div className="flex flex-col sm:flex-row sm:
+                   <CardContent className="py-2 space-y-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              {/* Link input + actions */}
+              <Input
+                value={`${window.location.origin}/share/${link.share_token}`}
+                readOnly
+                className="font-mono text-xs md:text-sm flex-1 min-w-0 bg-black"
+              />
+
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} title="Copy link">
+                  <Copy className="h-4 w-4" />
+                </Button>
+
+                <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} title="Open link">
+                  <ArrowSquareOut className="h-4 w-4" />
+                </Button>
+
+                <Button variant="outline" size="sm" onClick={() => shortenLink(link.share_token)} title="Shorten link">
+                  <LinkIcon className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Optional message */}
+            {link.message && (
+              <div className="p-2 rounded-2xl border bg-blue-400/10 mt-2">
+                <p className="text-xs md:text-sm text-muted-foreground break-words">
+                  <span className="font-bold text-blue-400/80">Message: </span> {link.message}
+                </p>
+              </div>
+            )}
+
+            {/* Mini analytics + meta */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-3 text-xs md:text-sm">
+              <div className="flex items-center gap-2">
+                <Download className="h-4 w-4 text-muted-foreground" />
+                <span className="truncate">
+                  {link.download_count} / {link.download_limit || '∞'} downloads
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="truncate">
+                  {link.expires_at ? `Expires ${new Date(link.expires_at).toLocaleDateString()}` : 'Never expires'}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Eye className="h-4 w-4 text-muted-foreground" />
+                <span className="truncate">
+                  {link.password_hash ? 'Password protected' : 'Public access'}
+                </span>
+              </div>
+
+              {/* Suggestions / Status */}
+              <div className="flex items-center justify-end gap-2">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    checked={link.is_active}
+                    onCheckedChange={(checked) => toggleSharedLinkStatus(link.id, !!checked)}
+                    disabled={!link.password_hash}
+                    title={link.password_hash ? '' : 'Password required to toggle'}
+                  />
+                  <Label className="text-xs whitespace-nowrap">
+                    {link.is_active ? (
+                      <span className="flex items-center gap-1">
+                        <Globe className="w-3 h-3" /> Unlocked
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        <Lock className="w-3 h-3" /> Locked
+                      </span>
+                    )}
+                  </Label>
+                </div>
+
+                <Button variant="ghost" size="sm" onClick={() => openEditDialog(link)} title="Edit link settings">
+                  <Gear className="h-4 w-4" />
+                </Button>
+
+                <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} title="Delete link">
+                  <Trash className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Manual AI suggestions area (client-side heuristics) */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mt-2">
+              <div className="flex items-center gap-3">
+                {/* Sparkline - tiny inline generated SVG based on recent download "trend" simulated from count */}
+                <Sparkline value={link.download_count} />
+                <div className="text-xs">
+                  <div className="font-medium">{link.download_count} downloads</div>
+                  <div className="text-muted-foreground text-[11px]">
+                    {link.download_count > 20 ? 'High activity' : link.download_count > 5 ? 'Moderate' : 'Low'}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {/* Suggest action computed locally */}
+                <SuggestedAction link={link} onApplyAction={() => {
+                  // apply an action: e.g., make public if downloads high and not public
+                  if (!link.files.is_public && link.download_count > 20) {
+                    toggleFilePublicStatus(link.file_id, true);
+                    toast({ title: 'Suggested action applied', description: 'File made public.' });
+                  } else {
+                    // fallback quick tip
+                    toast({ title: 'Tip', description: 'Add a message or password to improve control.' });
+                  }
+                }} />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    })}
+  </div>
+);
+
+// ---------------------
+// Badges subcomponent
+const Badges: React.FC<{ link: SharedLink; expired: boolean; limitReached: boolean }> = ({ link, expired, limitReached }) => {
+  return (
+    <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex flex-wrap gap-1">
+        {link.password_hash && (
+          <Badge variant="secondary" className="text-xs">
+            <Shield className="w-3 h-3 mr-1" /> Protected
+          </Badge>
+        )}
+        {link.files.is_public ? (
+          <Badge variant="default" className="text-xs bg-emerald-600">
+            <Globe className="w-3 h-3 mr-1" /> Public
+          </Badge>
+        ) : (
+          <Badge variant="secondary" className="text-xs">
+            <LockSimple className="w-3 h-3 mr-1" /> Private
+          </Badge>
+        )}
+        {expired && <Badge variant="destructive" className="text-xs">Expired</Badge>}
+        {limitReached && <Badge variant="destructive" className="text-xs">Limit Reached</Badge>}
+        {!expired && !limitReached && link.is_active && (
+          <Badge variant="default" className="text-xs bg-green-600/10 text-green-400">
+            Unlocked
+          </Badge>
+        )}
+        {!link.is_active && <Badge variant="destructive" className="text-xs">Locked</Badge>}
+      </div>
+    </div>
+  );
+};
+
+// ---------------------
+// SuggestedAction - local heuristic "AI"
+const SuggestedAction: React.FC<{ link: SharedLink; onApplyAction: () => void }> = ({ link, onApplyAction }) => {
+  // Simple heuristics:
+  // - If downloads > 30 and not public => suggest "Make public"
+  // - If expires within 48h => suggest "Extend expiry"
+  // - If download_limit is set and near limit => suggest "Increase limit"
+  const now = Date.now();
+  const expiresAt = link.expires_at ? new Date(link.expires_at).getTime() : null;
+  const in48h = expiresAt ? expiresAt - now <= 48 * 3600 * 1000 && expiresAt - now > 0 : false;
+  const nearLimit = link.download_limit ? link.download_count / link.download_limit >= 0.75 : false;
+
+  let suggestion = '';
+  if (link.download_count > 30 && !link.files.is_public) suggestion = 'Make public to increase reach';
+  else if (in48h) suggestion = 'Expiring soon — extend expiry';
+  else if (nearLimit) suggestion = 'Near download limit — increase it';
+  else if (!link.password_hash) suggestion = 'Consider protecting with a password';
+  else suggestion = 'No action needed';
+
+  const actionable = suggestion !== 'No action needed' && suggestion !== 'Consider protecting with a password';
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="text-xs text-muted-foreground">{suggestion}</div>
+      {actionable && (
+        <Button size="sm" variant="ghost" onClick={onApplyAction}>
+          Apply
+        </Button>
+      )}
+    </div>
+  );
+};
+
+// ---------------------
+// Sparkline - tiny visual to show "trend" (purely illustrative)
+const Sparkline: React.FC<{ value: number }> = ({ value }) => {
+  // produce a tiny 6-point sparkline based on the value
+  const base = Math.min(value, 50);
+  const points = [base * 0.2, base * 0.4, base * 0.8, base * 0.6, base * 0.9, base].map(v => Math.max(2, v));
+  const max = Math.max(...points);
+  const width = 80;
+  const height = 24;
+  const step = width / (points.length - 1);
+  const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${i * step} ${height - (p / max) * (height - 4)}`).join(' ');
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="inline-block">
+      <defs>
+        <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+      <path d={path} fill="none" stroke="currentColor" strokeWidth={1.2} style={{ color: 'rgba(96,165,250,0.9)' }} />
+      <rect x="0" y="0" width={width} height={height} fill="transparent" />
+    </svg>
+  );
+};
+
+// ---------------------
+// Edit Link Settings Dialog
+const EditDialog: React.FC<{
+  editingLink: SharedLink;
+  setEditingLink: (l: SharedLink | null) => void;
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  saveEditedLink: () => void;
+  toggleFilePublicStatus: (fileId: string, isPublic: boolean) => Promise<void>;
+}> = ({ editingLink, setEditingLink, isOpen, setIsOpen, saveEditedLink, toggleFilePublicStatus }) => {
+  const [local, setLocal] = useState<SharedLink | null>(editingLink);
+
+  useEffect(() => setLocal(editingLink), [editingLink]);
+
+  if (!local) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Edit Shared Link Settings</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <Switch checked={local.is_active} onCheckedChange={(checked) => setLocal({ ...local, is_active: !!checked })} />
+            <Label>Link Active</Label>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Switch checked={local.files.is_public} onCheckedChange={(checked) => {
+              // Immediately update file public status via RPC and local state
+              toggleFilePublicStatus(local.file_id, !!checked);
+              setLocal({ ...local, files: { ...local.files, is_public: !!checked } });
+            }} />
+            <Label>File Public</Label>
+          </div>
+
+          <div className="grid grid-cols-1 gap-2">
+            <Label className="text-xs">Expiry date</Label>
+            <Input type="date" value={local.expires_at ? new Date(local.expires_at).toISOString().slice(0, 10) : ''} onChange={(e) => {
+              const v = e.target.value;
+              setLocal({ ...local, expires_at: v ? new Date(v).toISOString() : null });
+            }} />
+
+            <Label className="text-xs">Download limit (leave empty for unlimited)</Label>
+            <Input type="number" min={1} value={local.download_limit || ''} onChange={(e) => {
+              const v = e.target.value;
+              setLocal({ ...local, download_limit: v ? parseInt(v, 10) : null });
+            }} />
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={() => { setIsOpen(false); setEditingLink(null); }}>
+            Cancel
+          </Button>
+          <Button onClick={saveEditedLink}>Save Changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+
+
