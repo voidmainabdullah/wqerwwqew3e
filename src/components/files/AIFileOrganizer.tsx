@@ -460,13 +460,13 @@ export default function AIFileOrganizer({ isOpen, onClose, files, onOrganized }:
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> 
             ) : (
               <>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold">Organization Suggestions ({filtered.length})</div>
-                    <div className="text-sm text-muted-foreground">Analyzed {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}</div>
+                    <div className="font-semibold text-md">Organization Suggestions ({filtered.length})</div>
+                    <div className="text-sm text-muted-foreground">Analyzed at {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}</div>
                   </div>
 
                   <div className="flex items-center gap-2">
