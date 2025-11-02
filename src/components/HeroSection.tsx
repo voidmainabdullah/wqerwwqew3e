@@ -95,7 +95,7 @@ const HeroSection = () => {
                   upload
                 </span>
                 <span className="group-hover:text-blue-400 transition-colors">
-                  Upload File
+                  Share Fast
                 </span>
               </a>
             </Button>
