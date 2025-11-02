@@ -513,7 +513,7 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
                 <div>
                   <h5 className=" text-md font-semibold">Organization Suggestions ({suggestions.length})</h3>
                   <div className="text-sm text-muted-foreground">
-                    {prettyBytes(totalBytes)} total · {totalFiles} files · analyzed at {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}
+                    {prettyBytes(totalBytes)} total · {totalFiles} files · analyzed {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}
                   </div>
                 </div>
 
