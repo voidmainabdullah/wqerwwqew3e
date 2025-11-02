@@ -21,7 +21,7 @@ export type Database = {
           entity_id: string | null
           entity_type: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           metadata: Json | null
           team_id: string
           user_agent: string | null
@@ -33,7 +33,7 @@ export type Database = {
           entity_id?: string | null
           entity_type: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json | null
           team_id: string
           user_agent?: string | null
@@ -45,7 +45,7 @@ export type Database = {
           entity_id?: string | null
           entity_type?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json | null
           team_id?: string
           user_agent?: string | null
@@ -61,11 +61,41 @@ export type Database = {
           },
         ]
       }
+      backup_requests: {
+        Row: {
+          download_url: string | null
+          email: string
+          id: string
+          message: string | null
+          request_time: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          download_url?: string | null
+          email: string
+          id?: string
+          message?: string | null
+          request_time?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          download_url?: string | null
+          email?: string
+          id?: string
+          message?: string | null
+          request_time?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       download_logs: {
         Row: {
           download_method: string
           downloaded_at: string
-          downloader_ip: unknown | null
+          downloader_ip: unknown
           downloader_user_agent: string | null
           file_id: string
           id: string
@@ -74,7 +104,7 @@ export type Database = {
         Insert: {
           download_method: string
           downloaded_at?: string
-          downloader_ip?: unknown | null
+          downloader_ip?: unknown
           downloader_user_agent?: string | null
           file_id: string
           id?: string
@@ -83,7 +113,7 @@ export type Database = {
         Update: {
           download_method?: string
           downloaded_at?: string
-          downloader_ip?: unknown | null
+          downloader_ip?: unknown
           downloader_user_agent?: string | null
           file_id?: string
           id?: string
@@ -295,6 +325,78 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      receive_requests: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          token: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          token: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          token?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      received_files: {
+        Row: {
+          file_id: string
+          id: string
+          receive_request_id: string
+          uploaded_at: string
+          uploader_email: string | null
+          uploader_name: string | null
+        }
+        Insert: {
+          file_id: string
+          id?: string
+          receive_request_id: string
+          uploaded_at?: string
+          uploader_email?: string | null
+          uploader_name?: string | null
+        }
+        Update: {
+          file_id?: string
+          id?: string
+          receive_request_id?: string
+          uploaded_at?: string
+          uploader_email?: string | null
+          uploader_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "received_files_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "received_files_receive_request_id_fkey"
+            columns: ["receive_request_id"]
+            isOneToOne: false
+            referencedRelation: "receive_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       shared_links: {
         Row: {
@@ -697,7 +799,18 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      view_backup_requests: {
+        Row: {
+          download_url: string | null
+          id: string | null
+          message: string | null
+          request_time: string | null
+          status: string | null
+          user_email: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       accept_team_invite: {
@@ -719,9 +832,23 @@ export type Database = {
         Args: { p_file_size: number; p_user_id: string }
         Returns: boolean
       }
-      create_file_share: {
-        Args:
-          | {
+      create_file_share:
+        | {
+            Args: {
+              p_download_limit?: number
+              p_expires_at?: string
+              p_file_id: string
+              p_link_type: string
+              p_password_hash?: string
+              p_recipient_email?: string
+            }
+            Returns: {
+              share_code: string
+              share_token: string
+            }[]
+          }
+        | {
+            Args: {
               p_download_limit?: number
               p_expires_at?: string
               p_file_id: string
@@ -730,22 +857,14 @@ export type Database = {
               p_password_hash?: string
               p_recipient_email?: string
             }
-          | {
-              p_download_limit?: number
-              p_expires_at?: string
-              p_file_id: string
-              p_link_type: string
-              p_password_hash?: string
-              p_recipient_email?: string
-            }
-        Returns: {
-          share_code: string
-          share_token: string
-        }[]
-      }
-      create_folder_share: {
-        Args:
-          | {
+            Returns: {
+              share_code: string
+              share_token: string
+            }[]
+          }
+      create_folder_share:
+        | {
+            Args: {
               p_download_limit?: number
               p_expires_at?: string
               p_folder_id: string
@@ -753,24 +872,24 @@ export type Database = {
               p_message?: string
               p_password_hash?: string
             }
-          | {
+            Returns: {
+              share_code: string
+              share_token: string
+            }[]
+          }
+        | {
+            Args: {
               p_expires_at?: string
               p_folder_id: string
               p_link_type: string
               p_password_hash?: string
             }
-        Returns: {
-          share_code: string
-        }[]
-      }
-      generate_share_code: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      generate_unique_share_code: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+            Returns: {
+              share_code: string
+            }[]
+          }
+      generate_share_code: { Args: never; Returns: string }
+      generate_unique_share_code: { Args: never; Returns: string }
       get_folder_contents: {
         Args: { p_folder_id?: string; p_user_id?: string }
         Returns: {
@@ -861,10 +980,7 @@ export type Database = {
           team_name: string
         }[]
       }
-      hash_password: {
-        Args: { password: string }
-        Returns: string
-      }
+      hash_password: { Args: { password: string }; Returns: string }
       is_team_owner: {
         Args: { _team_id: string; _user_id: string }
         Returns: boolean
@@ -880,18 +996,9 @@ export type Database = {
         }
         Returns: string
       }
-      reset_daily_upload_count: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      test_gen_random_bytes: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      test_share_token_generation: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      reset_daily_upload_count: { Args: never; Returns: undefined }
+      test_gen_random_bytes: { Args: never; Returns: string }
+      test_share_token_generation: { Args: never; Returns: string }
       toggle_file_lock_status: {
         Args: { p_file_id: string; p_is_locked: boolean; p_password?: string }
         Returns: boolean

@@ -28,6 +28,7 @@ import { PoliciesPage } from "./components/teams/pages/PoliciesPage";
 import { AuditPage } from "./components/teams/pages/AuditPage";
 import { SettingsPage as TeamSettingsPage } from "./components/teams/pages/SettingsPage";
 import { PublicSharePage } from "@/components/sharing/PublicSharePage";
+import { ReceiveUploadPage } from "./pages/ReceiveUploadPage";
 import CodePage from "./pages/CodePage";
 import { SubscriptionPage } from "@/components/subscription/SubscriptionPage";
 import { SubscriptionSuccess } from "./pages/SubscriptionSuccess";
@@ -52,6 +53,7 @@ const App = () => <QueryClientProvider client={queryClient}>
               <Route path="/subscription" element={<SubscriptionPage />} />
               <Route path="/subscription-success" element={<SubscriptionSuccess />} />
               <Route path="/share/:token" element={<PublicSharePage />} />
+              <Route path="/receive/:token" element={<ReceiveUploadPage />} />
               <Route path="/code" element={<CodePage />} />
               
               {/* Protected Dashboard Routes */}

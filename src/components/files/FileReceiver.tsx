@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Card,
   CardContent,
@@ -40,28 +41,87 @@ export const FileReceiver: React.FC = () => {
   const [description, setDescription] = useState("");
   const [receiveUrl, setReceiveUrl] = useState("");
   const [recentRequests, setRecentRequests] = useState<RecentRequest[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const generateReceiveLink = () => {
+  React.useEffect(() => {
+    if (user) {
+      loadRecentRequests();
+    }
+  }, [user]);
+
+  const loadRecentRequests = async () => {
     if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('receive_requests')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(5);
 
-    const baseUrl = window.location.origin;
-    const token =
-      Math.random().toString(36).substring(2) + Date.now().toString(36);
-    const url = `${baseUrl}/receive/${token}`;
-    setReceiveUrl(url);
+      if (error) throw error;
 
-    const newRequest: RecentRequest = {
-      id: token,
-      title: receiverName || "Untitled Request",
-      date: new Date().toLocaleString(),
-      link: url,
-    };
+      const requests = data.map((req) => ({
+        id: req.token,
+        title: req.name,
+        date: new Date(req.created_at).toLocaleString(),
+        link: `${window.location.origin}/receive/${req.token}`,
+      }));
 
-    setRecentRequests((prev) => [newRequest, ...prev.slice(0, 4)]);
-    toast({
-      title: "New link created",
-      description: "Your secure file receive link has been generated.",
-    });
+      setRecentRequests(requests);
+    } catch (error) {
+      console.error('Error loading recent requests:', error);
+    }
+  };
+
+  const generateReceiveLink = async () => {
+    if (!user || isGenerating) return;
+
+    setIsGenerating(true);
+    try {
+      const token =
+        Math.random().toString(36).substring(2) + Date.now().toString(36);
+      const url = `${window.location.origin}/receive/${token}`;
+
+      const { error } = await supabase
+        .from('receive_requests')
+        .insert({
+          user_id: user.id,
+          token: token,
+          name: receiverName || "Untitled Request",
+          description: description || null,
+        });
+
+      if (error) throw error;
+
+      setReceiveUrl(url);
+
+      const newRequest: RecentRequest = {
+        id: token,
+        title: receiverName || "Untitled Request",
+        date: new Date().toLocaleString(),
+        link: url,
+      };
+
+      setRecentRequests((prev) => [newRequest, ...prev.slice(0, 4)]);
+      toast({
+        title: "New link created",
+        description: "Your secure file receive link has been generated.",
+      });
+      
+      setReceiverName("");
+      setDescription("");
+    } catch (error: any) {
+      console.error('Error generating receive link:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to generate receive link. Please try again.",
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const copyToClipboard = async () => {
@@ -153,9 +213,19 @@ export const FileReceiver: React.FC = () => {
             <Button
               onClick={generateReceiveLink}
               className="w-full bg-blue-600 hover:bg-blue-700"
+              disabled={isGenerating}
             >
-              <Share2 className="mr-2 h-4 w-4" />
-              Generate Link
+              {isGenerating ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Share2 className="mr-2 h-4 w-4" />
+                  Generate Link
+                </>
+              )}
             </Button>
           </CardContent>
         </Card>
