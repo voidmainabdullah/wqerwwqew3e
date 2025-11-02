@@ -511,9 +511,9 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
             <>
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className=" text-md font-semibold">Organization Suggestions ({suggestions.length})</h3>
+                  <h5 className=" text-md font-semibold">Organization Suggestions ({suggestions.length})</h3>
                   <div className="text-sm text-muted-foreground">
-                    {prettyBytes(totalBytes)} total · {totalFiles} files · analyzed {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}
+                    {prettyBytes(totalBytes)} total · {totalFiles} files · analyzed at {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}
                   </div>
                 </div>
 
