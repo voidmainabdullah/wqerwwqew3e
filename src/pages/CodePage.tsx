@@ -44,7 +44,7 @@ export default function CodePage() {
         return;
       }
 
-      // Check if file has password protection via shared_links or is_locked
+      // Check if file has password protection via shared_links or is_locked FIRST
       const { data: sharedLink } = await supabase
         .from('shared_links')
         .select('password_hash, share_token')
@@ -52,15 +52,17 @@ export default function CodePage() {
         .eq('link_type', 'code')
         .maybeSingle();
 
-      const hasPasswordProtection = fileData.is_locked || sharedLink?.password_hash;
+      const hasPasswordProtection = fileData.is_locked || !!sharedLink?.password_hash;
 
+      // CRITICAL: If password required but not provided, show password prompt
       if (hasPasswordProtection && !password) {
-        setFile(fileData);
         setRequiresPassword(true);
+        setFile(fileData); // Set file to show name, but requiresPassword blocks download
         toast.error('This file is password protected');
         return;
       }
 
+      // If password required and provided, validate it
       if (hasPasswordProtection && password) {
         if (sharedLink?.password_hash) {
           const { data: isValidPassword } = await supabase.rpc('validate_share_password', {
@@ -78,8 +80,10 @@ export default function CodePage() {
         }
       }
 
+      // Password validated or not required - allow access
       setFile(fileData);
       setRequiresPassword(false);
+      toast.success('Access granted!');
     } catch (error: any) {
       console.error('Code lookup error:', error);
       toast.error('Failed to retrieve file: ' + error.message);

@@ -326,13 +326,18 @@ export const PublicSharePage: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <FileText className="mx-auto h-12 w-12 text-primary mb-2" />
-          <CardTitle>Shared File</CardTitle>
+          <CardTitle>
+            {passwordRequired ? 'Password Protected Content' : 'Shared File'}
+          </CardTitle>
           <CardDescription>
-            Someone has shared a file with you
+            {passwordRequired 
+              ? 'This content requires a password to access'
+              : 'Someone has shared a file with you'
+            }
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Show password prompt FIRST if required */}
+          {/* CRITICAL: Show password prompt FIRST if required - NO content shown until verified */}
           {passwordRequired ? (
             <>
               <Alert>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Folder, FolderOpen, Home, ChevronRight } from 'lucide-react';
+import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Folder, FolderOpen, Home, ChevronRight, Sparkles } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -15,6 +15,7 @@ import { FolderCreateDialog } from './FolderCreateDialog';
 import { FolderShareDialog } from './FolderShareDialog';
 import { MoveToFolderDialog } from './MoveToFolderDialog';
 import { ShareToTeamsDialog } from './ShareToTeamsDialog';
+import { AIFileOrganizer } from './AIFileOrganizer';
 interface FileItem {
   id: string;
   original_name: string;
@@ -95,6 +96,7 @@ export function FileManager() {
     fileId: '',
     fileName: ''
   });
+  const [aiOrganizerDialog, setAiOrganizerDialog] = useState(false);
   useEffect(() => {
     if (user) {
       fetchContents();
@@ -321,6 +323,15 @@ export function FileManager() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button 
+            onClick={() => setAiOrganizerDialog(true)} 
+            variant="outline" 
+            className="font-heading bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20"
+            disabled={files.length === 0}
+          >
+            <Sparkles className="mr-2 h-4 w-4" />
+            AI Organize
+          </Button>
           <Button onClick={() => setFolderCreateDialog(true)} variant="outline" className="font-heading bg-[#3f3ff5]/[0.16] border border-blue-500">
             <Folder className="mr-2 h-4 w-4" />
             New Folder
@@ -602,5 +613,17 @@ export function FileManager() {
       fileId: '',
       fileName: ''
     })} fileId={shareToTeamsDialog.fileId} fileName={shareToTeamsDialog.fileName} />
+      
+      <AIFileOrganizer 
+        isOpen={aiOrganizerDialog} 
+        onClose={() => setAiOrganizerDialog(false)}
+        files={files.map(f => ({ 
+          id: f.id, 
+          original_name: f.original_name, 
+          file_type: f.file_type,
+          file_size: f.file_size 
+        }))}
+        onOrganized={fetchContents}
+      />
     </div>;
 }

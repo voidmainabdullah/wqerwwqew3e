@@ -154,10 +154,14 @@ export function FileShareDialog({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="link" className="flex items-center gap-1">
               <Link className="h-4 w-4" />
               Direct Link
+            </TabsTrigger>
+            <TabsTrigger value="email" className="flex items-center gap-1">
+              <Mail className="h-4 w-4" />
+              Email
             </TabsTrigger>
             <TabsTrigger value="code" className="flex items-center gap-1">
               <Hash className="h-4 w-4" />
@@ -251,6 +255,75 @@ export function FileShareDialog({
                 </Card> : <Button onClick={() => createShareLink('direct')} disabled={isLoading} className="w-full">
                   {isLoading ? 'Creating Link...' : 'Generate Share Link'}
                 </Button>}
+            </TabsContent>
+
+            <TabsContent value="email" className="space-y-4">
+              <div>
+                <Label htmlFor="recipient-email">Recipient Email *</Label>
+                <Input
+                  id="recipient-email"
+                  type="email"
+                  placeholder="recipient@example.com"
+                  value={shareSettings.recipientEmail}
+                  onChange={e => setShareSettings(prev => ({
+                    ...prev,
+                    recipientEmail: e.target.value
+                  }))}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="email-message">Personal Message</Label>
+                <Textarea 
+                  id="email-message" 
+                  placeholder="Add a personal message for the recipient..." 
+                  value={shareSettings.message} 
+                  onChange={e => setShareSettings(prev => ({
+                    ...prev,
+                    message: e.target.value
+                  }))} 
+                  rows={4} 
+                />
+              </div>
+
+              {generatedLink ? (
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-green-600">
+                        <Mail className="h-5 w-5" />
+                        <span className="font-medium">Email sent successfully!</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        The recipient will receive an email with a secure link to access the file.
+                      </p>
+                      <div className="pt-2">
+                        <Label className="text-xs text-muted-foreground">Share Link (for reference)</Label>
+                        <div className="flex gap-2 mt-1">
+                          <Input value={generatedLink} readOnly className="text-sm" />
+                          <Button size="icon" onClick={() => copyToClipboard(generatedLink)}>
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Send a secure link directly to the recipient's email address.
+                  </p>
+                  <Button 
+                    onClick={() => createShareLink('email')} 
+                    disabled={isLoading || !shareSettings.recipientEmail.trim()}
+                    className="w-full"
+                  >
+                    <Mail className="mr-2 h-4 w-4" />
+                    {isLoading ? 'Sending Email...' : 'Send via Email'}
+                  </Button>
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="code" className="space-y-4">
