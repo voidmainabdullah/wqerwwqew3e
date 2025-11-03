@@ -1,9 +1,16 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+// FileUpload.tsx
+import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
@@ -12,10 +19,14 @@ import { File, CheckCircle, Warning, CircleNotch } from 'phosphor-react';
 interface UploadFile {
   file: File;
   progress: number;
-  status: 'pending' | 'uploading' | 'success' | 'error';
+  status: 'pending' | 'uploading' | 'success' | 'error' | 'cancelled';
   error?: string;
-  id?: string;
+  id?: string; // DB id when inserted
+  storagePath?: string; // path used in storage (for cleanup)
+  startedAt?: number;
 }
+
+const UPLOAD_TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes per file (mark stuck)
 
 export const FileUpload: React.FC = () => {
   const { user } = useAuth();
@@ -27,8 +38,17 @@ export const FileUpload: React.FC = () => {
   const [folders, setFolders] = useState<Array<{ id: string; name: string }>>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // A ref map to know which files were explicitly cancelled by user
+  const cancelledRef = useRef<Record<number, boolean>>({});
+  // A ref to store timeouts for each file, so they can be cleared
+  const fileTimeoutsRef = useRef<Record<number, number>>({});
+
   useEffect(() => {
     if (user) fetchFolders();
+    // clear timers on unmount
+    return () => {
+      Object.values(fileTimeoutsRef.current).forEach((t) => clearTimeout(t));
+    };
   }, [user]);
 
   const fetchFolders = async () => {
@@ -60,7 +80,40 @@ export const FileUpload: React.FC = () => {
   });
 
   const removeFile = (index: number) => {
-    setUploadFiles((prev) => prev.filter((_, i) => i !== index));
+    // Remove and also clear timeout if present
+    setUploadFiles((prev) => {
+      const removed = prev[index];
+      if (fileTimeoutsRef.current[index]) {
+        clearTimeout(fileTimeoutsRef.current[index]);
+        delete fileTimeoutsRef.current[index];
+      }
+      // If the file was already uploaded to storage and has storagePath but not DB id,
+      // attempt cleanup
+      if (removed?.storagePath && removed.status === 'cancelled') {
+        // best-effort cleanup
+        supabase.storage.from('files').remove([removed.storagePath]).catch(() => {
+          /* ignore cleanup errors */
+        });
+      }
+      const next = prev.filter((_, i) => i !== index);
+      // shift timeout refs indices: easiest approach is to rebuild map
+      const newTimeouts: Record<number, number> = {};
+      Object.entries(fileTimeoutsRef.current).forEach(([key, t]) => {
+        const k = parseInt(key, 10);
+        if (k < index) newTimeouts[k] = t;
+        else if (k > index) newTimeouts[k - 1] = t;
+      });
+      fileTimeoutsRef.current = newTimeouts;
+      // same for cancelledRef
+      const newCancelled: Record<number, boolean> = {};
+      Object.entries(cancelledRef.current).forEach(([key, v]) => {
+        const k = parseInt(key, 10);
+        if (k < index) newCancelled[k] = v;
+        else if (k > index) newCancelled[k - 1] = v;
+      });
+      cancelledRef.current = newCancelled;
+      return next;
+    });
   };
 
   const totalProgress = useMemo(() => {
@@ -69,11 +122,62 @@ export const FileUpload: React.FC = () => {
     return Math.round(total / uploadFiles.length);
   }, [uploadFiles]);
 
+  // Cancel an active upload (logical cancel). We mark cancelledRef and set status.
+  const cancelFileUpload = async (index: number) => {
+    setUploadFiles((prev) =>
+      prev.map((f, idx) =>
+        idx === index ? { ...f, status: 'cancelled', progress: 0, error: undefined } : f
+      )
+    );
+
+    cancelledRef.current[index] = true;
+    // Clear timeout for that file
+    if (fileTimeoutsRef.current[index]) {
+      clearTimeout(fileTimeoutsRef.current[index]);
+      delete fileTimeoutsRef.current[index];
+    }
+
+    // If file already has storagePath (meaning upload likely completed on storage),
+    // attempt to delete the object in storage to avoid orphan files.
+    const file = uploadFiles[index];
+    if (file?.storagePath) {
+      try {
+        await supabase.storage.from('files').remove([file.storagePath]);
+      } catch (err) {
+        // best-effort: if delete fails, ignore but log
+        console.warn('Failed to delete cancelled storage file', err);
+      }
+    }
+  };
+
+  // Retry a file (only if status is error or cancelled)
+  const retryFile = (index: number) => {
+    setUploadFiles((prev) =>
+      prev.map((f, idx) =>
+        idx === index
+          ? { ...f, status: 'pending', progress: 0, error: undefined, storagePath: undefined }
+          : f
+      )
+    );
+    // remove cancelled flag if any
+    delete cancelledRef.current[index];
+  };
+
+  // internal helper: set per-file state immutably
+  const updateFileAt = (index: number, patch: Partial<UploadFile>) => {
+    setUploadFiles((prev) => prev.map((f, i) => (i === index ? { ...f, ...patch } : f)));
+  };
+
+  // Main upload function
   const handleUploadFiles = async () => {
     if (!user || uploadFiles.length === 0) return;
     setIsUploading(true);
+
     try {
-      const totalFileSize = uploadFiles.reduce((sum, file) => sum + file.file.size, 0);
+      // Collect sizes of files that are pending
+      const pendingFiles = uploadFiles.map((f) => f.file);
+      const totalFileSize = pendingFiles.reduce((sum, file) => sum + file.size, 0);
+
       const { data: canUpload, error: quotaError } = await supabase.rpc('check_storage_quota', {
         p_user_id: user.id,
         p_file_size: totalFileSize,
@@ -106,72 +210,200 @@ export const FileUpload: React.FC = () => {
         return;
       }
 
+      // We'll iterate through the uploadFiles array at the moment of calling
       for (let i = 0; i < uploadFiles.length; i++) {
-        const uploadFile = uploadFiles[i];
-        if (uploadFile.status !== 'pending') continue;
+        // get updated file snapshot (in case user mutated list)
+        const current = (await (async () => uploadFiles[i])()) as UploadFile | undefined;
+        // we still read from stateful array because user might remove — so read from state
+        const stateSnapshot = (() => {
+          const s = uploadFiles; // closure (we'll also read latest from setUploadFiles where needed)
+          return s;
+        })();
 
-        setUploadFiles((prev) =>
-          prev.map((f, idx) => (idx === i ? { ...f, status: 'uploading', progress: 50 } : f))
-        );
+        // However to be robust, read fresh state:
+        let freshFile: UploadFile | undefined;
+        setUploadFiles((prev) => {
+          freshFile = prev[i];
+          return prev;
+        });
+
+        const fileItem = freshFile ?? uploadFiles[i];
+        if (!fileItem) continue;
+
+        // Skip files which are not pending (user may have removed/cancelled)
+        if (fileItem.status !== 'pending') continue;
+
+        // start upload
+        updateFileAt(i, { status: 'uploading', progress: 5, startedAt: Date.now() });
+        // set a timeout that marks it as stuck if takes too long
+        if (fileTimeoutsRef.current[i]) {
+          clearTimeout(fileTimeoutsRef.current[i]);
+        }
+        fileTimeoutsRef.current[i] = window.setTimeout(() => {
+          // mark file as error and allow cancel
+          updateFileAt(i, { status: 'error', error: 'Upload timed out. You can cancel.' });
+        }, UPLOAD_TIMEOUT_MS);
+
+        // Reset cancelled flag for this index
+        delete cancelledRef.current[i];
 
         try {
-          const fileExt = uploadFile.file.name.split('.').pop();
+          // Build storage path
+          const fileExt = fileItem.file.name.split('.').pop();
           const fileName = `${user.id}/${Date.now()}-${Math.random()
             .toString(36)
             .substring(2)}.${fileExt}`;
 
+          // Keep track of storagePath so we can cleanup on cancel
+          updateFileAt(i, { storagePath: fileName, progress: 10 });
+
+          // upload to supabase storage
           const { error: storageError } = await supabase.storage
             .from('files')
-            .upload(fileName, uploadFile.file, {
+            .upload(fileName, fileItem.file, {
               upsert: false,
             });
+
+          // If the file was cancelled by user while storage.upload was in-flight,
+          // we try to delete the stored object (best-effort), mark cancelled in UI and skip DB insert.
+          if (cancelledRef.current[i]) {
+            // someone cancelled while uploading
+            try {
+              if (!storageError) {
+                await supabase.storage.from('files').remove([fileName]);
+              }
+            } catch (e) {
+              console.warn('Failed to cleanup after cancel', e);
+            }
+            updateFileAt(i, { status: 'cancelled', progress: 0, storagePath: undefined });
+            // clear timeout
+            if (fileTimeoutsRef.current[i]) {
+              clearTimeout(fileTimeoutsRef.current[i]);
+              delete fileTimeoutsRef.current[i];
+            }
+            continue;
+          }
+
           if (storageError) throw storageError;
 
+          // Storage succeeded — insert metadata to DB
+          updateFileAt(i, { progress: 60 });
           const { data: fileData, error: dbError } = await supabase
             .from('files')
             .insert({
               user_id: user.id,
-              original_name: uploadFile.file.name,
-              file_size: uploadFile.file.size,
-              file_type: uploadFile.file.type || 'application/octet-stream',
+              original_name: fileItem.file.name,
+              file_size: fileItem.file.size,
+              file_type: fileItem.file.type || 'application/octet-stream',
               storage_path: fileName,
               folder_id: selectedFolderId,
             })
             .select()
             .single();
-          if (dbError) throw dbError;
 
-          setUploadFiles((prev) =>
-            prev.map((f, idx) =>
-              idx === i ? { ...f, status: 'success', progress: 100, id: fileData.id } : f
-            )
-          );
+          if (dbError) {
+            // If DB insert fails, attempt to delete the storage object so we don't leave orphan.
+            try {
+              await supabase.storage.from('files').remove([fileName]);
+            } catch (cleanupErr) {
+              console.warn('Cleanup after DB failure failed', cleanupErr);
+            }
+            throw dbError;
+          }
+
+          // If user cancelled after DB insert (rare), do cleanup
+          if (cancelledRef.current[i]) {
+            try {
+              await supabase.storage.from('files').remove([fileName]);
+              // also remove DB row
+              if (fileData?.id) {
+                await supabase.from('files').delete().eq('id', fileData.id);
+              }
+            } catch (cleanupErr) {
+              console.warn('Cleanup after late cancel failed', cleanupErr);
+            }
+            updateFileAt(i, { status: 'cancelled', progress: 0, storagePath: undefined, id: undefined });
+            if (fileTimeoutsRef.current[i]) {
+              clearTimeout(fileTimeoutsRef.current[i]);
+              delete fileTimeoutsRef.current[i];
+            }
+            continue;
+          }
+
+          // Success
+          updateFileAt(i, { status: 'success', progress: 100, id: fileData?.id });
+          if (fileTimeoutsRef.current[i]) {
+            clearTimeout(fileTimeoutsRef.current[i]);
+            delete fileTimeoutsRef.current[i];
+          }
         } catch (error: any) {
-          console.error('Upload error:', error);
-          setUploadFiles((prev) =>
-            prev.map((f, idx) =>
-              idx === i
-                ? { ...f, status: 'error', error: error.message || 'Upload failed' }
-                : f
-            )
-          );
+          console.error('Upload error for file index', i, error);
+          // If file was cancelled, we already handled; else set error
+          if (!cancelledRef.current[i]) {
+            updateFileAt(i, {
+              status: 'error',
+              error: error?.message || 'Upload failed',
+              progress: 0,
+            });
+          } else {
+            updateFileAt(i, { status: 'cancelled', progress: 0 });
+          }
+          if (fileTimeoutsRef.current[i]) {
+            clearTimeout(fileTimeoutsRef.current[i]);
+            delete fileTimeoutsRef.current[i];
+          }
         }
-      }
+      } // end for
 
-      const successCount = uploadFiles.filter((f) => f.status === 'success').length;
-      if (successCount > 0)
+      // After finishing the loop, compute summary from the latest state
+      // We have to read latest uploadFiles state
+      const finalSnapshot = [...uploadFiles];
+      // But because setUploadFiles is async, get the current state from the hook by awaiting a microtask
+      await new Promise((r) => setTimeout(r, 10));
+      // Now read again
+      let latest: UploadFile[] = [];
+      setUploadFiles((prev) => {
+        latest = prev;
+        return prev;
+      });
+
+      // Final tallies
+      const successCount = latest.filter((f) => f.status === 'success').length;
+      const errorCount = latest.filter((f) => f.status === 'error').length;
+      const cancelledCount = latest.filter((f) => f.status === 'cancelled').length;
+
+      if (successCount > 0) {
         toast({
           title: 'Upload complete',
           description: `Successfully uploaded ${successCount} file(s).`,
         });
+      }
+      if (errorCount > 0) {
+        toast({
+          variant: 'destructive',
+          title: 'Some uploads failed',
+          description: `${errorCount} file(s) failed. You can retry or cancel them.`,
+        });
+      }
+      if (cancelledCount > 0) {
+        toast({
+          title: 'Uploads cancelled',
+          description: `${cancelledCount} file(s) were cancelled.`,
+        });
+      }
     } catch (error: any) {
+      console.error('Upload flow fatal error', error);
       toast({
         variant: 'destructive',
         title: 'Upload failed',
-        description: error.message || 'An error occurred during upload.',
+        description: error?.message || 'An error occurred during upload.',
       });
     } finally {
       setIsUploading(false);
+      // cleanup any remaining timers
+      Object.values(fileTimeoutsRef.current).forEach((t) => clearTimeout(t));
+      fileTimeoutsRef.current = {};
+      cancelledRef.current = {};
     }
   };
 
@@ -283,7 +515,7 @@ export const FileUpload: React.FC = () => {
                 </div>
               )}
 
-              {/* Files List */}
+              {/* Files List Header */}
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-heading font-medium">Files to upload</h3>
                 <Button
@@ -325,21 +557,22 @@ export const FileUpload: React.FC = () => {
                       {uploadFile.status === 'error' && (
                         <Warning className="h-4 w-4 text-destructive" />
                       )}
+                      {uploadFile.status === 'cancelled' && (
+                        <span className="text-xs font-heading text-muted-foreground">⨯</span>
+                      )}
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-heading truncate">
-                        {uploadFile.file.name}
-                      </p>
+                      <p className="text-sm font-heading truncate">{uploadFile.file.name}</p>
                       <p className="text-xs font-body text-muted-foreground">
                         {formatFileSize(uploadFile.file.size)}
                       </p>
 
-                      {uploadFile.status === 'uploading' && (
-                        <div className="mt-1">
-                          <Progress value={uploadFile.progress} className="h-1.5" />
-                        </div>
-                      )}
+                      {/* Per-file progress */}
+                      <div className="mt-1">
+                        <Progress value={uploadFile.progress} className="h-1.5" />
+                      </div>
+
                       {uploadFile.error && (
                         <p className="text-xs font-body text-functions-delete mt-1">
                           {uploadFile.error}
@@ -353,6 +586,8 @@ export const FileUpload: React.FC = () => {
                           ? 'secondary'
                           : uploadFile.status === 'error'
                           ? 'destructive'
+                          : uploadFile.status === 'cancelled'
+                          ? 'outline'
                           : 'outline'
                       }
                       className="capitalize text-xs font-heading"
@@ -360,16 +595,53 @@ export const FileUpload: React.FC = () => {
                       {uploadFile.status}
                     </Badge>
 
-                    {uploadFile.status === 'pending' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeFile(index)}
-                        className="hover:text-functions-delete"
-                      >
-                        <span className="material-icons md-18">close</span>
-                      </Button>
-                    )}
+                    {/* Actions */}
+                    <div className="flex items-center gap-1">
+                      {uploadFile.status === 'pending' && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeFile(index)}
+                          className="hover:text-functions-delete"
+                        >
+                          <span className="material-icons md-18">close</span>
+                        </Button>
+                      )}
+
+                      {uploadFile.status === 'uploading' && (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => cancelFileUpload(index)}
+                            className="hover:text-functions-delete"
+                          >
+                            <span className="material-icons md-18">pause_circle</span>
+                          </Button>
+                        </>
+                      )}
+
+                      {(uploadFile.status === 'error' || uploadFile.status === 'cancelled') && (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => retryFile(index)}
+                            className="hover:text-functions-delete"
+                          >
+                            <span className="material-icons md-18">replay</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeFile(index)}
+                            className="hover:text-functions-delete"
+                          >
+                            <span className="material-icons md-18">delete</span>
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
