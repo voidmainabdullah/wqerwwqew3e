@@ -36,12 +36,15 @@ import {
   Globe,
   Gear,
   LockSimple,
-  Link as LinkIcon
+  Link as LinkIcon,
+  FolderOpen
 } from 'phosphor-react';
 
 interface SharedLink {
   id: string;
-  file_id: string;
+  file_id?: string;
+  folder_id?: string;
+  item_type?: 'file' | 'folder';
   share_token: string;
   password_hash: string | null;
   download_limit: number | null;
@@ -83,21 +86,68 @@ export const SharedLinks: React.FC = () => {
   const fetchSharedLinks = async () => {
     setLoading(true);
     try {
+      // Fetch both file and folder shares
       const { data: userFiles } = await supabase.from('files').select('id').eq('user_id', user?.id);
+      const { data: userFolders } = await supabase.from('folders').select('id').eq('user_id', user?.id);
+      
       const fileIds = userFiles?.map((f: any) => f.id) || [];
-      if (!fileIds.length) {
+      const folderIds = userFolders?.map((f: any) => f.id) || [];
+
+      if (!fileIds.length && !folderIds.length) {
         setSharedLinks([]);
         setLoading(false);
         return;
       }
 
-      const { data, error } = await supabase.from('shared_links').select(`
-        *,
-        files!inner(id, original_name, file_size, is_public, is_locked)
-      `).in('file_id', fileIds).order('created_at', { ascending: false });
+      // Fetch file shares
+      const fileSharesPromise = fileIds.length 
+        ? supabase.from('shared_links').select(`
+            *,
+            files!inner(id, original_name, file_size, is_public, is_locked)
+          `).in('file_id', fileIds).not('file_id', 'is', null)
+        : Promise.resolve({ data: [], error: null });
 
-      if (error) throw error;
-      setSharedLinks(data || []);
+      // Fetch folder shares
+      const folderSharesPromise = folderIds.length
+        ? supabase.from('shared_links').select(`
+            *,
+            folders!inner(id, name)
+          `).in('folder_id', folderIds).not('folder_id', 'is', null)
+        : Promise.resolve({ data: [], error: null });
+
+      const [fileSharesResult, folderSharesResult] = await Promise.all([
+        fileSharesPromise,
+        folderSharesPromise
+      ]);
+
+      if (fileSharesResult.error) throw fileSharesResult.error;
+      if (folderSharesResult.error) throw folderSharesResult.error;
+
+      // Normalize data structure for both files and folders
+      const fileShares = (fileSharesResult.data || []).map((item: any) => ({
+        ...item,
+        item_type: 'file',
+        files: item.files
+      }));
+
+      const folderShares = (folderSharesResult.data || []).map((item: any) => ({
+        ...item,
+        item_type: 'folder',
+        files: {
+          id: item.folders.id,
+          original_name: item.folders.name,
+          file_size: 0,
+          is_public: true,
+          is_locked: false
+        }
+      }));
+
+      // Combine and sort by created_at
+      const allShares = [...fileShares, ...folderShares].sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+
+      setSharedLinks(allShares);
     } catch (error) {
       console.error('Error fetching shared links:', error);
       toast({ variant: 'destructive', title: 'Error', description: 'Failed to load shared links.' });
@@ -410,11 +460,12 @@ const LinksGrid = ({
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <CardTitle className="text-sm md:text-base flex items-center gap-2 truncate">
-                  <ShareNetwork size={16} />
+                  {link.item_type === 'folder' ? <FolderOpen size={16} /> : <ShareNetwork size={16} />}
                   <span className="truncate">{link.files.original_name}</span>
+                  {link.item_type === 'folder' && <Badge variant="outline" className="text-xs">Folder</Badge>}
                 </CardTitle>
                 <CardDescription className="text-xs text-neutral-400 mt-1 truncate">
-                  {formatFileSize(link.files.file_size)} • Created {new Date(link.created_at).toLocaleDateString()}
+                  {link.item_type === 'folder' ? 'Folder' : formatFileSize(link.files.file_size)} • Created {new Date(link.created_at).toLocaleDateString()}
                 </CardDescription>
               </div>
               <Badges link={link} expired={expired} limitReached={limitReached} />
