@@ -419,10 +419,11 @@ const LinksGrid = ({
           key={link.id}
           className={`bg-[#050505] border border-white/10 shadow-sm transition-all duration-200 ${inactive ? 'opacity-70' : 'hover:shadow-md'}`}
         >
-         {/* TOP ROW: Name + meta icons (downloads, expires, access, settings, delete) */}
+        {/* ✅ FIXED HEADER SECTION */}
 <CardHeader className="py-3 px-4">
-  <div className="flex items-start justify-between gap-3">
-    <div className="flex-1 min-w-0">
+  <div className="flex flex-wrap items-center justify-between gap-3">
+    {/* LEFT SIDE: FILE/FOLDER NAME */}
+    <div className="flex-1 min-w-[60%]">
       <CardTitle className="text-sm md:text-base flex items-center gap-2 text-white">
         {link.item_type === 'folder' ? (
           <FolderOpen size={16} className="text-white/70 shrink-0" />
@@ -430,22 +431,22 @@ const LinksGrid = ({
           <ShareNetwork size={16} className="text-white/70 shrink-0" />
         )}
 
-        {/* ✅ Proper filename visibility fix */}
+        {/* ✅ Ensure filename fits and doesn't overlap */}
         <span
-          className="block truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+          className="truncate block max-w-[calc(100%-1rem)] text-ellipsis"
           title={link.files?.original_name || 'Untitled File'}
         >
           {link.files?.original_name || 'Untitled File'}
         </span>
 
         {link.item_type === 'folder' && (
-          <Badge variant="outline" className="text-xs ml-1">
+          <Badge variant="outline" className="text-xs ml-1 shrink-0">
             Folder
           </Badge>
         )}
       </CardTitle>
 
-      <CardDescription className="text-xs text-white/60 mt-1 truncate">
+      <CardDescription className="text-xs text-white/60 mt-1">
         {link.item_type === 'folder'
           ? 'Folder'
           : formatFileSize(link.files.file_size)}{' '}
@@ -453,38 +454,35 @@ const LinksGrid = ({
       </CardDescription>
     </div>
 
-    <div className="flex items-center gap-2">
-      {/* Downloads */}
+    {/* RIGHT SIDE: META ICONS */}
+    <div className="flex flex-wrap justify-end items-center gap-2 shrink-0">
       <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/5">
         <Download size={14} className="text-white/70" />
-        <span className="text-xs text-white/80 truncate">
+        <span className="text-xs text-white/80">
           {link.download_count}/{link.download_limit || '∞'}
         </span>
       </div>
 
-      {/* Expires */}
       <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/5">
         <Clock size={14} className="text-white/70" />
-        <span className="text-xs text-white/80 truncate">
+        <span className="text-xs text-white/80">
           {link.expires_at
             ? new Date(link.expires_at).toLocaleDateString()
             : 'Never'}
         </span>
       </div>
 
-      {/* Public / Private */}
       <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/5">
         {link.files.is_public ? (
           <Globe size={14} className="text-white/70" />
         ) : (
           <Shield size={14} className="text-white/70" />
         )}
-        <span className="text-xs text-white/80 truncate">
+        <span className="text-xs text-white/80">
           {link.files.is_public ? 'Public' : 'Private'}
         </span>
       </div>
 
-      {/* Settings + Delete icons */}
       <div className="flex items-center gap-1 ml-2">
         <Button
           variant="ghost"
@@ -508,6 +506,7 @@ const LinksGrid = ({
     </div>
   </div>
 </CardHeader>
+
 
           {/* MAIN CONTENT */}
           <CardContent className="py-3 px-4 space-y-3">
