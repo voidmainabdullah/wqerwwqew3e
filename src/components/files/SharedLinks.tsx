@@ -419,51 +419,95 @@ const LinksGrid = ({
           key={link.id}
           className={`bg-[#050505] border border-white/10 shadow-sm transition-all duration-200 ${inactive ? 'opacity-70' : 'hover:shadow-md'}`}
         >
-          {/* TOP ROW: Name + meta icons (downloads, expires, access, settings, delete) */}
-          <CardHeader className="py-3 px-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <CardTitle className="text-sm md:text-base flex items-center gap-2 truncate text-white">
-                  {link.item_type === 'folder' ? <FolderOpen size={16} className="text-white/70" /> : <ShareNetwork size={16} className="text-white/70" />}
-                  <span className="truncate">{link.files.original_name}</span>
-                  {link.item_type === 'folder' && <Badge variant="outline" className="text-xs ml-1">Folder</Badge>}
-                </CardTitle>
-                <CardDescription className="text-xs text-white/60 mt-1 truncate">
-                  {link.item_type === 'folder' ? 'Folder' : formatFileSize(link.files.file_size)} • {new Date(link.created_at).toLocaleDateString()}
-                </CardDescription>
-              </div>
+         {/* TOP ROW: Name + meta icons (downloads, expires, access, settings, delete) */}
+<CardHeader className="py-3 px-4">
+  <div className="flex items-start justify-between gap-3">
+    <div className="flex-1 min-w-0">
+      <CardTitle className="text-sm md:text-base flex items-center gap-2 text-white">
+        {link.item_type === 'folder' ? (
+          <FolderOpen size={16} className="text-white/70 shrink-0" />
+        ) : (
+          <ShareNetwork size={16} className="text-white/70 shrink-0" />
+        )}
 
-              <div className="flex items-center gap-2">
-                {/* Downloads */}
-                <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/03">
-                  <Download size={14} className="text-white/70" />
-                  <span className="text-xs text-white/80 truncate">{link.download_count}/{link.download_limit || '∞'}</span>
-                </div>
+        {/* ✅ Proper filename visibility fix */}
+        <span
+          className="block truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+          title={link.files?.original_name || 'Untitled File'}
+        >
+          {link.files?.original_name || 'Untitled File'}
+        </span>
 
-                {/* Expires */}
-                <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/03">
-                  <Clock size={14} className="text-white/70" />
-                  <span className="text-xs text-white/80 truncate">{link.expires_at ? new Date(link.expires_at).toLocaleDateString() : 'Never'}</span>
-                </div>
+        {link.item_type === 'folder' && (
+          <Badge variant="outline" className="text-xs ml-1">
+            Folder
+          </Badge>
+        )}
+      </CardTitle>
 
-                {/* Public / Private */}
-                <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/03">
-                  {link.files.is_public ? <Globe size={14} className="text-white/70" /> : <Shield size={14} className="text-white/70" />}
-                  <span className="text-xs text-white/80 truncate">{link.files.is_public ? 'Public' : 'Private'}</span>
-                </div>
+      <CardDescription className="text-xs text-white/60 mt-1 truncate">
+        {link.item_type === 'folder'
+          ? 'Folder'
+          : formatFileSize(link.files.file_size)}{' '}
+        • {new Date(link.created_at).toLocaleDateString()}
+      </CardDescription>
+    </div>
 
-                {/* Settings + Delete icons */}
-                <div className="flex items-center gap-1 ml-2">
-                  <Button variant="ghost" size="sm" onClick={() => openEditDialog(link)} title="Settings" className="p-1">
-                    <Gear size={16} className="text-white/70" />
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} title="Delete" className="p-1">
-                    <Trash size={16} className="text-destructive" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
+    <div className="flex items-center gap-2">
+      {/* Downloads */}
+      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/5">
+        <Download size={14} className="text-white/70" />
+        <span className="text-xs text-white/80 truncate">
+          {link.download_count}/{link.download_limit || '∞'}
+        </span>
+      </div>
+
+      {/* Expires */}
+      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/5">
+        <Clock size={14} className="text-white/70" />
+        <span className="text-xs text-white/80 truncate">
+          {link.expires_at
+            ? new Date(link.expires_at).toLocaleDateString()
+            : 'Never'}
+        </span>
+      </div>
+
+      {/* Public / Private */}
+      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/5">
+        {link.files.is_public ? (
+          <Globe size={14} className="text-white/70" />
+        ) : (
+          <Shield size={14} className="text-white/70" />
+        )}
+        <span className="text-xs text-white/80 truncate">
+          {link.files.is_public ? 'Public' : 'Private'}
+        </span>
+      </div>
+
+      {/* Settings + Delete icons */}
+      <div className="flex items-center gap-1 ml-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => openEditDialog(link)}
+          title="Settings"
+          className="p-1"
+        >
+          <Gear size={16} className="text-white/70" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => deleteSharedLink(link.id)}
+          title="Delete"
+          className="p-1"
+        >
+          <Trash size={16} className="text-destructive" />
+        </Button>
+      </div>
+    </div>
+  </div>
+</CardHeader>
 
           {/* MAIN CONTENT */}
           <CardContent className="py-3 px-4 space-y-3">
