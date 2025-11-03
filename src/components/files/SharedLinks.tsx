@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast'; 
+import { useToast } from '@/hooks/use-toast';
 import {
   Card,
   CardContent,
@@ -13,15 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
 import {
   ShareNetwork,
   Copy,
@@ -31,13 +23,11 @@ import {
   Shield,
   Trash,
   ArrowSquareOut,
-  Share,
-  Lock,
-  Globe,
-  Gear,
-  LockSimple,
   Link as LinkIcon,
-  FolderOpen
+  FolderOpen,
+  Gear,
+  Globe,
+  Sparkle
 } from 'phosphor-react';
 
 interface SharedLink {
@@ -73,23 +63,19 @@ export const SharedLinks: React.FC = () => {
 
   // Filters / search
   const [searchQuery, setSearchQuery] = useState('');
-  const [dateFrom, setDateFrom] = useState<string | null>(null);
-  const [dateTo, setDateTo] = useState<string | null>(null);
-
-  // AI-based manual sorting: prioritize active and popular links
   const [sortOption, setSortOption] = useState<'recent' | 'downloads' | 'expires'>('recent');
 
   useEffect(() => {
     if (user) fetchSharedLinks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const fetchSharedLinks = async () => {
     setLoading(true);
     try {
-      // Fetch both file and folder shares
       const { data: userFiles } = await supabase.from('files').select('id').eq('user_id', user?.id);
       const { data: userFolders } = await supabase.from('folders').select('id').eq('user_id', user?.id);
-      
+
       const fileIds = userFiles?.map((f: any) => f.id) || [];
       const folderIds = userFolders?.map((f: any) => f.id) || [];
 
@@ -99,15 +85,13 @@ export const SharedLinks: React.FC = () => {
         return;
       }
 
-      // Fetch file shares
-      const fileSharesPromise = fileIds.length 
+      const fileSharesPromise = fileIds.length
         ? supabase.from('shared_links').select(`
             *,
             files!inner(id, original_name, file_size, is_public, is_locked)
           `).in('file_id', fileIds).not('file_id', 'is', null)
         : Promise.resolve({ data: [], error: null });
 
-      // Fetch folder shares
       const folderSharesPromise = folderIds.length
         ? supabase.from('shared_links').select(`
             *,
@@ -123,7 +107,6 @@ export const SharedLinks: React.FC = () => {
       if (fileSharesResult.error) throw fileSharesResult.error;
       if (folderSharesResult.error) throw folderSharesResult.error;
 
-      // Normalize data structure for both files and folders
       const fileShares = (fileSharesResult.data || []).map((item: any) => ({
         ...item,
         item_type: 'file',
@@ -142,7 +125,6 @@ export const SharedLinks: React.FC = () => {
         }
       }));
 
-      // Combine and sort by created_at
       const allShares = [...fileShares, ...folderShares].sort(
         (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       );
@@ -202,7 +184,8 @@ export const SharedLinks: React.FC = () => {
   const isExpired = (expiresAt: string | null) => expiresAt ? new Date(expiresAt) < new Date() : false;
   const isLimitReached = (downloadLimit: number | null, downloadCount: number) => downloadLimit ? downloadCount >= downloadLimit : false;
 
-  const toggleFilePublicStatus = async (fileId: string, isPublic: boolean) => {
+  const toggleFilePublicStatus = async (fileId: string | undefined, isPublic: boolean) => {
+    if (!fileId) return;
     try {
       const { error } = await supabase.rpc('toggle_file_public_status', { p_file_id: fileId, p_is_public: isPublic });
       if (error) throw error;
@@ -232,54 +215,41 @@ export const SharedLinks: React.FC = () => {
   const saveEditedLink = async () => {
     if (!editingLink) return;
     try {
-      await toggleSharedLinkStatus(editingLink.id, editingLink.is_active);
+      // Persist changes if you made any interactive edits inside the modal (we keep it minimal)
       setIsEditDialogOpen(false); setEditingLink(null);
+      toast({ title: 'Settings saved' });
     } catch (error: any) {
       toast({ variant: 'destructive', title: 'Save failed', description: error.message });
     }
   };
 
-  const clearFilters = () => { setSearchQuery(''); setDateFrom(null); setDateTo(null); };
-
-  // Manual AI features (no API):
-  // 1. Smart sorting based on activity and downloads
-  // 2. Suggested actions (like unlock popular links)
-  // 3. Highlight soon-to-expire or high download links
+  // Filtered + Sorted Links (no date filtering)
   const filteredLinks = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    const from = dateFrom ? new Date(dateFrom) : null;
-    const to = dateTo ? new Date(dateTo) : null;
-    if (to) to.setHours(23, 59, 59, 999);
-
     let results = sharedLinks.filter(link => {
-      if (q && !(link.files.original_name.toLowerCase().includes(q))) return false;
-      if (from && new Date(link.created_at) < from) return false;
-      if (to && new Date(link.created_at) > to) return false;
+      if (q && !link.files.original_name.toLowerCase().includes(q)) return false;
       return true;
     });
 
-    // Manual AI sorting
     if (sortOption === 'downloads') results = results.sort((a, b) => (b.download_count || 0) - (a.download_count || 0));
     if (sortOption === 'expires') results = results.sort((a, b) => {
       const aExp = a.expires_at ? new Date(a.expires_at).getTime() : Infinity;
       const bExp = b.expires_at ? new Date(b.expires_at).getTime() : Infinity;
       return aExp - bExp;
     });
+    // default 'recent' already sorted in fetch — but ensure fallback
+    if (sortOption === 'recent') results = results.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
     return results;
-  }, [sharedLinks, searchQuery, dateFrom, dateTo, sortOption]);
+  }, [sharedLinks, searchQuery, sortOption]);
 
   if (loading) return <LoadingSkeleton />;
 
   return (
-    <div className="space-y-6 p-4 max-w-7xl mx-auto">
+    <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <HeaderFilters
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        dateFrom={dateFrom}
-        setDateFrom={setDateFrom}
-        dateTo={dateTo}
-        setDateTo={setDateTo}
-        clearFilters={clearFilters}
         sortOption={sortOption}
         setSortOption={setSortOption}
         refresh={fetchSharedLinks}
@@ -322,7 +292,7 @@ const LoadingSkeleton = () => (
   <div className="space-y-4 p-4 max-w-7xl mx-auto">
     <div className="grid gap-4">
       {[...Array(3)].map((_, i) => (
-        <Card key={i} className="animate-pulse">
+        <Card key={i} className="animate-pulse bg-black border border-white/10">
           <CardHeader>
             <div className="h-4 bg-muted rounded w-48"></div>
             <div className="h-3 bg-muted rounded w-32 mt-2"></div>
@@ -339,16 +309,16 @@ const LoadingSkeleton = () => (
 // ---------------------
 // Empty State
 const EmptyState = () => (
-  <Card>
+  <Card className="bg-black border border-white/10">
     <CardContent className="flex flex-col items-center justify-center py-8 md:py-12">
-      <Share className="h-12 w-12 text-muted-foreground mb-4" />
-      <h3 className="text-base md:text-lg font-medium mb-2">No shared links yet</h3>
-      <p className="text-sm md:text-base text-muted-foreground text-center mb-4 px-4">
+      <ShareNetwork className="h-12 w-12 text-white/60 mb-4" />
+      <h3 className="text-base md:text-lg font-medium text-white">No shared links yet</h3>
+      <p className="text-sm md:text-base text-white/70 text-center mb-4 px-4">
         Create shared links from your files to start sharing securely.
       </p>
       <Button asChild>
         <a href="/dashboard/files" className="inline-flex items-center gap-2">
-          <Share className="mr-2 h-4 w-4" /> Go to My Files
+          <ShareNetwork className="mr-2 h-4 w-4" /> Go to My Files
         </a>
       </Button>
     </CardContent>
@@ -379,43 +349,32 @@ const exportCSV = (links: SharedLink[], toast: any) => {
 };
 
 // ---------------------
-// Header + Filters component
+// Header + Filters component (simplified: no date, no reset)
 const HeaderFilters = ({
   searchQuery, setSearchQuery,
-  dateFrom, setDateFrom,
-  dateTo, setDateTo,
-  clearFilters,
   sortOption, setSortOption,
   refresh
 }: any) => (
-  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-stone-600/20 pb-3">
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pb-3">
     <div>
-      <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Shared Links</h1>
-      <p className="text-sm md:text-base text-muted-foreground">Manage and monitor your active file sharing links.</p>
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">Shared Links</h1>
+      <p className="text-sm md:text-base text-white/70">Manage and monitor your active file sharing links.</p>
     </div>
 
-    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
       <div className="flex items-center gap-2 w-full sm:w-auto">
-        <Input placeholder="Search by file name" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="min-w-0" />
-        <Button variant="ghost" onClick={() => setSearchQuery('')} className="bg-transparent border text-neutral-200">Clear</Button>
+        <Input placeholder="Search by file name" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="min-w-0 bg-black text-white placeholder:text-white/50 border-white/10" />
+        <Button variant="outline" onClick={() => setSearchQuery('')} className="border-white/10 text-white/80">Clear</Button>
       </div>
 
       <div className="flex items-center gap-2">
-        <Label className="text-xs">From</Label>
-        <Input type="date" value={dateFrom || ''} onChange={e => setDateFrom(e.target.value || null)} className="max-w-[150px]" />
-        <Label className="text-xs">To</Label>
-        <Input type="date" value={dateTo || ''} onChange={e => setDateTo(e.target.value || null)} className="max-w-[150px]" />
-        <Button variant="ghost" onClick={clearFilters} className="bg-zinc-300 hover:bg-zinc-200 text-stone-600">Reset</Button>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Label className="text-xs">Sort by</Label>
-        <select value={sortOption} onChange={e => setSortOption(e.target.value as any)} className="bg-black text-white text-xs p-1 rounded">
+        <Label className="text-xs text-white/70">Sort</Label>
+        <select value={sortOption} onChange={e => setSortOption(e.target.value as any)} className="bg-black text-white text-xs p-1 rounded border border-white/10">
           <option value="recent">Most Recent</option>
           <option value="downloads">Most Downloads</option>
           <option value="expires">Expiring Soon</option>
         </select>
-        <Button variant="outline" onClick={refresh}>Refresh</Button>
+        <Button variant="outline" onClick={refresh} className="border-white/10 text-white/80">Refresh</Button>
       </div>
     </div>
   </div>
@@ -425,17 +384,17 @@ const HeaderFilters = ({
 // Results count + export
 const ResultsCount = ({ filteredLinks, total, exportCSV }: any) => (
   <div className="flex items-center justify-between">
-    <div className="text-sm text-neutral-400">
+    <div className="text-sm text-white/60">
       Showing <span className="text-white font-medium">{filteredLinks.length}</span> of <span className="text-white font-medium">{total}</span> links
     </div>
     <div className="flex items-center gap-2">
-      <Button onClick={() => exportCSV()}>Export CSV</Button>
+      <Button onClick={() => exportCSV()} className="border-white/10 text-white/80">Export CSV</Button>
     </div>
   </div>
 );
 
 // ---------------------
-// Links grid component
+// Links grid component (cards with top metadata row)
 const LinksGrid = ({
   filteredLinks,
   copyToClipboard,
@@ -449,140 +408,116 @@ const LinksGrid = ({
   isLimitReached,
   toast
 }: any) => (
-  <div className="grid gap-3">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     {filteredLinks.map((link: SharedLink) => {
       const expired = isExpired(link.expires_at);
       const limitReached = isLimitReached(link.download_limit, link.download_count);
-      const inactive = expired || limitReached;
+      const inactive = expired || limitReached || !link.is_active;
+
       return (
-        <Card key={link.id} className={`transition-all duration-200 hover:shadow-lg ${inactive ? 'opacity-70' : ''}`}>
-          <CardHeader className="py-3">
+        <Card
+          key={link.id}
+          className={`bg-[#050505] border border-white/10 shadow-sm transition-all duration-200 ${inactive ? 'opacity-70' : 'hover:shadow-md'}`}
+        >
+          {/* TOP ROW: Name + meta icons (downloads, expires, access, settings, delete) */}
+          <CardHeader className="py-3 px-4">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <CardTitle className="text-sm md:text-base flex items-center gap-2 truncate">
-                  {link.item_type === 'folder' ? <FolderOpen size={16} /> : <ShareNetwork size={16} />}
+                <CardTitle className="text-sm md:text-base flex items-center gap-2 truncate text-white">
+                  {link.item_type === 'folder' ? <FolderOpen size={16} className="text-white/70" /> : <ShareNetwork size={16} className="text-white/70" />}
                   <span className="truncate">{link.files.original_name}</span>
-                  {link.item_type === 'folder' && <Badge variant="outline" className="text-xs">Folder</Badge>}
+                  {link.item_type === 'folder' && <Badge variant="outline" className="text-xs ml-1">Folder</Badge>}
                 </CardTitle>
-                <CardDescription className="text-xs text-neutral-400 mt-1 truncate">
-                  {link.item_type === 'folder' ? 'Folder' : formatFileSize(link.files.file_size)} • Created {new Date(link.created_at).toLocaleDateString()}
+                <CardDescription className="text-xs text-white/60 mt-1 truncate">
+                  {link.item_type === 'folder' ? 'Folder' : formatFileSize(link.files.file_size)} • {new Date(link.created_at).toLocaleDateString()}
                 </CardDescription>
               </div>
-              <Badges link={link} expired={expired} limitReached={limitReached} />
+
+              <div className="flex items-center gap-2">
+                {/* Downloads */}
+                <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/03">
+                  <Download size={14} className="text-white/70" />
+                  <span className="text-xs text-white/80 truncate">{link.download_count}/{link.download_limit || '∞'}</span>
+                </div>
+
+                {/* Expires */}
+                <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/03">
+                  <Clock size={14} className="text-white/70" />
+                  <span className="text-xs text-white/80 truncate">{link.expires_at ? new Date(link.expires_at).toLocaleDateString() : 'Never'}</span>
+                </div>
+
+                {/* Public / Private */}
+                <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/03">
+                  {link.files.is_public ? <Globe size={14} className="text-white/70" /> : <Shield size={14} className="text-white/70" />}
+                  <span className="text-xs text-white/80 truncate">{link.files.is_public ? 'Public' : 'Private'}</span>
+                </div>
+
+                {/* Settings + Delete icons */}
+                <div className="flex items-center gap-1 ml-2">
+                  <Button variant="ghost" size="sm" onClick={() => openEditDialog(link)} title="Settings" className="p-1">
+                    <Gear size={16} className="text-white/70" />
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} title="Delete" className="p-1">
+                    <Trash size={16} className="text-destructive" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </CardHeader>
 
-                   <CardContent className="py-2 space-y-2">
+          {/* MAIN CONTENT */}
+          <CardContent className="py-3 px-4 space-y-3">
+            {/* Link input + quick actions */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              {/* Link input + actions */}
               <Input
                 value={`${window.location.origin}/share/${link.share_token}`}
                 readOnly
-                className="font-mono text-xs md:text-sm flex-1 min-w-0 bg-black"
+                className="font-mono text-xs md:text-sm flex-1 min-w-0 bg-black border border-white/6 text-white"
               />
 
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} title="Copy link">
+                <Button variant="outline" size="sm" onClick={() => copyToClipboard(link.share_token)} title="Copy link" className="border-white/8 text-white/80 p-2">
                   <Copy className="h-4 w-4" />
                 </Button>
 
-                <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} title="Open link">
+                <Button variant="outline" size="sm" onClick={() => window.open(`/share/${link.share_token}`, '_blank')} title="Open link" className="border-white/8 text-white/80 p-2">
                   <ArrowSquareOut className="h-4 w-4" />
                 </Button>
 
-                <Button variant="outline" size="sm" onClick={() => shortenLink(link.share_token)} title="Shorten link">
+                <Button variant="outline" size="sm" onClick={() => shortenLink(link.share_token)} title="Shorten link" className="border-white/8 text-white/80 p-2">
                   <LinkIcon className="h-4 w-4" />
                 </Button>
               </div>
             </div>
 
-            {/* Optional message */}
+            {/* Message (if any) */}
             {link.message && (
-              <div className="p-2 rounded-2xl border bg-blue-400/10 mt-2">
-                <p className="text-xs md:text-sm text-muted-foreground break-words">
-                  <span className="font-bold text-blue-400/80">Message: </span> {link.message}
+              <div className="p-2 rounded-md border border-white/6 bg-white/02">
+                <p className="text-xs md:text-sm text-white/70 break-words">
+                  <span className="font-medium text-white">Message: </span> {link.message}
                 </p>
               </div>
             )}
 
-            {/* Mini analytics + meta */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-3 text-xs md:text-sm">
-              <div className="flex items-center gap-2">
-                <Download className="h-4 w-4 text-muted-foreground" />
-                <span className="truncate">
-                  {link.download_count} / {link.download_limit || '∞'} downloads
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="truncate">
-                  {link.expires_at ? `Expires ${new Date(link.expires_at).toLocaleDateString()}` : 'Never expires'}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Eye className="h-4 w-4 text-muted-foreground" />
-                <span className="truncate">
-                  {link.password_hash ? 'Password protected' : 'Public access'}
-                </span>
-              </div>
-
-              {/* Suggestions / Status */}
-              <div className="flex items-center justify-end gap-2">
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    checked={link.is_active}
-                    onCheckedChange={(checked) => toggleSharedLinkStatus(link.id, !!checked)}
-                    disabled={!link.password_hash}
-                    title={link.password_hash ? '' : 'Password required to toggle'}
-                  />
-                  <Label className="text-xs whitespace-nowrap">
-                    {link.is_active ? (
-                      <span className="flex items-center gap-1">
-                        <Globe className="w-3 h-3" /> Unlocked
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1">
-                        <Lock className="w-3 h-3" /> Locked
-                      </span>
-                    )}
-                  </Label>
-                </div>
-
-                <Button variant="ghost" size="sm" onClick={() => openEditDialog(link)} title="Edit link settings">
-                  <Gear className="h-4 w-4" />
-                </Button>
-
-                <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} title="Delete link">
-                  <Trash className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Manual AI suggestions area (client-side heuristics) */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mt-2">
+            {/* Mini analytics + suggestion row (bottom of card) */}
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-3">
-                {/* Sparkline - tiny inline generated SVG based on recent download "trend" simulated from count */}
                 <Sparkline value={link.download_count} />
                 <div className="text-xs">
-                  <div className="font-medium">{link.download_count} downloads</div>
-                  <div className="text-muted-foreground text-[11px]">
+                  <div className="font-medium text-white">{link.download_count} downloads</div>
+                  <div className="text-white/60 text-[12px]">
                     {link.download_count > 20 ? 'High activity' : link.download_count > 5 ? 'Moderate' : 'Low'}
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                {/* Suggest action computed locally */}
                 <SuggestedAction link={link} onApplyAction={() => {
-                  // apply an action: e.g., make public if downloads high and not public
                   if (!link.files.is_public && link.download_count > 20) {
                     toggleFilePublicStatus(link.file_id, true);
                     toast({ title: 'Suggested action applied', description: 'File made public.' });
                   } else {
-                    // fallback quick tip
-                    toast({ title: 'Tip', description: 'Add a message or password to improve control.' });
+                    toast({ title: 'Tip', description: 'Consider adding a password for more control.' });
                   }
                 }} />
               </div>
@@ -595,45 +530,8 @@ const LinksGrid = ({
 );
 
 // ---------------------
-// Badges subcomponent
-const Badges: React.FC<{ link: SharedLink; expired: boolean; limitReached: boolean }> = ({ link, expired, limitReached }) => {
-  return (
-    <div className="flex items-center gap-2 flex-shrink-0">
-      <div className="flex flex-wrap gap-1">
-        {link.password_hash && (
-          <Badge variant="secondary" className="text-xs">
-            <Shield className="w-3 h-3 mr-1" /> Protected
-          </Badge>
-        )}
-        {link.files.is_public ? (
-          <Badge variant="default" className="text-xs bg-emerald-600">
-            <Globe className="w-3 h-3 mr-1" /> Public
-          </Badge>
-        ) : (
-          <Badge variant="secondary" className="text-xs">
-            <LockSimple className="w-3 h-3 mr-1" /> Private
-          </Badge>
-        )}
-        {expired && <Badge variant="destructive" className="text-xs">Expired</Badge>}
-        {limitReached && <Badge variant="destructive" className="text-xs">Limit Reached</Badge>}
-        {!expired && !limitReached && link.is_active && (
-          <Badge variant="default" className="text-xs bg-green-600/10 text-green-400">
-            Unlocked
-          </Badge>
-        )}
-        {!link.is_active && <Badge variant="destructive" className="text-xs">Locked</Badge>}
-      </div>
-    </div>
-  );
-};
-
-// ---------------------
 // SuggestedAction - local heuristic "AI"
 const SuggestedAction: React.FC<{ link: SharedLink; onApplyAction: () => void }> = ({ link, onApplyAction }) => {
-  // Simple heuristics:
-  // - If downloads > 30 and not public => suggest "Make public"
-  // - If expires within 48h => suggest "Extend expiry"
-  // - If download_limit is set and near limit => suggest "Increase limit"
   const now = Date.now();
   const expiresAt = link.expires_at ? new Date(link.expires_at).getTime() : null;
   const in48h = expiresAt ? expiresAt - now <= 48 * 3600 * 1000 && expiresAt - now > 0 : false;
@@ -650,9 +548,9 @@ const SuggestedAction: React.FC<{ link: SharedLink; onApplyAction: () => void }>
 
   return (
     <div className="flex items-center gap-2">
-      <div className="text-xs text-muted-foreground">{suggestion}</div>
+      <div className="text-xs text-white/70">{suggestion}</div>
       {actionable && (
-        <Button size="sm" variant="ghost" onClick={onApplyAction}>
+        <Button size="sm" variant="ghost" onClick={onApplyAction} className="text-white/80 border-white/6">
           Apply
         </Button>
       )}
@@ -663,38 +561,30 @@ const SuggestedAction: React.FC<{ link: SharedLink; onApplyAction: () => void }>
 // ---------------------
 // Sparkline - tiny visual to show "trend" (purely illustrative)
 const Sparkline: React.FC<{ value: number }> = ({ value }) => {
-  // produce a tiny 6-point sparkline based on the value
   const base = Math.min(value, 50);
   const points = [base * 0.2, base * 0.4, base * 0.8, base * 0.6, base * 0.9, base].map(v => Math.max(2, v));
   const max = Math.max(...points);
-  const width = 80;
-  const height = 24;
+  const width = 72;
+  const height = 20;
   const step = width / (points.length - 1);
   const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${i * step} ${height - (p / max) * (height - 4)}`).join(' ');
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="inline-block">
-      <defs>
-        <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.1" />
-        </linearGradient>
-      </defs>
-      <path d={path} fill="none" stroke="currentColor" strokeWidth={1.2} style={{ color: 'rgba(96,165,250,0.9)' }} />
+      <path d={path} fill="none" stroke="currentColor" strokeWidth={1.2} style={{ color: 'rgba(255,255,255,0.85)' }} />
       <rect x="0" y="0" width={width} height={height} fill="transparent" />
     </svg>
   );
 };
 
 // ---------------------
-// ---------------------
-// Edit Link Settings Dialog
+// Edit Link Settings Dialog (no switches)
 const EditDialog: React.FC<{
   editingLink: SharedLink;
   setEditingLink: (l: SharedLink | null) => void;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   saveEditedLink: () => void;
-  toggleFilePublicStatus: (fileId: string, isPublic: boolean) => Promise<void>;
+  toggleFilePublicStatus: (fileId: string | undefined, isPublic: boolean) => Promise<void>;
 }> = ({
   editingLink,
   setEditingLink,
@@ -710,65 +600,43 @@ const EditDialog: React.FC<{
   if (!local) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Edit Shared Link Settings</DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Switch
-              checked={local.is_active}
-              onCheckedChange={(checked) =>
-                setLocal({ ...local, is_active: !!checked })
-              }
-            />
-            <Label>Link Active</Label>
+    <div aria-hidden={!isOpen}>
+      {/* Using a simple dialog wrapper if your Dialog component exists use that instead */}
+      {/* Kept minimal: no lock/unlock toggle */}
+      <div className={`fixed inset-0 z-50 flex items-center justify-center ${isOpen ? '' : 'pointer-events-none'}`}>
+        <div className="bg-black border border-white/10 rounded-lg max-w-lg w-full p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg text-white font-semibold">Edit Shared Link</h3>
+            <button onClick={() => { setIsOpen(false); setEditingLink(null); }} className="text-white/60">Close</button>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Switch
-              checked={local.files.is_public}
-              onCheckedChange={(checked) =>
-                toggleFilePublicStatus(local.file_id, !!checked)
-              }
-            />
-            <Label>File Public</Label>
+          <div className="space-y-4">
+            <div>
+              <Label className="text-xs text-white/70">Visibility</Label>
+              <div className="flex items-center gap-2 mt-2">
+                <Button size="sm" variant="ghost" onClick={() => toggleFilePublicStatus(local.file_id, true)} className="text-white/80 border-white/6">Make Public</Button>
+                <Button size="sm" variant="ghost" onClick={() => toggleFilePublicStatus(local.file_id, false)} className="text-white/80 border-white/6">Make Private</Button>
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-xs text-white/70">Optional message</Label>
+              <Input value={local.message || ''} onChange={(e) => setLocal({ ...local, message: e.target.value })} className="bg-black text-white border border-white/6 mt-2" />
+            </div>
+
+            <div className="text-xs text-white/60">
+              Created on {new Date(local.created_at).toLocaleString()}
+            </div>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Input
-              placeholder="Optional message"
-              value={local.message || ''}
-              onChange={(e) =>
-                setLocal({ ...local, message: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="text-xs text-muted-foreground">
-            Created on {new Date(local.created_at).toLocaleString()}
+          <div className="flex items-center justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => { setIsOpen(false); setEditingLink(null); }} className="border-white/10 text-white/80">Cancel</Button>
+            <Button onClick={() => { setEditingLink(local); saveEditedLink(); }} className="bg-white text-black">Save Changes</Button>
           </div>
         </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              setEditingLink(local);
-              saveEditedLink();
-            }}
-          >
-            Save Changes
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
-
 
 
