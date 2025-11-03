@@ -127,11 +127,11 @@ export const Settings: React.FC = () => {
       const { data } = await supabase.from("profiles").select("*").eq("id", user?.id).single();
       setProfile(data);
       if (data?.avatar_url) setAvatarPreview(data.avatar_url);
-      if (data?.language) setLang(data.language);
+      if (data?.language) setLang(data.language as Lang);
       if (data?.timezone) setTimezone(data.timezone);
-      if (data?.notifications) setNotifications(data.notifications);
-      if (data?.font_style) setFontStyle(data.font_style);
-      if (data?.corner_style) setCornerStyle(data.corner_style);
+      if (data?.notifications) setNotifications(data.notifications as any);
+      if (data?.font_style) setFontStyle(data.font_style as FontStyle);
+      if (data?.corner_style) setCornerStyle(data.corner_style as CornerStyle);
       if (data?.two_fa_enabled) setTwoFA(!!data.two_fa_enabled);
     } catch (error) {
       console.error("fetchProfile error", error);
@@ -149,23 +149,11 @@ export const Settings: React.FC = () => {
   };
 
   const fetchActiveSessions = async () => {
-    // Many apps don't have 'sessions' table. We'll attempt to fetch and fallback to a mock.
-    try {
-      const { data } = await supabase.from("sessions").select("*").eq("user_id", user?.id).limit(10);
-      if (Array.isArray(data) && data.length) {
-        setActiveSessions(data);
-      } else {
-        // mock session list (useful for UI)
-        setActiveSessions([
-          { id: "s1", device: "Chrome — Windows", ip: "1.2.3.4", last_active: new Date().toISOString() },
-          { id: "s2", device: "Safari — iPhone", ip: "5.6.7.8", last_active: new Date(Date.now() - 3600_000).toISOString() },
-        ]);
-      }
-    } catch {
-      setActiveSessions([
-        { id: "s1", device: "Chrome — Windows", ip: "1.2.3.4", last_active: new Date().toISOString() },
-      ]);
-    }
+    // Mock session list (useful for UI) - sessions table doesn't exist
+    setActiveSessions([
+      { id: "s1", device: "Chrome — Windows", ip: "1.2.3.4", last_active: new Date().toISOString() },
+      { id: "s2", device: "Safari — iPhone", ip: "5.6.7.8", last_active: new Date(Date.now() - 3600_000).toISOString() },
+    ]);
   };
 
   // avatar preview handling
@@ -249,9 +237,9 @@ export const Settings: React.FC = () => {
     setBackupLoading(true);
     try {
       // Simulate a backup process and store lastBackup timestamp in profiles table
-      const ts = new Date().toLocaleString();
+      const ts = new Date().toISOString();
       // Attempt to write to profile's last_backup column if exists
-      await supabase.from("profiles").upsert({ id: user.id, last_backup: ts });
+      await supabase.from("profiles").update({ last_backup: ts }).eq('id', user.id);
       setLastBackup(ts);
       toast({
         title: "Backup requested",
@@ -280,13 +268,13 @@ export const Settings: React.FC = () => {
     try {
       toast({ title: "Preparing export", description: "Gathering your data..." });
       // gather basic profile & files listing
-      const [{ data: profileData }, { data: fileRows }] = await Promise.all([
+      const [profileResult, filesResult] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", user.id).single(),
         supabase.from("files").select("id, original_name, file_size, created_at").eq("user_id", user.id),
       ]);
       const payload = {
-        profile: profileData.data || profileData,
-        files: fileRows || [],
+        profile: profileResult.data || {},
+        files: filesResult.data || [],
         exported_at: new Date().toISOString(),
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -306,7 +294,7 @@ export const Settings: React.FC = () => {
   const toggleTwoFA = async (enable: boolean) => {
     try {
       setTwoFA(enable);
-      await supabase.from("profiles").upsert({ id: user.id, two_fa_enabled: enable });
+      await supabase.from("profiles").update({ two_fa_enabled: enable }).eq('id', user?.id || '');
       toast({ title: enable ? "2FA enabled" : "2FA disabled" });
     } catch (err: any) {
       toast({ variant: "destructive", title: "Failed", description: err?.message || "Could not update 2FA" });
@@ -315,15 +303,9 @@ export const Settings: React.FC = () => {
 
   // sign out from session (local mock)
   const revokeSession = async (sessionId: string) => {
-    try {
-      // Try to delete on server if sessions table exists
-      await supabase.from("sessions").delete().eq("id", sessionId);
-      setActiveSessions((s) => s.filter((x) => x.id !== sessionId));
-      toast({ title: "Session revoked", description: "Logged out from selected device." });
-    } catch {
-      setActiveSessions((s) => s.filter((x) => x.id !== sessionId));
-      toast({ title: "Session removed", description: "Session removed locally." });
-    }
+    // Just remove from local state since sessions table doesn't exist
+    setActiveSessions((s) => s.filter((x) => x.id !== sessionId));
+    toast({ title: "Session removed", description: "Session removed from this device." });
   };
 
   // delete account with a custom modal (safer than window.confirm)
@@ -368,14 +350,13 @@ export const Settings: React.FC = () => {
       (async () => {
         if (!user) return;
         try {
-          await supabase.from("profiles").upsert({
-            id: user.id,
+          await supabase.from("profiles").update({
             language: lang,
             timezone,
             notifications,
             font_style: fontStyle,
             corner_style: cornerStyle,
-          });
+          }).eq('id', user.id);
           // auto save silent
         } catch (e) {
           // silent
@@ -387,7 +368,7 @@ export const Settings: React.FC = () => {
   }, [lang, timezone, notifications, fontStyle, cornerStyle]);
 
   // small helper UI components (within file to keep single file)
-  const Section: React.FC<{ title: string; desc?: string; icon?: React.ReactNode }> = ({ title, desc, icon, children }) => (
+  const Section: React.FC<{ title: string; desc?: string; icon?: React.ReactNode; children?: React.ReactNode }> = ({ title, desc, icon, children }) => (
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }} className="card-outer">
       <Card className="border border-zinc-800 bg-zinc-900/70 backdrop-blur-sm hover:border-blue-500/40 transition-all">
         <CardHeader>
@@ -423,7 +404,7 @@ export const Settings: React.FC = () => {
     // optionally remove stored avatar
     (async () => {
       try {
-        await supabase.from("profiles").upsert({ id: user?.id, avatar_url: null });
+        await supabase.from("profiles").update({ avatar_url: null }).eq('id', user?.id || '');
         setProfile((p: any) => ({ ...p, avatar_url: null }));
         toast({ title: "Avatar removed" });
       } catch {
@@ -438,7 +419,7 @@ export const Settings: React.FC = () => {
     try {
       // open external checkout or simulate
       await new Promise((r) => setTimeout(r, 900));
-      await supabase.from("profiles").upsert({ id: user?.id, subscription_tier: "pro", subscription_renewal: new Date(Date.now() + 30 * 24 * 3600_000).toISOString() });
+      await supabase.from("profiles").update({ subscription_tier: "pro", subscription_renewal: new Date(Date.now() + 30 * 24 * 3600_000).toISOString() }).eq('id', user?.id || '');
       toast({ title: "Upgraded", description: "Your plan has been upgraded to Pro." });
       fetchProfile();
     } catch (err: any) {
@@ -776,7 +757,11 @@ export const Settings: React.FC = () => {
                   <Button variant="outline" onClick={() => {
                     // soft reset
                     (async () => {
-                      await supabase.from("profiles").upsert({ id: user?.id, settings_reset_at: new Date().toISOString(), notifications: { email: true, push: false, marketing: false }, font_style: "default", corner_style: "rounded" });
+                      await supabase.from("profiles").update({ 
+                        notifications: { email: true, push: false, marketing: false }, 
+                        font_style: "default", 
+                        corner_style: "rounded" 
+                      }).eq('id', user?.id || '');
                       setFontStyle("default"); setCornerStyle("rounded"); setNotifications({ email: true, push: false, marketing: false });
                       toast({ title: "Settings reset", description: "Settings restored to defaults." });
                     })();

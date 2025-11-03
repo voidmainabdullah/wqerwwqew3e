@@ -278,50 +278,74 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          corner_style: string | null
           created_at: string
           daily_upload_count: number
           daily_upload_limit: number | null
           display_name: string | null
           email: string
+          font_style: string | null
           id: string
+          language: string | null
+          last_backup: string | null
           last_upload_reset: string | null
+          notifications: Json | null
           storage_limit: number | null
           storage_used: number | null
           subscription_end_date: string | null
           subscription_status: string | null
           subscription_tier: string
+          tagline: string | null
+          timezone: string | null
+          two_fa_enabled: boolean | null
           updated_at: string
         }
         Insert: {
           avatar_url?: string | null
+          corner_style?: string | null
           created_at?: string
           daily_upload_count?: number
           daily_upload_limit?: number | null
           display_name?: string | null
           email: string
+          font_style?: string | null
           id: string
+          language?: string | null
+          last_backup?: string | null
           last_upload_reset?: string | null
+          notifications?: Json | null
           storage_limit?: number | null
           storage_used?: number | null
           subscription_end_date?: string | null
           subscription_status?: string | null
           subscription_tier?: string
+          tagline?: string | null
+          timezone?: string | null
+          two_fa_enabled?: boolean | null
           updated_at?: string
         }
         Update: {
           avatar_url?: string | null
+          corner_style?: string | null
           created_at?: string
           daily_upload_count?: number
           daily_upload_limit?: number | null
           display_name?: string | null
           email?: string
+          font_style?: string | null
           id?: string
+          language?: string | null
+          last_backup?: string | null
           last_upload_reset?: string | null
+          notifications?: Json | null
           storage_limit?: number | null
           storage_used?: number | null
           subscription_end_date?: string | null
           subscription_status?: string | null
           subscription_tier?: string
+          tagline?: string | null
+          timezone?: string | null
+          two_fa_enabled?: boolean | null
           updated_at?: string
         }
         Relationships: []

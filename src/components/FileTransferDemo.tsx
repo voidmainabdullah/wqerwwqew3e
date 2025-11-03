@@ -35,11 +35,11 @@ type Props = {
   initialPreview?: string;
 };
 
-const easing = [0.16, 1, 0.3, 1];
+const easing = [0.16, 1, 0.3, 1] as const;
 
 const cardFade: Variants = {
   hidden: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easing } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easing as any } },
 };
 
 const subtleFloat: Variants = {

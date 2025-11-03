@@ -249,6 +249,7 @@ export const SharedLinks: React.FC = () => {
             formatFileSize={formatFileSize}
             isExpired={isExpired}
             isLimitReached={isLimitReached}
+            toast={toast}
           />
         </>
       }
@@ -395,7 +396,8 @@ const LinksGrid = ({
   deleteSharedLink,
   formatFileSize,
   isExpired,
-  isLimitReached
+  isLimitReached,
+  toast
 }: any) => (
   <div className="grid gap-3">
     {filteredLinks.map((link: SharedLink) => {

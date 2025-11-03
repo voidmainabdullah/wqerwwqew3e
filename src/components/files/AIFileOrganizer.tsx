@@ -399,17 +399,8 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
 
           appliedFolderIds.push(folderId);
 
-          // create an organization log row (optional analytics)
-          await supabase.from('organization_logs').insert({
-            user_id: user.id,
-            folder_id: folderId,
-            file_count: suggestion.fileIds.length,
-            total_bytes: suggestion.estimatedBytes,
-            suggestion_confidence: suggestion.confidence,
-            created_at: new Date().toISOString(),
-            folder_name: suggestion.folderName,
-            details: JSON.stringify({ files: suggestion.fileIds.slice(0, 20) }),
-          });
+          // create an organization log row (optional analytics) - skipped as table doesn't exist
+          // This could be tracked in audit_logs or a custom table if needed
 
           results.push({ suggestion, success: true });
         } catch (err) {
