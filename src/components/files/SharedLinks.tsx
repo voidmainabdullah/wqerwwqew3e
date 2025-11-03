@@ -420,44 +420,18 @@ const LinksGrid = ({
           className={`bg-[#050505] border border-white/10 shadow-sm transition-all duration-200 ${inactive ? 'opacity-70' : 'hover:shadow-md'}`}
         >
           {/* TOP ROW: Name + meta icons (downloads, expires, access, settings, delete) */}
-         {/* TOP ROW: Name + meta icons (downloads, expires, access, settings, delete) */}
-<CardHeader className="py-3 px-4">
-  <div className="flex items-start justify-between gap-3">
-    <div className="flex-1 min-w-0">
-      <CardTitle className="text-sm md:text-base flex items-center gap-2 text-white">
-        {link.item_type === 'folder' ? (
-          <FolderOpen size={16} className="text-white/70 shrink-0" />
-        ) : (
-          <ShareNetwork size={16} className="text-white/70 shrink-0" />
-        )}
-
-        {/* ✅ FIX: Proper filename container */}
-        <span
-          className="block w-full truncate whitespace-nowrap overflow-hidden text-ellipsis font-medium"
-          title={link.files?.original_name || 'Untitled File'}
-        >
-          {link.files?.original_name || 'Untitled File'}
-        </span>
-
-        {link.item_type === 'folder' && (
-          <Badge
-            variant="outline"
-            className="text-xs ml-1 whitespace-nowrap border-white/20 text-white/70"
-          >
-            Folder
-          </Badge>
-        )}
-      </CardTitle>
-
-      <CardDescription className="text-xs text-white/60 mt-1 flex flex-wrap items-center gap-1">
-        <span>{link.item_type === 'folder' ? 'Folder' : formatFileSize(link.files?.file_size)}</span>
-        <span className="text-white/30">•</span>
-        <span>{new Date(link.created_at).toLocaleDateString()}</span>
-      </CardDescription>
-    </div>
-  </div>
-</CardHeader>
-
+          <CardHeader className="py-3 px-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <CardTitle className="text-sm md:text-base flex items-center gap-2 truncate text-white">
+                  {link.item_type === 'folder' ? <FolderOpen size={16} className="text-white/70" /> : <ShareNetwork size={16} className="text-white/70" />}
+                  <span className="truncate">{link.files.original_name}</span>
+                  {link.item_type === 'folder' && <Badge variant="outline" className="text-xs ml-1">Folder</Badge>}
+                </CardTitle>
+                <CardDescription className="text-xs text-white/60 mt-1 truncate">
+                  {link.item_type === 'folder' ? 'Folder' : formatFileSize(link.files.file_size)} • {new Date(link.created_at).toLocaleDateString()}
+                </CardDescription>
+              </div>
 
               <div className="flex items-center gap-2">
                 {/* Downloads */}
