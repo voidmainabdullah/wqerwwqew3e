@@ -1,77 +1,68 @@
 // FileTransferDemo.tsx
-// Minimal Pro Studio — professional, calm, cinematic showcase section
-// React + Tailwind + framer-motion + lucide-react required
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useAnimation, Variants } from "framer-motion";
 import {
-  Database,
   UploadCloud,
-  DownloadCloud,
-  Monitor,
-  Shield,
   Lock,
-  Star,
-  Clock,
+  Cloud,
+  Database,
+  ShieldCheck,
   BarChart2,
-  Image,
-  Folder,
-  Layers,
-  CloudSnow,
   Zap,
-  Settings,
+  Folder,
+  Clock,
+  Activity
 } from "lucide-react";
 
 /**
- * FileTransferDemo (Minimal Pro Studio)
- * - Purely a showcase / visual section (no uploads)
- * - Colors: black / white / blue-600 emphasis
- * - Accessibility minded, responsive, and production-ready markup
+ * FileTransferDemo
+ * Clean, black/white studio showcase of secure file transfer pipeline.
+ * - TailwindCSS for layout (expects tailwind in project)
+ * - framer-motion for subtle animations
+ * - lucide-react icons
  *
- * Usage:
- * <FileTransferDemo initialPreview="/example-dashboard.png" />
+ * Paste into your component tree: <FileTransferDemo />
  */
 
 type Props = {
-  initialPreview?: string;
+  initialFileName?: string;
 };
 
 const easing = [0.16, 1, 0.3, 1] as const;
 
 const cardFade: Variants = {
-  hidden: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easing as any } },
+  hidden: { opacity: 0, y: 6 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easing as any } },
 };
 
-const subtleFloat: Variants = {
-  float: {
-    y: [0, -6, 0],
-    transition: { duration: 2.8, repeat: Infinity, ease: "easeInOut" },
-  },
+const pulse = {
+  hidden: { scale: 0.95, opacity: 0.6 },
+  show: { scale: 1, opacity: 1, transition: { duration: 0.9, yoyo: Infinity } },
 };
 
-const accent = "bg-gradient-to-r from-blue-600 to-blue-500";
-const borderAccent = "border-blue-600/30";
+const accentGradient = "bg-gradient-to-r from-white to-white/80"; // subtle white-on-black accent
 
-const Meter = ({ value = 0 }: { value?: number }) => {
-  const pct = Math.max(0, Math.min(100, value));
+// ---------- Small components ----------
+const Meter: React.FC<{ value: number }> = ({ value }) => {
+  const pct = Math.max(0, Math.min(100, Math.round(value)));
   return (
-    <div className="w-full bg-[#0a0a0a] rounded-full h-2 overflow-hidden border border-[#161616]">
+    <div className="w-full rounded-full h-2 bg-black border border-white/6 overflow-hidden">
       <div
         className="h-full rounded-full transition-all"
         style={{
           width: `${pct}%`,
-          background: "linear-gradient(90deg,#2563eb 0%, #60a5fa 70%)",
-          boxShadow: "0 6px 18px rgba(37,99,235,0.12)",
+          background: "linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6))",
+          boxShadow: "0 6px 18px rgba(255,255,255,0.03)",
         }}
+        aria-hidden
       />
     </div>
   );
 };
 
-const TinySpark = ({ value = 0 }: { value?: number }) => {
-  // small inline sparkline using few points derived from value
-  const v = Math.min(50, Math.max(0, Math.round(value)));
-  const points = [v * 0.25, v * 0.4, v * 0.75, v * 0.6, v * 0.9, v].map((n) => Math.max(2, n));
+const TinySparkline: React.FC<{ value: number }> = ({ value }) => {
+  const v = Math.min(70, Math.max(2, Math.round(value)));
+  const points = [v * 0.15, v * 0.4, v * 0.7, v * 0.45, v * 0.85, v].map((n) => Math.max(2, n));
   const max = Math.max(...points);
   const width = 80;
   const height = 24;
@@ -79,57 +70,43 @@ const TinySpark = ({ value = 0 }: { value?: number }) => {
   const d = points.map((p, i) => `${i === 0 ? "M" : "L"} ${i * step} ${height - (p / max) * (height - 4)}`).join(" ");
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} aria-hidden>
-      <path d={d} fill="none" stroke="#60a5fa" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={d} fill="none" stroke="white" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.95 }} />
     </svg>
   );
 };
 
-const Stat = ({ label, value }: { label: string; value: string | number }) => (
+const StatBlock: React.FC<{ label: string; value: string | number }> = ({ label, value }) => (
   <div className="flex flex-col">
-    <span className="text-xs text-neutral-400">{label}</span>
+    <span className="text-xs text-white/60">{label}</span>
     <span className="text-sm font-semibold text-white">{value}</span>
   </div>
 );
 
-const Feature = ({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) => (
-  <motion.div variants={cardFade} className="rounded-xl bg-[#070707] border border-[#141414] p-4 flex gap-3 items-start">
-    <div className="p-2 rounded-md bg-white/4 border border-white/6">
-      {icon}
-    </div>
-    <div>
-      <div className="text-sm font-semibold text-white">{title}</div>
-      <div className="text-xs text-neutral-400 mt-1">{desc}</div>
-    </div>
-  </motion.div>
-);
-
-const FileTransferDemo: React.FC<Props> = ({ initialPreview }) => {
+// ---------- Main component ----------
+const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.zip" }) => {
   const controls = useAnimation();
-  const [preview, setPreview] = useState<string | undefined>(initialPreview);
-  const [progress, setProgress] = useState<number>(14); // static starting progress for showcase
-  const [speed] = useState<number>(480); // example in MB/s (visual)
-  const [sizeMB] = useState<number>(2300);
-  const [activeTransfers, setActiveTransfers] = useState<number>(12);
-  const [packets] = useState<number>(6);
-  const [showMeta, setShowMeta] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(14);
+  const [speed, setSpeed] = useState<number>(420); // illustrative MB/s
+  const [active, setActive] = useState<number>(9);
+  const [packets, setPackets] = useState<number>(6);
+  const [fileName, setFileName] = useState(initialFileName);
   const stageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     controls.start("show");
-    // subtle simulated progress tick for showcase
-    let t: number | null = window.setInterval(() => {
+    const t = window.setInterval(() => {
       setProgress((p) => {
-        const next = p + (Math.random() * 0.9 + 0.2);
+        const next = p + (Math.random() * 1.2 + 0.4);
         return next >= 99 ? 99 : Number(next.toFixed(2));
       });
-    }, 1200);
-    return () => {
-      if (t) window.clearInterval(t);
-    };
+      // simulate small variations
+      setSpeed((s) => Math.max(120, Math.round(s + (Math.random() * 40 - 20))));
+    }, 1100);
+    return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // parallax (subtle) for desktop
+  // parallax micro movement
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -143,358 +120,268 @@ const FileTransferDemo: React.FC<Props> = ({ initialPreview }) => {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // handlers (showcase-only)
-  const handleUseDemo = () => setPreview("/example-dashboard.png");
-  const handleClearPreview = () => setPreview(undefined);
-  const handleUploadPlaceholder = () => {
-    // no backend — just a gentle UX microinteraction
-    setShowMeta(true);
-    setTimeout(() => setShowMeta(false), 1800);
+  // small helper actions (showcase only)
+  const handleBoost = () => {
+    setProgress((p) => Math.min(99, p + 8));
+    setPackets((n) => Math.min(20, n + 2));
+    setActive((a) => Math.min(24, a + 2));
+  };
+
+  const handleReset = () => {
+    setProgress(6);
+    setSpeed(420);
+    setActive(3);
+    setPackets(4);
   };
 
   return (
-    <section className="relative py-16 px-6 md:px-12 bg-gradient-to-b from-[#040405] via-[#060607] to-[#0b0b0b] text-white">
-      <div className="max-w-7xl mx-auto" ref={stageRef}>
-        {/* header */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Minimal Pro Studio — File Transfer Showcase</h2>
-            <p className="mt-3 text-neutral-400">
-              A calm, professional presentation of a secure file-transfer product. Clean glass cards, subtle motion,
-              and a focused blue accent to highlight important controls and metrics.
-            </p>
-            <div className="mt-4 flex items-center gap-3 flex-wrap">
-              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm ${accent} text-white`}>
-                <Star className="w-4 h-4" /> Studio Theme
+    <section className="relative py-12 px-6 md:px-10 bg-black text-white">
+      <div className="max-w-6xl mx-auto" ref={stageRef}>
+        {/* Header */}
+        <motion.div initial="hidden" animate="show" variants={cardFade} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="max-w-xl">
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">Secure File Transfer — Visual Flow</h2>
+            <p className="mt-2 text-sm text-white/70">Clean, minimal presentation of how a file moves securely: upload → encryption → transport → encrypted storage.</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs bg-white/6 border border-white/6">
+                <UploadCloud className="w-4 h-4" /> Live demo
               </div>
-              <div className="px-3 py-1 rounded-full bg-white/6 text-sm text-neutral-300 border border-white/6">Black • White • Blue</div>
-              <div className="px-3 py-1 rounded-full bg-white/6 text-sm text-neutral-300 border border-white/6 hidden md:inline">Sleek & Minimal</div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs bg-transparent border border-white/6">Black • White • Minimal</div>
             </div>
           </div>
 
-          <div className="flex gap-3 items-center">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium ${accent} shadow-sm`}
-              onClick={handleUploadPlaceholder}
-              aria-label="Request demo action"
-            >
-              <UploadCloud className="w-4 h-4" /> Request Preview
+          <div className="flex items-center gap-3">
+            <motion.button whileTap={{ scale: 0.98 }} whileHover={{ scale: 1.02 }} onClick={handleBoost} className="px-4 py-2 rounded-lg bg-white text-black text-sm font-medium">
+              Speed Boost
             </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-3 py-2 rounded-lg bg-transparent text-sm border border-white/6"
-              onClick={() => {
-                setProgress(6);
-                setActiveTransfers(3);
-              }}
-            >
+            <motion.button whileTap={{ scale: 0.98 }} onClick={handleReset} className="px-3 py-2 rounded-lg border border-white/10 text-sm">
               Reset
             </motion.button>
           </div>
         </motion.div>
 
-        {/* layout */}
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* left column — cards & metrics */}
-          <div className="lg:col-span-7 space-y-6">
-            <motion.div variants={cardFade} initial="hidden" animate="show" className={`rounded-2xl p-5 bg-[#060606] border ${borderAccent} shadow-[0_18px_48px_rgba(2,6,23,0.7)]`}>
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-md bg-white/4 border border-white/6">
-                    <Database className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-white">Secure Stream</div>
-                    <div className="text-xs text-neutral-400">Enterprise grade • minimal latency</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="text-xs text-neutral-400">Active transfers</div>
-                  <div className="text-lg font-semibold text-white">{activeTransfers}</div>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="col-span-2">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex-1 pr-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <div className="text-xs text-neutral-400">Current transfer</div>
-                          <div className="text-lg font-semibold text-white">project-archive.zip</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xs text-neutral-400">Size</div>
-                          <div className="text-sm font-semibold text-white">{sizeMB} MB</div>
-                        </div>
-                      </div>
-
-                      <div className="mt-4">
-                        <Meter value={progress} />
-                        <div className="mt-2 flex items-center justify-between text-xs text-neutral-400">
-                          <div>{Math.round((progress / 100) * sizeMB)} MB</div>
-                          <div>{Math.round(speed)} MB/s</div>
-                        </div>
-                      </div>
+        {/* Grid */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* left: pipeline + stats */}
+          <div className="lg:col-span-7 space-y-4">
+            <motion.div variants={cardFade} className="rounded-2xl p-5 bg-[#060606] border border-white/8">
+              {/* pipeline visual */}
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-md bg-white/6 border border-white/8">
+                      <Folder className="w-5 h-5" />
                     </div>
+                    <div>
+                      <div className="text-sm font-semibold">Current transfer</div>
+                      <div className="text-xs text-white/60 truncate" title={fileName}>{fileName}</div>
+                    </div>
+                  </div>
 
-                    <div className="w-28 text-center">
-                      <div className="text-xs text-neutral-400">ETA</div>
-                      <div className="text-lg font-semibold text-white">{progress < 99 ? `${(100 - progress) < 1 ? "Inst" : `${Math.max(1, Math.round((100 - progress) / 4))}m`}` : "Done"}</div>
+                  <div className="text-xs text-white/60 flex items-center gap-3">
+                    <div className="text-right">
+                      <div className="text-xs text-white/60">Progress</div>
+                      <div className="text-sm font-semibold">{Math.round(progress)}%</div>
+                    </div>
+                    <div className="w-36">
+                      <Meter value={progress} />
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col items-start gap-3">
-                  <div className="w-full bg-[#050505] border border-[#161616] rounded-lg p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-neutral-400">Integrity</div>
+                {/* pipeline steps */}
+                <div className="mt-3 grid grid-cols-1 sm:grid-cols-4 gap-3">
+                  {[
+                    { key: "upload", icon: <UploadCloud className="w-4 h-4" />, label: "Upload", detail: "Client" },
+                    { key: "encrypt", icon: <Lock className="w-4 h-4" />, label: "Encrypt", detail: "AES-256" },
+                    { key: "transfer", icon: <Cloud className="w-4 h-4" />, label: "Transfer", detail: "Parallel streams" },
+                    { key: "store", icon: <Database className="w-4 h-4" />, label: "Store", detail: "Encrypted storage" },
+                  ].map((s, i) => {
+                    const stepProgress = Math.max(0, Math.min(100, progress - i * 15));
+                    return (
+                      <motion.div
+                        key={s.key}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.08 * i, duration: 0.45 }}
+                        className="rounded-lg bg-[#050505] border border-white/6 p-3 flex flex-col items-start gap-2"
+                        aria-hidden
+                      >
+                        <div className="flex items-center gap-3 w-full">
+                          <div className="p-2 rounded-md bg-white/6 border border-white/8">{s.icon}</div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-white truncate">{s.label}</div>
+                            <div className="text-xs text-white/60">{s.detail}</div>
+                          </div>
+                          <div className="text-xs text-white/60">{Math.round(Math.max(6, stepProgress))}%</div>
+                        </div>
+                        <div className="w-full mt-2">
+                          <div className="w-full h-1 bg-black border border-white/6 rounded overflow-hidden">
+                            <div style={{ width: `${Math.max(6, stepProgress)}%` }} className="h-full bg-white/80 transition-all" />
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* mini analytics row */}
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-lg p-3 bg-[#050505] border border-white/8 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-white/60">Avg speed</div>
+                      <div className="text-sm font-semibold text-white">{Math.round(speed)} MB/s</div>
+                    </div>
+                    <TinySpark value={progress} />
+                  </div>
+
+                  <div className="rounded-lg p-3 bg-[#050505] border border-white/8 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-white/60">Active transfers</div>
+                      <div className="text-sm font-semibold text-white">{active}</div>
+                    </div>
+                    <div className="text-xs text-white/60">packets x{packets}</div>
+                  </div>
+
+                  <div className="rounded-lg p-3 bg-[#050505] border border-white/8 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-white/60">Integrity</div>
                       <div className="text-sm font-semibold text-white">AES-256</div>
                     </div>
-                    <div className="mt-3 flex items-center gap-2">
-                      <TinySpark value={progress} />
-                      <div className="ml-auto text-xs text-neutral-400">Verified</div>
-                    </div>
-                  </div>
-
-                  <div className="w-full bg-[#050505] border border-[#161616] rounded-lg p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-neutral-400">Uptime</div>
-                      <div className="text-sm font-semibold text-white">99.99%</div>
-                    </div>
-                    <div className="mt-3 text-xs text-neutral-400">SLA-backed infrastructure</div>
+                    <div className="p-1 rounded bg-white/6"><ShieldCheck className="w-4 h-4" /></div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-5 grid grid-cols-1 md:grid-cols-4 gap-3">
-                <Stat label="Avg speed" value={`${Math.round(speed)} MB/s`} />
-                <Stat label="Data centers" value="12 regions" />
-                <Stat label="Nodes" value="24" />
-                <Stat label="Audit logs" value="Enabled" />
+                {/* small stats */}
+                <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <StatBlock label="Data centers" value="12 regions" />
+                  <StatBlock label="Nodes" value="24" />
+                  <StatBlock label="SLA" value="99.99%" />
+                  <StatBlock label="Audit logs" value="Enabled" />
+                </div>
               </div>
             </motion.div>
 
-            {/* features */}
-            <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Feature
-                icon={<Shield className="w-5 h-5 text-blue-400" />}
-                title="End-to-end encryption"
-                desc="Automatic AES-256 encryption during transit and at rest for every file."
-              />
-              <Feature
-                icon={<Zap className="w-5 h-5 text-blue-400" />}
-                title="Optimized transfer"
-                desc="Bandwidth-aware chunking and parallel streams reduce latency and improve reliability."
-              />
-              <Feature
-                icon={<Layers className="w-5 h-5 text-blue-400" />}
-                title="Granular control"
-                desc="Expiring links, role-based access, and audit-ready logs for enterprise workflows."
-              />
-            </motion.div>
-
-            {/* pipeline visual — purely decorative */}
-            <motion.div initial="hidden" animate="show" variants={cardFade} className="rounded-2xl bg-[#060606] border border-[#141414] p-5">
-              <div className="flex items-center justify-between mb-3">
+            {/* pipeline summary / graph */}
+            <motion.div variants={cardFade} className="rounded-2xl p-5 bg-[#060606] border border-white/8">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-md bg-white/4 border border-white/6"><Folder className="w-4 h-4 text-blue-400" /></div>
+                  <div className="p-2 rounded-md bg-white/6 border border-white/8"><BarChart2 className="w-4 h-4" /></div>
                   <div>
-                    <div className="text-sm font-semibold text-white">Pipeline</div>
-                    <div className="text-xs text-neutral-400">Client → Edge → Core</div>
+                    <div className="text-sm font-semibold">Transfer throughput</div>
+                    <div className="text-xs text-white/60">Visualized for stakeholders</div>
                   </div>
                 </div>
-                <div className="text-xs text-neutral-400">Throughput</div>
+
+                <div className="text-xs text-white/60">Live</div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div className="rounded-lg bg-[#050505] border border-[#171717] p-3">
-                  <div className="text-xs text-neutral-400 mb-2">Client</div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded bg-white/3 border border-white/6 flex items-center justify-center"><Image className="w-4 h-4 text-blue-400" /></div>
-                    <div>
-                      <div className="text-sm font-semibold text-white">Browser</div>
-                      <div className="text-xs text-neutral-400">TLS • Parallel chunks</div>
-                    </div>
+              <div className="mt-4 flex flex-col sm:flex-row gap-4 items-center">
+                <div className="flex-1">
+                  {/* simple animated bars */}
+                  <div className="flex items-end gap-2 h-28">
+                    {Array.from({ length: 8 }).map((_, i) => {
+                      const height = Math.max(6, Math.round(((progress + (Math.sin(i + progress / 12) * 8)) % 100) / 100 * 100));
+                      return (
+                        <motion.div
+                          key={i}
+                          animate={{ height: `${6 + (height / 100) * 100}%` }}
+                          transition={{ duration: 0.9, yoyo: Infinity, ease: "easeInOut" }}
+                          className="w-3 rounded bg-white/70"
+                          style={{ minHeight: 8 }}
+                          aria-hidden
+                        />
+                      );
+                    })}
                   </div>
                 </div>
 
-                <div className="rounded-lg bg-[#050505] border border-[#171717] p-3">
-                  <div className="text-xs text-neutral-400 mb-2">Edge</div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded bg-white/3 border border-white/6 flex items-center justify-center"><CloudSnow className="w-4 h-4 text-blue-400" /></div>
-                    <div>
-                      <div className="text-sm font-semibold text-white">Edge CDN</div>
-                      <div className="text-xs text-neutral-400">Caching • Replay-resume</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-lg bg-[#050505] border border-[#171717] p-3">
-                  <div className="text-xs text-neutral-400 mb-2">Core</div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded bg-white/3 border border-white/6 flex items-center justify-center"><Database className="w-4 h-4 text-blue-400" /></div>
-                    <div>
-                      <div className="text-sm font-semibold text-white">Storage</div>
-                      <div className="text-xs text-neutral-400">Encrypted • Hot & Cold tiers</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-full">
-                    <div className="text-xs text-neutral-400">Overall throughput</div>
-                    <div className="mt-2"><Meter value={Math.min(100, progress + 10)} /></div>
-                  </div>
-
-                  <div className="w-36 text-right">
-                    <div className="text-xs text-neutral-400">Packets</div>
-                    <div className="text-sm font-semibold text-white">{packets}</div>
-                    <div className="mt-2"><TinySpark value={progress} /></div>
-                  </div>
+                <div className="w-40 flex flex-col gap-2">
+                  <div className="text-xs text-white/60">Packets</div>
+                  <div className="text-lg font-semibold text-white">x{packets}</div>
+                  <div className="text-xs text-white/60">Last update: a few seconds</div>
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* right column — preview & controls */}
-          <div className="lg:col-span-5 space-y-6">
-            <motion.div variants={cardFade} initial="hidden" animate="show" className="rounded-3xl p-4 bg-gradient-to-b from-[#050505] to-[#070707] border border-[#1a1a1a]">
+          {/* right: compact preview / controls */}
+          <div className="lg:col-span-5 space-y-4">
+            <motion.div variants={cardFade} className="rounded-2xl p-5 bg-gradient-to-b from-[#050505] to-[#070707] border border-white/8">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="rounded-md bg-white/3 p-2 border border-white/6"><Monitor className="w-5 h-5 text-blue-400" /></div>
+                  <div className="p-2 rounded-md bg-white/6 border border-white/8"><Activity className="w-5 h-5" /></div>
                   <div>
-                    <div className="text-sm font-semibold text-white">Dashboard Preview</div>
-                    <div className="text-xs text-neutral-400">Drop or choose an image — studio-only preview</div>
+                    <div className="text-sm font-semibold">Secure visualizer</div>
+                    <div className="text-xs text-white/60">Flow snapshot</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="text-xs text-neutral-400">Live</div>
-                  <div className="w-8 h-4 rounded-full bg-blue-600/70 flex items-center justify-center text-xs font-semibold">●</div>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-12 gap-3">
-                <div className="md:col-span-8 col-span-1">
-                  <div className="rounded-xl overflow-hidden border border-[#1f1f1f] bg-black/20" style={{ minHeight: 220 }}>
-                    {preview ? (
-                      <img src={preview} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center p-6">
-                        <div className="text-neutral-400">No preview</div>
-                        <div className="text-xs text-neutral-400 mt-2">Use the controls to set a demo preview</div>
-                        <div className="mt-4 flex gap-2">
-                          <button onClick={handleUseDemo} className="px-3 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm">Use demo preview</button>
-                          <button onClick={handleClearPreview} className="px-3 py-2 rounded-lg bg-transparent border border-white/6 text-sm">Clear</button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="md:col-span-4 col-span-1 flex flex-col gap-3">
-                  <div className="bg-[#070707] border border-[#191919] rounded-lg p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-neutral-400">Filename</div>
-                      <div className="text-sm font-semibold text-white">project-archive.zip</div>
-                    </div>
-                    <div className="mt-3">
-                      <Meter value={progress} />
-                      <div className="mt-2 flex items-center justify-between text-xs text-neutral-400">
-                        <div>{Math.round((progress / 100) * sizeMB)} MB</div>
-                        <div>{Math.round(speed)} MB/s</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#070707] border border-[#191919] rounded-lg p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-neutral-400">Preview options</div>
-                      <div className="text-sm font-semibold text-white">{preview ? "Custom" : "Default"}</div>
-                    </div>
-
-                    <div className="mt-3 flex gap-2">
-                      <button onClick={handleUseDemo} className="flex-1 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm">Load demo</button>
-                      <button onClick={handleClearPreview} className="px-3 py-2 rounded-lg bg-transparent border border-white/6 text-sm">Clear</button>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#070707] border border-[#191919] rounded-lg p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-neutral-400">Visualization</div>
-                      <div className="text-sm font-semibold text-white">Packets x{packets}</div>
-                    </div>
-                    <div className="mt-3 grid grid-cols-3 gap-2">
-                      {Array.from({ length: 6 }).slice(0, 6).map((_, i) => (
-                        <div key={i} className="h-2 rounded bg-white/6" style={{ opacity: 0.25 + (i / 6) * 0.75 }} />
-                      ))}
-                    </div>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-xs text-white/60">ETA</div>
+                  <div className="text-sm font-semibold text-white">{progress < 99 ? `${Math.max(1, Math.round((100 - progress) / 4))}m` : "Done"}</div>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between">
-                <div className="text-xs text-neutral-400">Last render</div>
-                <div className="text-sm font-semibold text-white">a few seconds ago</div>
+              <div className="mt-4 grid grid-cols-1 gap-3">
+                <div className="bg-[#050505] border border-white/8 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-white/60">Filename</div>
+                      <div className="text-sm font-semibold text-white truncate" title={fileName}>{fileName}</div>
+                    </div>
+                    <div className="text-xs text-white/60">{formatBytes(Math.round((progress / 100) * 2300000000))}</div>
+                  </div>
+
+                  <div className="mt-3">
+                    <Meter value={progress} />
+                    <div className="mt-2 flex items-center justify-between text-xs text-white/60">
+                      <div>{Math.round((progress / 100) * 2300)} MB</div>
+                      <div>{Math.round(speed)} MB/s</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-[#050505] border border-white/8 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="text-xs text-white/60">Controls</div>
+                    <div className="text-sm font-semibold text-white">Interactive</div>
+                  </div>
+
+                  <div className="mt-3 flex gap-2">
+                    <button onClick={() => setProgress((p) => Math.min(99, p + 6))} className="flex-1 px-3 py-2 rounded-lg bg-white text-black text-sm">Advance</button>
+                    <button onClick={() => setActive((a) => Math.max(1, a - 1))} className="px-3 py-2 rounded-lg border border-white/8 text-sm">-</button>
+                    <button onClick={() => setActive((a) => a + 1)} className="px-3 py-2 rounded-lg border border-white/8 text-sm">+</button>
+                  </div>
+                </div>
+
+                <div className="bg-[#050505] border border-white/8 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-white/60">Security</div>
+                      <div className="text-sm font-semibold text-white">AES-256 • TLS</div>
+                    </div>
+                    <div className="p-1 rounded bg-white/6"><Lock className="w-4 h-4" /></div>
+                  </div>
+
+                  <div className="mt-3 text-xs text-white/60">End-to-end encryption with integrity checks and audit logs.</div>
+                </div>
               </div>
             </motion.div>
 
-            <motion.div initial="hidden" animate="show" variants={cardFade} className="rounded-2xl bg-[#060606] border border-[#141414] p-5">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-md bg-white/4 border border-white/6"><BarChart2 className="w-5 h-5 text-blue-400" /></div>
-                  <div>
-                    <div className="text-sm font-semibold text-white">Studio Metrics</div>
-                    <div className="text-xs text-neutral-400">Curated for stakeholders</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="text-xs text-neutral-400">Status</div>
-                  <div className="px-2 py-1 rounded-md bg-white/4 text-sm text-white">Operational</div>
-                </div>
+            <motion.div variants={cardFade} className="rounded-2xl p-4 bg-[#060606] border border-white/8 flex items-center justify-between">
+              <div>
+                <div className="text-xs text-white/60">Studio CTA</div>
+                <div className="text-sm font-semibold text-white">Use this module in product pages</div>
               </div>
 
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="rounded-lg p-3 bg-[#050505] border border-[#161616]">
-                  <div className="text-xs text-neutral-400">Avg Speed</div>
-                  <div className="text-lg font-semibold text-white">{Math.round(speed)} MB/s</div>
-                </div>
-
-                <div className="rounded-lg p-3 bg-[#050505] border border-[#161616]">
-                  <div className="text-xs text-neutral-400">Active Transfers</div>
-                  <div className="text-lg font-semibold text-white">{activeTransfers}</div>
-                </div>
-
-                <div className="rounded-lg p-3 bg-[#050505] border border-[#161616]">
-                  <div className="text-xs text-neutral-400">SLA</div>
-                  <div className="text-lg font-semibold text-white">99.99%</div>
-                </div>
+              <div className="flex items-center gap-3">
+                <button onClick={() => { /* placeholder */ }} className="px-4 py-2 rounded-lg bg-white text-black text-sm">Get Theme</button>
+                <button onClick={() => { /* placeholder */ }} className="px-3 py-2 rounded-lg border border-white/10 text-sm">Learn</button>
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* footer CTA */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mt-12 rounded-2xl p-6 bg-gradient-to-b from-[#050505] to-[#040404] border border-[#141414] text-white flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <div className="text-lg font-semibold">Ready to present in your studio?</div>
-            <div className="text-xs text-neutral-400 mt-1">This section is a polished, professional showcase — plug it into marketing pages or the product tour.</div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button className={`px-4 py-2 rounded-lg text-sm font-medium ${accent}`}>Get Studio Theme</button>
-            <button className="px-3 py-2 rounded-lg bg-transparent border border-white/6 text-sm">Learn more</button>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
@@ -502,9 +389,7 @@ const FileTransferDemo: React.FC<Props> = ({ initialPreview }) => {
 
 export default FileTransferDemo;
 
-/* Helpers (internal) */
-// (kept minimal so single-file usage is easy)
-// format bytes: used if you want to quickly show file sizes
+// ---------- helpers ----------
 function formatBytes(bytes: number | undefined) {
   if (!bytes || bytes === 0) return "0 B";
   const k = 1024;
