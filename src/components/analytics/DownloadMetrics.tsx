@@ -1,3 +1,11 @@
+'use client';
+
+export const DownloadComparison: React.FC = () => {
+  // --- Imports ---
+  // All imports remain identical for context
+  // (They should exist at the top of your file)
+};
+
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,16 +28,13 @@ import {
   ResponsiveContainer,
   Legend,
   Cell,
-  
 } from 'recharts';
 
 /**
- * DownloadComparison_DarkApple.jsx
- * Rewritten component with a minimal dark "Apple-like" black & white theme.
- * Keeps original Supabase integration and functionality but improves layout,
- * accessibility and styling for a modern, crisp look.
- *
- * Export: default
+ * DownloadComparison.tsx
+ * Dark Apple-style visual analytics component.
+ * Displays Downloads vs Shares stats for user files.
+ * Compatible with Next.js (App Router) & Supabase.
  */
 
 interface FileComparisonData {
@@ -47,22 +52,14 @@ const ACCENTS = {
   panel: 'bg-black/60',
 };
 
-const COLORS = [
-  '#9CA3AF', // cool gray
-  '#E5E7EB', // lighter
-  '#A3A3A3',
-  '#D1D5DB',
-  '#F3F4F6',
-  '#A8A29E',
-];
+const COLORS = ['#9CA3AF', '#E5E7EB', '#A3A3A3', '#D1D5DB', '#F3F4F6', '#A8A29E'];
 
-const DownloadComparison: React.FC = () => {
+const DownloadComparisonComponent: React.FC = () => {
   const { user } = useAuth();
   const [comparisonData, setComparisonData] = useState<FileComparisonData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [totalDownloads, setTotalDownloads] = useState<number>(0);
 
-  // Fetch and prepare data from Supabase (keeps original behaviour)
   const fetchComparisonData = async () => {
     if (!user?.id) return;
     setLoading(true);
@@ -129,10 +126,8 @@ const DownloadComparison: React.FC = () => {
     fetchComparisonData();
     const id = setInterval(fetchComparisonData, 60_000);
     return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
-  // Small, clean tooltip that matches the dark theme
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload?.length) {
       return (
@@ -140,9 +135,13 @@ const DownloadComparison: React.FC = () => {
           className={`rounded-md p-2 shadow-md ${ACCENTS.panel} border ${ACCENTS.border} max-w-xs`}
         >
           <div className="text-sm font-medium text-white mb-1">{label}</div>
-          <div className="text-xs text-zinc-300">Downloads: {payload[0]?.value ?? 0}</div>
+          <div className="text-xs text-zinc-300">
+            Downloads: {payload[0]?.value ?? 0}
+          </div>
           {payload[1] && (
-            <div className="text-xs text-zinc-300">Shares: {payload[1]?.value ?? 0}</div>
+            <div className="text-xs text-zinc-300">
+              Shares: {payload[1]?.value ?? 0}
+            </div>
           )}
         </div>
       );
@@ -150,7 +149,6 @@ const DownloadComparison: React.FC = () => {
     return null;
   };
 
-  // Loading skeleton
   if (loading) {
     return (
       <Card className="rounded-2xl border p-4 border-zinc-700 bg-black/60">
@@ -166,17 +164,15 @@ const DownloadComparison: React.FC = () => {
         <CardContent>
           <div className="h-52 w-full rounded-lg bg-zinc-800 animate-pulse" />
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="h-12 rounded bg-zinc-800 animate-pulse" />
-            <div className="h-12 rounded bg-zinc-800 animate-pulse" />
-            <div className="h-12 rounded bg-zinc-800 animate-pulse" />
-            <div className="h-12 rounded bg-zinc-800 animate-pulse" />
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-12 rounded bg-zinc-800 animate-pulse" />
+            ))}
           </div>
         </CardContent>
       </Card>
     );
   }
 
-  // No data state
   if (!comparisonData.length) {
     return (
       <Card className="rounded-2xl border p-6 border-zinc-700 bg-black/60">
@@ -199,7 +195,6 @@ const DownloadComparison: React.FC = () => {
     );
   }
 
-  // Main render
   return (
     <Card className="rounded-2xl border p-4 border-zinc-700 bg-black/60 shadow-lg">
       <CardHeader className="pb-2">
@@ -211,18 +206,19 @@ const DownloadComparison: React.FC = () => {
               </div>
               File Comparison
             </CardTitle>
-            <CardDescription className="text-sm text-zinc-400 mt-1">Downloads vs Shares</CardDescription>
+            <CardDescription className="text-sm text-zinc-400 mt-1">
+              Downloads vs Shares
+            </CardDescription>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Badge className="px-3 py-1 rounded-full border border-zinc-700 bg-transparent text-sm">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-sm font-medium text-white">{totalDownloads}</span>
-              </div>
-            </Badge>
-            {/* placeholder for future actions */}
-          </div>
+          <Badge className="px-3 py-1 rounded-full border border-zinc-700 bg-transparent text-sm">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              <span className="text-sm font-medium text-white">
+                {totalDownloads}
+              </span>
+            </div>
+          </Badge>
         </div>
       </CardHeader>
 
@@ -234,7 +230,6 @@ const DownloadComparison: React.FC = () => {
               margin={{ top: 8, right: 6, left: 0, bottom: 48 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-
               <XAxis
                 dataKey="name"
                 stroke="#52525b"
@@ -243,26 +238,21 @@ const DownloadComparison: React.FC = () => {
                 textAnchor="end"
                 height={60}
               />
-
               <YAxis
                 stroke="#52525b"
                 tick={{ fill: '#9ca3af', fontSize: 11 }}
                 allowDecimals={false}
               />
-
               <Tooltip content={<CustomTooltip />} />
-
               <Legend
                 wrapperStyle={{ color: '#9ca3af', fontSize: 12, paddingTop: 8 }}
                 iconType="circle"
               />
-
               <Bar dataKey="downloads" radius={[6, 6, 0, 0]}>
                 {comparisonData.map((entry, idx) => (
                   <Cell key={`d-${idx}`} fill={entry.color} />
                 ))}
               </Bar>
-
               <Bar dataKey="shares" radius={[6, 6, 0, 0]} fill="#6b7280" />
             </BarChart>
           </ResponsiveContainer>
@@ -273,22 +263,21 @@ const DownloadComparison: React.FC = () => {
             <p className="text-lg font-semibold text-white">{comparisonData.length}</p>
             <p className="text-[11px] text-zinc-400">Files</p>
           </div>
-
           <div>
             <p className="text-lg font-semibold text-white">{totalDownloads}</p>
             <p className="text-[11px] text-zinc-400">Downloads</p>
           </div>
-
           <div>
             <p className="text-lg font-semibold text-white">
               {comparisonData.reduce((s, f) => s + f.shares, 0)}
             </p>
             <p className="text-[11px] text-zinc-400">Shares</p>
           </div>
-
           <div>
             <p className="text-lg font-semibold text-white">
-              {comparisonData.length > 0 ? Math.round(totalDownloads / comparisonData.length) : 0}
+              {comparisonData.length > 0
+                ? Math.round(totalDownloads / comparisonData.length)
+                : 0}
             </p>
             <p className="text-[11px] text-zinc-400">Avg/File</p>
           </div>
