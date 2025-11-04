@@ -293,9 +293,14 @@ File Sharing Platform
 
 
             <br />
-            <span className="bg-clip-text text-transparent" style={{ background: "linear-gradient(90deg,#ff7e5f,#feb47b)" }}>
-  The Ultimate File Sharing Platform
-</span>{" "}
+            <span className="text-6xl font-bold bg-clip-text text-transparent"
+    style={{ background: "linear-gradient(90deg, #ff7e5f, #feb47b)" }}>
+  The Ultimate<br />
+  File Sharing<br />
+  Platform<br />
+  for Teams & Creators
+</span>
+{" "}
             In Your Control 
           </motion.h1>
 
