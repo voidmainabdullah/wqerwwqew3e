@@ -297,7 +297,12 @@ const HeroSection: React.FC = () => {
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }} className="text-gray-300 max-w-xl">
-            Built for teams and creators who value privacy and speed. Upload, share, and collaborate — in a clean black & white interface inspired by Apple.
+           Built for teams, creators, and professionals who value privacy and performance.
+Upload, store, and share files securely with end-to-end encryption.
+Experience lightning-fast transfers and seamless collaboration anywhere.
+Organize projects, manage access, and track sharing activity with ease.
+All in a beautifully minimal, black-and-white interface inspired by Apple.
+Fast. Secure. Effortless — your cloud, your control.
           </motion.p>
 
           {/* Upload / Drag & Drop Zone */}
