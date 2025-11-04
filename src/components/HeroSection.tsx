@@ -293,10 +293,9 @@ File Sharing Platform
 
 
             <br />
-            <span className="bg-clip-text text-transparent" style={{ background: "linear-gradient(90deg,#fff,#ddd)" }}>
-              Share Files Instantly  
-Anywhere, Anytime
-            </span>{" "}
+            <span className="bg-clip-text text-transparent" style={{ background: "linear-gradient(90deg,#ff7e5f,#feb47b)" }}>
+  The Ultimate File Sharing Platform
+</span>{" "}
             In Your Control 
           </motion.h1>
 
