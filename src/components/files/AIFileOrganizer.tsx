@@ -508,8 +508,8 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-3 hidden">
+                  <div className="flex items-center gap-2 text-sm hidden">
                     <Settings className="h-4 w-4" />
                     <span>Auto-apply high confidence</span>
                   </div>
