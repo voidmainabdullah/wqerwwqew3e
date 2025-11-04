@@ -466,7 +466,8 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
             <Card>
               <CardContent className="p-8 text-center space-y-4">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                  <FolderTree className="h-8 w-8 text-primary" />
+                  <FolderTree className="h-8 w-8 
+                    text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-2">Analyze {totalFiles} file(s)</h3>
@@ -502,7 +503,7 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
             <>
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className=" text-md font-semibold">Organization Suggestions ({suggestions.length})</h3>
+                  <h3 className=" h-4 w-4 text-primary">Organization Suggestions ({suggestions.length})</h3>
                   <div className="text-sm text-muted-foreground">
                     {prettyBytes(totalBytes)} total · {totalFiles} files · analyzed {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}
                   </div>
