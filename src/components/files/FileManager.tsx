@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Folder, FolderOpen, Home, ChevronRight, Sparkles } from 'lucide-react';
+import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Folder, FolderOpen, Home, ChevronRight, Sparkles, Archive } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -16,6 +16,7 @@ import { FolderShareDialog } from './FolderShareDialog';
 import { MoveToFolderDialog } from './MoveToFolderDialog';
 import { ShareToTeamsDialog } from './ShareToTeamsDialog';
 import { AIFileOrganizer } from './AIFileOrganizer';
+import JSZip from 'jszip';
 interface FileItem {
   id: string;
   original_name: string;
@@ -180,18 +181,18 @@ export function FileManager() {
     setSelectionMode(false);
   };
   const deleteFolder = async (folderId: string, folderName: string) => {
-    if (!confirm(`Are you sure you want to delete "${folderName}" and all its contents?`)) return;
-    try {
-      const {
-        error
-      } = await supabase.from('folders').delete().eq('id', folderId);
-      if (error) throw error;
-      toast.success('Folder deleted successfully');
-      fetchContents();
-    } catch (error: any) {
-      console.error('Delete folder error:', error);
-      toast.error(error.message || 'Failed to delete folder');
-    }
+    toast.promise(
+      (async () => {
+        const { error } = await supabase.from('folders').delete().eq('id', folderId);
+        if (error) throw error;
+        await fetchContents();
+      })(),
+      {
+        loading: `Deleting "${folderName}"...`,
+        success: 'Folder deleted successfully',
+        error: 'Failed to delete folder'
+      }
+    );
   };
   const toggleItemSelection = (itemId: string) => {
     const newSelected = new Set(selectedItems);
@@ -204,24 +205,36 @@ export function FileManager() {
   };
   const handleBulkDelete = async () => {
     const selectedFiles = Array.from(selectedItems).filter(id => files.some(f => f.id === id));
-    if (selectedFiles.length === 0) return;
-    if (!confirm(`Delete ${selectedFiles.length} selected file(s)?`)) return;
-    try {
-      for (const fileId of selectedFiles) {
-        const file = files.find(f => f.id === fileId);
-        if (file) {
-          await supabase.storage.from('files').remove([file.storage_path]);
-          await supabase.from('files').delete().eq('id', fileId);
+    const selectedFolders = Array.from(selectedItems).filter(id => folders.some(f => f.id === id));
+    
+    if (selectedFiles.length === 0 && selectedFolders.length === 0) return;
+    
+    const totalCount = selectedFiles.length + selectedFolders.length;
+    
+    toast.promise(
+      (async () => {
+        for (const fileId of selectedFiles) {
+          const file = files.find(f => f.id === fileId);
+          if (file) {
+            await supabase.storage.from('files').remove([file.storage_path]);
+            await supabase.from('files').delete().eq('id', fileId);
+          }
         }
+        
+        for (const folderId of selectedFolders) {
+          await supabase.from('folders').delete().eq('id', folderId);
+        }
+        
+        setSelectedItems(new Set());
+        setSelectionMode(false);
+        await fetchContents();
+      })(),
+      {
+        loading: `Deleting ${totalCount} item(s)...`,
+        success: `Deleted ${totalCount} item(s) successfully`,
+        error: 'Failed to delete some items'
       }
-      toast.success(`Deleted ${selectedFiles.length} file(s)`);
-      setSelectedItems(new Set());
-      setSelectionMode(false);
-      fetchContents();
-    } catch (error: any) {
-      console.error('Bulk delete error:', error);
-      toast.error('Failed to delete some files');
-    }
+    );
   };
   const downloadFile = async (fileId: string, storagePath: string, fileName: string) => {
     try {
@@ -263,25 +276,22 @@ export function FileManager() {
     }, 2000);
   };
   const deleteFile = async (fileId: string, storagePath: string) => {
-    if (!confirm('Are you sure you want to delete this file?')) return;
-    try {
-      // Delete from storage
-      const {
-        error: storageError
-      } = await supabase.storage.from('files').remove([storagePath]);
-      if (storageError) throw storageError;
-
-      // Delete from database
-      const {
-        error: dbError
-      } = await supabase.from('files').delete().eq('id', fileId);
-      if (dbError) throw dbError;
-      toast.success('File deleted successfully');
-      fetchContents(); // Refresh the list
-    } catch (error) {
-      console.error('Delete error:', error);
-      toast.error('Failed to delete file');
-    }
+    toast.promise(
+      (async () => {
+        const { error: storageError } = await supabase.storage.from('files').remove([storagePath]);
+        if (storageError) throw storageError;
+        
+        const { error: dbError } = await supabase.from('files').delete().eq('id', fileId);
+        if (dbError) throw dbError;
+        
+        await fetchContents();
+      })(),
+      {
+        loading: 'Deleting file...',
+        success: 'File deleted successfully',
+        error: 'Failed to delete file'
+      }
+    );
   };
   const openShareDialog = (fileId: string, fileName: string) => {
     setShareDialog({
@@ -303,12 +313,101 @@ export function FileManager() {
       original_name: newName
     } : file));
   };
-  const filteredFiles = files.filter(file => {
-    const matchesSearch = file.original_name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterType === 'all' || file.file_type.includes(filterType);
-    return matchesSearch && matchesFilter;
-  });
-  const filteredFolders = folders.filter(folder => folder.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  // Smart search across all folders recursively
+  const searchAllFolders = async (searchQuery: string) => {
+    if (!searchQuery.trim()) return { files: [], folders: [] };
+    
+    const query = searchQuery.toLowerCase();
+    
+    // Search all user's files
+    const { data: allFiles } = await supabase
+      .from('files')
+      .select('*')
+      .eq('user_id', user?.id)
+      .ilike('original_name', `%${query}%`);
+    
+    // Search all user's folders
+    const { data: allFolders } = await supabase
+      .from('folders')
+      .select('*')
+      .eq('user_id', user?.id)
+      .ilike('name', `%${query}%`);
+    
+    return { files: allFiles || [], folders: allFolders || [] };
+  };
+
+  // Ultra-fast memoized search with debouncing effect
+  const { filteredFiles, filteredFolders } = useMemo(() => {
+    if (searchTerm.trim()) {
+      // Search in all folders when search term exists
+      const query = searchTerm.toLowerCase();
+      return {
+        filteredFiles: files.filter(file => 
+          file.original_name.toLowerCase().includes(query) &&
+          (filterType === 'all' || file.file_type.includes(filterType))
+        ),
+        filteredFolders: folders.filter(folder => 
+          folder.name.toLowerCase().includes(query)
+        )
+      };
+    }
+    
+    // Normal filtering in current folder
+    return {
+      filteredFiles: files.filter(file => 
+        filterType === 'all' || file.file_type.includes(filterType)
+      ),
+      filteredFolders: folders
+    };
+  }, [files, folders, searchTerm, filterType]);
+
+  // Download multiple files as ZIP
+  const downloadAsZip = async () => {
+    const selectedFiles = Array.from(selectedItems)
+      .map(id => files.find(f => f.id === id))
+      .filter(Boolean) as FileItem[];
+    
+    if (selectedFiles.length === 0) {
+      toast.error('No files selected');
+      return;
+    }
+
+    toast.promise(
+      (async () => {
+        const zip = new JSZip();
+        
+        for (const file of selectedFiles) {
+          try {
+            const { data } = await supabase.storage
+              .from('files')
+              .createSignedUrl(file.storage_path, 60);
+            
+            if (data?.signedUrl) {
+              const response = await fetch(data.signedUrl);
+              const blob = await response.blob();
+              zip.file(file.original_name, blob);
+            }
+          } catch (error) {
+            console.error(`Failed to add ${file.original_name} to zip:`, error);
+          }
+        }
+        
+        const content = await zip.generateAsync({ type: 'blob' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(content);
+        link.download = `files-${Date.now()}.zip`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      })(),
+      {
+        loading: `Creating ZIP with ${selectedFiles.length} file(s)...`,
+        success: 'ZIP downloaded successfully',
+        error: 'Failed to create ZIP file'
+      }
+    );
+  };
   if (loading) {
     return <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 "></div>
@@ -379,15 +478,24 @@ export function FileManager() {
               </select>
             </div>
             {selectionMode && <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={downloadAsZip} 
+                  disabled={Array.from(selectedItems).filter(id => files.some(f => f.id === id)).length === 0}
+                  className="font-heading bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30"
+                >
+                  <Archive className="mr-2 h-4 w-4" />
+                  ZIP ({Array.from(selectedItems).filter(id => files.some(f => f.id === id)).length})
+                </Button>
                 <Button variant="outline" onClick={() => setMoveToFolderDialog(true)} disabled={selectedItems.size === 0} className="font-heading">
                   <Folder className="mr-2 h-4 w-4" />
-                  Move to Folder
+                  Move
                 </Button>
                 <Button variant="destructive" onClick={handleBulkDelete} disabled={selectedItems.size === 0} className="font-heading">
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete ({selectedItems.size})
                 </Button>
-                <Button variant="outline" onClick={() => {
+                <Button variant="ghost" onClick={() => {
               setSelectionMode(false);
               setSelectedItems(new Set());
             }} className="font-heading">
@@ -426,21 +534,20 @@ export function FileManager() {
           </CardContent>
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Folders */}
-          {filteredFolders.map(folder => <Card key={`folder-${folder.id}`} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer">
-              <CardContent className="p-4 bg-zinc-800 rounded-2xl">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3 flex-1" onClick={() => navigateToFolder(folder.id, folder.name)}>
-                    <div className="w-12 h-12 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-xl flex items-center justify-center border border-amber-500/20 bg-transparent">
-                      <FolderOpen className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+          {filteredFolders.map(folder => <Card key={`folder-${folder.id}`} className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-foreground/20 bg-card/50 backdrop-blur">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 flex-1 cursor-pointer" onClick={() => navigateToFolder(folder.id, folder.name)}>
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-muted/50 group-hover:bg-muted transition-colors">
+                      <FolderOpen className="h-6 w-6 text-muted-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-heading font-semibold text-base mb-1 truncate" title={folder.name}>
+                      <h4 className="font-heading font-semibold text-base mb-1 truncate text-foreground" title={folder.name}>
                         {folder.name}
                       </h4>
-                      <div className="flex items-center gap-2 text-sm font-body text-muted-foreground">
-                        <span className="material-icons md-18">folder</span>
-                        <span>{new Date(folder.created_at).toLocaleDateString()}</span>
-                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(folder.created_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -473,110 +580,107 @@ export function FileManager() {
             </Card>)}
 
           {/* Files */}
-          {filteredFiles.map(file => <Card key={file.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-              <CardContent className="p-4 bg-zinc-800 rounded-2xl">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-blue-500/20 bg-black">
-                    <span className="text-blue-600 dark:text-blue-400 font-heading font-bold text-xs">
-                      {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {selectionMode && <Checkbox checked={selectedItems.has(file.id)} onCheckedChange={() => toggleItemSelection(file.id)} />}
-                    <div className="flex flex-col items-end gap-1">
-                      <Badge variant="outline" className="text-xs">
-                        <span className="material-icons md-18 mr-1">download</span>
-                        {file.download_count}
-                      </Badge>
-                      <Badge variant="secondary" className="text-xs text-zinc-500 border-neutral-600 my-0 py-px px-[4px] mx-0 bg-transparent">
-                        <span className="material-icons md-18 mr-1">share</span>
-                        {file.share_count || 0} shares
-                      </Badge>
+          {filteredFiles.map(file => <Card key={file.id} className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-foreground/20 bg-card/50 backdrop-blur">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-muted/50 border border-border group-hover:bg-muted transition-colors">
+                      <span className="text-foreground font-heading font-bold text-xs">
+                        {file.original_name.split('.').pop()?.toUpperCase() || 'FILE'}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-heading font-semibold text-base mb-1 truncate text-foreground" title={file.original_name}>
+                        {file.original_name}
+                      </h4>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <span>{formatFileSize(file.file_size)}</span>
+                        <span>•</span>
+                        <span>{new Date(file.created_at).toLocaleDateString()}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="mb-3">
-                  <h4 className="font-heading font-semibold text-base mb-2 truncate" title={file.original_name}>
-                    {file.original_name}
-                  </h4>
-                  <div className="flex items-center gap-2 text-sm font-body text-muted-foreground">
-                    <span>{formatFileSize(file.file_size)}</span>
-                    <span>•</span>
-                    <span>{new Date(file.created_at).toLocaleDateString()}</span>
+                  
+                  <div className="flex items-center gap-2">
+                    {selectionMode && <Checkbox checked={selectedItems.has(file.id)} onCheckedChange={() => toggleItemSelection(file.id)} />}
+                    {!selectionMode && (
+                      <div className="flex items-center gap-1.5">
+                        <Badge variant="outline" className="text-xs bg-background/50">
+                          <Download className="mr-1 h-3 w-3" />
+                          {file.download_count}
+                        </Badge>
+                        {file.is_public && <Badge variant="secondary" className="text-xs">Public</Badge>}
+                        {file.is_locked && <Badge variant="outline" className="text-xs">Locked</Badge>}
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Status Indicators */}
-                <div className="flex flex-wrap items-center gap-1.5 mb-3 min-h-[24px]">
-                  {file.is_public && <Badge variant="default" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/20">
-                      <span className="material-icons md-18 mr-1">public</span>
-                      Public
-                    </Badge>}
-                  {file.is_locked && <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/20">
-                      <span className="material-icons md-18 mr-1">lock</span>
-                      Protected
-                    </Badge>}
-                  {!file.is_public}
-                </div>
-
-                {/* Action Buttons Section */}
-                <div className="flex items-center gap-2">
-                  {/* Primary Action Buttons */} 
-                  <div className="flex items-center gap-1.5 flex-1">
-                    <Button size="sm" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} title="Download" className="flex-1 h-9 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all duration-200">
-                      <span className="material-icons md-18 mr-1">download</span>
+                {/* Action Buttons */}
+                {!selectionMode && (
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} 
+                      className="flex-1 h-9 hover:bg-muted"
+                    >
+                      <Download className="mr-1.5 h-4 w-4" />
                       <span className="hidden sm:inline">Download</span>
                     </Button>
                     
-                    <Button size="sm" variant="outline" onClick={() => openShareDialog(file.id, file.original_name)} title="Share" className="flex-1 h-9 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 transition-all duration-200">
-                      <span className="material-icons md-18 mr-1">share</span>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => openShareDialog(file.id, file.original_name)} 
+                      className="flex-1 h-9 hover:bg-muted"
+                    >
+                      <Share2 className="mr-1.5 h-4 w-4" />
                       <span className="hidden sm:inline">Share</span>
                     </Button>
-                  </div>
 
-                  {/* More Actions Dropdown */}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button size="icon" variant="outline" className="h-9 w-9 hover:bg-muted flex-shrink-0">
-                        <span className="material-icons md-18">more_vert</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
-                        <span className="material-icons md-18 mr-2">security</span>
-                        Virus Scan
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => openRenameDialog(file.id, file.original_name)}>
-                        <span className="material-icons md-18 mr-2">edit</span>
-                        Rename
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => openShareDialog(file.id, file.original_name)}>
-                        <span className="material-icons md-18 mr-2">share</span>
-                        Create Share Link
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setShareToTeamsDialog({
-                  isOpen: true,
-                  fileId: file.id,
-                  fileName: file.original_name
-                })}>
-                        <span className="material-icons md-18 mr-2">groups</span>
-                        Share to Team
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <a href="/dashboard/shared" className="flex items-center">
-                          <span className="material-icons md-18 mr-2">link</span>
-                          View All Shares
-                        </a>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => deleteFile(file.id, file.storage_path)} className="text-destructive focus:text-destructive">
-                        <span className="material-icons md-18 mr-2">delete</span>
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button size="icon" variant="outline" className="h-9 w-9 hover:bg-muted flex-shrink-0">
+                          <span className="material-icons md-18">more_vert</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem onClick={() => virusScan(file.id, file.original_name)}>
+                          <span className="material-icons md-18 mr-2">security</span>
+                          Virus Scan
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => openRenameDialog(file.id, file.original_name)}>
+                          <span className="material-icons md-18 mr-2">edit</span>
+                          Rename
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => openShareDialog(file.id, file.original_name)}>
+                          <span className="material-icons md-18 mr-2">share</span>
+                          Create Share Link
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setShareToTeamsDialog({
+                          isOpen: true,
+                          fileId: file.id,
+                          fileName: file.original_name
+                        })}>
+                          <span className="material-icons md-18 mr-2">groups</span>
+                          Share to Team
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <a href="/dashboard/shared" className="flex items-center">
+                            <span className="material-icons md-18 mr-2">link</span>
+                            View All Shares
+                          </a>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => deleteFile(file.id, file.storage_path)} className="text-destructive focus:text-destructive">
+                          <span className="material-icons md-18 mr-2">delete</span>
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                )}
               </CardContent>
             </Card>)}
         </div>}
