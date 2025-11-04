@@ -142,59 +142,58 @@ const HeroSection = () => {
         delay: 0.3
       }} className="relative">
           <div className="space-y-5">
-            {/* Project Files Card */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-400 mx-[45px] my-0 py-[35px] px-[50px]">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <span className="material-icons text-primary">folder</span>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-foreground">
-                      Project Files
-                    </h3>
-                    <p className="text-xs text-muted-foreground">
-                      24 files • 2.3 GB
-                    </p>
-                  </div>
-                </div>
-                <div className="flex -space-x-2">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-rose-400"></div>
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-blue-500"></div>
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-zinc-800 flex items-center justify-center text-xs font-semibold">
-                    +3
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {["description", "image", "video_file"].map((icon, i) => <div key={i} className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-                    <span className="material-icons text-primary">{icon}</span>
-                  </div>)}
-              </div>
-            </div>
-
-            {/* Secure Upload Mini Card */}
-            <div className="bg-card border border-border rounded-2xl p-4 shadow-lg translate-x-4 hover:translate-x-0 transition-all duration-500">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                  <span className="material-icons text-accent">security</span>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">
-                    Secure Upload
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    End-to-end encrypted
-                  </p>
-                </div>
-                <div className="w-12 h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="w-8 h-full bg-accent rounded-full"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+           {/* Project Files Card */}
+<div className="bg-gradient-to-b from-[#fafafa] to-[#e5e5e5] dark:from-[#111] dark:to-[#1a1a1a] border border-gray-300 dark:border-zinc-800 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_10px_35px_rgb(0,0,0,0.2)] hover:-translate-y-2 transition-all duration-500 mx-[55px] my-2 py-[24px] px-[45px]">
+  <div className="flex items-center justify-between mb-5">
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 rounded-xl bg-black/10 dark:bg-white/10 flex items-center justify-center backdrop-blur-md">
+        <span className="material-icons text-black dark:text-white">folder</span>
       </div>
+      <div>
+        <h3 className="text-base font-semibold text-black dark:text-white tracking-tight">
+          Project Files
+        </h3>
+        <p className="text-xs text-gray-500 dark:text-gray-400">24 files • 2.3 GB</p>
+      </div>
+    </div>
+
+    <div className="flex -space-x-2">
+      <div className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 bg-gradient-to-br from-rose-400 to-rose-500"></div>
+      <div className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 bg-gradient-to-br from-blue-500 to-blue-600"></div>
+      <div className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 bg-zinc-800 flex items-center justify-center text-xs font-semibold text-white">
+        +3
+      </div>
+    </div>
+  </div>
+
+  <div className="grid grid-cols-3 gap-3">
+    {["description", "image", "video_file"].map((icon, i) => (
+      <div
+        key={i}
+        className="aspect-square rounded-lg bg-white/60 dark:bg-white/10 border border-gray-300 dark:border-zinc-800 flex items-center justify-center hover:scale-105 hover:bg-white/80 dark:hover:bg-white/20 transition-all duration-300"
+      >
+        <span className="material-icons text-gray-800 dark:text-white/90">{icon}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Secure Upload Mini Card */}
+<div className="bg-gradient-to-b from-[#f9f9f9] to-[#ececec] dark:from-[#141414] dark:to-[#1c1c1c] border border-gray-300 dark:border-zinc-800 rounded-2xl p-5 shadow-[0_6px_25px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.15)] -translate-y-1 hover:-translate-y-2 transition-all duration-500 mx-[65px] mt-3">
+  <div className="flex items-center gap-3">
+    <div className="w-8 h-8 rounded-lg bg-black/10 dark:bg-white/10 flex items-center justify-center backdrop-blur-md">
+      <span className="material-icons text-black dark:text-white">security</span>
+    </div>
+    <div className="flex-1">
+      <p className="text-sm font-medium text-black dark:text-white tracking-tight">Secure Upload</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">End-to-end encrypted</p>
+    </div>
+    <div className="w-14 h-2 bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">
+      <div className="w-10 h-full bg-black dark:bg-white rounded-full transition-all duration-700"></div>
+    </div>
+  </div>
+</div>
+
 
       {/* Bottom Glow Line */}
       <motion.div className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" style={{
