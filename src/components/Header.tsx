@@ -1,385 +1,366 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+// Header.tsx
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { cn } from "@/lib/utils";
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  DollarSign,
+  Settings,
+  LogOut,
+  Crown,
+  ArrowDown,
+  ArrowUp,
+  CircleDot,
+  FileStack,
+  Users,
+  ShieldCheck,
+  Code2,
+  BookText,
+  Newspaper,
+  Briefcase,
+  LifeBuoy,
+} from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import Logo from './Logo';
-import {
-  Menu,
-  X,
-  CircleDot,
-  LayoutDashboard,
-  DollarSign,
-  Settings,
-  LogOut,
-  Crown
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { motion } from 'framer-motion';
-import { useTheme } from '@/contexts/ThemeContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { Link } from 'react-router-dom';
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import Logo from "./Logo";
 
 const Header = () => {
   const { actualTheme } = useTheme();
   const { user, profile, signOut } = useAuth();
 
-  const [activePage, setActivePage] = useState('features');
+  const [activePage, setActivePage] = useState("features");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = (page) => (e) => {
+  const handleNavClick = (page: string) => (e?: React.MouseEvent) => {
     e?.preventDefault();
     setActivePage(page);
-    const el = document.getElementById(page);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(page)?.scrollIntoView({ behavior: "smooth" });
     setMobileMenuOpen(false);
   };
 
-  const toggleMobileMenu = () => setMobileMenuOpen((s) => !s);
+  const toggleMobileMenu = () => setMobileMenuOpen((p) => !p);
+  const handleSignOut = async () => await signOut();
 
-  const handleSignOut = async () => {
-    await signOut();
-    setMobileMenuOpen(false);
-  };
+  const initials =
+    user?.user_metadata?.display_name?.[0]?.toUpperCase() ||
+    user?.email?.[0]?.toUpperCase() ||
+    "U";
 
-  const getUserInitials = () => {
-    if (user?.user_metadata?.display_name) return user.user_metadata.display_name.charAt(0).toUpperCase();
-    if (user?.email) return user.email.charAt(0).toUpperCase();
-    return 'U';
-  };
-
-  const getUserDisplayName = () => user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
+  const name =
+    user?.user_metadata?.display_name ||
+    user?.email?.split("@")[0] ||
+    "User";
 
   return (
-    <motion.div
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'backdrop-blur-xl bg-background/50 shadow-lg' : 'bg-transparent'}`}
-      initial={false}
+    <motion.header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "backdrop-blur-md bg-background/70 shadow-md"
+          : "bg-transparent"
+      }`}
     >
-      {/* Thin animated glow line (touching top) */}
+      {/* Subtle animated glow line */}
       <motion.div
-        className={`absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent to-transparent`}
-        initial={{ width: '0%' }}
-        animate={{ width: '100%' }}
-        transition={{ duration: 1.6, ease: 'easeInOut' }}
-        style={{
-          boxShadow:
-            actualTheme === 'light'
-              ? '0 0 20px rgba(38,38,38,0.08), 0 0 40px rgba(38,38,38,0.04)'
-              : '0 0 20px rgba(38,38,38,0.12), 0 0 40px rgba(38,38,38,0.06)'
-        }}
-        aria-hidden
+        className="absolute top-0 left-0 h-[1px] w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+        initial={{ width: "0%" }}
+        animate={{ width: "100%" }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
       />
 
-      {/* Decorative floating shapes (pointer-events-none so they never block clicks) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-3 left-16 w-8 h-8 rounded-lg rotate-12 ${actualTheme === 'light' ? 'bg-neutral-800/5' : 'bg-white/5'} animate-float`} style={{ animationDelay: '0s' }} />
-        <div className={`absolute top-5 right-28 w-6 h-6 rounded-md rotate-45 ${actualTheme === 'light' ? 'bg-neutral-700/8' : 'bg-white/8'} animate-float`} style={{ animationDelay: '2s' }} />
-        <div className={`absolute top-8 left-1/3 w-4 h-4 rounded-full ${actualTheme === 'light' ? 'bg-neutral-600/6' : 'bg-white/6'} animate-float`} style={{ animationDelay: '1s' }} />
-        <div className={`absolute top-4 right-1/4 w-5 h-5 rounded-lg rotate-30 ${actualTheme === 'light' ? 'bg-neutral-800/7' : 'bg-white/7'} animate-float`} style={{ animationDelay: '3s' }} />
-        <div className={`absolute top-7 left-2/3 w-3 h-3 rounded-md rotate-60 ${actualTheme === 'light' ? 'bg-neutral-700/5' : 'bg-white/5'} animate-float`} style={{ animationDelay: '1.5s' }} />
-      </div>
+      <div className="w-full max-w-7xl mx-auto flex items-center justify-between h-16 px-4 md:px-8 relative">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <Logo />
+        </Link>
 
-      {/* Header inner container - touches top of page */}
-      <header className="w-full max-w-7xl mx-auto flex items-center justify-between h-16 px-4 md:px-6 lg:px-0">
-        {/* Left: Logo */}
-        <div className="flex items-center gap-3">
-          <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.45 }}>
-            <div className="logo-float">
-              <Link to="/" aria-label="Home">
-                <Logo />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Mobile menu toggle (visible on small screens) */}
+        {/* Mobile Toggle */}
         <button
-          className="lg:hidden p-2 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
+          className="lg:hidden p-2 rounded-md text-muted-foreground hover:text-foreground transition"
           onClick={toggleMobileMenu}
-          aria-expanded={mobileMenuOpen}
-          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
 
-        {/* Desktop Nav (centered) */}
-        <nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2">
-          <div className="px-1 py-1 backdrop-blur-md bg-background/80 border border-border rounded-xl font-heading shadow-sm">
-            <ToggleGroup type="single" value={activePage} onValueChange={(v) => v && setActivePage(v)}>
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center space-x-2 absolute left-1/2 -translate-x-1/2">
+          <ToggleGroup
+            type="single"
+            value={activePage}
+            onValueChange={(v) => v && setActivePage(v)}
+            className="bg-background/70 border border-border rounded-xl backdrop-blur-md shadow-sm"
+          >
+            <ToggleGroupItem
+              value="features"
+              onClick={handleNavClick("features")}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+                activePage === "features"
+                  ? "bg-accent/20 text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              Features
+            </ToggleGroupItem>
+
+            {/* Products Dropdown */}
+            <div className="relative group">
               <ToggleGroupItem
-                value="features"
-                onClick={handleNavClick('features')}
-                className={cn(
-                  'px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2',
-                  activePage === 'features' ? 'text-accent-foreground bg-accent/20' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                )}
+                value="products"
+                className="px-3 py-1.5 rounded-full text-sm text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1"
               >
-                <span className="material-icons md-18">star</span>
-                <span>Features</span>
+                Products
+                <ArrowDown
+                  size={14}
+                  className="group-hover:rotate-180 transition-transform duration-200"
+                />
               </ToggleGroupItem>
-
-              {/* Products dropdown */}
-              <div className="relative group inline-block">
-                <ToggleGroupItem
-                  value="products"
-                  className={cn('px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2', 'text-muted-foreground hover:text-foreground hover:bg-muted')}
+              <div className="absolute top-full left-0 mt-2 w-52 bg-background/95 backdrop-blur-md border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <a
+                  href="#"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <span className="material-icons md-18">dashboard</span>
-                  <span>Products</span>
-                </ToggleGroupItem>
-
-                <div className="absolute top-full left-0 mt-2 w-52 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <div className="p-2">
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">storage</span>
-                      File Storage
-                    </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">groups</span>
-                      Team Collaboration
-                    </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">security</span>
-                      Enterprise Security
-                    </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">api</span>
-                      API Platform
-                    </a>
-                  </div>
-                </div>
+                  <FileStack size={15} /> File Storage
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
+                >
+                  <Users size={15} /> Team Collaboration
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
+                >
+                  <ShieldCheck size={15} /> Enterprise Security
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
+                >
+                  <Code2 size={15} /> API Platform
+                </a>
               </div>
+            </div>
 
+            <ToggleGroupItem
+              value="pricing"
+              onClick={handleNavClick("pricing")}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+                activePage === "pricing"
+                  ? "bg-accent/20 text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              Pricing
+            </ToggleGroupItem>
+
+            {/* Resources Dropdown */}
+            <div className="relative group">
               <ToggleGroupItem
-                value="pricing"
-                onClick={handleNavClick('pricing')}
-                className={cn(
-                  'px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2',
-                  activePage === 'pricing' ? 'text-accent-foreground bg-accent/20' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                )}
+                value="resources"
+                className="px-3 py-1.5 rounded-full text-sm text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1"
               >
-                <span className="material-icons md-18">payments</span>
-                <span>Pricing</span>
+                Resources
+                <ArrowDown
+                  size={14}
+                  className="group-hover:rotate-180 transition-transform duration-200"
+                />
               </ToggleGroupItem>
-
-              {/* Resources dropdown */}
-              <div className="relative group inline-block">
-                <ToggleGroupItem
-                  value="resources"
-                  className={cn('px-3 py-1.5 rounded-full transition-colors relative text-sm flex items-center gap-2', 'text-muted-foreground hover:text-foreground hover:bg-muted')}
+              <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <a
+                  href="/docs"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <span className="material-icons md-18">arrow_drop_down</span>
-                  <span>Resources</span>
-                </ToggleGroupItem>
-
-                <div className="absolute top-full left-0 mt-2 w-44 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <div className="p-2">
-                    <a href="/docs" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">description</span>
-                      Documentation
-                    </a>
-                    <a href="/blog" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">article</span>
-                      Blog
-                    </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">business</span>
-                      Case Studies
-                    </a>
-                    <a href="#" className="block px-3 py-2 text-sm font-body text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                      <span className="material-icons md-18 align-middle mr-2">support</span>
-                      Support
-                    </a>
-                  </div>
-                </div>
+                  <BookText size={15} /> Documentation
+                </a>
+                <a
+                  href="/blog"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
+                >
+                  <Newspaper size={15} /> Blog
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
+                >
+                  <Briefcase size={15} /> Case Studies
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
+                >
+                  <LifeBuoy size={15} /> Support
+                </a>
               </div>
-            </ToggleGroup>
-          </div>
+            </div>
+          </ToggleGroup>
         </nav>
 
-        {/* Mobile menu panel */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-16 left-4 right-4 bg-background/95 backdrop-blur-md py-3 px-4 border border-border rounded-xl shadow-lg z-50">
-            <div className="flex flex-col gap-2">
-              <a
-                href="#features"
-                onClick={handleNavClick('features')}
-                className={`px-2 py-1.5 text-sm rounded-md transition-colors ${activePage === 'features' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
-              >
-                <CircleDot size={14} className="inline-block mr-2" />
-                Features
-              </a>
-
-              <a
-                href="#pricing"
-                onClick={handleNavClick('pricing')}
-                className={`px-2 py-1.5 text-sm rounded-md transition-colors ${activePage === 'pricing' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
-              >
-                <DollarSign size={14} className="inline-block mr-2" />
-                Pricing
-              </a>
-
-              <div className="border-t border-border pt-2 mt-2">
-                <a href="#" className="block px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">Products</a>
-                <a href="#" className="block px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">Resources</a>
-                <a href="#" className="block px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">Support</a>
-              </div>
-
-              {/* Mobile CTA */}
-              <div className="border-t border-border pt-3 mt-3 space-y-2">
-                {user ? (
-                  <>
-                    <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-primary text-primary-foreground text-sm">{getUserInitials()}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{getUserDisplayName()}</p>
-                        <div className="flex items-center space-x-2">
-                          <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
-                            {profile?.subscription_tier === 'pro' ? (
-                              <>
-                                <Crown className="w-3 h-3 mr-1" />
-                                Pro
-                              </>
-                            ) : (
-                              'Free'
-                            )}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-
-                    <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
-                      <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        Dashboard
-                      </Link>
-                    </Button>
-
-                    <Button
-                      variant="ghost"
-                      onClick={handleSignOut}
-                      className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300"
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Sign Out
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button variant="ghost" className="w-full h-10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm justify-center transition-all duration-300" asChild>
-                      <a href="/auth">Log in</a>
-                    </Button>
-                    <Button variant="default" className="w-full h-10 font-medium text-sm justify-center" asChild>
-                      <a href="/auth">Get Started</a>
-                    </Button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Right: Auth / Profile (desktop) */}
+        {/* Right: Profile / Auth */}
         <div className="hidden lg:flex items-center gap-3">
           {user ? (
-            <div className="flex items-center gap-3">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-accent/10 transition-all duration-200">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-primary text-primary-foreground">{getUserInitials()}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col items-start leading-tight">
-                      <span className="text-sm font-medium">{getUserDisplayName()}</span>
-                      <div className="flex items-center">
-                        <Badge variant={profile?.subscription_tier === 'pro' ? 'default' : 'secondary'} className="text-xs">
-                          {profile?.subscription_tier === 'pro' ? (
-                            <>
-                              <Crown className="w-3 h-3 mr-1" />
-                              Pro
-                            </>
-                          ) : (
-                            'Free'
-                          )}
-                        </Badge>
-                      </div>
-                    </div>
-                  </Button>
-                </DropdownMenuTrigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-3 h-10 px-3 hover:bg-accent/10 transition-all"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start leading-tight">
+                    <span className="text-sm font-medium">{name}</span>
+                    <Badge
+                      variant={
+                        profile?.subscription_tier === "pro"
+                          ? "default"
+                          : "secondary"
+                      }
+                      className="text-xs flex items-center gap-1"
+                    >
+                      {profile?.subscription_tier === "pro" ? (
+                        <>
+                          <Crown size={12} /> Pro
+                        </>
+                      ) : (
+                        "Free"
+                      )}
+                    </Badge>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end" forceMount className="w-56 bg-zinc-900 border-none">
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{getUserDisplayName()}</p>
-                      <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-                    </div>
-                  </DropdownMenuLabel>
-
-                  <DropdownMenuSeparator />
-
+              <DropdownMenuContent
+                align="end"
+                className="w-56 bg-background/95 border-border backdrop-blur-md"
+              >
+                <DropdownMenuLabel>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">{name}</span>
+                    <span className="text-xs text-muted-foreground truncate">
+                      {user.email}
+                    </span>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard">
+                    <LayoutDashboard size={14} className="mr-2" /> Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard/settings">
+                    <Settings size={14} className="mr-2" /> Settings
+                  </Link>
+                </DropdownMenuItem>
+                {profile?.subscription_tier !== "pro" && (
                   <DropdownMenuItem asChild>
-                    <Link to="/dashboard">
-                      <LayoutDashboard className="mr-2 h-4 w-4" />
-                      Dashboard
+                    <Link to="/subscription">
+                      <Crown size={14} className="mr-2" /> Upgrade to Pro
                     </Link>
                   </DropdownMenuItem>
-
-                  <DropdownMenuItem asChild>
-                    <Link to="/dashboard/settings">
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
-                    </Link>
-                  </DropdownMenuItem>
-
-                  {profile?.subscription_tier !== 'pro' && (
-                    <DropdownMenuItem asChild>
-                      <Link to="/subscription">
-                        <Crown className="mr-2 h-4 w-4" />
-                        Upgrade to Pro
-                      </Link>
-                    </DropdownMenuItem>
-                  )}
-
-                  <DropdownMenuSeparator />
-
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut size={14} className="mr-2" /> Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
-            <div className="flex gap-3 rounded-xl">
-              <Button variant="ghost" className="h-8 px-4 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 font-medium text-sm text-left transition-all duration-300" asChild>
-                <a href="/auth">Log in</a>
+            <>
+              <Button variant="ghost" asChild>
+                <Link to="/auth">Login</Link>
               </Button>
-
-              <Button variant="default" className="h-8 px-3 font-medium text-sm text-left" asChild>
-                <a href="/auth">Get Started</a>
+              <Button asChild>
+                <Link to="/auth">Get Started</Link>
               </Button>
-            </div>
+            </>
           )}
         </div>
-      </header>
-    </motion.div>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden absolute top-16 left-4 right-4 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-lg p-4 z-50 space-y-3">
+          <a
+            href="#features"
+            onClick={handleNavClick("features")}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+          >
+            <CircleDot size={14} /> Features
+          </a>
+          <a
+            href="#pricing"
+            onClick={handleNavClick("pricing")}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+          >
+            <DollarSign size={14} /> Pricing
+          </a>
+          <a
+            href="#"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+          >
+            Products
+          </a>
+          <a
+            href="#"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+          >
+            Resources
+          </a>
+          <div className="pt-2 border-t border-border" />
+          {user ? (
+            <>
+              <Button asChild className="w-full">
+                <Link to="/dashboard">Dashboard</Link>
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={handleSignOut}
+                className="w-full"
+              >
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" asChild className="w-full">
+                <Link to="/auth">Login</Link>
+              </Button>
+              <Button asChild className="w-full">
+                <Link to="/auth">Get Started</Link>
+              </Button>
+            </>
+          )}
+        </div>
+      )}
+    </motion.header>
   );
 };
 
