@@ -257,10 +257,11 @@ const HeroSection: React.FC = () => {
   // Render
   // ---------------------------------------------------------------------
   return (
-    <section
-      aria-label="Hero - File sharing"
-      className="relative w-full min-h-screen flex items-start justify-center px-6 py-12 overflow-hidden bg-[#0b0b0b] text-white"
-    >
+   <section
+  aria-label="Hero - File sharing"
+  className="relative w-full min-h-screen flex items-start justify-center px-6 pt-24 pb-12 overflow-hidden bg-[#0b0b0b] text-white"
+>
+
       {/* Blue blurred gradient (low opacity) and subtle grid overlay */}
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div
