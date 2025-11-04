@@ -288,12 +288,16 @@ const HeroSection: React.FC = () => {
         {/* Left column: Title, description, upload zone */}
         <div className="space-y-6">
           <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-4xl sm:text-5xl font-extrabold leading-tight">
-            Effortless. Secure.
+           The Ultimate  
+File Sharing Platform  
+
+
             <br />
             <span className="bg-clip-text text-transparent" style={{ background: "linear-gradient(90deg,#fff,#ddd)" }}>
-              File Sharing
+              Share Files Instantly  
+Anywhere, Anytime
             </span>{" "}
-            that Scales with You.
+            In Your Control 
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }} className="text-gray-300 max-w-xl">
