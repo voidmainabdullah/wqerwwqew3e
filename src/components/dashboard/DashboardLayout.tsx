@@ -58,37 +58,33 @@ const AppSidebar = () => {
     isMobile
   } = useSidebar();
   return <Sidebar collapsible="icon" className="border-r border-border/50 h-screen flex flex-col bg-transparent transition-all duration-300 ease-in-out">
-      <SidebarHeader className="flex-shrink-0 px-3 py-3 bg-stone-950">
-        <div className="flex items-center space-x-3 px-2 py-1 group">
+      <SidebarHeader className="flex-shrink-0 px-4 py-4 bg-sidebar border-b border-sidebar-border">
+        <div className="flex items-center space-x-3 px-2 py-2 group">
           <div className="relative flex-shrink-0">
-            <img src="/skie.png" alt="SkieShare Logo" className="h-8 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
-            <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
-              <img src="/skie.png" alt="SkieShare Logo Glow" className="h-8 w-auto object-contain" />
-            </div>
+            <img src="/skie.png" alt="SkieShare Logo" className="h-9 w-auto object-contain transition-all duration-300" />
           </div>
           <div className="group-data-[collapsible=icon]:hidden transition-all duration-300 overflow-hidden">
-            <span className="font-heading font-bold text-sm bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent whitespace-nowrap">
+            <span className="font-heading font-bold text-base text-sidebar-foreground whitespace-nowrap tracking-tight">
               SkieShare
             </span>
-            <p className="text-xs text-muted-foreground font-body whitespace-nowrap text-neutral-400 mx-0 my-0 py-0 px-px ">Secure Transfer</p>
+            <p className="text-xs text-muted-foreground font-body whitespace-nowrap">Secure Transfer</p>
           </div>
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-950 text-neutral-400">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-sidebar">
         {/* Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-heading font-semibold tracking-wider px-2 mb-1 text-neutral-400">
-            Navigation 
-            <span className="text-xs font-heading  font-semibold  text-neutral-600 uppercase tracking-wider px-2 mb-1"> (ctrl + B)</span>
+          <SidebarGroupLabel className="text-xs font-heading font-semibold tracking-wider px-2 mb-1 text-muted-foreground">
+            Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-0.5 text-neutral-400">
+            <SidebarMenu className="space-y-0.5">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
-          <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
-            <Link to={item.href} className="flex items-center gap-2">
-              <item.icon size={18} stroke={1.8} className="text-gray-300 group-hover:text-white transition-all duration-150 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
-              <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
+          <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-10 px-3 rounded-xl hover:bg-accent transition-all duration-200 group-data-[collapsible=icon]:justify-center data-[active=true]:bg-primary data-[active=true]:text-primary-foreground">
+            <Link to={item.href} className="flex items-center gap-3">
+              <item.icon size={20} stroke={1.8} className="text-sidebar-foreground flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+              <span className="font-body text-sm font-medium group-data-[collapsible=icon]:hidden">{item.name}</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>)}
@@ -104,19 +100,19 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Receive Now" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
-                  <Link to="/code" className="flex items-center gap-2">
-                    <IconQrcode size={18} stroke={1.8} className="text-gray-300 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
-                    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive Now</span>
+                <SidebarMenuButton asChild tooltip="Receive Now" className="h-10 px-3 rounded-xl hover:bg-accent transition-all duration-200 group-data-[collapsible=icon]:justify-center">
+                  <Link to="/code" className="flex items-center gap-3">
+                    <IconQrcode size={20} stroke={1.8} className="text-sidebar-foreground flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+                    <span className="font-body text-sm font-medium group-data-[collapsible=icon]:hidden">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Receive File" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
-                  <Link to="/dashboard/receive" className="flex items-center gap-2">
+                <SidebarMenuButton asChild tooltip="Receive File" className="h-10 px-3 rounded-xl hover:bg-accent transition-all duration-200 group-data-[collapsible=icon]:justify-center">
+                  <Link to="/dashboard/receive" className="flex items-center gap-3">
                     <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">inbox</span>
-                    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive File</span>
+                    <span className="font-body text-sm font-medium group-data-[collapsible=icon]:hidden">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -133,10 +129,10 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               <SidebarMenuItem> 
-               <SidebarMenuButton asChild tooltip="Upgrade" className="h-9 px-3 rounded-xl bg-accent/10  border text-neutral-200 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
-  <Link to="/subscription" className="flex items-center gap-2">
-    <DiamondsFour className="w-4 h-4 flex-shrink-0 text-primary group-data-[collapsible=icon]:text-2xl" />
-    <span className="font-body text-sm group-data-[collapsible=icon]:hidden">
+               <SidebarMenuButton asChild tooltip="Upgrade" className="h-10 px-3 rounded-xl bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 group-data-[collapsible=icon]:justify-center">
+  <Link to="/subscription" className="flex items-center gap-3">
+    <DiamondsFour className="w-5 h-5 flex-shrink-0 group-data-[collapsible=icon]:text-2xl" weight="fill" />
+    <span className="font-body text-sm font-semibold group-data-[collapsible=icon]:hidden">
       Upgrade Plan
     </span> 
                   </Link>
@@ -186,37 +182,37 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
   const storageProgress = profile && profile.subscription_tier !== 'pro' && profile.storage_limit ? profile.storage_used / profile.storage_limit * 100 : 0;
   const StoragePopover = () => <Popover>
-     <PopoverTrigger asChild>
-  <div className="flex overflow-hidden border divide-x rounded-full bg-stone-950 border-zinc-700 divide-zinc-700 hover:border-zinc-600 transition-colors duration-200">
+  <PopoverTrigger asChild>
+  <div className="flex overflow-hidden border divide-x rounded-full bg-card border-border divide-border hover:border-primary/30 transition-colors duration-200">
     {/* Left Button */}
-    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
+    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground">
       <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" strokeLinejoin="round" strokeLinecap="round"></path>
       </svg>
     </button>
 
     {/* Middle Button - TEAM ICON */}
-    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
+    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground">
       <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16 14c1.657 0 3 1.343 3 3v1H5v-1c0-1.657 1.343-3 3-3h8zM8.5 11a3.5 3.5 0 110-7 3.5 3.5 0 010 7zM15.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" strokeLinecap="round" strokeLinejoin="round"></path>
       </svg>
     </button>
 
     {/* Right Button */}
-    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800 relative">
+    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground relative">
       <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeLinejoin="round" strokeLinecap="round"></path>
       </svg>
 
-      {profile?.subscription_tier !== "pro" && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-yellow-500 flex items-center justify-center animate-pulse">
-          <span className="text-[10px] text-black font-bold">!</span>
+      {profile?.subscription_tier !== "pro" && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-warning flex items-center justify-center animate-pulse">
+          <span className="text-[10px] text-warning-foreground font-bold">!</span>
         </div>}
     </button>
   </div>
     </PopoverTrigger>
 
 
-      <PopoverContent className="w-80 p-0" align="end">
+      <PopoverContent className="w-80 p-0 bg-popover border-border" align="end">
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -337,16 +333,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     
   </Button>;
   return <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-stone-950">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
 
     {/* Main Content Area - Responsive */}
-    <div className="flex-1 flex flex-col relative w-full min-w-0 bg-transparent">
+    <div className="flex-1 flex flex-col relative w-full min-w-0 bg-background">
       {/* Space above header - Hidden on mobile for better space usage */}
       <div className="h-0 md:h-2" />
 
-      {/* Header - Fully Responsive */}
-      <header className="border-b border-white/10 bg-stone-950 opacity-90 backdrop-blur-xl sticky top-0 z-40 shadow-xl md:rounded-tl-xl md:rounded-tr-xl mx-0">
+      {/* Header - Apple-inspired minimal header */}
+      <header className="border-b border-border/50 bg-background/95 backdrop-blur-xl sticky top-0 z-40 shadow-sm md:rounded-tl-xl md:rounded-tr-xl mx-0">
     <div className="flex items-center justify-between h-16 px-3 sm:px-4 md:px-6">
 
       {/* content */}
