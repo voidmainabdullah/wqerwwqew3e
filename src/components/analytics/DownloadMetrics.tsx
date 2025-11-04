@@ -140,15 +140,15 @@ export const DownloadMetrics: React.FC = () => {
       </div>;
   }
   return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <MetricCard title="Total Downloads" value={metrics.totalDownloads.toLocaleString()} icon={<Download className="w-5 h-5 text-white" />} subtitle="All-time downloads" color="bg-emerald-600" />
+      <MetricCard title="Total Downloads" value={metrics.totalDownloads.toLocaleString()} icon={<Download className="w-5 h-5 text-white" />} subtitle="All-time downloads" color="bg-zinc-600" />
 
-      <MetricCard title="Today's Downloads" value={metrics.todayDownloads} icon={<Activity className="w-5 h-5 text-white" />} trend={metrics.downloadTrend} subtitle="Downloads today" color="bg-blue-600" />
+      <MetricCard title="Today's Downloads" value={metrics.todayDownloads} icon={<Activity className="w-5 h-5 text-white" />} trend={metrics.downloadTrend} subtitle="Downloads today" color="bg-zinc-600" />
 
-      <MetricCard title="Avg. Daily Downloads" value={metrics.avgDownloadsPerDay} icon={<BarChart3 className="w-5 h-5 text-white" />} subtitle="Last 7 days" color="bg-purple-600" />
+      <MetricCard title="Avg. Daily Downloads" value={metrics.avgDownloadsPerDay} icon={<BarChart3 className="w-5 h-5 text-white" />} subtitle="Last 7 days" color="bg-zinc-600" />
 
-      <MetricCard title="Peak Hour" value={metrics.peakHour} icon={<Clock className="w-5 h-5 text-white" />} subtitle="Most active time" color="bg-amber-600" />
+      <MetricCard title="Peak Hour" value={metrics.peakHour} icon={<Clock className="w-5 h-5 text-white" />} subtitle="Most active time" color="bg-zinc-600" />
 
-      <MetricCard title="Unique Files" value={metrics.uniqueFiles} icon={<TrendingUp className="w-5 h-5 text-white" />} subtitle="Files with downloads" color="bg-teal-600" />
+      <MetricCard title="Unique Files" value={metrics.uniqueFiles} icon={<TrendingUp className="w-5 h-5 text-white" />} subtitle="Files with downloads" color="bg-zinc-600" />
 
       <MetricCard title="Active Shares" value={metrics.activeShares} icon={<Activity className="w-5 h-5 text-white" />} subtitle="Currently active" color="bg-pink-600" />
     </div>;
