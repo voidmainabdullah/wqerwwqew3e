@@ -339,32 +339,47 @@ const FileTransferDemo: React.FC<Props> = ({
           </div>
         </motion.div>
 
-       {/* ---------------- API SHOWCASE SECTION ---------------- */}
+   {/* ---------------- API SHOWCASE SECTION ---------------- */}
 <motion.div
   variants={cardFade}
   initial="hidden"
   whileInView="show"
   viewport={{ once: true }}
-  className="mt-24 max-w-4xl mx-auto text-center px-6"
+  className="mt-28 max-w-5xl mx-auto text-center px-6"
 >
-  <div className="flex justify-center mb-4">
-    <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
-      <Code className="w-6 h-6 text-white/80" />
+  {/* ICON HEADER */}
+  <div className="flex justify-center mb-6">
+    <div className="p-[1px] rounded-2xl bg-gradient-to-r from-white/20 via-white/10 to-transparent">
+      <div className="p-3 bg-[#0C0C0C]/80 backdrop-blur-xl rounded-2xl">
+        <Code className="w-6 h-6 text-white/80" />
+      </div>
     </div>
   </div>
 
-  <h3 className="text-3xl font-semibold text-white tracking-tight">
+  {/* TITLE + SUBTEXT */}
+  <h3 className="text-4xl font-semibold bg-gradient-to-r from-white via-white/80 to-white/60 bg-clip-text text-transparent tracking-tight">
     SkyShare API Integration
   </h3>
-  <p className="text-base text-white/60 mt-3 max-w-2xl mx-auto leading-relaxed">
-    Seamlessly integrate <span className="text-white font-medium">SkyShare</span> into your
-    platform with minimal setup. Designed for developers who value speed,
-    security, and simplicity.
+  <p className="text-[15px] text-white/70 mt-4 max-w-2xl mx-auto leading-relaxed font-light">
+    Integrate <span className="text-white/90 font-medium">SkyShare</span> into your product
+    with lightning-fast uploads, secure sharing, and sleek developer experience —
+    built for performance and simplicity.
   </p>
 
-  <div className="relative mt-10 text-left bg-gradient-to-b from-[#0A0A0A]/80 to-[#050505]/90 border border-white/10 rounded-2xl p-6 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
-    <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-r from-[#1E1E1E]/60 to-transparent rounded-t-2xl" />
-    <pre className="relative text-white/80 text-sm font-mono overflow-x-auto">
+  {/* CODE BLOCK */}
+  <div className="relative mt-14 group">
+    <div className="absolute -inset-[1px] bg-gradient-to-r from-white/10 via-white/5 to-transparent rounded-2xl blur-[1px] opacity-70 group-hover:opacity-100 transition duration-700" />
+    <div className="relative bg-[#0A0A0A]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(255,255,255,0.05)] overflow-hidden">
+      {/* Header bar like a Mac window */}
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-white/10 bg-[#101010]/70">
+        <span className="w-3 h-3 bg-[#FF5F57] rounded-full" />
+        <span className="w-3 h-3 bg-[#FEBC2E] rounded-full" />
+        <span className="w-3 h-3 bg-[#28C840] rounded-full" />
+        <span className="ml-3 text-xs text-white/50 font-mono">api_example.js</span>
+      </div>
+
+      {/* Code */}
+      <pre className="text-left text-white/80 text-[13.5px] font-mono leading-relaxed px-6 py-5 overflow-x-auto">
 {`fetch("https://api.skieshare.io/upload", {
   method: "POST",
   headers: {
@@ -375,15 +390,31 @@ const FileTransferDemo: React.FC<Props> = ({
   .then(res => res.json())
   .then(console.log)
   .catch(console.error);`}
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <div className="mt-8">
-    <button className="px-5 py-2.5 text-sm font-medium bg-white/10 text-white rounded-xl border border-white/10 hover:bg-white/20 transition-all duration-300 backdrop-blur-md">
-      Copy Example
+  {/* ACTION BUTTON */}
+  <div className="mt-10 flex justify-center">
+    <button
+      onClick={() => navigator.clipboard.writeText(`fetch("https://api.skieshare.io/upload", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer YOUR_API_KEY",
+  },
+  body: formData,
+})
+  .then(res => res.json())
+  .then(console.log)
+  .catch(console.error);`)}
+      className="relative px-6 py-2.5 rounded-xl border border-white/10 bg-gradient-to-r from-white/10 to-white/5 text-white/80 text-sm font-medium hover:from-white/20 hover:to-white/10 transition-all duration-300 backdrop-blur-md overflow-hidden"
+    >
+      <span className="relative z-10">Copy Example</span>
+      <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 opacity-0 hover:opacity-30 transition duration-500" />
     </button>
   </div>
 </motion.div>
+
 
       </div>
     </section>
