@@ -13,7 +13,7 @@ interface DashboardStats {
   totalFiles: number;
   totalShares: number;
   totalDownloads: number;
-  storageUsed: number;
+  storageUsed: number
   storageLimit: number;
   subscriptionTier: string;
   recentActivity: any[];
@@ -396,7 +396,7 @@ export const Dashboard: React.FC = () => {
                   <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
-                        <Download className="w-5 h-5 text-emerald-400" />
+                        <Download className="w-5 h-5 text-zinc-400" />
                       </div>
                       <div>
                         <p className="text-slate-400 text-sm">Total Downloads</p>
@@ -408,7 +408,7 @@ export const Dashboard: React.FC = () => {
                   <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
-                        <ShareNetwork className="w-5 h-5 text-purple-400" />
+                        <ShareNetwork className="w-5 h-5 text-zinc-400" />
                       </div>
                       <div>
                         <p className="text-slate-400 text-sm">Active Shares</p>
@@ -420,7 +420,7 @@ export const Dashboard: React.FC = () => {
                   <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
-                        <Files className="w-5 h-5 text-blue-400" />
+                        <Files className="w-5 h-5 text-zinc-400" />
                       </div>
                       <div>
                         <p className="text-slate-400 text-sm">Total Files</p>
