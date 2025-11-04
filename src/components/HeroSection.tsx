@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Button } from "@/components/ui/button"; // keep your Button
+import { Button } from "@/components/ui/button"; // retain your Button component
 import { useTheme } from "@/contexts/ThemeContext";
 
 /* ===================== Helpers & Small Icon Components ===================== */
 
 const IconFile = ({ type = "file" }: { type?: string }) => {
-  // Simple file-type glyphs for PDF/DOC/IMG/VIDEO/GENERIC
   const common = "w-5 h-5";
   switch (type) {
     case "pdf":
@@ -78,7 +77,7 @@ type UploadFile = {
 };
 
 const formatBytes = (bytes: number) => {
-  if (bytes === 0) return "0 B";
+  if (!bytes || bytes === 0) return "0 B";
   const k = 1024;
   const sizes = ["B", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -101,15 +100,17 @@ const HeroSection: React.FC = () => {
   const dropRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // cleanup on unmount
     return () => {
+      // revoke object URLs created for thumbnails
+      files.forEach((f) => {
+        if (f.thumbnail) URL.revokeObjectURL(f.thumbnail);
+      });
       setFiles([]);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ---------------------------------------------------------------------
   // Drag & drop handlers
-  // ---------------------------------------------------------------------
   useEffect(() => {
     const node = dropRef.current;
     if (!node) return;
@@ -137,19 +138,32 @@ const HeroSection: React.FC = () => {
       node.removeEventListener("drop", onDrop);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dropRef.current]);
 
-  // ---------------------------------------------------------------------
   // Add files and start fake upload
-  // ---------------------------------------------------------------------
   const handleAddFiles = (fileList: File[]) => {
-    const newFiles: UploadFile[] = fileList.map((f) => {
-      const lower = f.type.toLowerCase();
+    if (!fileList?.length) return;
+    const newFiles: UploadFile[] = Array.from(fileList).map((f) => {
+      const lower = (f.type || "").toLowerCase();
       let t: UploadFile["type"] = "other";
-      if (lower.includes("pdf")) t = "pdf";
-      else if (lower.includes("image") || lower.includes("png") || lower.includes("jpeg") || lower.includes("jpg")) t = "img";
-      else if (lower.includes("word") || lower.includes("msword") || f.name.toLowerCase().endsWith(".doc") || f.name.toLowerCase().endsWith(".docx")) t = "doc";
-      else if (lower.includes("video")) t = "video";
+      if (lower.includes("pdf") || f.name.toLowerCase().endsWith(".pdf")) t = "pdf";
+      else if (
+        lower.includes("image") ||
+        lower.includes("png") ||
+        lower.includes("jpeg") ||
+        lower.includes("jpg") ||
+        f.name.toLowerCase().match(/\.(png|jpe?g|gif|webp)$/)
+      )
+        t = "img";
+      else if (
+        lower.includes("word") ||
+        lower.includes("msword") ||
+        f.name.toLowerCase().endsWith(".doc") ||
+        f.name.toLowerCase().endsWith(".docx")
+      )
+        t = "doc";
+      else if (lower.includes("video") || f.name.toLowerCase().match(/\.(mp4|mov|webm|mkv)$/)) t = "video";
+
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
       return {
         id,
@@ -157,15 +171,14 @@ const HeroSection: React.FC = () => {
         size: f.size,
         type: t,
         progress: 0,
-        status: "queued",
+        status: "queued" as const,
         thumbnail: t === "img" ? URL.createObjectURL(f) : undefined,
         shared: false,
       };
     });
 
     setFiles((prev) => {
-      const combined = [...newFiles, ...prev].slice(0, 20); // keep recent 20
-      // update storage used sample
+      const combined = [...newFiles, ...prev].slice(0, 50); // keep latest 50
       const added = newFiles.reduce((s, f) => s + f.size, 0);
       setStorageUsed((u) => Math.min(u + added, capacity));
       return combined;
@@ -180,7 +193,7 @@ const HeroSection: React.FC = () => {
 
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.floor(6 + Math.random() * 12); // random progress
+      progress += Math.floor(6 + Math.random() * 12); // random progress increment
       if (progress >= 100) {
         clearInterval(interval);
         setFiles((prev) => prev.map((p) => (p.id === id ? { ...p, progress: 100, status: "done" } : p)));
@@ -195,6 +208,7 @@ const HeroSection: React.FC = () => {
     setFiles((prev) => {
       const removed = prev.find((f) => f.id === id);
       if (removed) setStorageUsed((u) => Math.max(0, u - removed.size));
+      if (removed?.thumbnail) URL.revokeObjectURL(removed.thumbnail);
       return prev.filter((f) => f.id !== id);
     });
   };
@@ -206,7 +220,7 @@ const HeroSection: React.FC = () => {
 
   // Download handler (simulated by creating blob)
   const handleDownload = (f: UploadFile) => {
-    const blob = new Blob([`This is a placeholder for ${f.name}`], { type: "text/plain" });
+    const blob = new Blob([`Placeholder content for ${f.name}`], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -234,13 +248,18 @@ const HeroSection: React.FC = () => {
     }
   };
 
+  // Input ref (for click-browse)
+  // defined here to avoid linter referencing before declaration
+  // (kept above as well)
+  // const inputRef = useRef<HTMLInputElement | null>(null);
+
   // ---------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------
   return (
     <section
       aria-label="Hero - File sharing"
-      className="relative w-full min-h-screen flex items-center justify-center px-6 py-12 overflow-hidden bg-[#0b0b0b] text-white"
+      className="relative w-full min-h-screen flex items-start justify-center px-6 py-12 overflow-hidden bg-[#0b0b0b] text-white"
     >
       {/* Blue blurred gradient (low opacity) and subtle grid overlay */}
       <div aria-hidden className="absolute inset-0 pointer-events-none">
@@ -417,7 +436,7 @@ const HeroSection: React.FC = () => {
                   </div>
 
                   <div className="mt-1 flex items-center justify-between text-xs text-gray-400">
-                    <div>{f.status === "uploading" ? `Uploading — ${f.progress}%` : f.status === "done" ? "Uploaded" : f.status}</div>
+                    <div>{f.status === "uploading" ? `Uploading — ${Math.round(f.progress)}%` : f.status === "done" ? "Uploaded" : f.status}</div>
                     <div>{f.status === "uploading" ? "…" : f.status === "done" ? "Ready" : ""}</div>
                   </div>
                 </div>
@@ -426,92 +445,145 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Right column: stats / collab / actions */}
+        {/* Right column: combined Storage + Shared + Project Files + Secure Upload (merged) */}
         <aside className="space-y-6">
-          {/* Top card: Storage and action */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="rounded-2xl border border-white/6 bg-gradient-to-b from-[#111] to-[#080808] p-6 w-full">
-            <div className="flex items-center justify-between">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="rounded-3xl border border-white/8 p-6 bg-gradient-to-b from-[#0f0f0f] to-[#070707] w-full shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+            {/* Header: Title & actions */}
+            <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="text-xs text-gray-400">Storage</div>
-                <div className="text-lg font-semibold">{formatBytes(storageUsed)} / {formatBytes(capacity)}</div>
+                <h3 className="text-lg font-semibold">Shared Storage & Project Files</h3>
+                <p className="text-xs text-gray-400 mt-1">Collaboration, storage, and secure uploads — all in one place.</p>
               </div>
-              <div className="flex items-center gap-3">
-                <button className="px-3 py-1 rounded-md border border-white/6 hover:bg-white/6">Upgrade</button>
-                <button className="px-3 py-1 rounded-md border border-white/6 hover:bg-white/6">Manage</button>
+
+              <div className="flex items-center gap-2">
+                <Button className="px-3 py-1 rounded-md bg-white text-black hover:bg-gray-200">Upload</Button>
+                <Button className="px-3 py-1 rounded-md border border-white/10 bg-transparent">Share</Button>
               </div>
             </div>
 
-            <div className="mt-4">
-              <div className="h-2 bg-white/6 rounded overflow-hidden" aria-hidden>
-                <div className="h-full bg-white" style={{ width: `${Math.min(100, (storageUsed / capacity) * 100)}%` }} />
+            {/* Top stats row */}
+            <div className="mt-4 flex items-center justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="text-xs text-gray-400">Storage Used</div>
+                <div className="text-lg font-semibold mt-1">{formatBytes(storageUsed)} <span className="text-sm text-gray-400">/ {formatBytes(capacity)}</span></div>
+                <div className="mt-3 w-full bg-white/6 h-2 rounded overflow-hidden">
+                  <div className="h-full bg-white" style={{ width: `${Math.min(100, (storageUsed / capacity) * 100)}%` }} />
+                </div>
               </div>
-            </div>
-          </motion.div>
 
-          {/* Collaborators / shared folders */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="rounded-2xl border border-white/6 bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-sm font-medium">Shared Folders</div>
-                <div className="text-xs text-gray-400">Team • Product • Marketing</div>
-              </div>
-              <div className="flex -space-x-2">
-                <div className="w-8 h-8 rounded-full bg-white/10 border border-white/6 flex items-center justify-center text-xs">AL</div>
-                <div className="w-8 h-8 rounded-full bg-white/10 border border-white/6 flex items-center justify-center text-xs">MG</div>
-                <div className="w-8 h-8 rounded-full bg-white/10 border border-white/6 flex items-center justify-center text-xs">+3</div>
+              <div className="w-44 text-right">
+                <div className="text-xs text-gray-400">Files</div>
+                <div className="text-lg font-semibold mt-1">{files.length}</div>
+                <div className="mt-2 flex justify-end gap-2">
+                  <button className="px-2 py-1 rounded-md border border-white/8 hover:bg-white/6 text-sm">Manage</button>
+                </div>
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-1 gap-3">
-              <div className="flex items-center justify-between gap-3">
+            {/* Divider */}
+            <div className="mt-6 border-t border-white/6 pt-4 grid grid-cols-1 gap-4">
+              {/* Shared folders list (example list - can map dynamic) */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/8">
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M3 7h6l2 3h8v9a1 1 0 01-1 1H4a1 1 0 01-1-1V7z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium">Project Files</div>
+                      <div className="text-xs text-gray-400">24 files • 2.3 GB</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button className="p-2 rounded-md hover:bg-white/6" title="Download all">
+                      <IconDownload className="w-4 h-4 text-white/90" />
+                    </button>
+                    <button className="p-2 rounded-md hover:bg-white/6" title="Share folder">
+                      <IconShare className="w-4 h-4 text-white/90" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* mini grid preview inside card (3 items) */}
+                <div className="grid grid-cols-3 gap-3 mt-2">
+                  {["description", "image", "video_file"].map((icon, i) => (
+                    <div key={i} className="aspect-square rounded-lg bg-white/5 border border-white/6 flex items-center justify-center">
+                      <span className="text-xs text-gray-200 uppercase">{icon}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Secure Upload mini card */}
+              <div className="p-3 rounded-lg bg-white/4 border border-white/6 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/6">
+                  <div className="w-10 h-10 rounded-lg bg-white/6 flex items-center justify-center border border-white/8">
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M3 7h6l2 3h8v9a1 1 0 01-1 1H4a1 1 0 01-1-1V7z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M12 3v12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                      <path d="M8 9l4-4 4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
                     </svg>
                   </div>
                   <div>
-                    <div className="text-sm font-medium">Product Assets</div>
-                    <div className="text-xs text-gray-400">12 files • 1.1 GB</div>
+                    <div className="text-sm font-medium">Secure Upload</div>
+                    <div className="text-xs text-gray-400">End-to-end encrypted • Auto virus check</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button className="p-2 rounded-md hover:bg-white/6" title="Share">
-                    <IconShare className="w-4 h-4 text-white/90" />
-                  </button>
-                  <button className="p-2 rounded-md hover:bg-white/6" title="Download">
-                    <IconDownload className="w-4 h-4 text-white/90" />
-                  </button>
+
+                <div className="w-28">
+                  <div className="h-2 bg-white/8 rounded-full overflow-hidden">
+                    <div className="h-full bg-white" style={{ width: "80%" }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Recent Files (small list) */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm font-medium">Recent Uploads</div>
+                  <div className="text-xs text-gray-400">See all</div>
+                </div>
+
+                <div className="space-y-2">
+                  {files.slice(0, 4).map((f) => (
+                    <div key={f.id} className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/8 overflow-hidden">
+                          {f.thumbnail ? <img src={f.thumbnail} alt={f.name} className="w-full h-full object-cover" /> : <IconFile type={f.type} />}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm truncate">{f.name}</div>
+                          <div className="text-xs text-gray-400">{formatBytes(f.size)}</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => handleDownload(f)} className="p-2 rounded-md hover:bg-white/6" title="Download">
+                          <IconDownload className="w-4 h-4 text-white/90" />
+                        </button>
+                        <button onClick={() => handleToggleShare(f.id)} className={`p-2 rounded-md hover:bg-white/6 ${f.shared ? "text-blue-200" : "text-white/80"}`} title="Share">
+                          <IconShare className="w-4 h-4" />
+                        </button>
+                        <button onClick={() => handleRemove(f.id)} className="p-2 rounded-md hover:bg-red-600/30 text-red-400" title="Remove">
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  {files.length === 0 && <div className="text-xs text-gray-400">No recent uploads</div>}
+                </div>
+              </div>
+
+              {/* Extra space for text/data (right-side reserved area) */}
+              <div className="mt-2 border-t border-white/6 pt-4">
+                <div className="text-sm font-medium">Details / Notes</div>
+                <div className="mt-2 text-xs text-gray-400 p-3 rounded-lg bg-white/3">
+                  Add additional descriptions, project notes, or administrative instructions here. This area is reserved for future content like analytics, folder policies, or short descriptions.
                 </div>
               </div>
             </div>
-          </motion.div>
-
-          {/* Recent files list */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} className="rounded-2xl border border-white/6 p-5 bg-gradient-to-b from-[#0b0b0b] to-[#060606]">
-            <div className="text-sm font-medium mb-3">Recent files</div>
-            <ul className="space-y-3">
-              {files.slice(0, 5).map((f) => (
-                <li key={f.id} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/6 overflow-hidden">
-                    {f.thumbnail ? <img src={f.thumbnail} alt={f.name} className="w-full h-full object-cover" /> : <IconFile type={f.type} />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm truncate">{f.name}</div>
-                    <div className="text-xs text-gray-400">{formatBytes(f.size)}</div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => handleDownload(f)} className="p-2 rounded-md hover:bg-white/6" title="Download">
-                      <IconDownload className="w-4 h-4 text-white/90" />
-                    </button>
-                    <button onClick={() => handleToggleShare(f.id)} className={`p-2 rounded-md hover:bg-white/6 ${f.shared ? "text-blue-200" : "text-white/80"}`} title="Share">
-                      <IconShare className="w-4 h-4" />
-                    </button>
-                  </div>
-                </li>
-              ))}
-              {files.length === 0 && <li className="text-xs text-gray-400">No recent files</li>}
-            </ul>
           </motion.div>
         </aside>
       </div>
@@ -522,8 +594,8 @@ const HeroSection: React.FC = () => {
         style={{
           width: glowWidth,
           opacity: glowOpacity,
-          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-          boxShadow: "0 0 25px rgba(255,255,255,0.06)",
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)",
+          boxShadow: "0 0 25px rgba(255,255,255,0.04)",
         }}
         aria-hidden
       />
