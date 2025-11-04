@@ -339,34 +339,52 @@ const FileTransferDemo: React.FC<Props> = ({
           </div>
         </motion.div>
 
-        {/* ---------------- API SHOWCASE SECTION ---------------- */}
-        <motion.div
-          variants={cardFade}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="mt-16 max-w-3xl mx-auto text-center"
-        >
-          <div className="flex justify-center mb-3">
-            <Code className="w-6 h-6 text-white/70" />
-          </div>
-          <h3 className="text-2xl font-semibold">SkyShare API Integration</h3>
-          <p className="text-sm text-white/60 mt-2 mb-6">
-            Integrate SkyShare directly into your platform with a few lines of code.
-          </p>
+       {/* ---------------- API SHOWCASE SECTION ---------------- */}
+<motion.div
+  variants={cardFade}
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true }}
+  className="mt-24 max-w-4xl mx-auto text-center px-6"
+>
+  <div className="flex justify-center mb-4">
+    <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
+      <Code className="w-6 h-6 text-white/80" />
+    </div>
+  </div>
 
-          <pre className="text-left bg-[#050505] border border-white/8 rounded-xl text-white/80 text-sm p-5 font-mono overflow-x-auto">
+  <h3 className="text-3xl font-semibold text-white tracking-tight">
+    SkyShare API Integration
+  </h3>
+  <p className="text-base text-white/60 mt-3 max-w-2xl mx-auto leading-relaxed">
+    Seamlessly integrate <span className="text-white font-medium">SkyShare</span> into your
+    platform with minimal setup. Designed for developers who value speed,
+    security, and simplicity.
+  </p>
+
+  <div className="relative mt-10 text-left bg-gradient-to-b from-[#0A0A0A]/80 to-[#050505]/90 border border-white/10 rounded-2xl p-6 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+    <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-r from-[#1E1E1E]/60 to-transparent rounded-t-2xl" />
+    <pre className="relative text-white/80 text-sm font-mono overflow-x-auto">
 {`fetch("https://api.skieshare.io/upload", {
   method: "POST",
   headers: {
     Authorization: "Bearer YOUR_API_KEY",
   },
   body: formData,
-}).then(r => r.json())
+})
+  .then(res => res.json())
   .then(console.log)
   .catch(console.error);`}
-          </pre>
-        </motion.div>
+    </pre>
+  </div>
+
+  <div className="mt-8">
+    <button className="px-5 py-2.5 text-sm font-medium bg-white/10 text-white rounded-xl border border-white/10 hover:bg-white/20 transition-all duration-300 backdrop-blur-md">
+      Copy Example
+    </button>
+  </div>
+</motion.div>
+
       </div>
     </section>
   );
