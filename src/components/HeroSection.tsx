@@ -1,254 +1,314 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
 
-/* ================== Upgraded Hero Section ================== */
+/* ================= NAVBAR ================= */
+const Navbar = () => (
+  <header className="fixed top-0 w-full z-40 backdrop-blur-xl bg-black/40 border-b border-white/10">
+    <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 className="text-white font-semibold text-xl tracking-tight">
+        Skie<span className="text-neutral-400">Share</span>
+      </h1>
+      <nav className="hidden sm:flex gap-6 text-sm text-neutral-300">
+        {["Features", "Security", "Pricing", "About"].map((item) => (
+          <a
+            key={item}
+            href={`#${item.toLowerCase()}`}
+            className="hover:text-white transition-colors"
+          >
+            {item}
+          </a>
+        ))}
+      </nav>
+      <Button
+        variant="outline"
+        className="text-white border-white/30 hover:bg-white/10"
+        asChild
+      >
+        <a href="/auth">Sign In</a>
+      </Button>
+    </div>
+  </header>
+);
+
+/* ================= HERO SECTION (yours, adjusted) ================= */
 const HeroSection = () => {
-  const {
-    actualTheme
-  } = useTheme();
+  const { actualTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
-  const {
-    scrollY
-  } = useScroll();
+  const { scrollY } = useScroll();
   const glowWidth = useTransform(scrollY, [0, 300], ["0%", "100%"]);
   const glowOpacity = useTransform(scrollY, [0, 300], [0, 1]);
+
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
-  return <section className="relative w-full min-h-screen flex flex-col justify-center px-6 sm:px-10 md:px-16 overflow-hidden bg-background">
-      {/* Background Effects */}
-      <div className="absolute inset-0 light-box-grid opacity-[0.15] pointer-events-none"></div>
-      <div className="absolute top-32 right-20 w-96 h-96 bg-zinc-900 rounded-full blur-[160px] opacity-40"></div>
-      <div className="absolute bottom-10 left-10 w-64 h-64 bg-accent/10 rounded-full blur-[120px]"></div>
 
-      {/* Content Wrapper */}
+  return (
+    <section className="relative w-full min-h-screen flex flex-col justify-center px-6 sm:px-10 md:px-16 overflow-hidden bg-black text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.05),transparent_60%)]"></div>
+
       <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center z-10 py-24 sm:py-28 md:py-32">
-        {/* Left Section */}
-        <div className="space-y-6 sm:space-y-8">
-          <motion.h1 initial={{
-          opacity: 0,
-          y: 25
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.6,
-          delay: 0.2
-        }} className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-foreground tracking-tight">
-            Effortless. Secure.{" "}
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              File Sharing
-            </span>
-            <br /> that Scales with You.
+        {/* LEFT SECTION */}
+        <div className="space-y-8">
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-5xl sm:text-6xl font-bold leading-tight tracking-tight"
+          >
+            Seamless, Secure <br />
+            <span className="text-neutral-400">File Sharing</span> for the Future.
           </motion.h1>
 
-          <motion.p initial={{
-          opacity: 0,
-          y: 25
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.6,
-          delay: 0.4
-        }} className="text-muted-foreground max-w-lg text-base sm:text-lg leading-relaxed font-body">
-            Experience the next generation of file sharing. Built for teams,
-            creators, and professionals who value privacy, control, and speed —
-            all in one sleek platform.
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-neutral-400 max-w-lg text-lg leading-relaxed"
+          >
+            SkieShare empowers teams and creators to share, manage, and track files
+            effortlessly — built for privacy, precision, and performance.
           </motion.p>
 
-          {/* Action Buttons */}
-          <motion.div initial={{
-          opacity: 0,
-          y: 25
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.6,
-          delay: 0.6
-        }} className="flex flex-col sm:flex-row gap-4 pt-2">
-            <Button variant="default" className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-zinc-600 text-neutral-800 w-full sm:w-auto" asChild>
-              <a href="/auth" className="flex items-center gap-2">
-                <span className="material-icons">arrow_forward</span>
-                Get Started
-              </a>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 pt-2"
+          >
+            <Button
+              className="bg-white text-black h-12 sm:h-14 px-8 rounded-xl font-semibold hover:bg-neutral-200 transition-all"
+              asChild
+            >
+              <a href="/auth">Get Started</a>
             </Button>
-
-            <Button variant="outline" className="border-2 border-neutral-300 dark:border-neutral-700 text-foreground hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-xl font-semibold w-full sm:w-auto" asChild>
-              <a href="/auth" className="flex items-center gap-2">
-                <span className="material-icons">dashboard</span>
-                Go to Dashboard 
-              </a>  
-            </Button>
-
-            <Button variant="ghost" className="relative group overflow-hidden h-12 sm:h-14 px-8 rounded-xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-semibold shadow-md hover:shadow-blue-500/30 w-full sm:w-auto transition-all" asChild>
-              <a href="/code" className="flex items-center gap-3">
-                <div className="relative flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
-                  <div className="absolute inset-0 w-3 h-3 rounded-full bg-blue-400 animate-ping opacity-50"></div>
-                </div>
-                <span className="material-icons text-blue-400 group-hover:scale-110 transition-transform">
-                  upload
-                </span>
-                <span className="group-hover:text-blue-400 transition-colors">
-                  Upload File
-                </span>
-              </a>
+            <Button
+              variant="outline"
+              className="border-white/40 text-white hover:bg-white/10 h-12 sm:h-14 px-8 rounded-xl font-semibold"
+              asChild
+            >
+              <a href="/auth">Dashboard</a>
             </Button>
           </motion.div>
 
-          {/* Features Row */}
-          <motion.div initial={{
-          opacity: 0,
-          y: 20
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.6,
-          delay: 0.8
-        }} className="flex flex-wrap items-center gap-3 sm:gap-5 pt-6">
-            {[["lock", "256-Bit Encryption"], ["cloud_upload", "Unlimited Cloud Storage"], ["admin_panel_settings", "Smart Access Control"], ["analytics", "File Insights & Analytics"], ["speed", "Lightning-Fast Uploads"]].map(([icon, text], i) => <div key={i} className="flex items-center gap-2 border border-slate-700/40 bg-zinc-800/70 rounded-xl px-3 py-2 text-slate-300 shadow-sm hover:shadow-md hover:bg-zinc-700/60 transition-all duration-200">
-                <span className="material-icons md-18 text-neutral-300">
-                  {icon}
-                </span>
-                <span className="text-xs sm:text-sm font-medium">{text}</span>
-              </div>)}
-          </motion.div>
-
-          {/* Statistic Card */}
-          <motion.div className="pt-10 flex justify-center sm:justify-start" initial={{
-          opacity: 0,
-          y: 30
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.6,
-          delay: 1
-        }}>
-            <Card />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="flex flex-wrap items-center gap-4 pt-6"
+          >
+            {[
+              ["lock", "256-Bit Encryption"],
+              ["upload", "Unlimited Transfers"],
+              ["bolt", "Fast CDN Delivery"],
+              ["insights", "Smart Analytics"],
+            ].map(([icon, text], i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-neutral-300"
+              >
+                <span className="material-icons text-white/70">{icon}</span>
+                {text}
+              </div>
+            ))}
           </motion.div>
         </div>
 
-        {/* Right Section */}
-        <motion.div initial={{
-        opacity: 0,
-        x: 60
-      }} animate={{
-        opacity: 1,
-        x: 0
-      }} transition={{
-        duration: 0.8,
-        delay: 0.3
-      }} className="relative">
-          <div className="space-y-5">
-            {/* Project Files Card */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-400 mx-[55px] my-0 py-[24px] px-[45px]">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <span className="material-icons text-primary">folder</span>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-foreground">
-                      Project Files
-                    </h3>
-                    <p className="text-xs text-muted-foreground">
-                      24 files • 2.3 GB
-                    </p>
-                  </div>
+        {/* RIGHT SECTION */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="relative"
+        >
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all">
+            <h3 className="text-lg font-semibold text-white mb-3">
+              Recent Uploads
+            </h3>
+            <div className="grid grid-cols-3 gap-3">
+              {["image", "description", "video_file"].map((icon, i) => (
+                <div
+                  key={i}
+                  className="aspect-square bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-all"
+                >
+                  <span className="material-icons text-white/70">{icon}</span>
                 </div>
-                <div className="flex -space-x-2">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-rose-400"></div>
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-blue-500"></div>
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card bg-zinc-800 flex items-center justify-center text-xs font-semibold">
-                    +3
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {["description", "image", "video_file"].map((icon, i) => <div key={i} className="aspect-square rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-                    <span className="material-icons text-primary">{icon}</span>
-                  </div>)}
-              </div>
-            </div>
-
-            {/* Secure Upload Mini Card */}
-            <div className="bg-card border border-border rounded-2xl p-4 shadow-lg translate-x-4 hover:translate-x-0 transition-all duration-500">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                  <span className="material-icons text-accent">security</span>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">
-                    Secure Upload
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    End-to-end encrypted
-                  </p>
-                </div>
-                <div className="w-12 h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="w-8 h-full bg-accent rounded-full"></div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </motion.div>
       </div>
 
-      {/* Bottom Glow Line */}
-      <motion.div className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" style={{
-      width: glowWidth,
-      opacity: glowOpacity,
-      boxShadow: "0 0 25px rgba(38,38,38,0.8), 0 0 40px rgba(38,38,38,0.4)"
-    }} />
-    </section>;
+      <motion.div
+        className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        style={{ width: glowWidth, opacity: glowOpacity }}
+      />
+    </section>
+  );
 };
 
-/* ================== Floating Stats Card ================== */
-const Card = () => {
-  return <div className="relative w-[300px] sm:w-[320px] h-[250px] rounded-xl p-[1px] bg-gradient-radial from-gray-100 via-gray-800 to-black overflow-hidden">
-      <div className="absolute w-[6px] aspect-square bg-white rounded-full shadow-[0_0_12px_#ffffff] animate-[moveDot_6s_linear_infinite]"></div>
-
-      <div className="relative w-full h-full flex flex-col items-center justify-center rounded-lg border border-neutral-800 bg-gradient-radial from-gray-600 to-black text-white overflow-hidden">
-        <div className="absolute w-[200px] h-[40px] bg-gray-200 opacity-40 rounded-full blur-md rotate-[35deg] top-0 left-0"></div>
-        <div className="text-5xl sm:text-6xl font-extrabold bg-gradient-to-r from-gray-200 via-white to-gray-200 bg-clip-text text-transparent">
-          1.2M+
-        </div>
-        <div className="text-sm sm:text-base">Files Shared</div>
-
-        {/* Subtle Grid Lines */}
-        <div className="absolute top-[10%] left-0 w-full h-[1px] bg-gradient-to-r from-gray-400 to-gray-800"></div>
-        <div className="absolute bottom-[10%] left-0 w-full h-[1px] bg-gray-700"></div>
-        <div className="absolute left-[10%] top-0 h-full w-[1px] bg-gradient-to-b from-gray-500 to-gray-800"></div>
-        <div className="absolute right-[10%] top-0 h-full w-[1px] bg-gray-800"></div>
+/* ================= FEATURES GRID ================= */
+const FeaturesGrid = () => {
+  const features = [
+    {
+      icon: "cloud_done",
+      title: "Reliable Cloud",
+      desc: "Your files, always available — powered by redundant global edge storage.",
+    },
+    {
+      icon: "lock",
+      title: "Privacy First",
+      desc: "Every transfer is AES-256 encrypted and protected by zero-knowledge policy.",
+    },
+    {
+      icon: "bolt",
+      title: "Ultra-Fast Transfers",
+      desc: "Accelerated multi-thread uploads and instant link generation.",
+    },
+    {
+      icon: "analytics",
+      title: "Insightful Analytics",
+      desc: "Track who views, downloads, and interacts with your shared links.",
+    },
+  ];
+  return (
+    <section id="features" className="py-32 bg-black text-white">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {features.map((f, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.2 }}
+            className="p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all"
+          >
+            <span className="material-icons text-3xl text-white/80 mb-4 block">
+              {f.icon}
+            </span>
+            <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
+            <p className="text-neutral-400 text-sm">{f.desc}</p>
+          </motion.div>
+        ))}
       </div>
-
-      <style>{`
-        @keyframes moveDot {
-          0%, 100% {
-            top: 10%;
-            right: 10%;
-          }
-          25% {
-            top: 10%;
-            right: calc(100% - 35px);
-          }
-          50% {
-            top: calc(100% - 30px);
-            right: calc(100% - 35px);
-          }
-          75% {
-            top: calc(100% - 30px);
-            right: 10%;
-          }
-        }
-      `}</style>
-    </div>;
+    </section>
+  );
 };
-export default HeroSection;
+
+/* ================= SECURITY STRIP ================= */
+const SecurityStrip = () => (
+  <div className="py-12 bg-white/5 border-y border-white/10 text-center text-neutral-300 text-sm">
+    Protected by military-grade encryption • GDPR & SOC2 compliant • ISO/IEC 27001 certified
+  </div>
+);
+
+/* ================= TESTIMONIALS ================= */
+const Testimonials = () => {
+  const reviews = [
+    {
+      name: "Ayan M.",
+      role: "Content Creator",
+      text: "SkieShare feels like the Apple of file sharing — smooth, minimalist, and powerful.",
+    },
+    {
+      name: "Nadia R.",
+      role: "Product Manager",
+      text: "Our team now shares securely with clients in seconds — the UI is flawless.",
+    },
+    {
+      name: "Zohaib I.",
+      role: "Photographer",
+      text: "Uploading 4K videos is seamless. Nothing else compares in elegance.",
+    },
+  ];
+
+  return (
+    <section id="reviews" className="py-32 bg-black text-white">
+      <h2 className="text-center text-3xl font-semibold mb-16">
+        Loved by professionals worldwide 🌍
+      </h2>
+      <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
+        {reviews.map((r, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.2 }}
+            className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all"
+          >
+            <p className="text-neutral-300 text-sm mb-4 italic">“{r.text}”</p>
+            <div className="text-white font-semibold">{r.name}</div>
+            <div className="text-neutral-400 text-xs">{r.role}</div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+/* ================= PRICING PREVIEW ================= */
+const PricingPreview = () => (
+  <section id="pricing" className="py-32 bg-white text-black">
+    <div className="max-w-6xl mx-auto px-6 text-center">
+      <h2 className="text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
+      <p className="text-neutral-600 mb-12">
+        Start for free, scale as you grow — no hidden fees.
+      </p>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[
+          { name: "Free", price: "$0", desc: "5 GB uploads, 7-day links" },
+          { name: "Pro", price: "$9/mo", desc: "100 GB, analytics, branding" },
+          { name: "Enterprise", price: "Custom", desc: "Unlimited storage, SLA" },
+        ].map((plan, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ y: -5 }}
+            className="p-8 border border-black/10 rounded-2xl shadow-md hover:shadow-xl transition-all"
+          >
+            <h3 className="text-xl font-semibold">{plan.name}</h3>
+            <div className="text-4xl font-bold mt-3">{plan.price}</div>
+            <p className="text-neutral-600 text-sm mt-2">{plan.desc}</p>
+            <Button className="mt-6 w-full bg-black text-white hover:bg-neutral-800 rounded-xl">
+              Choose Plan
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* ================= CTA ================= */
+const CTASection = () => (
+  <section className="py-32 bg-black text-white text-center">
+    <h2 className="text-3xl sm:text-4xl font-semibold mb-6">
+      Ready to elevate your sharing experience?
+    </h2>
+    <p className="text-neutral-400 max-w-xl mx-auto mb-8">
+      Join thousands of teams using SkieShare for effortless, private, and professional file delivery.
+    </p>
+    <Button className="bg-white text-black px-8 py-6 rounded-xl font-semibold hover:bg-neutral-200 transition-all">
+      Start Free Today
+    </Button>
+  </section>
+);
+
+/* ================= MAIN EXPORT ================= */
+export default function SkieShareLanding() {
+  return (
+    <main className="font-sans bg-black text-white">
+      <Navbar />
+      <HeroSection />
+      <FeaturesGrid />
+      <SecurityStrip />
+      <Testimonials />
+      <PricingPreview />
+      <CTASection />
+      <footer className="py-8 text-center text-sm text-neutral-500 border-t border-white/10">
+        © {new Date().getFullYear()} SkieShare. All rights reserved.
+      </footer>
+    </main>
+  );
+}
