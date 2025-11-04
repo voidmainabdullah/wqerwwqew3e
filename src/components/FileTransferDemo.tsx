@@ -10,39 +10,37 @@ import {
   BarChart2,
   Folder,
   Activity,
+  Code,
 } from "lucide-react";
 
 /**
  * FileTransferDemo.tsx
- * A professional, black-and-white visual showcase for a secure file transfer pipeline.
- * - Clean studio UI (Tailwind)
- * - framer-motion subtle animations
- * - Lucide-react icons
+ * Professional visual for secure transfer + analytics + API showcase
+ * Apple-style: black, white, subtle motion, minimal UI.
  */
 
 type Props = {
   initialFileName?: string;
 };
 
-// Motion Variants
+// ---------------- Motion Variants ----------------
 const easing = [0.16, 1, 0.3, 1] as const;
 
 const cardFade: Variants = {
-  hidden: { opacity: 0, y: 6 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easing as any } },
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easing as any } },
 };
 
-// UI Helpers
+// ---------------- Helper Components ----------------
 const Meter: React.FC<{ value: number }> = ({ value }) => {
   const pct = Math.max(0, Math.min(100, Math.round(value)));
   return (
     <div className="w-full rounded-full h-2 bg-black border border-white/6 overflow-hidden">
       <div
-        className="h-full rounded-full transition-all"
+        className="h-full transition-all rounded-full"
         style={{
           width: `${pct}%`,
-          background:
-            "linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6))",
+          background: "linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5))",
         }}
       />
     </div>
@@ -50,11 +48,12 @@ const Meter: React.FC<{ value: number }> = ({ value }) => {
 };
 
 const TinySparkline: React.FC<{ value: number }> = ({ value }) => {
-  const v = Math.min(70, Math.max(2, Math.round(value)));
-  const points = [v * 0.15, v * 0.4, v * 0.7, v * 0.45, v * 0.85, v];
+  const points = Array.from({ length: 7 }, (_, i) =>
+    Math.max(3, value * (0.3 + Math.random() * 0.7))
+  );
   const max = Math.max(...points);
-  const width = 80;
-  const height = 24;
+  const width = 90,
+    height = 26;
   const step = width / (points.length - 1);
   const d = points
     .map(
@@ -68,7 +67,7 @@ const TinySparkline: React.FC<{ value: number }> = ({ value }) => {
         d={d}
         fill="none"
         stroke="white"
-        strokeWidth={1.3}
+        strokeWidth={1.4}
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{ opacity: 0.95 }}
@@ -87,34 +86,28 @@ const StatBlock: React.FC<{ label: string; value: string | number }> = ({
   </div>
 );
 
-// Format bytes helper
-const formatBytes = (bytes: number) => {
-  if (bytes < 1024) return bytes + " B";
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return (bytes / Math.pow(1024, i)).toFixed(2) + " " + ["B", "KB", "MB", "GB"][i];
-};
-
-// --------------------------- MAIN COMPONENT ---------------------------
-const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.zip" }) => {
+// ---------------- Main Component ----------------
+const FileTransferDemo: React.FC<Props> = ({
+  initialFileName = "project-archive.zip",
+}) => {
   const controls = useAnimation();
-  const [progress, setProgress] = useState<number>(14);
+  const [progress, setProgress] = useState<number>(12);
   const [speed, setSpeed] = useState<number>(420);
   const [active, setActive] = useState<number>(9);
   const [packets, setPackets] = useState<number>(6);
   const [fileName, setFileName] = useState(initialFileName);
   const stageRef = useRef<HTMLDivElement | null>(null);
 
-  // Animate progress + speed
   useEffect(() => {
     controls.start("show");
     const t = window.setInterval(() => {
-      setProgress((p) => Math.min(99, p + (Math.random() * 1.2 + 0.4)));
-      setSpeed((s) => Math.max(120, Math.round(s + (Math.random() * 40 - 20))));
-    }, 1100);
+      setProgress((p) => Math.min(99, p + (Math.random() * 1.3 + 0.3)));
+      setSpeed((s) => Math.max(100, s + (Math.random() * 40 - 15)));
+    }, 1200);
     return () => clearInterval(t);
   }, [controls]);
 
-  // Slight parallax movement
+  // Parallax
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -128,7 +121,7 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Mini actions
+  // Controls
   const handleBoost = () => {
     setProgress((p) => Math.min(99, p + 8));
     setPackets((n) => Math.min(20, n + 2));
@@ -141,10 +134,11 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
     setPackets(4);
   };
 
+  // ---------------- Return ----------------
   return (
-    <section className="relative py-12 px-6 md:px-10 bg-black text-white">
+    <section className="relative py-16 px-6 md:px-10 bg-black text-white">
       <div className="max-w-6xl mx-auto" ref={stageRef}>
-        {/* Header */}
+        {/* HEADER */}
         <motion.div
           initial="hidden"
           animate="show"
@@ -152,19 +146,18 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
           className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6"
         >
           <div className="max-w-xl">
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
+            <h2 className="text-3xl font-extrabold tracking-tight">
               Secure File Transfer — Visual Flow
             </h2>
             <p className="mt-2 text-sm text-white/70">
-              Clean, minimal presentation of a secure transfer pipeline: upload →
-              encryption → transfer → encrypted storage.
+              Clean Apple-grade presentation: upload → encrypt → transfer →
+              storage with AES-256 security.
             </p>
           </div>
-
           <div className="flex items-center gap-3">
             <motion.button
               whileTap={{ scale: 0.98 }}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.05 }}
               onClick={handleBoost}
               className="px-4 py-2 rounded-lg bg-white text-black text-sm font-medium"
             >
@@ -180,15 +173,15 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
           </div>
         </motion.div>
 
-        {/* Main Grid */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Section */}
+        {/* MAIN GRID */}
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* LEFT */}
           <div className="lg:col-span-7 space-y-4">
+            {/* Main Transfer */}
             <motion.div
               variants={cardFade}
               className="rounded-2xl p-5 bg-[#060606] border border-white/8"
             >
-              {/* Transfer Stats */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-md bg-white/6 border border-white/8">
@@ -196,10 +189,7 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
                   </div>
                   <div>
                     <div className="text-sm font-semibold">Current Transfer</div>
-                    <div
-                      className="text-xs text-white/60 truncate"
-                      title={fileName}
-                    >
+                    <div className="text-xs text-white/60 truncate" title={fileName}>
                       {fileName}
                     </div>
                   </div>
@@ -216,12 +206,12 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
                 </div>
               </div>
 
-              {/* Step Pipeline */}
+              {/* PIPELINE */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                 {[
                   { icon: <UploadCloud />, label: "Upload", detail: "Client" },
                   { icon: <Lock />, label: "Encrypt", detail: "AES-256" },
-                  { icon: <Cloud />, label: "Transfer", detail: "TLS Layer" },
+                  { icon: <Cloud />, label: "Transfer", detail: "TLS" },
                   { icon: <Database />, label: "Store", detail: "Encrypted" },
                 ].map((s, i) => {
                   const stepProgress = Math.max(6, Math.min(100, progress - i * 15));
@@ -236,9 +226,7 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
                             {s.icon}
                           </div>
                           <div>
-                            <div className="text-sm font-medium text-white">
-                              {s.label}
-                            </div>
+                            <div className="text-sm font-medium">{s.label}</div>
                             <div className="text-xs text-white/60">{s.detail}</div>
                           </div>
                         </div>
@@ -257,46 +245,34 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
                 })}
               </div>
 
-              {/* Mini Stats */}
+              {/* STATS */}
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="p-3 bg-[#050505] border border-white/8 rounded-lg flex justify-between">
                   <div>
                     <div className="text-xs text-white/60">Avg Speed</div>
-                    <div className="text-sm font-semibold text-white">
-                      {Math.round(speed)} MB/s
-                    </div>
+                    <div className="text-sm font-semibold">{Math.round(speed)} MB/s</div>
                   </div>
                   <TinySparkline value={progress} />
                 </div>
-
                 <div className="p-3 bg-[#050505] border border-white/8 rounded-lg flex justify-between">
                   <div>
                     <div className="text-xs text-white/60">Active Transfers</div>
-                    <div className="text-sm font-semibold text-white">{active}</div>
+                    <div className="text-sm font-semibold">{active}</div>
                   </div>
                   <div className="text-xs text-white/60">x{packets}</div>
                 </div>
-
                 <div className="p-3 bg-[#050505] border border-white/8 rounded-lg flex justify-between">
                   <div>
                     <div className="text-xs text-white/60">Integrity</div>
-                    <div className="text-sm font-semibold text-white">AES-256</div>
+                    <div className="text-sm font-semibold">AES-256</div>
                   </div>
                   <ShieldCheck className="w-4 h-4 text-white/70" />
                 </div>
               </div>
-
-              {/* Summary Stats */}
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <StatBlock label="Data Centers" value="12 Regions" />
-                <StatBlock label="Nodes" value="24" />
-                <StatBlock label="SLA" value="99.99%" />
-                <StatBlock label="Audit Logs" value="Enabled" />
-              </div>
             </motion.div>
           </div>
 
-          {/* Right Side */}
+          {/* RIGHT */}
           <div className="lg:col-span-5 space-y-4">
             <motion.div
               variants={cardFade}
@@ -311,51 +287,86 @@ const FileTransferDemo: React.FC<Props> = ({ initialFileName = "project-archive.
                   </div>
                 </div>
                 <div className="text-xs text-white/60">
-                  ETA:{" "}
-                  {progress < 99
-                    ? `${Math.max(1, Math.round((100 - progress) / 4))}m`
-                    : "Done"}
+                  ETA: {progress < 99 ? `${Math.round((100 - progress) / 4)}m` : "Done"}
                 </div>
               </div>
-
               <div className="mt-4 bg-[#050505] border border-white/8 rounded-lg p-3">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="text-xs text-white/60">Filename</div>
-                    <div className="text-sm font-semibold truncate">
-                      {fileName}
-                    </div>
-                  </div>
-                  <div className="text-xs text-white/60">
-                    {formatBytes((progress / 100) * 2300000000)}
-                  </div>
+                <Meter value={progress} />
+                <div className="mt-2 flex justify-between text-xs text-white/60">
+                  <span>{Math.round((progress / 100) * 2300)} MB</span>
+                  <span>{Math.round(speed)} MB/s</span>
                 </div>
-                <div className="mt-3">
-                  <Meter value={progress} />
-                  <div className="mt-2 flex justify-between text-xs text-white/60">
-                    <span>{Math.round((progress / 100) * 2300)} MB</span>
-                    <span>{Math.round(speed)} MB/s</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-3 bg-[#050505] border border-white/8 rounded-lg p-3">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="text-xs text-white/60">Security</div>
-                    <div className="text-sm font-semibold text-white">
-                      AES-256 • TLS
-                    </div>
-                  </div>
-                  <Lock className="w-4 h-4 text-white/70" />
-                </div>
-                <p className="mt-2 text-xs text-white/60">
-                  End-to-end encryption with integrity checks and audit logs.
-                </p>
               </div>
             </motion.div>
           </div>
         </div>
+
+        {/* ---------------- ANALYTICS SECTION ---------------- */}
+        <motion.div
+          variants={cardFade}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="mt-20 text-center"
+        >
+          <h3 className="text-3xl font-semibold">Analytics & Insights</h3>
+          <p className="text-sm text-white/60 mt-2 max-w-lg mx-auto">
+            SkyShare delivers real-time analytics to monitor performance, regions, and user activity securely.
+          </p>
+
+          {/* Graph */}
+          <div className="mt-10 mx-auto max-w-3xl bg-[#050505] border border-white/8 rounded-2xl p-6">
+            <BarChart2 className="w-6 h-6 text-white/70 mx-auto mb-4" />
+            <div className="grid grid-cols-6 gap-3 h-24 items-end">
+              {[40, 70, 55, 85, 65, 90].map((v, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ height: 0 }}
+                  whileInView={{ height: `${v}%` }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  className="bg-white/70 w-full rounded-md"
+                />
+              ))}
+            </div>
+            <div className="flex justify-between text-xs text-white/60 mt-3">
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ---------------- API SHOWCASE SECTION ---------------- */}
+        <motion.div
+          variants={cardFade}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="mt-16 max-w-3xl mx-auto text-center"
+        >
+          <div className="flex justify-center mb-3">
+            <Code className="w-6 h-6 text-white/70" />
+          </div>
+          <h3 className="text-2xl font-semibold">SkyShare API Integration</h3>
+          <p className="text-sm text-white/60 mt-2 mb-6">
+            Integrate SkyShare directly into your platform with a few lines of code.
+          </p>
+
+          <pre className="text-left bg-[#050505] border border-white/8 rounded-xl text-white/80 text-sm p-5 font-mono overflow-x-auto">
+{`fetch("https://api.skieshare.io/upload", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer YOUR_API_KEY",
+  },
+  body: formData,
+}).then(r => r.json())
+  .then(console.log)
+  .catch(console.error);`}
+          </pre>
+        </motion.div>
       </div>
     </section>
   );
