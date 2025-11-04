@@ -298,4 +298,4 @@ const DownloadComparison: React.FC = () => {
   );
 };
 
-export default DownloadComparison;
+
