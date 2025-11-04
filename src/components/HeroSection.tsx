@@ -112,12 +112,7 @@ const HeroSection = () => {
           duration: 0.6,
           delay: 0.8
         }} className="flex flex-wrap items-center gap-3 sm:gap-5 pt-6">
-            {[["lock", "256-Bit Encryption"], ["cloud_upload", "Unlimited Cloud Storage"], ["admin_panel_settings", "Smart Access Control"], ["analytics", "File Insights & Analytics"], ["speed", "Lightning-Fast Uploads"]].map(([icon, text], i) => <div key={i} className="flex items-center gap-2 border border-slate-700/40 bg-zinc-800/70 rounded-xl px-3 py-2 text-slate-300 shadow-sm hover:shadow-md hover:bg-zinc-700/60 transition-all duration-200">
-                <span className="material-icons md-18 text-neutral-300">
-                  {icon}
-                </span>
-                <span className="text-xs sm:text-sm font-medium">{text}</span>
-              </div>)}
+            {[["lock", "256-Bit Encryption"], ["cloud_upload", "Unlimited Cloud Storage"], ["admin_panel_settings", "Smart Access Control"], ["analytics", "File Insights & Analytics"], ["speed", "Lightning-Fast Uploads"]].map(([icon, text], i) => {})}
           </motion.div>
 
           {/* Statistic Card */}
@@ -148,7 +143,7 @@ const HeroSection = () => {
       }} className="relative">
           <div className="space-y-5">
             {/* Project Files Card */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-400 mx-[55px] my-0 py-[24px] px-[45px]">
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-400 mx-[45px] my-0 py-[35px] px-[50px]">
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
