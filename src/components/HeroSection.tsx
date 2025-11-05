@@ -342,7 +342,7 @@ const HeroSection: React.FC = () => {
           duration: 0.6,
           delay: 0.3
         }}>
-            <div ref={dropRef} role="button" tabIndex={0} onKeyDown={handleKeyOpen} aria-label="Upload files (drag and drop or click to select)" onClick={() => inputRef.current?.click()} className="relative w-full rounded-2xl border border-[#ffffff] bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-300/50 hover:border-zinc-600/50 transition-all">
+            <div ref={dropRef} role="button" tabIndex={0} onKeyDown={handleKeyOpen} aria-label="Upload files (drag and drop or click to select)" onClick={() => inputRef.current?.click()} className="relative w-full rounded-2xl border  bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-300/50 hover:border-zinc-600/50 transition-all">
               <input ref={inputRef} type="file" multiple aria-hidden className="hidden" onChange={handleInputChange} />
 
               <div className="flex flex-col items-center justify-center text-center gap-4">
