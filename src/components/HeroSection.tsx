@@ -307,151 +307,177 @@ Organize projects, manage access, and track sharing activity with ease.
 Fast. Secure. Effortless — In your control.
           </motion.p>
 
-          {/* Upload / Drag & Drop Zone */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }}>
-            <div
-              ref={dropRef}
-              role="button"
-              tabIndex={0}
-              onKeyDown={handleKeyOpen}
-              aria-label="Upload files (drag and drop or click to select)"
-              onClick={() => inputRef.current?.click()}
-              className="relative w-full rounded-2xl border border-[#2a2a2a] bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/20 hover:border-white/20 transition-all"
-            >
-              <input
-                ref={inputRef}
-                type="file"
-                multiple
-                aria-hidden
-                className="hidden"
-                onChange={handleInputChange}
+{/* Upload / Drag & Drop Zone */}
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6, delay: 0.2 }}
+>
+  {/* CTA Buttons */}
+  <div className="flex flex-wrap justify-center gap-4 mb-4">
+    <button
+      onClick={() => router.push("/auth")}
+      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg"
+    >
+      <FaArrowRight /> Get Started
+    </button>
+    <button
+      onClick={() => router.push("/dashboard")}
+      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg"
+    >
+      <FaTachometerAlt /> Go to Dashboard
+    </button>
+    <button
+      onClick={() => inputRef.current?.click()}
+      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg"
+    >
+      <FaUpload /> Fast Share
+    </button>
+  </div>
+
+  <div
+    ref={dropRef}
+    role="button"
+    tabIndex={0}
+    onKeyDown={handleKeyOpen}
+    aria-label="Upload files (drag and drop or click to select)"
+    onClick={() => inputRef.current?.click()}
+    className="relative w-full rounded-2xl border border-[#2a2a2a] bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/20 hover:border-white/20 transition-all"
+  >
+    <input
+      ref={inputRef}
+      type="file"
+      multiple
+      aria-hidden
+      className="hidden"
+      onChange={handleInputChange}
+    />
+
+    <div className="flex flex-col sm:flex-row items-center gap-4">
+      <div className="flex items-center justify-center w-20 h-20 rounded-lg bg-white/5">
+        {/* Drag Icon */}
+        <svg className="w-8 h-8 text-white/80" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M8 9l4-4 4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          <rect x="3" y="15" width="18" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
+        </svg>
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="font-medium">Drag & drop files here</p>
+            <p className="text-xs text-gray-400">or click to browse (PDF, DOC, JPG, PNG, MP4)</p>
+          </div>
+
+          <div className="ml-4 text-xs text-gray-400">
+            <strong>{formatBytes(storageUsed)}</strong> of {formatBytes(capacity)} used
+            <div className="w-44 h-2 bg-white/5 rounded-full mt-2 overflow-hidden" aria-hidden>
+              <div
+                className="h-full bg-white"
+                style={{ width: `${Math.min(100, (storageUsed / capacity) * 100)}%`, opacity: 0.9 }}
               />
-
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-                <div className="flex items-center justify-center w-20 h-20 rounded-lg bg-white/5">
-                  {/* drag icon */}
-                  <svg className="w-8 h-8 text-white/80" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M8 9l4-4 4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    <rect x="3" y="15" width="18" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
-                  </svg>
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <div className="min-w-0">
-                      <p className="font-medium">Drag & drop files here</p>
-                      <p className="text-xs text-gray-400">or click to browse (PDF, DOC, JPG, PNG, MP4)</p>
-                    </div>
-
-                    <div className="ml-4 text-xs text-gray-400">
-                      <strong>{formatBytes(storageUsed)}</strong> of {formatBytes(capacity)} used
-                      <div className="w-44 h-2 bg-white/5 rounded-full mt-2 overflow-hidden" aria-hidden>
-                        <div
-                          className="h-full bg-white"
-                          style={{ width: `${Math.min(100, (storageUsed / capacity) * 100)}%`, opacity: 0.9 }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* quick file-type badges */}
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {["pdf", "doc", "img", "video", "other"].map((t) => (
-                      <div key={t} className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/3 border border-white/6 text-xs text-gray-200">
-                        <IconFile type={t === "other" ? "file" : t} />
-                        <span className="uppercase">{t}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* recent thumbnails */}
-                  <div className="mt-4">
-                    <p className="text-xs text-gray-400 mb-2">Recent</p>
-                    <div className="flex items-center gap-3">
-                      {recentThumbnails.length ? (
-                        recentThumbnails.map((f) => (
-                          <div key={f.id} className="w-14 h-14 rounded-lg overflow-hidden border border-white/6 bg-white/3">
-                            <img src={f.thumbnail} alt={f.name} className="w-full h-full object-cover" />
-                          </div>
-                        ))
-                      ) : (
-                        <div className="text-xs text-gray-500">No recent images</div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* visual indicator bottom */}
-              <div className="mt-4 flex items-center gap-3">
-                <div className="text-xs text-gray-400">Accepted: PDF, DOC, JPG, PNG, MP4</div>
-                <div className="ml-auto text-xs text-gray-400">Max file size: 2GB</div>
-              </div>
             </div>
-          </motion.div>
-
-          {/* Upload queue (progress bars) */}
-          <div aria-live="polite" className="mt-4 space-y-3">
-            {files.map((f) => (
-              <div key={f.id} className="rounded-md border border-white/6 p-3 bg-white/3 flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 border border-white/6">
-                  <IconFile type={f.type === "other" ? "file" : f.type} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <div className="text-sm font-medium truncate">{f.name}</div>
-                        {f.shared && <span className="text-xs px-2 py-0.5 rounded bg-white/8">Shared</span>}
-                      </div>
-                      <div className="text-xs text-gray-400">{formatBytes(f.size)}</div>
-                    </div>
-                    <div className="ml-auto flex items-center gap-2">
-                      <button
-                        aria-label={`Share ${f.name}`}
-                        onClick={() => handleToggleShare(f.id)}
-                        className="p-1 rounded-md hover:bg-white/6 transition"
-                        title="Share"
-                      >
-                        <IconShare className="w-4 h-4 text-white/90" />
-                      </button>
-                      <button
-                        aria-label={`Download ${f.name}`}
-                        onClick={() => handleDownload(f)}
-                        className="p-1 rounded-md hover:bg-white/6 transition"
-                        title="Download"
-                      >
-                        <IconDownload className="w-4 h-4 text-white/90" />
-                      </button>
-                      <button
-                        aria-label={`Remove ${f.name}`}
-                        onClick={() => handleRemove(f.id)}
-                        className="p-1 rounded-md hover:bg-red-600/30 text-red-400 transition"
-                        title="Remove"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* progress bar */}
-                  <div className="mt-3 h-2 bg-white/6 rounded-full overflow-hidden" aria-hidden>
-                    <div
-                      className={`h-full ${f.status === "done" ? "bg-white" : "bg-white/80"}`}
-                      style={{ width: `${f.progress}%`, transition: "width 300ms linear" }}
-                    />
-                  </div>
-
-                  <div className="mt-1 flex items-center justify-between text-xs text-gray-400">
-                    <div>{f.status === "uploading" ? `Uploading — ${Math.round(f.progress)}%` : f.status === "done" ? "Uploaded" : f.status}</div>
-                    <div>{f.status === "uploading" ? "…" : f.status === "done" ? "Ready" : ""}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
+
+        {/* Quick file-type badges */}
+        <div className="mt-4 flex flex-wrap gap-2">
+          {["pdf", "doc", "img", "video", "other"].map((t) => (
+            <div key={t} className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/3 border border-white/6 text-xs text-gray-200">
+              <IconFile type={t === "other" ? "file" : t} />
+              <span className="uppercase">{t}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Recent thumbnails */}
+        <div className="mt-4">
+          <p className="text-xs text-gray-400 mb-2">Recent</p>
+          <div className="flex items-center gap-3">
+            {recentThumbnails.length ? (
+              recentThumbnails.map((f) => (
+                <div key={f.id} className="w-14 h-14 rounded-lg overflow-hidden border border-white/6 bg-white/3">
+                  <img src={f.thumbnail} alt={f.name} className="w-full h-full object-cover" />
+                </div>
+              ))
+            ) : (
+              <div className="text-xs text-gray-500">No recent images</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Visual indicator bottom */}
+    <div className="mt-4 flex items-center gap-3">
+      <div className="text-xs text-gray-400">Accepted: PDF, DOC, JPG, PNG, MP4</div>
+      <div className="ml-auto text-xs text-gray-400">Max file size: 2GB</div>
+    </div>
+  </div>
+</motion.div>
+
+{/* Upload queue (progress bars) */}
+<div aria-live="polite" className="mt-4 space-y-3">
+  {files.map((f) => (
+    <div key={f.id} className="rounded-md border border-white/6 p-3 bg-white/3 flex items-center gap-3">
+      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 border border-white/6">
+        <IconFile type={f.type === "other" ? "file" : f.type} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-3">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <div className="text-sm font-medium truncate">{f.name}</div>
+              {f.shared && <span className="text-xs px-2 py-0.5 rounded bg-white/8">Shared</span>}
+            </div>
+            <div className="text-xs text-gray-400">{formatBytes(f.size)}</div>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <button
+              aria-label={`Share ${f.name}`}
+              onClick={() => handleToggleShare(f.id)}
+              className="p-1 rounded-md hover:bg-white/6 transition"
+              title="Share"
+            >
+              <IconShare className="w-4 h-4 text-white/90" />
+            </button>
+            <button
+              aria-label={`Download ${f.name}`}
+              onClick={() => handleDownload(f)}
+              className="p-1 rounded-md hover:bg-white/6 transition"
+              title="Download"
+            >
+              <IconDownload className="w-4 h-4 text-white/90" />
+            </button>
+            <button
+              aria-label={`Remove ${f.name}`}
+              onClick={() => handleRemove(f.id)}
+              className="p-1 rounded-md hover:bg-red-600/30 text-red-400 transition"
+              title="Remove"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-3 h-2 bg-white/6 rounded-full overflow-hidden" aria-hidden>
+          <div
+            className={`h-full ${f.status === "done" ? "bg-white" : "bg-white/80"}`}
+            style={{ width: `${f.progress}%`, transition: "width 300ms linear" }}
+          />
+        </div>
+
+        <div className="mt-1 flex items-center justify-between text-xs text-gray-400">
+          <div>{f.status === "uploading" ? `Uploading — ${Math.round(f.progress)}%` : f.status === "done" ? "Uploaded" : f.status}</div>
+          <div>{f.status === "uploading" ? "…" : f.status === "done" ? "Ready" : ""}</div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
         {/* Right column: combined Storage + Shared + Project Files + Secure Upload (merged) */}
         <aside className="space-y-6">
