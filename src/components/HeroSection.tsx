@@ -359,11 +359,7 @@ const HeroSection: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-gray-400">
-                  <span className="font-semibold text-white">{formatBytes(storageUsed)}</span>
-                  <span>/</span>
-                  <span>{formatBytes(capacity)} used</span>
-                </div>
+                
               </div>
             </div>
           </motion.div>
