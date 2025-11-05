@@ -290,22 +290,33 @@ const HeroSection: React.FC = () => {
       <div className="relative z-10 w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
         {/* Left column: Title, description, upload zone */}
         <div className="space-y-6">
-          <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-4xl sm:text-5xl font-extrabold leading-tight">
-            The Ultimate  
-            <br />
-            <span className="bg-clip-text text-transparent bg-blue-600">
-              File Sharing Platform
+          <motion.h1 
+            initial={{ opacity: 0, y: 18 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6 }} 
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
+            style={{ fontFamily: "'Exo 2', sans-serif" }}
+          >
+            Share Files.{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
+              Fast & Secure.
             </span>
             <br />
-            In Your Control 
+            <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold opacity-80">
+              Always In Your Control
+            </span>
           </motion.h1>
 
-          <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }} className="text-gray-300 max-w-xl">
-            Built for teams, creators, and professionals who value privacy and performance.
-            Upload, store, and share files securely with end-to-end encryption.
-            Experience lightning-fast transfers and seamless collaboration anywhere.
-            Organize projects, manage access, and track sharing activity with ease.
-            Fast. Secure. Effortless — In your control.
+          <motion.p 
+            initial={{ opacity: 0, y: 18 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.15 }} 
+            className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed max-w-xl"
+            style={{ fontFamily: "'Urbanist', sans-serif" }}
+          >
+            Upload massive files instantly with end-to-end encryption. Zero storage
+            limits. Built for teams who value speed, privacy, and complete
+            control.
           </motion.p>
 
           {/* CTA Buttons */}

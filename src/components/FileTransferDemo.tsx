@@ -415,6 +415,18 @@ const FileTransferDemo: React.FC<Props> = ({
   </div>
 </motion.div>
 
+        {/* Ending Line */}
+        <motion.div
+          variants={cardFade}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="mt-24 text-center border-t border-white/10 pt-12"
+        >
+          <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto">
+            Experience seamless file sharing with enterprise-grade security and lightning-fast performance.
+          </p>
+        </motion.div>
 
       </div>
     </section>
