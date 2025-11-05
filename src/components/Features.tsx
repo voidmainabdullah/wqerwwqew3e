@@ -85,12 +85,16 @@ const Features = () => {
         </div>
 
         {/* Ending Line */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-20 text-center border-t border-white/10 pt-12"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={inView ? {
+        opacity: 1,
+        y: 0
+      } : {}} transition={{
+        duration: 0.6,
+        delay: 0.8
+      }} className="mt-20 text-center border-t border-white/30 pt-12">
           <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
             Built for reliability. Designed for scale. Trusted by thousands.
           </p>
