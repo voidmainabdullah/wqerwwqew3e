@@ -311,32 +311,35 @@ const HeroSection: React.FC = () => {
             control.
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div initial={{
-          opacity: 0,
-          y: 10
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.5,
-          delay: 0.2
-        }} className="flex flex-wrap gap-4">
-            <Button
-  onClick={() => navigate("/auth")}
-  size="lg"
-  className="px-8 py-6 text-base font-semibold rounded-xl shadow-lg transition-all bg-zinc-100 text-neutral-700 hover:bg-zinc-200 focus:bg-zinc-200"
+         {/* CTA Buttons */}
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: 0.2 }}
+  className="flex flex-wrap gap-4"
 >
-  <ArrowRight className="w-5 h-5 mr-2" />
-  Get Started
-</Button>
+  {/* Primary CTA */}
+  <Button
+    onClick={() => navigate("/auth")}
+    size="lg"
+    className="flex items-center px-8 py-6 text-base font-semibold rounded-xl shadow-lg transition-all bg-neutral-900 text-white hover:bg-neutral-800 focus:bg-neutral-800"
+  >
+    <ArrowRight className="w-5 h-5 mr-2" />
+    Get Started
+  </Button>
 
-            
-            <Button onClick={() => navigate("/dashboard")} size="lg" variant="outline" className="border-white/20 bg-white/5 hover:bg-white/10 text-white px-8 py-6 text-base font-semibold rounded-xl">
-              <LayoutDashboard className="w-5 h-5 mr-2" />
-              Go to Dashboard
-            </Button>
-          </motion.div>
+  {/* Outline CTA */}
+  <Button
+    onClick={() => navigate("/dashboard")}
+    size="lg"
+    variant="outline"
+    className="flex items-center px-8 py-6 text-base font-semibold rounded-xl border border-neutral-700 text-white hover:bg-neutral-800 hover:border-neutral-500 transition-all"
+  >
+    <LayoutDashboard className="w-5 h-5 mr-2" />
+    Go to Dashboard
+  </Button>
+</motion.div>
+
 
           {/* Simplified Upload / Drag & Drop Zone */}
           <motion.div initial={{
