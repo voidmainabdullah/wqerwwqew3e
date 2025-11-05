@@ -293,9 +293,9 @@ File Sharing Platform
 
 
             <br />
-            <span className="bg-clip-text text-transparent" style={{ background: "linear-gradient(90deg,#ff7e5f,#feb47b)" }}>
+            <span className="bg-clip-text text-transparent bg-red-600">
   The Ultimate File Sharing Platform
-</span>{" "}
+</span>
             In Your Control 
           </motion.h1>
 
