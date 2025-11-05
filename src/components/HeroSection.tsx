@@ -293,8 +293,8 @@ File Sharing Platform
 
 
             <br />
-            <span className="bg-clip-text text-transparent bg-red-600">
-  The Ultimate File Sharing Platform
+            <span className="bg-clip-text text-transparent bg-blue-600">
+   File Sharing Platform
 </span>
             In Your Control 
           </motion.h1>
@@ -304,8 +304,7 @@ File Sharing Platform
 Upload, store, and share files securely with end-to-end encryption.
 Experience lightning-fast transfers and seamless collaboration anywhere.
 Organize projects, manage access, and track sharing activity with ease.
-All in a beautifully minimal, black-and-white interface inspired by Apple.
-Fast. Secure. Effortless — your cloud, your control.
+Fast. Secure. Effortless — In your control.
           </motion.p>
 
           {/* Upload / Drag & Drop Zone */}
