@@ -305,40 +305,31 @@ const HeroSection: React.FC = () => {
           delay: 0.15
         }} style={{
           fontFamily: "'Urbanist', sans-serif"
-        }} className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-xl md:text-lg">
-            Upload massive files instantly with end-to-end encryption. Zero storage
-            limits. Built for teams who value speed, privacy, and complete
-            control.
-          </motion.p>
+        }} className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-xl md:text-lg">Upload massive files instantly with end-to-end encryption. Zero storage limits. Built for teams who value speed, privacy, and complete control.</motion.p>
 
          {/* CTA Buttons */}
-<motion.div
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5, delay: 0.2 }}
-  className="flex flex-wrap gap-4"
->
+        <motion.div initial={{
+          opacity: 0,
+          y: 10
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.5,
+          delay: 0.2
+        }} className="flex flex-wrap gap-4">
   {/* Primary CTA */}
-  <Button
-    onClick={() => navigate("/auth")}
-    size="lg"
-    className="flex items-center px-8 py-6 text-base font-semibold rounded-xl shadow-lg transition-all bg-neutral-900 text-white hover:bg-neutral-800 focus:bg-neutral-800"
-  >
+  <Button onClick={() => navigate("/auth")} size="lg" className="flex items-center px-8 py-6 text-base font-semibold rounded-xl shadow-lg transition-all text-white bg-transparent">
     <ArrowRight className="w-5 h-5 mr-2" />
     Get Started
   </Button>
 
   {/* Outline CTA */}
-  <Button
-    onClick={() => navigate("/dashboard")}
-    size="lg"
-    variant="outline"
-    className="flex items-center px-8 py-6 text-base font-semibold rounded-xl border border-neutral-700 text-white hover:bg-neutral-800 hover:border-neutral-500 transition-all"
-  >
+  <Button onClick={() => navigate("/dashboard")} size="lg" variant="outline" className="flex items-center px-8 py-6 text-base font-semibold rounded-xl border border-neutral-700 text-white hover:bg-neutral-800 hover:border-neutral-500 transition-all">
     <LayoutDashboard className="w-5 h-5 mr-2" />
     Go to Dashboard
   </Button>
-</motion.div>
+        </motion.div>
 
 
           {/* Simplified Upload / Drag & Drop Zone */}
@@ -393,7 +384,7 @@ const HeroSection: React.FC = () => {
 
               <div className="flex items-center gap-2">
                 
-                <Button className="px-3 py-1 rounded-md border border-white/10 bg-zinc-100 text-neutral-700">Share</Button>
+                <Button className="px-3 py-1 rounded-md border border-white/10 bg-zinc-100 text-slate-50">Share</Button>
               </div>
             </div>
 
