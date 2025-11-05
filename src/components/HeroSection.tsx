@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Button } from "@/components/ui/button"; // retain your Button component
+import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useNavigate } from "react-router-dom";
+import { Upload, ArrowRight, LayoutDashboard } from "lucide-react";
 
 /* ===================== Helpers & Small Icon Components ===================== */
 
@@ -88,6 +90,7 @@ const formatBytes = (bytes: number) => {
 
 const HeroSection: React.FC = () => {
   const { actualTheme } = useTheme();
+  const navigate = useNavigate();
   const { scrollY } = useScroll();
   const glowWidth = useTransform(scrollY, [0, 300], ["0%", "100%"]);
   const glowOpacity = useTransform(scrollY, [0, 300], [0, 1]);
@@ -305,155 +308,87 @@ const HeroSection: React.FC = () => {
             Fast. Secure. Effortless — In your control.
           </motion.p>
 
-          {/* Upload / Drag & Drop Zone */}
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-wrap gap-4"
+          >
+            <Button
+              onClick={() => navigate("/auth")}
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+            >
+              <ArrowRight className="w-5 h-5 mr-2" />
+              Get Started
+            </Button>
+            <Button
+              onClick={() => inputRef.current?.click()}
+              size="lg"
+              variant="outline"
+              className="border-white/20 bg-white/5 hover:bg-white/10 text-white px-8 py-6 text-base font-semibold rounded-xl"
+            >
+              <Upload className="w-5 h-5 mr-2" />
+              Fast Share
+            </Button>
+            <Button
+              onClick={() => navigate("/dashboard")}
+              size="lg"
+              variant="outline"
+              className="border-white/20 bg-white/5 hover:bg-white/10 text-white px-8 py-6 text-base font-semibold rounded-xl"
+            >
+              <LayoutDashboard className="w-5 h-5 mr-2" />
+              Go to Dashboard
+            </Button>
+          </motion.div>
+
+          {/* Simplified Upload / Drag & Drop Zone */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
           >
-
-  <div
-    ref={dropRef}
-    role="button"
-    tabIndex={0}
-    onKeyDown={handleKeyOpen}
-    aria-label="Upload files (drag and drop or click to select)"
-    onClick={() => inputRef.current?.click()}
-    className="relative w-full rounded-2xl border border-[#2a2a2a] bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/20 hover:border-white/20 transition-all"
-  >
-    <input
-      ref={inputRef}
-      type="file"
-      multiple
-      aria-hidden
-      className="hidden"
-      onChange={handleInputChange}
-    />
-
-    <div className="flex flex-col sm:flex-row items-center gap-4">
-      <div className="flex items-center justify-center w-20 h-20 rounded-lg bg-white/5">
-        {/* Drag Icon */}
-        <svg className="w-8 h-8 text-white/80" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M8 9l4-4 4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          <rect x="3" y="15" width="18" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
-        </svg>
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between">
-          <div className="min-w-0">
-            <p className="font-medium">Drag & drop files here</p>
-            <p className="text-xs text-gray-400">or click to browse (PDF, DOC, JPG, PNG, MP4)</p>
-          </div>
-
-          <div className="ml-4 text-xs text-gray-400">
-            <strong>{formatBytes(storageUsed)}</strong> of {formatBytes(capacity)} used
-            <div className="w-44 h-2 bg-white/5 rounded-full mt-2 overflow-hidden" aria-hidden>
-              <div
-                className="h-full bg-white"
-                style={{ width: `${Math.min(100, (storageUsed / capacity) * 100)}%`, opacity: 0.9 }}
+            <div
+              ref={dropRef}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyOpen}
+              aria-label="Upload files (drag and drop or click to select)"
+              onClick={() => inputRef.current?.click()}
+              className="relative w-full rounded-2xl border border-[#2a2a2a] bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-600/50 hover:border-blue-600/50 transition-all"
+            >
+              <input
+                ref={inputRef}
+                type="file"
+                multiple
+                aria-hidden
+                className="hidden"
+                onChange={handleInputChange}
               />
-            </div>
-          </div>
-        </div>
 
-        {/* Quick file-type badges */}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {["pdf", "doc", "img", "video", "other"].map((t) => (
-            <div key={t} className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/3 border border-white/6 text-xs text-gray-200">
-              <IconFile type={t === "other" ? "file" : t} />
-              <span className="uppercase">{t}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Recent thumbnails */}
-        <div className="mt-4">
-          <p className="text-xs text-gray-400 mb-2">Recent</p>
-          <div className="flex items-center gap-3">
-            {recentThumbnails.length ? (
-              recentThumbnails.map((f) => (
-                <div key={f.id} className="w-14 h-14 rounded-lg overflow-hidden border border-white/6 bg-white/3">
-                  <img src={f.thumbnail} alt={f.name} className="w-full h-full object-cover" />
+              <div className="flex flex-col items-center justify-center text-center gap-4">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/10 border border-blue-600/20">
+                  <Upload className="w-8 h-8 text-blue-600" />
                 </div>
-              ))
-            ) : (
-              <div className="text-xs text-gray-500">No recent images</div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
 
-    {/* Visual indicator bottom */}
-    <div className="mt-4 flex items-center gap-3">
-      <div className="text-xs text-gray-400">Accepted: PDF, DOC, JPG, PNG, MP4</div>
-      <div className="ml-auto text-xs text-gray-400">Max file size: 2GB</div>
-    </div>
-  </div>
-</motion.div>
+                <div>
+                  <p className="text-lg font-medium text-white mb-1">
+                    Drag & drop files here
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    or click to browse • PDF, DOC, JPG, PNG, MP4 • Max 2GB
+                  </p>
+                </div>
 
-{/* Upload queue (progress bars) */}
-<div aria-live="polite" className="mt-4 space-y-3">
-  {files.map((f) => (
-    <div key={f.id} className="rounded-md border border-white/6 p-3 bg-white/3 flex items-center gap-3">
-      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 border border-white/6">
-        <IconFile type={f.type === "other" ? "file" : f.type} />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-3">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <div className="text-sm font-medium truncate">{f.name}</div>
-              {f.shared && <span className="text-xs px-2 py-0.5 rounded bg-white/8">Shared</span>}
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <span className="font-semibold text-white">{formatBytes(storageUsed)}</span>
+                  <span>/</span>
+                  <span>{formatBytes(capacity)} used</span>
+                </div>
+              </div>
             </div>
-            <div className="text-xs text-gray-400">{formatBytes(f.size)}</div>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <button
-              aria-label={`Share ${f.name}`}
-              onClick={() => handleToggleShare(f.id)}
-              className="p-1 rounded-md hover:bg-white/6 transition"
-              title="Share"
-            >
-              <IconShare className="w-4 h-4 text-white/90" />
-            </button>
-            <button
-              aria-label={`Download ${f.name}`}
-              onClick={() => handleDownload(f)}
-              className="p-1 rounded-md hover:bg-white/6 transition"
-              title="Download"
-            >
-              <IconDownload className="w-4 h-4 text-white/90" />
-            </button>
-            <button
-              aria-label={`Remove ${f.name}`}
-              onClick={() => handleRemove(f.id)}
-              className="p-1 rounded-md hover:bg-red-600/30 text-red-400 transition"
-              title="Remove"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-3 h-2 bg-white/6 rounded-full overflow-hidden" aria-hidden>
-          <div
-            className={`h-full ${f.status === "done" ? "bg-white" : "bg-white/80"}`}
-            style={{ width: `${f.progress}%`, transition: "width 300ms linear" }}
-          />
-        </div>
-
-        <div className="mt-1 flex items-center justify-between text-xs text-gray-400">
-          <div>{f.status === "uploading" ? `Uploading — ${Math.round(f.progress)}%` : f.status === "done" ? "Uploaded" : f.status}</div>
-          <div>{f.status === "uploading" ? "…" : f.status === "done" ? "Ready" : ""}</div>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
+          </motion.div>
         </div>
 
         {/* Right column: combined Storage + Shared + Project Files + Secure Upload (merged) */}
