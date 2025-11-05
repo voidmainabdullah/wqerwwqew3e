@@ -408,7 +408,7 @@ export const AuthPage: React.FC = () => {
           <span className="span">Forgot password?</span>
         </div>
 
-        <button type="submit" disabled={loading} className="bg-transparent">
+        <button type="submit" disabled={loading} className="bg-blue-600">
           {loading ? isSignUp ? "Creating Account..." : "Signing In..." : isSignUp ? "Create Account" : "Sign In"}
         </button>
 
