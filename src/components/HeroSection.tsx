@@ -294,15 +294,15 @@ const HeroSection: React.FC = () => {
             initial={{ opacity: 0, y: 18 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.6 }} 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
-            style={{ fontFamily: "'Exo 2', sans-serif" }}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold leading-tight tracking-tight"
+            style={{ fontFamily: "'Exo', sans-serif" }}
           >
             Share Files.{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
               Fast & Secure.
             </span>
             <br />
-            <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold opacity-80">
+            <span className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-semibold opacity-80">
               Always In Your Control
             </span>
           </motion.h1>
