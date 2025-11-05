@@ -283,13 +283,13 @@ const HeroSection: React.FC = () => {
           duration: 0.6
         }} style={{
           fontFamily: "'Exo', sans-serif"
-        }} className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight tracking-tight lg:text-4xl">
+        }} className="text-2xl sm:text-3xl md:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 lg:text-4xl">
             Share Files.{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
               Fast & Secure.
             </span>
             <br />
-            <span className="text-3xl sm:text-4xl md:text-5xl font-semibold opacity-80 lg:text-4xl">
+            <span className="text-3xl sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 lg:text-4xl">
               Always In Your Control
             </span>
           </motion.h1>
