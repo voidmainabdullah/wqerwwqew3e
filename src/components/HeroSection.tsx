@@ -322,10 +322,15 @@ const HeroSection: React.FC = () => {
           duration: 0.5,
           delay: 0.2
         }} className="flex flex-wrap gap-4">
-            <Button onClick={() => navigate("/auth")} size="lg" className="px-8 py-6 text-base font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all bg-zinc-100 text-neutral-700">
-              <ArrowRight className="w-5 h-5 mr-2" />
-              Get Started
-            </Button>
+            <Button
+  onClick={() => navigate("/auth")}
+  size="lg"
+  className="px-8 py-6 text-base font-semibold rounded-xl shadow-lg transition-all bg-zinc-100 text-neutral-700 hover:bg-zinc-200 focus:bg-zinc-200"
+>
+  <ArrowRight className="w-5 h-5 mr-2" />
+  Get Started
+</Button>
+
             
             <Button onClick={() => navigate("/dashboard")} size="lg" variant="outline" className="border-white/20 bg-white/5 hover:bg-white/10 text-white px-8 py-6 text-base font-semibold rounded-xl">
               <LayoutDashboard className="w-5 h-5 mr-2" />
