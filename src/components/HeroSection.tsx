@@ -288,52 +288,29 @@ const HeroSection: React.FC = () => {
         {/* Left column: Title, description, upload zone */}
         <div className="space-y-6">
           <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-4xl sm:text-5xl font-extrabold leading-tight">
-           The Ultimate  
-File Sharing Platform  
-
-
+            The Ultimate  
             <br />
             <span className="bg-clip-text text-transparent bg-blue-600">
-   File Sharing Platform
-</span>
+              File Sharing Platform
+            </span>
+            <br />
             In Your Control 
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }} className="text-gray-300 max-w-xl">
-           Built for teams, creators, and professionals who value privacy and performance.
-Upload, store, and share files securely with end-to-end encryption.
-Experience lightning-fast transfers and seamless collaboration anywhere.
-Organize projects, manage access, and track sharing activity with ease.
-Fast. Secure. Effortless — In your control.
+            Built for teams, creators, and professionals who value privacy and performance.
+            Upload, store, and share files securely with end-to-end encryption.
+            Experience lightning-fast transfers and seamless collaboration anywhere.
+            Organize projects, manage access, and track sharing activity with ease.
+            Fast. Secure. Effortless — In your control.
           </motion.p>
 
-{/* Upload / Drag & Drop Zone */}
-<motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 0.6, delay: 0.2 }}
->
-  {/* CTA Buttons */}
-  <div className="flex flex-wrap justify-center gap-4 mb-4">
-    <button
-      onClick={() => router.push("/auth")}
-      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg"
-    >
-      <FaArrowRight /> Get Started
-    </button>
-    <button
-      onClick={() => router.push("/dashboard")}
-      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg"
-    >
-      <FaTachometerAlt /> Go to Dashboard
-    </button>
-    <button
-      onClick={() => inputRef.current?.click()}
-      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg"
-    >
-      <FaUpload /> Fast Share
-    </button>
-  </div>
+          {/* Upload / Drag & Drop Zone */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
 
   <div
     ref={dropRef}
@@ -477,7 +454,7 @@ Fast. Secure. Effortless — In your control.
     </div>
   ))}
 </div>
-
+        </div>
 
         {/* Right column: combined Storage + Shared + Project Files + Secure Upload (merged) */}
         <aside className="space-y-6">
