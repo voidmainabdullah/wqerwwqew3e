@@ -1,20 +1,34 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useDropzone } from 'react-dropzone';
-import { motion } from 'framer-motion';
-import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
-import { useToast } from '@/hooks/use-toast';
-import { Upload, CheckCircle, AlertCircle, FileText, User, Mail } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDropzone } from "react-dropzone";
+import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Upload,
+  CheckCircle,
+  AlertCircle,
+  FileText,
+  User,
+  Mail,
+  Shield,
+} from "lucide-react";
 
 interface UploadFile {
   file: File;
   progress: number;
-  status: 'pending' | 'uploading' | 'success' | 'error';
+  status: "pending" | "uploading" | "success" | "error";
   error?: string;
 }
 
@@ -31,12 +45,14 @@ export const ReceiveUploadPage: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [receiveRequest, setReceiveRequest] = useState<ReceiveRequest | null>(null);
+  const [receiveRequest, setReceiveRequest] = useState<ReceiveRequest | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploaderName, setUploaderName] = useState('');
-  const [uploaderEmail, setUploaderEmail] = useState('');
+  const [uploaderName, setUploaderName] = useState("");
+  const [uploaderEmail, setUploaderEmail] = useState("");
   const [uploadComplete, setUploadComplete] = useState(false);
 
   useEffect(() => {
@@ -45,39 +61,38 @@ export const ReceiveUploadPage: React.FC = () => {
 
   const loadReceiveRequest = async () => {
     if (!token) {
-      navigate('/404');
+      navigate("/404");
       return;
     }
 
     try {
       const { data, error } = await supabase
-        .from('receive_requests')
-        .select('*')
-        .eq('token', token)
-        .eq('is_active', true)
+        .from("receive_requests")
+        .select("*")
+        .eq("token", token)
+        .eq("is_active", true)
         .maybeSingle();
 
       if (error) throw error;
-
       if (!data) {
         toast({
-          variant: 'destructive',
-          title: 'Invalid Link',
-          description: 'This receive link does not exist or has expired.',
+          variant: "destructive",
+          title: "Invalid Link",
+          description: "This receive link does not exist or has expired.",
         });
-        navigate('/404');
+        navigate("/404");
         return;
       }
 
       setReceiveRequest(data);
     } catch (error: any) {
-      console.error('Error loading receive request:', error);
+      console.error("Error loading receive request:", error);
       toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to load receive request.',
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load receive request.",
       });
-      navigate('/404');
+      navigate("/404");
     } finally {
       setLoading(false);
     }
@@ -87,7 +102,7 @@ export const ReceiveUploadPage: React.FC = () => {
     const newFiles = acceptedFiles.map((file) => ({
       file,
       progress: 0,
-      status: 'pending' as const,
+      status: "pending" as const,
     }));
     setUploadFiles((prev) => [...prev, ...newFiles]);
   }, []);
@@ -103,43 +118,38 @@ export const ReceiveUploadPage: React.FC = () => {
 
   const handleUpload = async () => {
     if (!receiveRequest || uploadFiles.length === 0) return;
-
     setIsUploading(true);
 
     try {
       for (let i = 0; i < uploadFiles.length; i++) {
         const uploadFile = uploadFiles[i];
-        if (uploadFile.status !== 'pending') continue;
+        if (uploadFile.status !== "pending") continue;
 
         setUploadFiles((prev) =>
-          prev.map((f, idx) => (idx === i ? { ...f, status: 'uploading', progress: 30 } : f))
+          prev.map((f, idx) =>
+            idx === i ? { ...f, status: "uploading", progress: 25 } : f
+          )
         );
 
         try {
-          const fileExt = uploadFile.file.name.split('.').pop();
+          const fileExt = uploadFile.file.name.split(".").pop();
           const fileName = `received/${receiveRequest.user_id}/${Date.now()}-${Math.random()
             .toString(36)
             .substring(2)}.${fileExt}`;
 
-          // Upload to storage
           const { error: storageError } = await supabase.storage
-            .from('files')
+            .from("files")
             .upload(fileName, uploadFile.file, { upsert: false });
 
           if (storageError) throw storageError;
 
-          setUploadFiles((prev) =>
-            prev.map((f, idx) => (idx === i ? { ...f, progress: 60 } : f))
-          );
-
-          // Create file record
           const { data: fileData, error: fileError } = await supabase
-            .from('files')
+            .from("files")
             .insert({
               user_id: receiveRequest.user_id,
               original_name: uploadFile.file.name,
               file_size: uploadFile.file.size,
-              file_type: uploadFile.file.type || 'application/octet-stream',
+              file_type: uploadFile.file.type || "application/octet-stream",
               storage_path: fileName,
             })
             .select()
@@ -147,13 +157,8 @@ export const ReceiveUploadPage: React.FC = () => {
 
           if (fileError) throw fileError;
 
-          setUploadFiles((prev) =>
-            prev.map((f, idx) => (idx === i ? { ...f, progress: 80 } : f))
-          );
-
-          // Link to receive request
           const { error: linkError } = await supabase
-            .from('received_files')
+            .from("received_files")
             .insert({
               receive_request_id: receiveRequest.id,
               file_id: fileData.id,
@@ -164,33 +169,35 @@ export const ReceiveUploadPage: React.FC = () => {
           if (linkError) throw linkError;
 
           setUploadFiles((prev) =>
-            prev.map((f, idx) => (idx === i ? { ...f, status: 'success', progress: 100 } : f))
+            prev.map((f, idx) =>
+              idx === i ? { ...f, status: "success", progress: 100 } : f
+            )
           );
         } catch (error: any) {
-          console.error('Upload error:', error);
+          console.error("Upload error:", error);
           setUploadFiles((prev) =>
             prev.map((f, idx) =>
               idx === i
-                ? { ...f, status: 'error', error: error.message || 'Upload failed' }
+                ? { ...f, status: "error", error: error.message || "Upload failed" }
                 : f
             )
           );
         }
       }
 
-      const successCount = uploadFiles.filter((f) => f.status === 'success').length;
+      const successCount = uploadFiles.filter((f) => f.status === "success").length;
       if (successCount > 0) {
         setUploadComplete(true);
         toast({
-          title: 'Upload Complete',
+          title: "Upload Complete",
           description: `Successfully uploaded ${successCount} file(s)!`,
         });
       }
     } catch (error: any) {
       toast({
-        variant: 'destructive',
-        title: 'Upload Failed',
-        description: error.message || 'An error occurred during upload.',
+        variant: "destructive",
+        title: "Upload Failed",
+        description: error.message || "An error occurred during upload.",
       });
     } finally {
       setIsUploading(false);
@@ -198,205 +205,178 @@ export const ReceiveUploadPage: React.FC = () => {
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+  // ---------------- UI -------------------
+  return (
+    <div className="min-h-screen flex flex-col bg-black text-white relative">
+      {/* Navbar */}
+      <nav className="flex items-center justify-between p-4 border-b border-white/10 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex items-center gap-2">
+          <img src="/sky.png" alt="SkyShare" className="h-8 w-8 rounded-md" />
+          <h1 className="text-xl font-semibold tracking-tight">SkyShare</h1>
         </div>
-      </div>
-    );
-  }
-
-  if (uploadComplete) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted p-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-md w-full"
+        <Button
+          variant="outline"
+          onClick={() => navigate("/")}
+          className="border-white/20 text-white hover:bg-blue-600 hover:border-blue-600"
         >
-          <Card className="text-center">
+          Home
+        </Button>
+      </nav>
+
+      {/* Hero Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-center mt-12 mb-6"
+      >
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+          Upload and Share Files Securely
+        </h2>
+        <p className="text-sm text-gray-400 mt-2">
+          Lightning-fast transfers. Apple-like simplicity. Trusted SkyShare security.
+        </p>
+      </motion.div>
+
+      {/* Upload Section */}
+      <div className="flex-1 flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-3xl"
+        >
+          <Card className="bg-white/5 border-white/10 backdrop-blur-lg rounded-2xl shadow-2xl">
             <CardHeader>
-              <div className="mx-auto w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle className="h-8 w-8 text-green-500" />
-              </div>
-              <CardTitle>Files Uploaded Successfully!</CardTitle>
-              <CardDescription>
-                Your files have been securely delivered.
-              </CardDescription>
+              <CardTitle className="text-2xl">{receiveRequest?.name}</CardTitle>
+              {receiveRequest?.description && (
+                <CardDescription className="text-gray-400 text-base">
+                  {receiveRequest.description}
+                </CardDescription>
+              )}
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                Thank you for sharing your files. The recipient will be notified.
-              </p>
-              <Button onClick={() => window.location.reload()} variant="outline" className="w-full">
-                Upload More Files
-              </Button>
+            <CardContent className="space-y-6">
+              {/* User Info */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="uploaderName">Your Name</Label>
+                  <Input
+                    id="uploaderName"
+                    placeholder="John Doe"
+                    className="bg-black/40 border-white/10 text-white"
+                    value={uploaderName}
+                    onChange={(e) => setUploaderName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="uploaderEmail">Your Email</Label>
+                  <Input
+                    id="uploaderEmail"
+                    type="email"
+                    placeholder="you@example.com"
+                    className="bg-black/40 border-white/10 text-white"
+                    value={uploaderEmail}
+                    onChange={(e) => setUploaderEmail(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Dropzone */}
+              <div
+                {...getRootProps()}
+                className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all ${
+                  isDragActive
+                    ? "border-blue-500 bg-blue-500/10"
+                    : "border-white/10 hover:border-blue-400 hover:bg-white/5"
+                }`}
+              >
+                <input {...getInputProps()} />
+                <Upload className="h-12 w-12 mx-auto text-blue-500 mb-4" />
+                <p className="text-lg font-medium">
+                  {isDragActive
+                    ? "Drop your files here"
+                    : "Click or drag files to upload"}
+                </p>
+                <p className="text-sm text-gray-400">
+                  Supports all file types • Secure transfer
+                </p>
+              </div>
+
+              {/* File List */}
+              {uploadFiles.length > 0 && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-medium text-gray-300">
+                      {uploadFiles.length} file(s) selected
+                    </h3>
+                    <Button
+                      onClick={handleUpload}
+                      disabled={isUploading}
+                      className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+                    >
+                      {isUploading ? "Uploading..." : "Upload All"}
+                    </Button>
+                  </div>
+                  <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {uploadFiles.map((f, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 bg-black/30 p-3 rounded-lg border border-white/10"
+                      >
+                        {f.status === "pending" && (
+                          <FileText className="text-gray-400 h-5 w-5" />
+                        )}
+                        {f.status === "success" && (
+                          <CheckCircle className="text-green-500 h-5 w-5" />
+                        )}
+                        {f.status === "error" && (
+                          <AlertCircle className="text-red-500 h-5 w-5" />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm truncate">{f.file.name}</p>
+                          <p className="text-xs text-gray-400">
+                            {formatFileSize(f.file.size)}
+                          </p>
+                          {f.status === "uploading" && (
+                            <Progress value={f.progress} className="h-1 mt-1" />
+                          )}
+                        </div>
+                        {f.status === "pending" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-gray-400 hover:text-red-500"
+                            onClick={() => removeFile(i)}
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
       </div>
-    );
-  }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4">
-      <motion.div
-        className="max-w-3xl mx-auto py-8 space-y-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">{receiveRequest?.name}</CardTitle>
-            {receiveRequest?.description && (
-              <CardDescription className="text-base">
-                {receiveRequest.description}
-              </CardDescription>
-            )}
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label htmlFor="uploaderName">Your Name (optional)</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="uploaderName"
-                    value={uploaderName}
-                    onChange={(e) => setUploaderName(e.target.value)}
-                    placeholder="Enter your name"
-                    className="pl-9"
-                    disabled={isUploading}
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="uploaderEmail">Your Email (optional)</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="uploaderEmail"
-                    type="email"
-                    value={uploaderEmail}
-                    onChange={(e) => setUploaderEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="pl-9"
-                    disabled={isUploading}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div
-              {...getRootProps()}
-              className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
-                isDragActive
-                  ? 'border-primary bg-primary/5 scale-[1.02]'
-                  : 'border-border hover:border-primary/50 hover:bg-muted/50'
-              } ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              <input {...getInputProps()} />
-              <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-lg font-medium mb-2">
-                {isDragActive ? 'Drop files here' : 'Click or drag files to upload'}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Any file type is supported
-              </p>
-            </div>
-
-            {uploadFiles.length > 0 && (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">Files to upload ({uploadFiles.length})</h3>
-                  <Button
-                    onClick={handleUpload}
-                    disabled={isUploading || uploadFiles.every((f) => f.status !== 'pending')}
-                    size="sm"
-                    className="bg-primary hover:bg-primary/90"
-                  >
-                    {isUploading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                        Uploading...
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="h-4 w-4 mr-2" />
-                        Upload All
-                      </>
-                    )}
-                  </Button>
-                </div>
-
-                <div className="space-y-2 max-h-96 overflow-y-auto">
-                  {uploadFiles.map((uploadFile, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-3 p-3 border rounded-lg bg-card"
-                    >
-                      <div>
-                        {uploadFile.status === 'pending' && (
-                          <FileText className="h-5 w-5 text-muted-foreground" />
-                        )}
-                        {uploadFile.status === 'uploading' && (
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary" />
-                        )}
-                        {uploadFile.status === 'success' && (
-                          <CheckCircle className="h-5 w-5 text-green-500" />
-                        )}
-                        {uploadFile.status === 'error' && (
-                          <AlertCircle className="h-5 w-5 text-destructive" />
-                        )}
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{uploadFile.file.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatFileSize(uploadFile.file.size)}
-                        </p>
-
-                        {uploadFile.status === 'uploading' && (
-                          <Progress value={uploadFile.progress} className="h-1.5 mt-2" />
-                        )}
-                        {uploadFile.error && (
-                          <p className="text-xs text-destructive mt-1">{uploadFile.error}</p>
-                        )}
-                      </div>
-
-                      {uploadFile.status === 'pending' && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeFile(index)}
-                          className="text-muted-foreground hover:text-destructive"
-                        >
-                          Remove
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <div className="text-center text-sm text-muted-foreground">
-          <p>Files will be securely uploaded and only accessible by the requester</p>
+      {/* Footer */}
+      <footer className="text-center text-sm text-gray-500 border-t border-white/10 py-4">
+        <div className="flex items-center justify-center gap-2">
+          <Shield className="h-4 w-4 text-blue-400" />
+          <p>
+            © {new Date().getFullYear()} SkyShare — Built for speed and privacy.
+          </p>
         </div>
-      </motion.div>
+      </footer>
     </div>
   );
 };
