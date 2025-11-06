@@ -133,7 +133,7 @@ const AppSidebar = () => {
               <SidebarMenuItem> 
                <SidebarMenuButton asChild tooltip="Upgrade" className="h-9 px-3 rounded-xl bg-accent/10  border text-neutral-200 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
   <Link to="/subscription" className="flex items-center gap-2">
-    <LordIcon src={LordIcons.crown} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
+    <DiamondsFour className="flex-shrink-0" />
     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">
       Upgrade Plan
     </span> 
