@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Folder, FolderOpen, Home, ChevronRight, Sparkles, Archive } from 'lucide-react';
+import { Trash2, Download, Search, ListFilter as Filter, Upload, Share2, Folder, ScanEye, FolderOpen, Home, ChevronRight, Sparkles, Archive } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -625,8 +625,8 @@ export function FileManager() {
                       onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} 
                       className="flex-1 h-9 hover:bg-muted"
                     >
-                      <Download className="mr-1.5 h-4 w-4" />
-                      <span className="hidden sm:inline">Download</span>
+                      <ScanEye className="mr-1.5 h-4 w-4" />
+                      <span className="hidden sm:inline">View</span>
                     </Button>
                     
                     <Button 
