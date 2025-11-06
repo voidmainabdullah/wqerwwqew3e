@@ -74,6 +74,7 @@ export const LordIcons = {
   fileStack: 'https://cdn.lordicon.com/dqxvvqzi.json',
   users: 'https://cdn.lordicon.com/bimokqfw.json',
   shield: 'https://cdn.lordicon.com/kbtmbyzy.json',
+  ana:'https://cdn.lordicon.com/erxuunyq.json',
   code: 'https://cdn.lordicon.com/fhtaantg.json',
   book: 'https://cdn.lordicon.com/wxnxiano.json',
   newspaper: 'https://cdn.lordicon.com/nocovwne.json',
