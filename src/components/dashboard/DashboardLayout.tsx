@@ -105,16 +105,15 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Receive Now" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/code" className="flex items-center gap-2">
-                    <LordIcon src="https://cdn.lordicon.com/surcxhka.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
+                    <LordIcon src="https://cdn.lordicon.com/awjeikyj.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Receive File" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/dashboard/receive" className="flex items-center gap-2">
-                    <LordIcon src="https://cdn.lordicon.com/ternnfzy.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
+                    <LordIcon src="https://cdn.lordicon.com/meaqueth.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
