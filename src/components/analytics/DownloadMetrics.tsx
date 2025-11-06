@@ -58,41 +58,55 @@ export const DownloadMetrics: React.FC = () => {
   const fetchMetrics = async () => {
     if (!user?.id) return;
     try {
-      const {
-        data: userFiles
-      } = await supabase.from('files').select('id').eq('user_id', user.id);
-      const fileIds = userFiles?.map(f => f.id) || [];
-      if (fileIds.length === 0) {
+      // Fetch all shared links created by the user
+      const { data: userSharedLinks } = await supabase
+        .from('shared_links')
+        .select('id, download_count, created_at, file_id')
+        .eq('is_active', true)
+        .or(`file_id.in.(select id from files where user_id eq ${user.id}),folder_id.in.(select id from folders where user_id eq ${user.id})`);
+
+      if (!userSharedLinks || userSharedLinks.length === 0) {
         setLoading(false);
         return;
       }
+
       const now = new Date();
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const yesterdayStart = new Date(todayStart);
       yesterdayStart.setDate(yesterdayStart.getDate() - 1);
       const weekAgo = new Date(now);
       weekAgo.setDate(weekAgo.getDate() - 7);
-      const {
-        data: allDownloads
-      } = await supabase.from('download_logs').select('downloaded_at, file_id').in('file_id', fileIds);
-      const {
-        data: todayDownloads
-      } = await supabase.from('download_logs').select('downloaded_at').in('file_id', fileIds).gte('downloaded_at', todayStart.toISOString());
-      const {
-        data: yesterdayDownloads
-      } = await supabase.from('download_logs').select('downloaded_at').in('file_id', fileIds).gte('downloaded_at', yesterdayStart.toISOString()).lt('downloaded_at', todayStart.toISOString());
-      const {
-        data: weekDownloads
-      } = await supabase.from('download_logs').select('downloaded_at').in('file_id', fileIds).gte('downloaded_at', weekAgo.toISOString());
-      const {
-        data: activeShares
-      } = await supabase.from('shared_links').select('id').in('file_id', fileIds).eq('is_active', true);
-      const uniqueFilesDownloaded = new Set(allDownloads?.map(d => d.file_id) || []).size;
+
+      // Calculate total downloads from shared links
+      const totalDownloads = userSharedLinks.reduce((sum, link) => sum + (link.download_count || 0), 0);
+
+      // Get shared links created today and yesterday for trend
+      const todayLinks = userSharedLinks.filter(link => 
+        new Date(link.created_at) >= todayStart
+      );
+      const yesterdayLinks = userSharedLinks.filter(link => 
+        new Date(link.created_at) >= yesterdayStart && new Date(link.created_at) < todayStart
+      );
+      
+      const todayCount = todayLinks.reduce((sum, link) => sum + (link.download_count || 0), 0);
+      const yesterdayCount = yesterdayLinks.reduce((sum, link) => sum + (link.download_count || 0), 0);
+      
+      // Calculate week downloads
+      const weekLinks = userSharedLinks.filter(link => 
+        new Date(link.created_at) >= weekAgo
+      );
+      const weekDownloads = weekLinks.reduce((sum, link) => sum + (link.download_count || 0), 0);
+
+      // Calculate unique files with active shares
+      const uniqueFiles = new Set(userSharedLinks.map(link => link.file_id).filter(Boolean)).size;
+
+      // For peak hour, we'll use a simplified approach based on link creation times
       const hourCounts = new Map<number, number>();
-      allDownloads?.forEach(download => {
-        const hour = new Date(download.downloaded_at).getHours();
-        hourCounts.set(hour, (hourCounts.get(hour) || 0) + 1);
+      userSharedLinks.forEach(link => {
+        const hour = new Date(link.created_at).getHours();
+        hourCounts.set(hour, (hourCounts.get(hour) || 0) + (link.download_count || 0));
       });
+
       let peakHour = 0;
       let maxCount = 0;
       hourCounts.forEach((count, hour) => {
@@ -101,17 +115,20 @@ export const DownloadMetrics: React.FC = () => {
           peakHour = hour;
         }
       });
-      const todayCount = todayDownloads?.length || 0;
-      const yesterdayCount = yesterdayDownloads?.length || 0;
-      const trend = yesterdayCount > 0 ? (todayCount - yesterdayCount) / yesterdayCount * 100 : todayCount > 0 ? 100 : 0;
-      const avgDownloads = (weekDownloads?.length || 0) / 7;
+
+      const trend = yesterdayCount > 0 
+        ? ((todayCount - yesterdayCount) / yesterdayCount) * 100 
+        : todayCount > 0 ? 100 : 0;
+      
+      const avgDownloads = weekDownloads / 7;
+
       setMetrics({
-        totalDownloads: allDownloads?.length || 0,
+        totalDownloads,
         todayDownloads: todayCount,
         avgDownloadsPerDay: Math.round(avgDownloads),
         peakHour: `${peakHour.toString().padStart(2, '0')}:00`,
-        uniqueFiles: uniqueFilesDownloaded,
-        activeShares: activeShares?.length || 0,
+        uniqueFiles,
+        activeShares: userSharedLinks.length,
         downloadTrend: trend
       });
     } catch (error) {

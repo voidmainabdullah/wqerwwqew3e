@@ -32,10 +32,13 @@ export const DownloadAnalyticsGraph: React.FC = () => {
     if (!user?.id) return;
     try {
       setLoading(true);
-      const {
-        data: userFiles
-      } = await supabase.from('files').select('id').eq('user_id', user.id);
+      const { data: userFiles } = await supabase
+        .from('files')
+        .select('id')
+        .eq('user_id', user.id);
+      
       const fileIds = userFiles?.map(f => f.id) || [];
+      
       if (fileIds.length === 0) {
         setChartData([]);
         setTotalDownloads(0);
@@ -43,6 +46,7 @@ export const DownloadAnalyticsGraph: React.FC = () => {
         setLoading(false);
         return;
       }
+      
       let cutoffDate: Date;
       switch (period) {
         case '12h':
@@ -55,12 +59,16 @@ export const DownloadAnalyticsGraph: React.FC = () => {
           cutoffDate = subMonths(new Date(), 1);
           break;
       }
-      const {
-        data: downloads
-      } = await supabase.from('download_logs').select('downloaded_at').in('file_id', fileIds).gte('downloaded_at', cutoffDate.toISOString()).order('downloaded_at', {
-        ascending: true
-      });
-      if (!downloads || downloads.length === 0) {
+      
+      // Fetch shared links created in the period
+      const { data: shares } = await supabase
+        .from('shared_links')
+        .select('created_at, download_count')
+        .in('file_id', fileIds)
+        .gte('created_at', cutoffDate.toISOString())
+        .order('created_at', { ascending: true });
+      
+      if (!shares || shares.length === 0) {
         const emptyData = generateEmptyDataPoints(period);
         setChartData(emptyData);
         setTotalDownloads(0);
@@ -68,10 +76,16 @@ export const DownloadAnalyticsGraph: React.FC = () => {
         setLoading(false);
         return;
       }
+      
+      // Transform shares data to download events based on download_count
+      const downloads = shares.flatMap(share => 
+        Array(share.download_count || 0).fill({ downloaded_at: share.created_at })
+      );
+      
       const groupedData = groupDownloadsByTime(downloads, period);
       const formattedData = formatChartData(groupedData, period);
       setChartData(formattedData);
-      setTotalDownloads(downloads.length);
+      setTotalDownloads(shares.reduce((sum, s) => sum + (s.download_count || 0), 0));
       const change = calculatePercentChange(formattedData);
       setPercentChange(change);
       setLastUpdate(new Date());

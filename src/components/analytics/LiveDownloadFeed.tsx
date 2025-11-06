@@ -40,20 +40,21 @@ export const LiveDownloadFeed: React.FC = () => {
         return;
       }
 
-      const { data: downloads } = await supabase
-        .from('download_logs')
-        .select('id, file_id, downloaded_at, download_method, downloader_ip')
+      // Fetch shared links with recent activity (updated timestamps indicate downloads)
+      const { data: recentShares } = await supabase
+        .from('shared_links')
+        .select('id, file_id, created_at, download_count, link_type')
         .in('file_id', fileIds)
-        .order('downloaded_at', { ascending: false })
+        .order('created_at', { ascending: false })
         .limit(20);
 
       const formattedEvents: DownloadEvent[] =
-        downloads?.map((d) => ({
-          id: d.id,
-          file_name: fileMap.get(d.file_id) || 'Unknown',
-          downloaded_at: d.downloaded_at,
-          download_method: d.download_method,
-          downloader_ip: d.downloader_ip as string | undefined,
+        recentShares?.map((share) => ({
+          id: share.id,
+          file_name: fileMap.get(share.file_id!) || 'Unknown',
+          downloaded_at: share.created_at,
+          download_method: share.link_type || 'link',
+          downloader_ip: undefined, // Shared links don't track IPs for privacy
         })) || [];
 
       setEvents(formattedEvents);
@@ -69,41 +70,45 @@ export const LiveDownloadFeed: React.FC = () => {
     fetchRecentDownloads();
 
     const channel = supabase
-      .channel('download-events')
+      .channel('shared-link-activity')
       .on(
         'postgres_changes',
         {
-          event: 'INSERT',
+          event: 'UPDATE',
           schema: 'public',
-          table: 'download_logs',
+          table: 'shared_links',
         },
         async (payload) => {
-          const newDownload = payload.new as any;
+          const updatedLink = payload.new as any;
 
-          const { data: file } = await supabase
-            .from('files')
-            .select('original_name, user_id')
-            .eq('id', newDownload.file_id)
-            .single();
+          // Check if download_count increased (indicating a new download)
+          const oldLink = payload.old as any;
+          if (updatedLink.download_count > oldLink.download_count) {
+            const { data: file } = await supabase
+              .from('files')
+              .select('original_name, user_id')
+              .eq('id', updatedLink.file_id)
+              .single();
 
-          if (file && file.user_id === user?.id) {
-            const newEvent: DownloadEvent = {
-              id: newDownload.id,
-              file_name: file.original_name,
-              downloaded_at: newDownload.downloaded_at,
-              download_method: newDownload.download_method,
-              downloader_ip: newDownload.downloader_ip,
-              isNew: true,
-            };
+            if (file && file.user_id === user?.id) {
+              const newEvent: DownloadEvent = {
+                id: updatedLink.id,
+                file_name: file.original_name,
+                downloaded_at: new Date().toISOString(),
+                download_method: updatedLink.link_type || 'link',
+                downloader_ip: undefined,
+                isNew: true,
+              };
 
-            setEvents((prev) => [newEvent, ...prev.slice(0, 19)]);
-            setLiveCount((prev) => prev + 1);
+              setEvents((prev) => [newEvent, ...prev.slice(0, 19)]);
+              setLiveCount((prev) => prev + 1);
 
-            setTimeout(() => {
-              setEvents((prev) =>
-                prev.map((e) => (e.id === newEvent.id ? { ...e, isNew: false } : e))
-              );
-            }, 3000);
+              setTimeout(() => {
+                setEvents((prev) =>
+                  prev.map((e) => (e.id === newEvent.id ? { ...e, isNew: false } : e))
+                );
+              }, 3000);
+            }
           }
         }
       )

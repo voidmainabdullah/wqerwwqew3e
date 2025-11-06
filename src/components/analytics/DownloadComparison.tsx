@@ -49,26 +49,30 @@ export const DownloadComparison: React.FC = () => {
 
       const fileIds = userFiles.map((f) => f.id);
 
-      const { data: downloads } = await supabase
-        .from('download_logs')
-        .select('file_id')
-        .in('file_id', fileIds);
-
+      // Get all shared links for user's files with download counts
       const { data: shares } = await supabase
         .from('shared_links')
-        .select('file_id')
-        .in('file_id', fileIds)
-        .eq('is_active', true);
+        .select('file_id, download_count')
+        .in('file_id', fileIds);
 
+      // Aggregate downloads and shares per file from shared_links
       const downloadCounts = new Map<string, number>();
-      downloads?.forEach((d) =>
-        downloadCounts.set(d.file_id, (downloadCounts.get(d.file_id) || 0) + 1)
-      );
-
       const shareCounts = new Map<string, number>();
-      shares?.forEach((s) =>
-        shareCounts.set(s.file_id, (shareCounts.get(s.file_id) || 0) + 1)
-      );
+      
+      shares?.forEach((share) => {
+        if (share.file_id) {
+          // Count total downloads from all shared links
+          downloadCounts.set(
+            share.file_id,
+            (downloadCounts.get(share.file_id) || 0) + (share.download_count || 0)
+          );
+          // Count number of shares
+          shareCounts.set(
+            share.file_id,
+            (shareCounts.get(share.file_id) || 0) + 1
+          );
+        }
+      });
 
       const fileData = userFiles
         .map((file, i) => ({
