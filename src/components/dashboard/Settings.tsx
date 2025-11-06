@@ -344,28 +344,24 @@ export const Settings: React.FC = () => {
   };
 
   // auto-save small preferences
-  useEffect(() => {
-    const t = setTimeout(() => {
-      // auto-save small preferences without avatar/save profile heavy work
-      (async () => {
-        if (!user) return;
-        try {
-          await supabase.from("profiles").update({
-            language: lang,
-            timezone,
-            notifications,
-            font_style: fontStyle,
-            corner_style: cornerStyle,
-          }).eq('id', user.id);
-          // auto save silent
-        } catch (e) {
-          // silent
-        }
-      })();
-    }, 1200);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang, timezone, notifications, fontStyle, cornerStyle]);
+ // 👇 Replace this effect with this safer version
+useEffect(() => {
+  const handler = setTimeout(() => {
+    if (!user) return;
+    // sirf preferences change hone par save karo, not typing fields
+    const preferencesChanged = [lang, timezone, fontStyle, cornerStyle].some(Boolean);
+    if (!preferencesChanged) return;
+    supabase.from("profiles").update({
+      language: lang,
+      timezone,
+      font_style: fontStyle,
+      corner_style: cornerStyle,
+    }).eq('id', user.id).catch(() => {});
+  }, 2000);
+
+  return () => clearTimeout(handler);
+}, [lang, timezone, fontStyle, cornerStyle]);
+
 
   // small helper UI components (within file to keep single file)
   const Section: React.FC<{ title: string; desc?: string; icon?: React.ReactNode; children?: React.ReactNode }> = ({ title, desc, icon, children }) => (
