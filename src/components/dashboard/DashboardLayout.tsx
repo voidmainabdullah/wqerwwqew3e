@@ -40,7 +40,7 @@ const navigation = [{
 }, {
   name: 'Shared Links',
   href: '/dashboard/shared',
-  lordIcon: 'https://cdn.lordicon.com/efxgwrkc.json'
+  lordIcon: LordIcons.home
 }, {
   name: 'Analytics',
   href: '/dashboard/analytics',
