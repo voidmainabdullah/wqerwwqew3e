@@ -44,7 +44,7 @@ const navigation = [{
 }, {
   name: 'Analytics',
   href: '/dashboard/analytics',
-  lordIcon: LordIcons.Ana
+  lordIcon: LordIcons.ana
 }, {
   name: 'Settings',
   href: '/dashboard/settings',
