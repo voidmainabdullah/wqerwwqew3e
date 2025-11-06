@@ -6,8 +6,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarRail, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, useSidebar, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, Headset, HardDrive, ClockCounterClockwise, HardDrives, Question, UserGear, ChatCircle, Crown, Share, DiamondsFour } from 'phosphor-react';
-import { IconLayoutDashboard, IconUpload, IconFolder, IconUsers, IconFolderShare, IconShare3, IconShare, IconChartBar, IconSettings, IconSend } from "@tabler/icons-react";
-import { IconQrcode } from "@tabler/icons-react";
+import { LordIcon, LordIcons } from '@/components/ui/LordIcon';
 import { NotificationPopover } from './NotificationPopover';
 import { TeamFileSharePage } from '../teams/TeamFileSharePage';
 import { Badge } from '@/components/ui/badge';
@@ -25,31 +24,31 @@ interface UserProfile {
 const navigation = [{
   name: 'Dashboard',
   href: '/dashboard',
-  icon: IconLayoutDashboard
+  lordIcon: LordIcons.dashboard
 }, {
   name: 'Upload',
   href: '/dashboard/upload',
-  icon: IconUpload
+  lordIcon: LordIcons.fileStack
 }, {
   name: 'My Files',
   href: '/dashboard/files',
-  icon: IconFolder
+  lordIcon: 'https://cdn.lordicon.com/fhtaantg.json'
 }, {
   name: 'Teams',
   href: '/dashboard/teams',
-  icon: IconUsers
+  lordIcon: LordIcons.users
 }, {
   name: 'Shared Links',
   href: '/dashboard/shared',
-  icon: IconShare3
+  lordIcon: 'https://cdn.lordicon.com/epietrpn.json'
 }, {
   name: 'Analytics',
   href: '/dashboard/analytics',
-  icon: IconChartBar
+  lordIcon: 'https://cdn.lordicon.com/pqxldkfh.json'
 }, {
   name: 'Settings',
   href: '/dashboard/settings',
-  icon: IconSettings
+  lordIcon: LordIcons.settings
 }];
 const AppSidebar = () => {
   const location = useLocation();
@@ -87,7 +86,7 @@ const AppSidebar = () => {
       {navigation.map(item => <SidebarMenuItem key={item.name}>
           <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
             <Link to={item.href} className="flex items-center gap-2">
-              <item.icon size={18} stroke={1.8} className="text-gray-300 group-hover:text-white transition-all duration-150 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+              <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
               <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
             </Link>
           </SidebarMenuButton>
@@ -106,7 +105,7 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Receive Now" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/code" className="flex items-center gap-2">
-                    <IconQrcode size={18} stroke={1.8} className="text-gray-300 flex-shrink-0 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+                    <LordIcon src="https://cdn.lordicon.com/surcxhka.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
@@ -115,7 +114,7 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Receive File" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/dashboard/receive" className="flex items-center gap-2">
-                    <span className="material-icons md-18 flex-shrink-0 group-data-[collapsible=icon]:text-2xl">inbox</span>
+                    <LordIcon src="https://cdn.lordicon.com/ternnfzy.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
@@ -135,7 +134,7 @@ const AppSidebar = () => {
               <SidebarMenuItem> 
                <SidebarMenuButton asChild tooltip="Upgrade" className="h-9 px-3 rounded-xl bg-accent/10  border text-neutral-200 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
   <Link to="/subscription" className="flex items-center gap-2">
-    <DiamondsFour className="w-4 h-4 flex-shrink-0 text-primary group-data-[collapsible=icon]:text-2xl" />
+    <LordIcon src={LordIcons.crown} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">
       Upgrade Plan
     </span> 

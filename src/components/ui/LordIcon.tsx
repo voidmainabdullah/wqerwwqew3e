@@ -20,6 +20,8 @@ interface LordIconProps {
   colors?: string;
   size?: number;
   className?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
 }
 
 export const LordIcon: React.FC<LordIconProps> = ({
@@ -28,6 +30,8 @@ export const LordIcon: React.FC<LordIconProps> = ({
   colors,
   size = 32,
   className = '',
+  primaryColor = '#ffffff',
+  secondaryColor = '#ffffff',
 }) => {
   const iconRef = useRef<HTMLDivElement>(null);
 
@@ -41,12 +45,15 @@ export const LordIcon: React.FC<LordIconProps> = ({
     }
   }, []);
 
+  // Build colors string if not provided
+  const finalColors = colors || `primary:${primaryColor},secondary:${secondaryColor}`;
+
   return (
     <div ref={iconRef} className={className}>
       <lord-icon
         src={src}
         trigger={trigger}
-        colors={colors}
+        colors={finalColors}
         style={{ width: `${size}px`, height: `${size}px` }}
       />
     </div>

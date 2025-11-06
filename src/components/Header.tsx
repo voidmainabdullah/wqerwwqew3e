@@ -82,10 +82,10 @@ const Header = () => {
           className="lg:hidden p-2 rounded-md text-muted-foreground hover:text-foreground transition"
           onClick={toggleMobileMenu}
         >
-          {mobileMenuOpen ? (
-            <LordIcon src={LordIcons.close} size={24} trigger="hover" />
+        {mobileMenuOpen ? (
+            <LordIcon src={LordIcons.close} size={24} trigger="hover" primaryColor="#ffffff" />
           ) : (
-            <LordIcon src={LordIcons.menu} size={24} trigger="hover" />
+            <LordIcon src={LordIcons.menu} size={24} trigger="hover" primaryColor="#ffffff" />
           )}
         </button>
 
@@ -117,32 +117,32 @@ const Header = () => {
                 className="px-3 py-1.5 rounded-full text-sm text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1"
               >
                 Products
-                <LordIcon src={LordIcons.arrowDown} size={14} trigger="hover" />
+                <LordIcon src={LordIcons.arrowDown} size={14} trigger="hover" primaryColor="#ffffff" />
               </ToggleGroupItem>
               <div className="absolute top-full left-0 mt-2 w-52 bg-background/95 backdrop-blur-md border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <a
                   href="#"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.fileStack} size={18} trigger="hover" /> File Storage
+                  <LordIcon src={LordIcons.fileStack} size={18} trigger="hover" primaryColor="#ffffff" /> File Storage
                 </a>
                 <a
                   href="#"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.users} size={18} trigger="hover" /> Team Collaboration
+                  <LordIcon src={LordIcons.users} size={18} trigger="hover" primaryColor="#ffffff" /> Team Collaboration
                 </a>
                 <a
                   href="#"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.shield} size={18} trigger="hover" /> Enterprise Security
+                  <LordIcon src={LordIcons.shield} size={18} trigger="hover" primaryColor="#ffffff" /> Enterprise Security
                 </a>
                 <a
                   href="#"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.code} size={18} trigger="hover" /> API Platform
+                  <LordIcon src={LordIcons.code} size={18} trigger="hover" primaryColor="#ffffff" /> API Platform
                 </a>
               </div>
             </div>
@@ -167,32 +167,32 @@ const Header = () => {
                 className="px-3 py-1.5 rounded-full text-sm text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1"
               >
                 Resources
-                <LordIcon src={LordIcons.arrowDown} size={14} trigger="hover" />
+                <LordIcon src={LordIcons.arrowDown} size={14} trigger="hover" primaryColor="#ffffff" />
               </ToggleGroupItem>
               <div className="absolute top-full left-0 mt-2 w-48 bg-background/95 backdrop-blur-md border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <a
                   href="/docs"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.book} size={18} trigger="hover" /> Documentation
+                  <LordIcon src={LordIcons.book} size={18} trigger="hover" primaryColor="#ffffff" /> Documentation
                 </a>
                 <a
                   href="/blog"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.newspaper} size={18} trigger="hover" /> Blog
+                  <LordIcon src={LordIcons.newspaper} size={18} trigger="hover" primaryColor="#ffffff" /> Blog
                 </a>
                 <a
                   href="#"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.briefcase} size={18} trigger="hover" /> Case Studies
+                  <LordIcon src={LordIcons.briefcase} size={18} trigger="hover" primaryColor="#ffffff" /> Case Studies
                 </a>
                 <a
                   href="#"
                   className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition"
                 >
-                  <LordIcon src={LordIcons.support} size={18} trigger="hover" /> Support
+                  <LordIcon src={LordIcons.support} size={18} trigger="hover" primaryColor="#ffffff" /> Support
                 </a>
               </div>
             </div>
@@ -225,7 +225,7 @@ const Header = () => {
                     >
                       {profile?.subscription_tier === "pro" ? (
                         <>
-                          <LordIcon src={LordIcons.crown} size={12} trigger="hover" /> Pro
+                          <LordIcon src={LordIcons.crown} size={12} trigger="hover" primaryColor="#ffffff" /> Pro
                         </>
                       ) : (
                         "Free"
@@ -250,24 +250,24 @@ const Header = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/dashboard" className="flex items-center">
-                    <LordIcon src={LordIcons.dashboard} size={18} trigger="hover" className="mr-2" /> Dashboard
+                    <LordIcon src={LordIcons.dashboard} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Dashboard
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/dashboard/settings" className="flex items-center">
-                    <LordIcon src={LordIcons.settings} size={18} trigger="hover" className="mr-2" /> Settings
+                    <LordIcon src={LordIcons.settings} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Settings
                   </Link>
                 </DropdownMenuItem>
                 {profile?.subscription_tier !== "pro" && (
                   <DropdownMenuItem asChild>
                     <Link to="/subscription" className="flex items-center">
-                      <LordIcon src={LordIcons.crown} size={18} trigger="hover" className="mr-2" /> Upgrade to Pro
+                      <LordIcon src={LordIcons.crown} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Upgrade to Pro
                     </Link>
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} className="flex items-center">
-                  <LordIcon src={LordIcons.logout} size={18} trigger="hover" className="mr-2" /> Sign Out
+                  <LordIcon src={LordIcons.logout} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -292,14 +292,14 @@ const Header = () => {
             onClick={handleNavClick("features")}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
           >
-            <LordIcon src={LordIcons.dot} size={18} trigger="hover" /> Features
+            <LordIcon src={LordIcons.dot} size={18} trigger="hover" primaryColor="#ffffff" /> Features
           </a>
           <a
             href="#pricing"
             onClick={handleNavClick("pricing")}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
           >
-            <LordIcon src={LordIcons.dollar} size={18} trigger="hover" /> Pricing
+            <LordIcon src={LordIcons.dollar} size={18} trigger="hover" primaryColor="#ffffff" /> Pricing
           </a>
           <a
             href="#"
