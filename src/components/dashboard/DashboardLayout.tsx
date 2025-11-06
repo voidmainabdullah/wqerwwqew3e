@@ -32,7 +32,7 @@ const navigation = [{
 }, {
   name: 'My Files',
   href: '/dashboard/files',
-  lordIcon: Lordicons.file12
+  lordIcon: 'https://cdn.lordicon.com/fhtaantg.json'
 }, {
   name: 'Teams',
   href: '/dashboard/teams',
