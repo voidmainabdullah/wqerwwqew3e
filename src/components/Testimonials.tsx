@@ -125,7 +125,7 @@ const TimelineStrip = ({ steps = [] }) => (
   </div>
 );
 
-const VerticalFolderTree = ({ seed = 6, pulseSeed = 3 }) => {
+const VerticalFolderTree = ({ seed = 3, pulseSeed = 3 }) => {
   const tree = useMemo(() => {
     return Array.from({ length: seed }).map((_, i) => {
       const children = Array.from({ length: 2 + (i % 3) }).map((__, j) => ({
