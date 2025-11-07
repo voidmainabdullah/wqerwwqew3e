@@ -2,266 +2,147 @@ import React from "react";
 import { motion } from "framer-motion";
 import {
   Users,
-  Workflow,
-  FileText,
-  Shield,
-  CloudUpload,
+  Cloud,
+  Cpu,
   Zap,
-  BarChart3,
-  CheckCircle2,
+  Lock,
+  Activity,
+  Folder,
   Share2,
   Database,
 } from "lucide-react";
 
-const Testimonials = () => {
-  const testimonials = [
-    {
-      quote:
-        "Our collaboration improved by 300% after switching to SkyShare — file sharing is now seamless, fast, and secure.",
-      author: "Sarah Johnson",
-      position: "Product Manager at TechCorp",
-      initials: "SJ",
-    },
-    {
-      quote:
-        "Enterprise-level security made beautifully simple. Our data sharing finally feels effortless and safe.",
-      author: "Michael Chen",
-      position: "Head of Security at DataFlow",
-      initials: "MC",
-    },
-    {
-      quote:
-        "AI-based organization is game-changing — we reduced file clutter by 60% across all teams.",
-      author: "Leila Rodriguez",
-      position: "Operations Director at CreativeStudio",
-      initials: "LR",
-    },
-    {
-      quote:
-        "A stunningly designed tool that actually delivers. Uploads, encryption, and sharing — all beautifully smooth.",
-      author: "Daniel Reed",
-      position: "CTO at NovaLabs",
-      initials: "DR",
-    },
-    {
-      quote:
-        "From design to performance, everything about SkyShare feels premium — we use it every single day.",
-      author: "Amira Patel",
-      position: "Brand Director at Orion",
-      initials: "AP",
-    },
-    {
-      quote:
-        "Our global team loves how intuitive SkyShare feels — even complex workflows are simple now.",
-      author: "Kenji Sato",
-      position: "Project Lead at CloudStream",
-      initials: "KS",
-    },
-  ];
-
-  const logos = [
-    "/images/logo1.png",
-    "/images/logo2.png",
-    "/images/logo3.png",
-    "/images/logo4.png",
-    "/images/logo5.png",
-    "/images/logo6.png",
-  ];
-
+const TeamWorkflow2025 = () => {
   return (
-    <>
-      {/* ===== Testimonials Section ===== */}
-      <section className="w-full py-28 px-6 bg-black relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-white/10 rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 right-1/3 w-[500px] h-[500px] bg-white/5 rounded-full blur-[180px]" />
-        </div>
+    <section className="relative w-full py-32 px-6 bg-black overflow-hidden">
+      {/* Animated Glow Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-blue-500/10 blur-[250px]" />
+        <div className="absolute bottom-0 right-0 w-[700px] h-[700px] bg-white/5 blur-[200px]" />
+      </div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16 space-y-3">
-            <h2 className="text-4xl sm:text-5xl font-semibold text-white bg-clip-text bg-gradient-to-r from-white to-gray-300 text-transparent">
-              Loved by teams worldwide
-            </h2>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto">
-              See how professionals and teams revolutionize their workflow using SkyShare.
-            </p>
-          </div>
-
-          {/* Testimonials Carousel */}
-          <div className="relative w-full overflow-hidden">
-            <motion.div
-              className="flex gap-6"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{
-                repeat: Infinity,
-                duration: 35,
-                ease: "linear",
-              }}
-            >
-              {[...testimonials, ...testimonials].map((testimonial, i) => (
-                <div
-                  key={i}
-                  className="min-w-[340px] md:min-w-[400px] bg-gradient-to-b from-[#0A0A0A]/90 to-[#050505]/90 border border-white/10 rounded-2xl p-8 shadow-[0_0_40px_rgba(255,255,255,0.05)] hover:shadow-[0_0_60px_rgba(255,255,255,0.1)] transition-all duration-700"
-                >
-                  <p className="text-white/80 text-[15px] leading-relaxed mb-8 italic">
-                    “{testimonial.quote}”
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                      {testimonial.initials}
-                    </div>
-                    <div>
-                      <h4 className="text-white font-medium text-sm">{testimonial.author}</h4>
-                      <p className="text-white/50 text-xs">{testimonial.position}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Logos Row */}
-          <div className="relative w-full overflow-hidden mt-20">
-            <motion.div
-              className="flex items-center gap-16"
-              animate={{ x: ["-50%", "0%"] }}
-              transition={{
-                repeat: Infinity,
-                duration: 45,
-                ease: "linear",
-              }}
-            >
-              {[...logos, ...logos].map((logo, i) => (
-                <motion.img
-                  key={i}
-                  src={logo}
-                  alt={`Company ${i + 1}`}
-                  className="h-10 md:h-12 w-auto opacity-70 hover:opacity-100 transition-all duration-500 grayscale hover:grayscale-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]"
-                />
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Showcase */}
-          <motion.div
-            className="mt-24 rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(255,255,255,0.08)]"
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Title */}
+        <div className="text-center mb-24">
+          <motion.h2
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <div className="relative bg-gradient-to-br from-[#0B0B0B]/90 to-[#050505]/90 p-1">
-              <div className="rounded-xl overflow-hidden bg-black/90 backdrop-blur-xl">
-                <img
-                  src="/images/showcase.png"
-                  alt="Platform Showcase"
-                  className="w-full h-auto object-cover max-h-[520px]"
-                />
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ===== Teams Workflow Structure Section ===== */}
-      <section className="w-full py-32 px-6 bg-gradient-to-b from-black to-[#050505] relative overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-white/5 blur-[220px]" />
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-semibold text-white mb-4">
-              Team Workflow Structure
-            </h2>
-            <p className="text-white/60 max-w-2xl mx-auto">
-              SkyShare empowers collaboration through transparent, real-time workflows.
-              From uploading to approval — every step is synced, tracked, and secure.
-            </p>
-          </div>
-
-          {/* Workflow Grid */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Users className="w-8 h-8 text-white/80" />,
-                title: "Unified Teams",
-                desc: "Collaborate across departments with unified permissions and shared spaces.",
-              },
-              {
-                icon: <CloudUpload className="w-8 h-8 text-white/80" />,
-                title: "Instant File Sync",
-                desc: "Every update is reflected instantly across all connected devices.",
-              },
-              {
-                icon: <Shield className="w-8 h-8 text-white/80" />,
-                title: "End-to-End Security",
-                desc: "AES-256 encryption and audit logs for every file access event.",
-              },
-              {
-                icon: <Zap className="w-8 h-8 text-white/80" />,
-                title: "Real-Time Automation",
-                desc: "AI monitors and automates repetitive workflows with smart triggers.",
-              },
-              {
-                icon: <BarChart3 className="w-8 h-8 text-white/80" />,
-                title: "Analytics Dashboard",
-                desc: "Visualize upload trends, user actions, and security events in one panel.",
-              },
-              {
-                icon: <Database className="w-8 h-8 text-white/80" />,
-                title: "Data Layer Control",
-                desc: "Organize, backup, and distribute enterprise files effortlessly.",
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: i * 0.1 }}
-                className="p-8 rounded-2xl bg-gradient-to-b from-[#0C0C0C]/90 to-[#040404]/90 border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)] hover:shadow-[0_0_80px_rgba(255,255,255,0.1)] transition-all duration-700"
-              >
-                <div className="mb-5">{card.icon}</div>
-                <h3 className="text-xl text-white mb-2">{card.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Workflow Visualization */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="mt-24 bg-gradient-to-br from-[#0B0B0B]/90 to-[#050505]/90 border border-white/10 rounded-2xl p-10 shadow-[0_0_100px_rgba(255,255,255,0.08)]"
+            className="text-5xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400"
           >
-            <h3 className="text-2xl font-medium text-white mb-8 text-center">
-              SkyShare Flow — From Upload to Delivery
-            </h3>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-10 text-white/80">
-              {[
-                { icon: <FileText />, title: "Upload" },
-                { icon: <Share2 />, title: "Team Review" },
-                { icon: <CheckCircle2 />, title: "Approval" },
-                { icon: <Database />, title: "Archive" },
-              ].map((step, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ scale: 1.1 }}
-                  className="flex flex-col items-center gap-4"
-                >
-                  <div className="p-6 bg-white/5 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-                    {step.icon}
-                  </div>
-                  <p className="text-sm font-medium">{step.title}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+            Team Workflow Intelligence
+          </motion.h2>
+          <p className="text-white/60 mt-4 text-lg max-w-2xl mx-auto">
+            Real-time visibility into team activity, file distribution, and AI-assisted automation.
+            Built for speed, security, and smart collaboration.
+          </p>
         </div>
-      </section>
-    </>
+
+        {/* --- Workflow Timeline (Animated line with icons) --- */}
+        <div className="relative flex items-center justify-between w-full max-w-5xl mx-auto mb-32">
+          <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/10" />
+          {[
+            { icon: <Folder />, label: "Upload" },
+            { icon: <Users />, label: "Collaborate" },
+            { icon: <Cpu />, label: "AI Organize" },
+            { icon: <Lock />, label: "Secure Sync" },
+            { icon: <Share2 />, label: "Deliver" },
+          ].map((step, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.15 }}
+              className="relative flex flex-col items-center text-white"
+            >
+              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md shadow-[0_0_25px_rgba(255,255,255,0.08)] border border-white/10">
+                {step.icon}
+              </div>
+              <p className="mt-4 text-sm text-white/60">{step.label}</p>
+              <motion.div
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute top-[-6px] w-[2px] h-[20px] bg-blue-400/50 rounded-full"
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* --- Live Metrics Stream --- */}
+        <div className="grid md:grid-cols-4 gap-8 mb-32 text-center">
+          {[
+            { icon: <Cloud />, value: "1.2 TB", label: "Files Transferred" },
+            { icon: <Activity />, value: "98%", label: "Uptime" },
+            { icon: <Users />, value: "450+", label: "Active Teams" },
+            { icon: <Zap />, value: "3.5x", label: "Faster Processing" },
+          ].map((metric, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              className="relative group"
+            >
+              <div className="text-white/80 mb-4 flex justify-center">{metric.icon}</div>
+              <motion.h3
+                animate={{ opacity: [0.8, 1, 0.8] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-3xl font-semibold text-white"
+              >
+                {metric.value}
+              </motion.h3>
+              <p className="text-sm text-white/50 mt-2">{metric.label}</p>
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-[2px] bg-gradient-to-r from-blue-400/40 to-white/10 rounded-full" />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* --- Team Network Flow (Interactive Rings) --- */}
+        <div className="relative w-full h-[400px] flex items-center justify-center">
+          {/* Central Node */}
+          <motion.div
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="absolute w-40 h-40 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.08)]"
+          >
+            <Cpu className="w-10 h-10 text-white/80" />
+          </motion.div>
+
+          {/* Orbiting Team Nodes */}
+          {[
+            { icon: <Users />, label: "Team Alpha" },
+            { icon: <Database />, label: "CloudOps" },
+            { icon: <Share2 />, label: "Delivery" },
+            { icon: <Lock />, label: "Security" },
+            { icon: <Zap />, label: "Automation" },
+          ].map((node, i) => (
+            <motion.div
+              key={i}
+              className="absolute flex flex-col items-center text-center"
+              style={{
+                transform: `rotate(${i * 72}deg) translateY(-180px) rotate(-${i * 72}deg)`,
+              }}
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
+              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md">
+                {node.icon}
+              </div>
+              <p className="text-xs mt-3 text-white/50">{node.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* --- Closing Line --- */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center text-white/50 text-sm mt-24"
+        >
+          SkyShare: Empowering next-generation teamwork with precision, security, and intelligence.
+        </motion.p>
+      </div>
+    </section>
   );
 };
 
-export default Testimonials;
+export default TeamWorkflow2025;
