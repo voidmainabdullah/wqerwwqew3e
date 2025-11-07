@@ -74,7 +74,7 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto py-2 bg-stone-950 text-neutral-400 mx-0 my-0 px-[11px]">
+      <SidebarContent className="flex-1 overflow-y-auto px-2 py-2 bg-stone-950 text-neutral-400">
         {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-heading font-semibold tracking-wider px-2 mb-1 text-neutral-400">
@@ -105,16 +105,15 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Receive Now" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/code" className="flex items-center gap-2">
-                    <LordIcon src="https://cdn.lordicon.com/surcxhka.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
+                    <LordIcon src="https://cdn.lordicon.com/awjeikyj.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive Now</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Receive File" className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
                   <Link to="/dashboard/receive" className="flex items-center gap-2">
-                    <LordIcon src="https://cdn.lordicon.com/ternnfzy.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
+                    <LordIcon src="https://cdn.lordicon.com/meaqueth.json" size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
                     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">Receive File</span>
                   </Link>
                 </SidebarMenuButton>
@@ -134,7 +133,7 @@ const AppSidebar = () => {
               <SidebarMenuItem> 
                <SidebarMenuButton asChild tooltip="Upgrade" className="h-9 px-3 rounded-xl bg-accent/10  border text-neutral-200 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
   <Link to="/subscription" className="flex items-center gap-2">
-    <LordIcon src={LordIcons.crown} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
+    <DiamondsFour className="flex-shrink-0" />
     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">
       Upgrade Plan
     </span> 
