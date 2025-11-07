@@ -28,8 +28,18 @@ import {
   GitBranch,
 } from "lucide-react";
 
+/**
+ * TeamWorkflowUltra.jsx
+ * - Ultra-large single-file component (~600 lines)
+ * - No boxed cards — flowing widgets, rings, waveforms, timelines, live feed
+ * - Palette: Black / White / Silver gradients (Apple-like)
+ *
+ * Keep tailwind classes; ensure Tailwind is available in the project.
+ */
+
 const DURATION = 1.4;
 
+// ---------- tiny helpers ----------
 const fmtNumber = (n) => {
   if (n >= 1e9) return (n / 1e9).toFixed(1) + "B";
   if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
@@ -52,11 +62,14 @@ const useTicker = (start = 0, end = 1000, duration = 2000, deps = []) => {
     };
     raf = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
   return value;
 };
 
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+// ---------- small presentational subcomponents (no card boxes) ----------
 
 const GlassShell = ({ children, className = "" }) => {
   return (
@@ -107,6 +120,8 @@ const SparkLine = ({ points = [], width = 240, height = 60 }) => {
   );
 };
 
+// ---------- complex sub-widgets ----------
+
 const WorkflowTimeline = ({ steps = [] }) => {
   return (
     <div className="relative w-full flex items-center justify-between max-w-6xl mx-auto">
@@ -131,6 +146,7 @@ const WorkflowTimeline = ({ steps = [] }) => {
 };
 
 const TransferWave = ({ speed = 0.8, width = 600, height = 140 }) => {
+  // generate multiple sin waves layered
   const waves = useMemo(() => {
     const arr = [];
     for (let i = 0; i < 4; i++) {
@@ -152,6 +168,7 @@ const TransferWave = ({ speed = 0.8, width = 600, height = 140 }) => {
     }
     return d;
   };
+  // this is static path (approx) - for visual only
   const d = pathFor(0);
   return (
     <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} className="rounded-xl overflow-hidden">
@@ -197,7 +214,37 @@ const LiveActivityFeed = ({ entries = [] }) => {
   );
 };
 
+// mini right-side "control rails" — not cards, but thin floating panels
+const ControlRail = ({ children, title }) => {
+  return (
+    <div className="w-full md:w-[320px]">
+      <div className="flex items-center justify-between mb-3">
+        <div className="text-sm text-white/70">{title}</div>
+      </div>
+      <div className="space-y-3">{children}</div>
+    </div>
+  );
+};
+
+// small circular animated node used in ring network
+const RingNode = ({ icon, label, active = false }) => {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        className={`w-14 h-14 rounded-full flex items-center justify-center border border-white/8 ${
+          active ? "bg-white/6 shadow-[0_12px_40px_rgba(255,255,255,0.05)]" : "bg-white/3"
+        }`}
+      >
+        {icon}
+      </div>
+      <div className="text-xs text-white/50">{label}</div>
+    </div>
+  );
+};
+
+// heatmap mock (SVG grid)
 const Heatmap = ({ cols = 12, rows = 5 }) => {
+  // generate intensity matrix
   const matrix = Array.from({ length: rows }).map(() =>
     Array.from({ length: cols }).map(() => Math.random())
   );
@@ -215,31 +262,38 @@ const Heatmap = ({ cols = 12, rows = 5 }) => {
   );
 };
 
+// ---------- main large component ----------
 const TeamWorkflowUltra = () => {
-  const filesTransferred = useTicker(0, 1300000, 2000, []);
+  // metrics
+  const filesTransferred = useTicker(0, 1250000, 2000, []);
   const activeTeams = useTicker(0, 812, 1700, []);
   const uptime = useTicker(95, 99, 1600, []);
   const processingSpeed = useTicker(1, 3.6, 2000, []);
 
+  // activity feed
   const [feed, setFeed] = useState(() =>
-    Array.from({ length: 8 }).map((_, i) => ({
-      userInitials: ["AJ", "MB", "RN", "ZT", "KL", "AL", "MB", "RN"][i % 8],
-      action: `${["uploaded", "shared", "approved", "archived"][i % 4]} “Project-Design-v${i + 1}.pdf”`,
-      time: `${Math.max(1, i * 5)}m ago`,
+    Array.from({ length: 12 }).map((_, i) => ({
+      userInitials: ["SJ", "MC", "LR", "DR", "AP", "KS"][i % 6],
+      action: `${["uploaded", "shared", "approved", "archived", "synced"][i % 5]} “Project-Design-v${i + 1}.pdf”`,
+      time: `${Math.max(1, i * 3)}m ago`,
       size: `${(Math.random() * 12).toFixed(1)} MB`,
     }))
   );
 
+  // live toggles
   const [realtime, setRealtime] = useState(true);
+  const [filter, setFilter] = useState("all");
   const anim = useAnimation();
 
   useEffect(() => {
+    // micro animation: pulse control when realtime toggles
     anim.start({
       scale: realtime ? [1, 1.04, 1] : [1, 0.98, 1],
       transition: { duration: 2.2, repeat: Infinity },
     });
   }, [realtime, anim]);
 
+  // simulated "stream" of activity (mock)
   useEffect(() => {
     if (!realtime) return;
     const iv = setInterval(() => {
@@ -251,7 +305,7 @@ const TeamWorkflowUltra = () => {
             time: "now",
             size: `${(Math.random() * 45).toFixed(1)} MB`,
           },
-          ...prev.slice(0, 7),
+          ...prev.slice(0, 11),
         ];
         return next;
       });
@@ -259,6 +313,7 @@ const TeamWorkflowUltra = () => {
     return () => clearInterval(iv);
   }, [realtime]);
 
+  // timeline steps
   const steps = [
     { icon: <Folder className="w-6 h-6 text-white/80" />, label: "Upload" },
     { icon: <Users className="w-6 h-6 text-white/80" />, label: "Collaborate" },
@@ -267,20 +322,24 @@ const TeamWorkflowUltra = () => {
     { icon: <Share2 className="w-6 h-6 text-white/80" />, label: "Deliver" },
   ];
 
+  // small arrays for mini spark lines
   const sparkSets = useMemo(() => {
     return Array.from({ length: 6 }).map(() =>
       Array.from({ length: 18 }).map(() => Math.random() * 100)
     );
   }, []);
 
+  // left column long flow (no cards)
   return (
     <section className="relative w-full bg-black text-white overflow-hidden py-24 px-6">
+      {/* massive soft glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute left-[-120px] top-[-80px] w-[680px] h-[680px] bg-white/6 blur-[170px] rounded-full" />
         <div className="absolute right-[-100px] bottom-[-60px] w-[560px] h-[560px] bg-white/4 blur-[140px] rounded-full" />
       </div>
 
       <div className="max-w-8xl mx-auto relative z-10 space-y-12">
+        {/* header */}
         <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="flex items-start gap-4">
             <div className="rounded-full w-14 h-14 bg-white/4 flex items-center justify-center border border-white/8 shadow-[0_12px_40px_rgba(255,255,255,0.03)]">
@@ -307,13 +366,20 @@ const TeamWorkflowUltra = () => {
 
             <div className="flex items-center gap-2 bg-white/3 rounded-full px-3 py-2 border border-white/6">
               <Search className="w-4 h-4 text-white/80" />
-              <input placeholder="Quick search files or teams..." className="bg-transparent text-sm outline-none placeholder:text-white/40" aria-label="search" />
+              <input
+                placeholder="Quick search files or teams..."
+                className="bg-transparent text-sm outline-none placeholder:text-white/40"
+                aria-label="search"
+              />
             </div>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-8">
+        {/* central workspace */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* LEFT: big flowing area */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* timeline */}
             <div>
               <GlassShell className="p-6">
                 <div className="px-2">
@@ -322,8 +388,9 @@ const TeamWorkflowUltra = () => {
               </GlassShell>
             </div>
 
+            {/* streaming metrics + wave */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-              <div className="md:col-span-2">
+              <div className="col-span-2">
                 <GlassShell className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div className="flex-1">
@@ -388,16 +455,20 @@ const TeamWorkflowUltra = () => {
               </div>
             </div>
 
+            {/* network ring + mini heatmap + activity feed */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2">
                 <GlassShell className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <div className="flex-1 flex items-center justify-center">
+                      {/* network ring area */}
                       <div className="relative w-full h-[320px]">
+                        {/* central node */}
                         <motion.div animate={{ scale: [1, 1.04, 1] }} transition={{ duration: 3, repeat: Infinity }} className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-36 h-36 rounded-full bg-white/4 flex items-center justify-center border border-white/8 shadow-[0_26px_70px_rgba(255,255,255,0.03)]">
                           <Cpu className="w-8 h-8 text-white/90" />
                         </motion.div>
 
+                        {/* orbit nodes */}
                         {[
                           { icon: <Users className="w-5 h-5" />, label: "Team Alpha" },
                           { icon: <Database className="w-5 h-5" />, label: "CloudOps" },
@@ -443,6 +514,7 @@ const TeamWorkflowUltra = () => {
               </div>
             </div>
 
+            {/* timeline of recent deliveries (horizontal rail) */}
             <div>
               <GlassShell className="p-5">
                 <div className="flex items-center justify-between mb-4">
@@ -450,7 +522,7 @@ const TeamWorkflowUltra = () => {
                   <div className="text-xs text-white/40">audit • share links</div>
                 </div>
                 <div className="flex gap-4 overflow-x-auto py-2">
-                  {Array.from({ length: 6 }).map((_, i) => (
+                  {Array.from({ length: 8 }).map((_, i) => (
                     <motion.div key={i} whileHover={{ scale: 1.03 }} className="min-w-[220px] p-3 rounded-lg bg-white/3 border border-white/7">
                       <div className="flex items-center justify-between">
                         <div className="text-sm text-white/80">Project-{Math.floor(Math.random() * 900)}</div>
@@ -468,9 +540,9 @@ const TeamWorkflowUltra = () => {
             </div>
           </div>
 
-          <div className="space-y-8">
-            <GlassShell className="p-6">
-              <div className="text-sm text-white/70 mb-3">Overview</div>
+          {/* RIGHT: control rail */}
+          <aside className="space-y-6">
+            <ControlRail title="Overview">
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <div className="text-xs text-white/60">Files Transferred</div>
@@ -491,10 +563,9 @@ const TeamWorkflowUltra = () => {
                   <button className="py-2 px-3 rounded-full bg-white/3 border border-white/7 text-sm">Reset</button>
                 </div>
               </div>
-            </GlassShell>
+            </ControlRail>
 
-            <GlassShell className="p-6">
-              <div className="text-sm text-white/70 mb-3">Quick Filters</div>
+            <ControlRail title="Quick Filters">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs text-white/60">
                   <div>All Teams</div>
@@ -509,15 +580,14 @@ const TeamWorkflowUltra = () => {
                   <div className="text-white/80">7</div>
                 </div>
               </div>
-            </GlassShell>
+            </ControlRail>
 
-            <GlassShell className="p-6">
-              <div className="text-sm text-white/70 mb-3">Active Sessions</div>
+            <ControlRail title="Active Sessions">
               <div className="space-y-2">
-                {["AJ", "MB", "RN", "ZT", "KL"].map((u, i) => (
+                {Array.from({ length: 5 }).map((_, i) => (
                   <div key={i} className="flex items-center justify-between text-xs text-white/70">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">{u}</div>
+                      <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">{["AJ", "MB", "RN", "ZT", "KL"][i]}</div>
                       <div>
                         <div className="text-white/90">User {i + 1}</div>
                         <div className="text-white/40 text-xs">Working on: repo-{Math.floor(Math.random() * 140)}</div>
@@ -527,10 +597,9 @@ const TeamWorkflowUltra = () => {
                   </div>
                 ))}
               </div>
-            </GlassShell>
+            </ControlRail>
 
-            <GlassShell className="p-6">
-              <div className="text-sm text-white/70 mb-3">Quick Actions</div>
+            <ControlRail title="Quick Actions">
               <div className="flex flex-col gap-2">
                 <button className="w-full py-2 rounded-full bg-white/6 border border-white/8 flex items-center justify-center gap-2 text-sm">
                   <Plus className="w-4 h-4" /> New Shared Space
@@ -542,10 +611,9 @@ const TeamWorkflowUltra = () => {
                   <LogOut className="w-4 h-4" /> End Session
                 </button>
               </div>
-            </GlassShell>
+            </ControlRail>
 
-            <GlassShell className="p-6">
-              <div className="text-sm text-white/70 mb-3">Mini Charts</div>
+            <ControlRail title="Mini Charts">
               <div className="space-y-3">
                 {sparkSets.slice(0, 3).map((s, i) => (
                   <div key={i} className="flex items-center justify-between">
@@ -554,10 +622,11 @@ const TeamWorkflowUltra = () => {
                   </div>
                 ))}
               </div>
-            </GlassShell>
-          </div>
+            </ControlRail>
+          </aside>
         </div>
 
+        {/* bottom wide area: logs, chart lane, seo-friendly text */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <GlassShell className="p-6">
@@ -622,6 +691,7 @@ const TeamWorkflowUltra = () => {
           </div>
         </div>
 
+        {/* footer small */}
         <footer className="text-center text-white/50 text-xs mt-6">
           © {new Date().getFullYear()} SkyShare • Secure • Fast • Designed for teams
         </footer>
