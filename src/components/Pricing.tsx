@@ -24,7 +24,7 @@ const Pricing = () => {
     price: "$6.99",
     period: "per user/month",
     description: "Ideal for growing teams with advanced collaboration needs",
-    features: ["100GB storage per user", "Advanced file sharing", "Real-time collaboration", "Team management tools", "Advanced Controls", "E25 Encryption","Premium Features", "24/7 support"],
+    features: ["100GB storage per user", "Advanced file sharing", "Real-time collaboration", "Team management tools", "Advanced Controls", "E25 Encryption", "Premium Features", "24/7 support"],
     buttonText: "Start 14-day trial",
     buttonVariant: "default",
     popular: true
@@ -52,9 +52,7 @@ const Pricing = () => {
       }} transition={{
         duration: 0.6
       }}>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white">
-            Simple pricing that scales
-          </h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white">​Get More Control , Features &amp; Secuirity</h2>
           <p className="font-body text-white/70 text-base md:text-lg">
             Choose the perfect plan for your team's file sharing and collaboration needs
           </p>
