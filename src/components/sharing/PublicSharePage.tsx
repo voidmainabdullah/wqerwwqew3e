@@ -171,12 +171,22 @@ export const PublicSharePage: React.FC = () => {
   const downloadFile = async (fileToDownload?: FolderFile) => {
     if (!shareData) return;
 
-    // Check if password is required
-    if (shareData.password_hash && passwordRequired) {
+    // CRITICAL: Prevent download if password is required but not validated
+    if (passwordRequired) {
       toast({
         variant: "destructive",
         title: "Password required",
         description: "Please enter the password to access this content",
+      });
+      return;
+    }
+
+    // SECURITY FIX: Double-check password protection even if passwordRequired is false
+    if (shareData.password_hash || shareData.file?.is_locked) {
+      toast({
+        variant: "destructive",
+        title: "Access denied",
+        description: "This content requires password authentication",
       });
       return;
     }

@@ -95,13 +95,29 @@ export default function CodePage() {
   const downloadFile = async () => {
     if (!file) return;
 
-    // If password is still required, prevent download
-    if (requiresPassword && !password) {
+    // CRITICAL: Prevent download if password is still required
+    if (requiresPassword) {
       toast.error('This file is password protected. Please enter the password.');
       return;
     }
 
+    // SECURITY FIX: Double-check password protection status
     try {
+      const { data: sharedLink } = await supabase
+        .from('shared_links')
+        .select('password_hash')
+        .eq('file_id', file.id)
+        .eq('link_type', 'code')
+        .maybeSingle();
+
+      const hasPasswordProtection = file.is_locked || !!sharedLink?.password_hash;
+      
+      if (hasPasswordProtection) {
+        toast.error('This file requires password authentication');
+        setRequiresPassword(true);
+        return;
+      }
+
       const { data } = await supabase.storage
         .from('files')
         .createSignedUrl(file.storage_path, 60);

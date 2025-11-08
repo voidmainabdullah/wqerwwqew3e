@@ -351,12 +351,12 @@ useEffect(() => {
     // sirf preferences change hone par save karo, not typing fields
     const preferencesChanged = [lang, timezone, fontStyle, cornerStyle].some(Boolean);
     if (!preferencesChanged) return;
-    supabase.from("profiles").update({
+    void supabase.from("profiles").update({
       language: lang,
       timezone,
       font_style: fontStyle,
       corner_style: cornerStyle,
-    }).eq('id', user.id).catch(() => {});
+    }).eq('id', user.id);
   }, 2000);
 
   return () => clearTimeout(handler);
