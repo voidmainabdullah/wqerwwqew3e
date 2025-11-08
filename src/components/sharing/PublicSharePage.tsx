@@ -104,10 +104,20 @@ export const PublicSharePage: React.FC = () => {
         return;
       }
 
+      // CRITICAL FIX: Check if password is required BEFORE setting share data
+      const isLocked = data.file?.is_locked || false;
+      const hasPassword = !!data.password_hash;
+      
+      if (hasPassword || isLocked) {
+        setPasswordRequired(true);
+      } else {
+        setPasswordRequired(false);
+      }
+
       setShareData(data);
       
-      // If it's a folder, fetch its files
-      if (data.folder_id) {
+      // If it's a folder, fetch its files (only if no password or password already validated)
+      if (data.folder_id && !hasPassword && !isLocked) {
         const { data: filesData, error: filesError } = await supabase
           .from('files')
           .select('id, original_name, file_size, file_type, storage_path')
@@ -115,12 +125,6 @@ export const PublicSharePage: React.FC = () => {
         
         if (filesError) throw filesError;
         setFolderFiles(filesData || []);
-      }
-      
-      // Check if password is required
-      const isLocked = data.file?.is_locked || false;
-      if (data.password_hash || isLocked) {
-        setPasswordRequired(true);
       }
     } catch (error: any) {
       setError(error.message || 'Failed to load share link');
@@ -130,11 +134,22 @@ export const PublicSharePage: React.FC = () => {
   };
 
   const validatePassword = async () => {
-    if (!token || !password) return;
+    if (!token || !password) {
+      toast({
+        variant: "destructive",
+        title: "Password required",
+        description: "Please enter a password",
+      });
+      return;
+    }
 
     try {
       if (!shareData?.password_hash) {
-        setPasswordRequired(false);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "This content does not have password protection configured",
+        });
         return;
       }
 
@@ -152,6 +167,18 @@ export const PublicSharePage: React.FC = () => {
           title: "Access granted",
           description: "Password verified successfully",
         });
+        
+        // If it's a folder, fetch files after successful validation
+        if (shareData.folder_id) {
+          const { data: filesData, error: filesError } = await supabase
+            .from('files')
+            .select('id, original_name, file_size, file_type, storage_path')
+            .eq('folder_id', shareData.folder_id);
+          
+          if (!filesError && filesData) {
+            setFolderFiles(filesData);
+          }
+        }
       } else {
         toast({
           variant: "destructive",
