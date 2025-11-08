@@ -1,112 +1,25 @@
 import React, { FC, useMemo, useState } from "react";
-import styled, { keyframes, css } from "styled-components";
 
-/**
- * Props interface for EarthLoader component
- */
 interface EarthLoaderProps {
-  /** Size of the Earth widget in pixels */
+  /** Size of the Earth in pixels */
   size?: number;
   /** Number of meridians (vertical lines) */
   meridians?: number;
   /** Number of latitudes (horizontal rings) */
   latitudes?: number;
-  /** Animation speed in seconds per rotation */
+  /** Rotation speed in seconds */
   rotationSpeed?: number;
-  /** Base color for lines */
+  /** Line color */
   lineColor?: string;
-  /** Toggle wireframe visibility */
+  /** Show wireframe */
   showWireframe?: boolean;
-  /** Enable interactive hover effects */
+  /** Enable hover interactions */
   interactive?: boolean;
-  /** ARIA label for accessibility */
+  /** Accessibility label */
   ariaLabel?: string;
-  /** Reduced motion preference support */
+  /** Reduced motion support */
   reduceMotion?: boolean;
 }
-
-/**
- * Keyframes for Earth rotation
- */
-const spin = keyframes`
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-`;
-
-/**
- * Styled container with 3D perspective
- */
-const EarthContainer = styled.div<{ size: number }>`
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  margin: 0 auto;
-  perspective: 1200px;
-`;
-
-/**
- * Styled Earth sphere with rotation animation
- */
-const EarthSphere = styled.div<{
-  rotationSpeed: number;
-  reduceMotion?: boolean;
-}>`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: relative;
-  transform-style: preserve-3d;
-  ${({ reduceMotion, rotationSpeed }) =>
-    !reduceMotion &&
-    css`
-      animation: ${spin} ${rotationSpeed}s linear infinite;
-    `}
-`;
-
-/**
- * Styled meridian and latitude lines
- */
-const EarthLine = styled.div<{
-  transformStyle: string;
-  size?: number;
-  top?: number;
-  left?: number;
-  lineColor: string;
-}>`
-  position: absolute;
-  border: 1px solid ${({ lineColor }) => lineColor};
-  border-radius: 50%;
-  width: ${({ size }) => (size ? `${size}px` : "100%")};
-  height: ${({ size }) => (size ? `${size}px` : "100%")};
-  top: ${({ top }) => (top ? `${top}px` : "0")};
-  left: ${({ left }) => (left ? `${left}px` : "0")};
-  transform: ${({ transformStyle }) => transformStyle};
-  pointer-events: none;
-  opacity: 0.8;
-  transition: transform 0.3s ease;
-`;
-
-/**
- * Styled axis lines
- */
-const EarthAxis = styled.div<{ rotateX?: number; lineColor: string }>`
-  position: absolute;
-  width: 600px;
-  height: 2px;
-  background: linear-gradient(
-    to left,
-    transparent,
-    ${({ lineColor }) => lineColor},
-    transparent
-  );
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) ${({ rotateX }) => rotateX && `rotateX(${rotateX}deg)`};
-  opacity: 0.6;
-`;
 
 const EarthLoader: FC<EarthLoaderProps> = ({
   size = 256,
@@ -121,59 +34,99 @@ const EarthLoader: FC<EarthLoaderProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Memoized arrays for meridians and latitudes
-  const meridianArray = useMemo(() => Array.from({ length: meridians }, (_, i) => i + 1), [meridians]);
-  const latitudeArray = useMemo(() => Array.from({ length: latitudes }, (_, i) => i), [latitudes]);
+  const meridianArray = useMemo(
+    () => Array.from({ length: meridians }, (_, i) => i + 1),
+    [meridians]
+  );
+  const latitudeArray = useMemo(
+    () => Array.from({ length: latitudes }, (_, i) => i),
+    [latitudes]
+  );
+
+  const earthStyle: React.CSSProperties = {
+    width: `${size}px`,
+    height: `${size}px`,
+    animation: !reduceMotion
+      ? `spin ${rotationSpeed}s linear infinite`
+      : undefined,
+    transformStyle: "preserve-3d",
+  };
 
   return (
-    <EarthContainer size={size} aria-label={ariaLabel}>
-      <EarthSphere
-        rotationSpeed={rotationSpeed}
-        reduceMotion={reduceMotion}
+    <div
+      className="mx-auto mb-12 perspective-[1200px]"
+      style={{ width: size, height: size }}
+      aria-label={ariaLabel}
+    >
+      <div
+        className={`relative w-full h-full rounded-full ${
+          !reduceMotion ? "animate-spin" : ""
+        }`}
+        style={earthStyle}
         onMouseEnter={() => interactive && setIsHovered(true)}
         onMouseLeave={() => interactive && setIsHovered(false)}
       >
+        {/* Meridians */}
         {showWireframe &&
           meridianArray.map((i) => (
-            <EarthLine
+            <div
               key={`meridian-${i}`}
-              transformStyle={`rotateX(${i * (360 / meridians)}deg)`}
-              lineColor={lineColor}
+              className={`absolute w-full h-full rounded-full border`}
+              style={{
+                borderColor: lineColor,
+                transform: `rotateX(${i * (360 / meridians)}deg)`,
+              }}
             />
           ))}
 
+        {/* Latitudes */}
         {showWireframe &&
           latitudeArray.map((i) => {
             const lineSize = size + 44 - i * 40;
             const offset = i * 20;
             return (
-              <EarthLine
+              <div
                 key={`latitude-${i}`}
-                size={lineSize}
-                top={offset}
-                left={offset}
-                transformStyle="rotateY(90deg)"
-                lineColor={lineColor}
+                className="absolute rounded-full border"
+                style={{
+                  width: `${lineSize}px`,
+                  height: `${lineSize}px`,
+                  top: `${offset}px`,
+                  left: `${offset}px`,
+                  borderColor: lineColor,
+                  transform: "rotateY(90deg)",
+                }}
               />
             );
           })}
 
         {/* Axis */}
-        <EarthAxis lineColor={lineColor} />
-        <EarthAxis lineColor={lineColor} rotateX={90} />
-      </EarthSphere>
-    </EarthContainer>
+        <div
+          className="absolute h-[2px] w-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
+          }}
+        />
+        <div
+          className="absolute h-[2px] w-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
+            transform: `translate(-50%, -50%) rotateX(90deg)`,
+          }}
+        />
+      </div>
+
+      {/* Tailwind Animation Keyframes */}
+      <style>
+        {`
+          @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+          }
+        `}
+      </style>
+    </div>
   );
 };
 
 export default EarthLoader;
-
-/**
- * TODO: Unit Tests
- * ----------------
- * - Test rendering with default props
- * - Test custom sizes and colors
- * - Test hover interactions when interactive is true
- * - Test reduced motion disables animation
- * - Accessibility label is present
- */
