@@ -72,7 +72,7 @@ export const CodeSharePage: React.FC = () => {
         return;
       }
 
-      // Get share message and password protection from shared_links table
+      // Get share message and password protection from shared_links table FIRST
       const { data: shareData } = await supabase
         .from('shared_links')
         .select('message, password_hash')
@@ -80,7 +80,7 @@ export const CodeSharePage: React.FC = () => {
         .eq('link_type', 'code')
         .maybeSingle();
 
-      // CRITICAL FIX: Check password BEFORE setting file data - prevent showing content without password
+      // CRITICAL: Check password BEFORE setting file data
       const requiresPassword = data.is_locked || !!shareData?.password_hash;
       
       if (requiresPassword) {
@@ -96,9 +96,8 @@ export const CodeSharePage: React.FC = () => {
         return;
       }
 
-      // No password required - show file content
+      // Only set file data and show content if no password required
       setFileData(data);
-      setPasswordRequired(false);
       if (shareData?.message) {
         setShareMessage(shareData.message);
       }
@@ -121,7 +120,7 @@ export const CodeSharePage: React.FC = () => {
   const downloadFile = async () => {
     if (!fileData) return;
 
-    // CRITICAL: Prevent download if password is required but not validated
+    // Check if password is required before downloading
     if (passwordRequired && !password.trim()) {
       toast({
         variant: "destructive",
@@ -133,8 +132,7 @@ export const CodeSharePage: React.FC = () => {
 
     setDownloading(true);
     try {
-      // SECURITY FIX: Validate password if file is locked OR has password_hash
-      if (passwordRequired && password.trim()) {
+      if (fileData.is_locked && password.trim()) {
         const { data: shareLink, error: shareLinkError } = await supabase
           .from('shared_links')
           .select('password_hash, share_token')
@@ -166,25 +164,7 @@ export const CodeSharePage: React.FC = () => {
           
           // Password validated successfully
           setPasswordRequired(false);
-        } else {
-          // Password required but no password_hash found - security error
-          toast({
-            variant: "destructive",
-            title: "Access denied",
-            description: "This file requires password authentication",
-          });
-          setDownloading(false);
-          return;
         }
-      } else if (passwordRequired) {
-        // Password is required but not provided - should not reach here due to earlier check
-        toast({
-          variant: "destructive",
-          title: "Password required",
-          description: "Please enter the password to unlock this file",
-        });
-        setDownloading(false);
-        return;
       }
 
       const { data: fileBlob, error } = await supabase.storage
