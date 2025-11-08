@@ -1,5 +1,13 @@
 import React, { FC, useMemo, useState, useEffect, useRef } from "react";
-import { Shield, Lock, Code } from "lucide-react";
+import {
+  Shield,
+  Lock,
+  Code,
+  Globe,
+  CloudSnow,
+  Database,
+  Zap,
+} from "lucide-react";
 
 interface EarthLoaderProps {
   size?: number;
@@ -13,25 +21,72 @@ interface EarthLoaderProps {
   reduceMotion?: boolean;
 }
 
-const orbitingWords = ["E25", "Links", "Teams", "Privacy", "Control", "Global"];
+const orbitingWords = [
+  "E25",
+  "Links",
+  "Teams",
+  "Privacy",
+  "Control",
+  "Global",
+  "AI",
+  "Sync",
+  "Cloud",
+  "Secure",
+];
 
 const testimonialsData = [
-  { name: "Ali Khan", role: "Designer", message: "SkieShare made our file collaboration seamless!" },
-  { name: "Sara Ahmed", role: "Project Manager", message: "Amazing speed and secure file sharing." },
-  { name: "Hassan R.", role: "Developer", message: "AI categorization saves hours of work." },
-  { name: "Zoya L.", role: "Marketer", message: "Global sharing feature is next-level!" },
-  { name: "Omar F.", role: "Team Lead", message: "Clean UI, fast uploads, very reliable." },
-  { name: "Fatima N.", role: "Analyst", message: "Loved the security & encryption features." },
-  { name: "Bilal S.", role: "Engineer", message: "Collaboration across teams became effortless." },
-  { name: "Hina K.", role: "Designer", message: "Modern and professional design, very Apple-like!" },
-  { name: "Usman Q.", role: "Consultant", message: "Everything we need for enterprise-level sharing." },
+  {
+    name: "Ali Khan",
+    role: "Designer",
+    message: "SkieShare made our file collaboration seamless!",
+  },
+  {
+    name: "Sara Ahmed",
+    role: "Project Manager",
+    message: "Amazing speed and secure file sharing.",
+  },
+  {
+    name: "Hassan R.",
+    role: "Developer",
+    message: "AI categorization saves hours of work.",
+  },
+  {
+    name: "Zoya L.",
+    role: "Marketer",
+    message: "Global sharing feature is next-level!",
+  },
+  {
+    name: "Omar F.",
+    role: "Team Lead",
+    message: "Clean UI, fast uploads, very reliable.",
+  },
+  {
+    name: "Fatima N.",
+    role: "Analyst",
+    message: "Loved the security & encryption features.",
+  },
+  {
+    name: "Bilal S.",
+    role: "Engineer",
+    message: "Collaboration across teams became effortless.",
+  },
+  {
+    name: "Hina K.",
+    role: "Designer",
+    message: "Modern and professional design, very Apple-like!",
+  },
+  {
+    name: "Usman Q.",
+    role: "Consultant",
+    message: "Everything we need for enterprise-level sharing.",
+  },
 ];
 
 const SkieShareSection: FC<EarthLoaderProps> = ({
-  size = 350,
+  size = 400,
   meridians = 36,
   latitudes = 6,
-  rotationSpeed = 20,
+  rotationSpeed = 25,
   lineColor = "#ffffff",
   showWireframe = true,
   interactive = true,
@@ -46,14 +101,14 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
   const meridianArray = useMemo(() => Array.from({ length: meridians }, (_, i) => i), [meridians]);
   const latitudeArray = useMemo(() => Array.from({ length: latitudes }, (_, i) => i), [latitudes]);
 
-  // Update globe rotation angle
+  // Globe rotation effect
   useEffect(() => {
     if (reduceMotion) return;
     const interval = setInterval(() => setAngle((prev) => prev + 1), 40);
     return () => clearInterval(interval);
   }, [reduceMotion]);
 
-  // Handle testimonial loop animation pause/resume
+  // Testimonials hover pause
   useEffect(() => {
     const el = testimonialRef.current;
     if (!el) return;
@@ -68,12 +123,15 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
   };
 
   return (
-    <div className="relative w-full bg-black overflow-hidden py-24">
+    <div className="relative w-full bg-black overflow-hidden py-32">
       {/* Glowing Background */}
       <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/30 via-purple-700/20 to-white/5 blur-3xl -z-10"></div>
 
-      {/* Globe Section */}
-      <div className="mx-auto relative perspective-[1500px]" style={{ width: size, height: size }}>
+      {/* Earth Globe Section */}
+      <div
+        className="mx-auto relative perspective-[1500px]"
+        style={{ width: size, height: size }}
+      >
         <div
           className={`relative w-full h-full rounded-full ${!reduceMotion ? "animate-spin" : ""}`}
           style={earthStyle}
@@ -86,7 +144,10 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
               <div
                 key={`meridian-${i}`}
                 className="absolute w-full h-full rounded-full border border-solid"
-                style={{ borderColor: lineColor, transform: `rotateY(${(i * 360) / meridians}deg)` }}
+                style={{
+                  borderColor: lineColor,
+                  transform: `rotateY(${(i * 360) / meridians}deg)`,
+                }}
               />
             ))}
 
@@ -114,31 +175,35 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
           {/* Axis Cross */}
           <div
             className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }}
+            style={{
+              background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
+            }}
           />
           <div
             className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-x-90"
-            style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }}
+            style={{
+              background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
+            }}
           />
 
           {/* Hover Security Icons */}
           {isHovered && (
-            <div className="absolute top-2 left-2 flex gap-2">
-              <Shield size={24} color={lineColor} />
-              <Lock size={24} color={lineColor} />
-              <Code size={24} color={lineColor} />
+            <div className="absolute top-4 left-4 flex gap-4">
+              <Shield size={28} color={lineColor} />
+              <Lock size={28} color={lineColor} />
+              <Code size={28} color={lineColor} />
             </div>
           )}
 
-          {/* Orbiting Words with visibility control */}
+          {/* Orbiting Words */}
           {orbitingWords.map((word, i) => {
-            const wordAngle = ((angle + (i * 360) / orbitingWords.length) % 360);
-            const radius = size / 2 + 50;
+            const wordAngle = (angle + (i * 360) / orbitingWords.length) % 360;
+            const radius = size / 2 + 60;
             const rad = (wordAngle * Math.PI) / 180;
             const x = radius * Math.cos(rad);
             const z = radius * Math.sin(rad);
 
-            const opacity = z < 0 ? 0.1 : 1; // fade behind testimonials
+            const opacity = z < 0 ? 0.1 : 1;
             const scale = z < 0 ? 0.6 : 1;
 
             return (
@@ -163,33 +228,56 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
         </div>
       </div>
 
+      {/* Secure/Encryption Widgets */}
+      {isHovered && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-10">
+          <div className="flex flex-col items-center text-white">
+            <Globe size={32} className="animate-pulse" />
+            <span className="mt-2 text-sm">Global Sharing</span>
+          </div>
+          <div className="flex flex-col items-center text-white">
+            <Database size={32} className="animate-pulse" />
+            <span className="mt-2 text-sm">Encrypted Storage</span>
+          </div>
+          <div className="flex flex-col items-center text-white">
+            <Zap size={32} className="animate-pulse" />
+            <span className="mt-2 text-sm">AI Categorization</span>
+          </div>
+          <div className="flex flex-col items-center text-white">
+            <CloudSnow size={32} className="animate-pulse" />
+            <span className="mt-2 text-sm">Cloud Sync</span>
+          </div>
+        </div>
+      )}
+
       {/* Testimonials Section */}
       <div
-        className="mt-24 relative overflow-hidden"
+        className="mt-32 relative overflow-hidden px-6"
         onMouseEnter={() => setIsTestimonialHovered(true)}
         onMouseLeave={() => setIsTestimonialHovered(false)}
       >
-        <h2 className="text-3xl md:text-4xl text-white font-extrabold text-center mb-8 tracking-tight">
-          Testimonials
+        <h2 className="text-4xl md:text-5xl text-white font-extrabold text-center mb-12 tracking-tight">
+          What Our Users Say
         </h2>
 
-        {/* Testimonials Loop */}
-        <div className="flex gap-6 w-full overflow-hidden relative">
+        <div className="flex gap-8 w-full overflow-hidden relative">
           <div
             ref={testimonialRef}
-            className="flex gap-6 animate-scroll"
+            className="flex gap-8 animate-scroll"
             style={{
               animationPlayState: isTestimonialHovered ? "paused" : "running",
             }}
           >
-            {testimonialsData.concat(testimonialsData).map((testimonial, i) => (
+            {testimonialsData.concat(testimonialsData).map((t, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-72 md:w-80 p-6 bg-black/70 border border-white/20 rounded-2xl shadow-lg text-white transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                className="flex-shrink-0 w-72 md:w-80 p-6 bg-black/70 border border-white/20 rounded-3xl shadow-xl text-white transform transition duration-300 hover:scale-105 hover:shadow-2xl"
               >
-                <p className="text-sm md:text-base italic mb-4 leading-relaxed">"{testimonial.message}"</p>
-                <p className="font-bold text-white">{testimonial.name}</p>
-                <p className="text-xs md:text-sm text-gray-400">{testimonial.role}</p>
+                <p className="text-sm md:text-base italic mb-4 leading-relaxed">
+                  "{t.message}"
+                </p>
+                <p className="font-bold">{t.name}</p>
+                <p className="text-xs md:text-sm text-gray-400">{t.role}</p>
               </div>
             ))}
           </div>
