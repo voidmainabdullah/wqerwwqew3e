@@ -122,67 +122,67 @@ const FileTransferDemo: React.FC<Props> = ({
   };
 
   // ---------------- Return ----------------
-  return <section className="relative py-16 px-6 md:px-10 bg-black text-white">
+  return <section className="relative py-12 md:py-16 px-4 md:px-6 lg:px-10 bg-black text-white overflow-x-hidden">
       <div className="max-w-6xl mx-auto" ref={stageRef}>
         {/* HEADER */}
-        <motion.div initial="hidden" animate="show" variants={cardFade} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <motion.div initial="hidden" animate="show" variants={cardFade} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-6">
           <div className="max-w-xl">
-            <h2 className="text-3xl font-extrabold tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
               Secure File Transfer — Visual Flow
             </h2>
-            <p className="mt-2 text-sm text-white/70">
+            <p className="mt-2 text-xs md:text-sm text-white/70">
               Clean Apple-grade presentation: upload → encrypt → transfer →
               storage with AES-256 security.
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
             <motion.button whileTap={{
             scale: 0.98
           }} whileHover={{
             scale: 1.05
-          }} onClick={handleBoost} className="px-4 py-2 rounded-lg bg-white text-black text-sm font-medium">
+          }} onClick={handleBoost} className="px-3 md:px-4 py-2 rounded-lg bg-white text-black text-xs md:text-sm font-medium">
               Speed Boost
             </motion.button>
             <motion.button whileTap={{
             scale: 0.98
-          }} onClick={handleReset} className="px-3 py-2 rounded-lg border border-white/10 text-sm">
+          }} onClick={handleReset} className="px-2 md:px-3 py-2 rounded-lg border border-white/10 text-xs md:text-sm">
               Reset
             </motion.button>
           </div>
         </motion.div>
 
         {/* MAIN GRID */}
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="mt-6 md:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
           {/* LEFT */}
-          <div className="lg:col-span-7 space-y-4">
+          <div className="lg:col-span-7 space-y-3 md:space-y-4">
             {/* Main Transfer */}
-            <motion.div variants={cardFade} className="rounded-2xl p-5 bg-[#060606] border border-white/8">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-md bg-white/6 border border-white/8">
-                    <Folder className="w-5 h-5" />
+            <motion.div variants={cardFade} className="rounded-2xl p-4 md:p-5 bg-[#060606] border border-white/8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                  <div className="p-1.5 md:p-2 rounded-md bg-white/6 border border-white/8 flex-shrink-0">
+                    <Folder className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold">Current Transfer</div>
+                  <div className="min-w-0">
+                    <div className="text-xs md:text-sm font-semibold">Current Transfer</div>
                     <div className="text-xs text-white/60 truncate" title={fileName}>
                       {fileName}
                     </div>
                   </div>
                 </div>
 
-                <div className="text-xs text-white/60 flex items-center gap-3">
+                <div className="text-xs text-white/60 flex items-center gap-2 md:gap-3 flex-shrink-0">
                   <div className="text-right">
                     <div className="text-xs text-white/60">Progress</div>
-                    <div className="text-sm font-semibold">{Math.round(progress)}%</div>
+                    <div className="text-xs md:text-sm font-semibold">{Math.round(progress)}%</div>
                   </div>
-                  <div className="w-36">
+                  <div className="w-24 md:w-36">
                     <Meter value={progress} />
                   </div>
                 </div>
               </div>
 
               {/* PIPELINE */}
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3">
                 {[{
                 icon: <UploadCloud />,
                 label: "Upload",

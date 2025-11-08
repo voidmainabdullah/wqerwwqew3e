@@ -53,7 +53,7 @@ const Features = () => {
       y: 0
     }
   };
-  return <section ref={ref} className="relative w-full py-24 md:py-32 bg-black text-white overflow-hidden">
+  return <section ref={ref} className="relative w-full py-16 md:py-24 lg:py-32 bg-black text-white overflow-x-hidden">
       <motion.div initial={{
       opacity: 0,
       y: 40
@@ -62,12 +62,12 @@ const Features = () => {
       y: 0
     } : {}} transition={{
       duration: 0.8
-    }} className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
-        <h2 className="text-4xl md:text-5xl font-semibold mb-14 leading-snug max-w-md text-white">
+    }} className="max-w-6xl mx-auto px-4 md:px-6 lg:px-12 relative z-10">
+        <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold mb-10 md:mb-14 leading-snug max-w-md text-white">
           <span className="text-white">Ensure Every File Reaches -</span> <span className="text-gray-400">not spam folders</span>
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 md:gap-y-12 gap-x-8 md:gap-x-16">
           {features.map((item, i) => <motion.div key={i} variants={fadeUp} initial="hidden" animate={controls} transition={{
           duration: 0.75,
           delay: i * 0.2

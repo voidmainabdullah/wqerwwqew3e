@@ -250,7 +250,7 @@ const HeroSection: React.FC = () => {
   // ---------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------
-  return <section aria-label="Hero - File sharing" className="relative w-full min-h-screen flex items-start justify-center px-6 pt-24 pb-12 overflow-hidden bg-[#0b0b0b] text-white">
+  return <section aria-label="Hero - File sharing" className="relative w-full min-h-screen flex items-start justify-center px-4 md:px-6 pt-24 pb-12 overflow-x-hidden bg-[#0b0b0b] text-white">
 
       {/* Blue blurred gradient (low opacity) and subtle grid overlay */}
       <div aria-hidden className="absolute inset-0 pointer-events-none">
@@ -270,7 +270,7 @@ const HeroSection: React.FC = () => {
         </svg>
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+      <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
         {/* Left column: Title, description, upload zone */}
         <div className="space-y-6">
           <motion.h1 initial={{
@@ -283,7 +283,7 @@ const HeroSection: React.FC = () => {
           duration: 0.6
         }} style={{
           fontFamily: "'Exo', sans-serif"
-        }} className=" bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 lg:text-4xl">
+        }} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
             Share Files.{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
               Fast & Secure.
@@ -305,10 +305,10 @@ const HeroSection: React.FC = () => {
           delay: 0.15
         }} style={{
           fontFamily: "'Urbanist', sans-serif"
-        }} className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-xl md:text-lg">Upload massive files instantly with end-to-end encryption. Zero storage limits. Built for teams who value speed, privacy, and complete control.</motion.p>
+        }} className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed max-w-xl">Upload massive files instantly with end-to-end encryption. Zero storage limits. Built for teams who value speed, privacy, and complete control.</motion.p>
 
          {/* CTA Buttons */}
-        <motion.div initial={{
+         <motion.div initial={{
           opacity: 0,
           y: 10
         }} animate={{
@@ -317,16 +317,16 @@ const HeroSection: React.FC = () => {
         }} transition={{
           duration: 0.5,
           delay: 0.2
-        }} className="flex flex-wrap gap-4">
+        }} className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
   {/* Primary CTA */}
-  <Button onClick={() => navigate("/auth")} size="lg" className="flex items-center px-8 py-6 text-base font-semibold rounded-xl shadow-lg transition-all text-white bg-transparent">
-    <ArrowRight className="w-5 h-5 mr-2" />
+  <Button onClick={() => navigate("/auth")} size="lg" className="flex items-center justify-center px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold rounded-xl shadow-lg transition-all text-white bg-transparent w-full sm:w-auto">
+    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
     Get Started
   </Button>
 
   {/* Outline CTA */}
-  <Button onClick={() => navigate("/dashboard")} size="lg" variant="outline" className="flex items-center px-8 py-6 text-base font-semibold rounded-xl border border-neutral-700 text-white hover:bg-neutral-800 hover:border-neutral-500 transition-all">
-    <LayoutDashboard className="w-5 h-5 mr-2" />
+  <Button onClick={() => navigate("/dashboard")} size="lg" variant="outline" className="flex items-center justify-center px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold rounded-xl border border-neutral-700 text-white hover:bg-neutral-800 hover:border-neutral-500 transition-all w-full sm:w-auto">
+    <LayoutDashboard className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
     Go to Dashboard
   </Button>
         </motion.div>
@@ -341,24 +341,22 @@ const HeroSection: React.FC = () => {
           duration: 0.6,
           delay: 0.3
         }}>
-            <div ref={dropRef} role="button" tabIndex={0} onKeyDown={handleKeyOpen} aria-label="Upload files (drag and drop or click to select)" onClick={() => inputRef.current?.click()} className="relative w-full rounded-2xl border  bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-300/50 hover:border-zinc-600/50 transition-all">
+            <div ref={dropRef} role="button" tabIndex={0} onKeyDown={handleKeyOpen} aria-label="Upload files (drag and drop or click to select)" onClick={() => inputRef.current?.click()} className="relative w-full rounded-2xl border bg-gradient-to-b from-[#0f0f0f] to-[#0b0b0b] p-6 sm:p-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-300/50 hover:border-zinc-600/50 transition-all">
               <input ref={inputRef} type="file" multiple aria-hidden className="hidden" onChange={handleInputChange} />
 
-              <div className="flex flex-col items-center justify-center text-center gap-4">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full border border-stone-600/20 bg-[#eef0f3]/10">
-                  <Upload className="w-8 h-8 text-zinc-300" />
+              <div className="flex flex-col items-center justify-center text-center gap-3 sm:gap-4">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-stone-600/20 bg-[#eef0f3]/10">
+                  <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-zinc-300" />
                 </div>
 
                 <div>
-                  <p className="text-lg font-medium text-white mb-1">
+                  <p className="text-base sm:text-lg font-medium text-white mb-1">
                     Drag & drop files here
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-xs sm:text-sm text-gray-400">
                     or click to browse • PDF, DOC, JPG, PNG, MP4 • Max 2GB
                   </p>
                 </div>
-
-                
               </div>
             </div>
           </motion.div>
