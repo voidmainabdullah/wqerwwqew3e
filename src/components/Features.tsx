@@ -64,7 +64,7 @@ const Features = () => {
       duration: 0.8
     }} className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         <h2 className="text-4xl md:text-5xl font-semibold mb-14 leading-snug max-w-md text-white">
-          <span className="text-white"> Its Destination</span> <span className="text-gray-400">not spam folders</span>
+          <span className="text-white">Ensure Every File Reaches -</span> <span className="text-gray-400">not spam folders</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-16">
