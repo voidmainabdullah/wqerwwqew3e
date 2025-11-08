@@ -13,7 +13,7 @@ interface EarthLoaderProps {
   reduceMotion?: boolean;
 }
 
-const orbitingWords = ["SkieShare", "Security", "Encryption", "Collaboration", "Analytics"];
+const orbitingWords = ["E25", "Links", "Teams", "Privacy", "Control", "Global"];
 
 const EarthLoader: FC<EarthLoaderProps> = ({
   size = 300,
@@ -32,11 +32,12 @@ const EarthLoader: FC<EarthLoaderProps> = ({
   const meridianArray = useMemo(() => Array.from({ length: meridians }, (_, i) => i), [meridians]);
   const latitudeArray = useMemo(() => Array.from({ length: latitudes }, (_, i) => i), [latitudes]);
 
+  // Update orbiting angle
   useEffect(() => {
     if (reduceMotion) return;
     const interval = setInterval(() => {
       setAngle((prev) => prev + 1);
-    }, 50); // controls orbit speed
+    }, 40); // smooth orbit speed
     return () => clearInterval(interval);
   }, [reduceMotion]);
 
@@ -49,7 +50,6 @@ const EarthLoader: FC<EarthLoaderProps> = ({
 
   return (
     <div className="mx-auto my-12 relative perspective-[1500px]" style={{ width: size, height: size }} aria-label={ariaLabel}>
-      
       {/* Earth */}
       <div
         className={`relative w-full h-full rounded-full ${!reduceMotion ? "animate-spin" : ""}`}
@@ -58,40 +58,49 @@ const EarthLoader: FC<EarthLoaderProps> = ({
         onMouseLeave={() => interactive && setIsHovered(false)}
       >
         {/* Wireframe */}
-        {showWireframe && meridianArray.map((i) => (
-          <div
-            key={`meridian-${i}`}
-            className="absolute w-full h-full rounded-full border border-solid"
-            style={{
-              borderColor: lineColor,
-              transform: `rotateY(${(i * 360) / meridians}deg)`,
-            }}
-          />
-        ))}
-        {showWireframe && latitudeArray.map((i) => {
-          const ringSize = size * (1 - i / (latitudes * 1.5));
-          const offset = (size - ringSize) / 2;
-          return (
+        {showWireframe &&
+          meridianArray.map((i) => (
             <div
-              key={`latitude-${i}`}
-              className="absolute rounded-full border border-solid"
+              key={`meridian-${i}`}
+              className="absolute w-full h-full rounded-full border border-solid"
               style={{
-                width: `${ringSize}px`,
-                height: `${ringSize}px`,
-                top: `${offset}px`,
-                left: `${offset}px`,
                 borderColor: lineColor,
-                transform: "rotateX(90deg)",
+                transform: `rotateY(${(i * 360) / meridians}deg)`,
               }}
             />
-          );
-        })}
+          ))}
+
+        {showWireframe &&
+          latitudeArray.map((i) => {
+            const ringSize = size * (1 - i / (latitudes * 1.5));
+            const offset = (size - ringSize) / 2;
+            return (
+              <div
+                key={`latitude-${i}`}
+                className="absolute rounded-full border border-solid"
+                style={{
+                  width: `${ringSize}px`,
+                  height: `${ringSize}px`,
+                  top: `${offset}px`,
+                  left: `${offset}px`,
+                  borderColor: lineColor,
+                  transform: "rotateX(90deg)",
+                }}
+              />
+            );
+          })}
 
         {/* Axis Cross */}
-        <div className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }} />
-        <div className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-x-90" style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }} />
+        <div
+          className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }}
+        />
+        <div
+          className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-x-90"
+          style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }}
+        />
 
-        {/* Security/Encryption Icons on hover */}
+        {/* Hover Icons */}
         {isHovered && (
           <div className="absolute top-2 left-2 flex gap-2">
             <Shield size={24} color={lineColor} />
@@ -100,22 +109,32 @@ const EarthLoader: FC<EarthLoaderProps> = ({
           </div>
         )}
 
-        {/* Orbiting Text */}
+        {/* Orbiting Words - 3D depth effect */}
         {orbitingWords.map((word, i) => {
-          const angleDeg = (angle + (i * 360) / orbitingWords.length) % 360;
-          const radius = size / 2 + 40;
-          const rad = (angleDeg * Math.PI) / 180;
+          const wordAngle = ((angle + (i * 360) / orbitingWords.length) % 360);
+          const radius = size / 2 + 50; // distance from center
+          const rad = (wordAngle * Math.PI) / 180;
+
           const x = radius * Math.cos(rad);
-          const y = radius * Math.sin(rad);
+          const z = radius * Math.sin(rad); // Z used for opacity
+
+          // Back words are more transparent
+          const opacity = z < 0 ? 0.1 : 1;
+
+          const scale = z < 0 ? 0.6 : 1; // small scale for back words
+
           return (
             <div
               key={`orbit-word-${i}`}
               className="absolute text-white font-bold select-none pointer-events-none"
               style={{
-                left: `${size / 2 + x - 30}px`,
-                top: `${size / 2 + y - 10}px`,
+                left: `${size / 2 + x - 25}px`,
+                top: `${size / 2 - 10}px`,
+                transform: `scale(${scale})`,
+                opacity,
                 fontSize: "1.2rem",
-                textShadow: "2px 2px 12px rgba(0,0,0,0.6)",
+                textShadow: "1px 1px 8px rgba(0,0,0,0.7)",
+                transition: "opacity 0.2s, transform 0.2s",
               }}
             >
               {word}
