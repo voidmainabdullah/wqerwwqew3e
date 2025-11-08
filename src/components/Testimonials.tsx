@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState, useEffect } from "react";
+import React, { FC, useMemo, useState, useEffect, useRef } from "react";
 import { Shield, Lock, Code } from "lucide-react";
 
 interface EarthLoaderProps {
@@ -40,16 +40,25 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [angle, setAngle] = useState(0);
+  const testimonialRef = useRef<HTMLDivElement>(null);
+  const [isTestimonialHovered, setIsTestimonialHovered] = useState(false);
 
   const meridianArray = useMemo(() => Array.from({ length: meridians }, (_, i) => i), [meridians]);
   const latitudeArray = useMemo(() => Array.from({ length: latitudes }, (_, i) => i), [latitudes]);
 
-  // Orbiting angle update
+  // Update globe rotation angle
   useEffect(() => {
     if (reduceMotion) return;
     const interval = setInterval(() => setAngle((prev) => prev + 1), 40);
     return () => clearInterval(interval);
   }, [reduceMotion]);
+
+  // Handle testimonial loop animation pause/resume
+  useEffect(() => {
+    const el = testimonialRef.current;
+    if (!el) return;
+    el.style.animationPlayState = isTestimonialHovered ? "paused" : "running";
+  }, [isTestimonialHovered]);
 
   const earthStyle: React.CSSProperties = {
     width: `${size}px`,
@@ -71,7 +80,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
           onMouseEnter={() => interactive && setIsHovered(true)}
           onMouseLeave={() => interactive && setIsHovered(false)}
         >
-          {/* Wireframe */}
+          {/* Wireframe Meridians */}
           {showWireframe &&
             meridianArray.map((i) => (
               <div
@@ -81,6 +90,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
               />
             ))}
 
+          {/* Wireframe Latitudes */}
           {showWireframe &&
             latitudeArray.map((i) => {
               const ringSize = size * (1 - i / (latitudes * 1.5));
@@ -101,7 +111,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
               );
             })}
 
-          {/* Axis */}
+          {/* Axis Cross */}
           <div
             className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }}
@@ -111,7 +121,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
             style={{ background: `linear-gradient(to left, transparent, ${lineColor}, transparent)` }}
           />
 
-          {/* Hover Icons */}
+          {/* Hover Security Icons */}
           {isHovered && (
             <div className="absolute top-2 left-2 flex gap-2">
               <Shield size={24} color={lineColor} />
@@ -120,7 +130,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
             </div>
           )}
 
-          {/* Orbiting Words */}
+          {/* Orbiting Words with visibility control */}
           {orbitingWords.map((word, i) => {
             const wordAngle = ((angle + (i * 360) / orbitingWords.length) % 360);
             const radius = size / 2 + 50;
@@ -128,7 +138,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
             const x = radius * Math.cos(rad);
             const z = radius * Math.sin(rad);
 
-            const opacity = z < 0 ? 0.1 : 1;
+            const opacity = z < 0 ? 0.1 : 1; // fade behind testimonials
             const scale = z < 0 ? 0.6 : 1;
 
             return (
@@ -143,6 +153,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
                   fontSize: "1.2rem",
                   textShadow: "1px 1px 12px rgba(0,0,0,0.7)",
                   transition: "opacity 0.2s, transform 0.2s",
+                  zIndex: z > 0 ? 1 : 0,
                 }}
               >
                 {word}
@@ -153,25 +164,39 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
       </div>
 
       {/* Testimonials Section */}
-      <div className="mt-24 relative overflow-hidden">
-        <h2 className="text-3xl text-white font-extrabold text-center mb-8">Testimonials</h2>
-        <div className="flex gap-6 w-full overflow-x-hidden relative">
-          <div className="flex gap-6 animate-scroll">
-            {testimonialsData.map((testimonial, i) => (
+      <div
+        className="mt-24 relative overflow-hidden"
+        onMouseEnter={() => setIsTestimonialHovered(true)}
+        onMouseLeave={() => setIsTestimonialHovered(false)}
+      >
+        <h2 className="text-3xl md:text-4xl text-white font-extrabold text-center mb-8 tracking-tight">
+          Testimonials
+        </h2>
+
+        {/* Testimonials Loop */}
+        <div className="flex gap-6 w-full overflow-hidden relative">
+          <div
+            ref={testimonialRef}
+            className="flex gap-6 animate-scroll"
+            style={{
+              animationPlayState: isTestimonialHovered ? "paused" : "running",
+            }}
+          >
+            {testimonialsData.concat(testimonialsData).map((testimonial, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-72 p-6 bg-black/70 border border-white/20 rounded-2xl shadow-lg text-white"
+                className="flex-shrink-0 w-72 md:w-80 p-6 bg-black/70 border border-white/20 rounded-2xl shadow-lg text-white transform transition duration-300 hover:scale-105 hover:shadow-2xl"
               >
-                <p className="text-sm italic mb-4">"{testimonial.message}"</p>
-                <p className="font-bold">{testimonial.name}</p>
-                <p className="text-xs text-gray-400">{testimonial.role}</p>
+                <p className="text-sm md:text-base italic mb-4 leading-relaxed">"{testimonial.message}"</p>
+                <p className="font-bold text-white">{testimonial.name}</p>
+                <p className="text-xs md:text-sm text-gray-400">{testimonial.role}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Tailwind Animations */}
+      {/* Animations */}
       <style>
         {`
           @keyframes spin {
@@ -179,12 +204,13 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
             to { transform: rotateY(360deg); }
           }
           @keyframes scroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
           }
           .animate-scroll {
             display: flex;
             animation: scroll 40s linear infinite;
+            will-change: transform;
           }
         `}
       </style>
