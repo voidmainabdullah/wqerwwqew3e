@@ -1,28 +1,20 @@
 import React, { FC, useMemo, useState } from "react";
+import { Shield, Lock, Code } from "lucide-react";
 
 interface EarthLoaderProps {
-  /** Size of the Earth in pixels */
   size?: number;
-  /** Number of meridians (vertical lines) */
   meridians?: number;
-  /** Number of latitudes (horizontal rings) */
   latitudes?: number;
-  /** Rotation speed in seconds */
   rotationSpeed?: number;
-  /** Line color */
   lineColor?: string;
-  /** Show wireframe */
   showWireframe?: boolean;
-  /** Enable hover interactions */
   interactive?: boolean;
-  /** Accessibility label */
   ariaLabel?: string;
-  /** Reduced motion support */
   reduceMotion?: boolean;
 }
 
 const EarthLoader: FC<EarthLoaderProps> = ({
-  size = 256,
+  size = 300,
   meridians = 36,
   latitudes = 6,
   rotationSpeed = 20,
@@ -35,9 +27,10 @@ const EarthLoader: FC<EarthLoaderProps> = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const meridianArray = useMemo(
-    () => Array.from({ length: meridians }, (_, i) => i + 1),
+    () => Array.from({ length: meridians }, (_, i) => i),
     [meridians]
   );
+
   const latitudeArray = useMemo(
     () => Array.from({ length: latitudes }, (_, i) => i),
     [latitudes]
@@ -46,22 +39,18 @@ const EarthLoader: FC<EarthLoaderProps> = ({
   const earthStyle: React.CSSProperties = {
     width: `${size}px`,
     height: `${size}px`,
-    animation: !reduceMotion
-      ? `spin ${rotationSpeed}s linear infinite`
-      : undefined,
     transformStyle: "preserve-3d",
+    animation: !reduceMotion ? `spin ${rotationSpeed}s linear infinite` : undefined,
   };
 
   return (
     <div
-      className="mx-auto mb-12 perspective-[1200px]"
+      className="mx-auto my-12 perspective-[1500px]"
       style={{ width: size, height: size }}
       aria-label={ariaLabel}
     >
       <div
-        className={`relative w-full h-full rounded-full ${
-          !reduceMotion ? "animate-spin" : ""
-        }`}
+        className={`relative w-full h-full rounded-full ${!reduceMotion ? "animate-spin" : ""}`}
         style={earthStyle}
         onMouseEnter={() => interactive && setIsHovered(true)}
         onMouseLeave={() => interactive && setIsHovered(false)}
@@ -71,10 +60,10 @@ const EarthLoader: FC<EarthLoaderProps> = ({
           meridianArray.map((i) => (
             <div
               key={`meridian-${i}`}
-              className={`absolute w-full h-full rounded-full border`}
+              className="absolute w-full h-full rounded-full border border-solid"
               style={{
                 borderColor: lineColor,
-                transform: `rotateX(${i * (360 / meridians)}deg)`,
+                transform: `rotateY(${(i * 360) / meridians}deg)`,
               }}
             />
           ))}
@@ -82,41 +71,49 @@ const EarthLoader: FC<EarthLoaderProps> = ({
         {/* Latitudes */}
         {showWireframe &&
           latitudeArray.map((i) => {
-            const lineSize = size + 44 - i * 40;
-            const offset = i * 20;
+            const ringSize = size * (1 - i / (latitudes * 1.5));
+            const offset = (size - ringSize) / 2;
             return (
               <div
                 key={`latitude-${i}`}
-                className="absolute rounded-full border"
+                className="absolute rounded-full border border-solid"
                 style={{
-                  width: `${lineSize}px`,
-                  height: `${lineSize}px`,
+                  width: `${ringSize}px`,
+                  height: `${ringSize}px`,
                   top: `${offset}px`,
                   left: `${offset}px`,
                   borderColor: lineColor,
-                  transform: "rotateY(90deg)",
+                  transform: "rotateX(90deg)",
                 }}
               />
             );
           })}
 
-        {/* Axis */}
+        {/* Axis Cross */}
         <div
-          className="absolute h-[2px] w-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           style={{
             background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
           }}
         />
         <div
-          className="absolute h-[2px] w-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-x-90"
           style={{
             background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
-            transform: `translate(-50%, -50%) rotateX(90deg)`,
           }}
         />
+
+        {/* Optional Security/Encryption Icons */}
+        {isHovered && (
+          <div className="absolute top-2 left-2 flex gap-2">
+            <Shield size={24} color={lineColor} />
+            <Lock size={24} color={lineColor} />
+            <Code size={24} color={lineColor} />
+          </div>
+        )}
       </div>
 
-      {/* Tailwind Animation Keyframes */}
+      {/* Animation Keyframes */}
       <style>
         {`
           @keyframes spin {
