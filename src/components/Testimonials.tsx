@@ -1,5 +1,4 @@
 import React, { FC, useMemo, useState, useEffect, useRef } from "react";
-import { Globe, CloudSnow, Database, Zap } from "lucide-react";
 
 interface EarthLoaderProps {
   size?: number;
@@ -8,23 +7,9 @@ interface EarthLoaderProps {
   rotationSpeed?: number;
   lineColor?: string;
   showWireframe?: boolean;
-  interactive?: boolean;
   ariaLabel?: string;
   reduceMotion?: boolean;
 }
-
-const orbitingWords = [
-  "E25",
-  "Links",
-  "Teams",
-  "Privacy",
-  "Control",
-  "Global",
-  "AI",
-  "Sync",
-  "Cloud",
-  "Secure",
-];
 
 const testimonialsData = [
   {
@@ -76,28 +61,19 @@ const testimonialsData = [
 
 const SkieShareSection: FC<EarthLoaderProps> = ({
   size = 400,
-  meridians = 36,
-  latitudes = 6,
-  rotationSpeed = 25,
-  lineColor = "#ffffff",
+  meridians = 24,
+  latitudes = 8,
+  rotationSpeed = 30,
+  lineColor = "rgba(255, 255, 255, 0.15)",
   showWireframe = true,
-  interactive = true,
   ariaLabel = "3D rotating Earth",
   reduceMotion = false,
 }) => {
-  const [angle, setAngle] = useState(0);
   const testimonialRef = useRef<HTMLDivElement>(null);
   const [isTestimonialHovered, setIsTestimonialHovered] = useState(false);
 
   const meridianArray = useMemo(() => Array.from({ length: meridians }, (_, i) => i), [meridians]);
   const latitudeArray = useMemo(() => Array.from({ length: latitudes }, (_, i) => i), [latitudes]);
-
-  // Globe rotation effect
-  useEffect(() => {
-    if (reduceMotion) return;
-    const interval = setInterval(() => setAngle((prev) => prev + 1), 40);
-    return () => clearInterval(interval);
-  }, [reduceMotion]);
 
   // Testimonials hover pause
   useEffect(() => {
@@ -114,24 +90,26 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
   };
 
   return (
-    <div className="relative w-full bg-black overflow-hidden py-32">
-      {/* Glowing Background */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/30 via-purple-700/20 to-white/5 blur-3xl -z-10"></div>
+    <div className="relative w-full bg-black overflow-hidden py-24 md:py-32">
+      {/* Subtle Background Glow */}
+      <div className="absolute inset-0 bg-gradient-radial from-white/5 via-transparent to-transparent blur-3xl -z-10"></div>
 
       {/* Earth Globe Section */}
-      <div className="mx-auto relative perspective-[1500px]" style={{ width: size, height: size }}>
+      <div className="mx-auto relative perspective-[1500px] mb-24" style={{ width: size, height: size }}>
         <div
-          className={`relative w-full h-full rounded-full ${!reduceMotion ? "animate-spin" : ""}`}
+          className="relative w-full h-full rounded-full"
           style={earthStyle}
+          aria-label={ariaLabel}
         >
           {/* Wireframe Meridians */}
           {showWireframe &&
             meridianArray.map((i) => (
               <div
                 key={`meridian-${i}`}
-                className="absolute w-full h-full rounded-full border border-solid"
+                className="absolute w-full h-full rounded-full border"
                 style={{
                   borderColor: lineColor,
+                  borderWidth: '1px',
                   transform: `rotateY(${(i * 360) / meridians}deg)`,
                 }}
               />
@@ -140,121 +118,78 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
           {/* Wireframe Latitudes */}
           {showWireframe &&
             latitudeArray.map((i) => {
-              const ringSize = size * (1 - i / (latitudes * 1.5));
+              const ringSize = size * (1 - i / (latitudes * 1.2));
               const offset = (size - ringSize) / 2;
               return (
                 <div
                   key={`latitude-${i}`}
-                  className="absolute rounded-full border border-solid"
+                  className="absolute rounded-full border"
                   style={{
                     width: `${ringSize}px`,
                     height: `${ringSize}px`,
                     top: `${offset}px`,
                     left: `${offset}px`,
                     borderColor: lineColor,
+                    borderWidth: '1px',
                     transform: "rotateX(90deg)",
                   }}
                 />
               );
             })}
 
-          {/* Axis Cross */}
-          <div
-            className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{
-              background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
-            }}
-          />
-          <div
-            className="absolute h-[2px] w-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-x-90"
-            style={{
-              background: `linear-gradient(to left, transparent, ${lineColor}, transparent)`,
-            }}
-          />
-
-          {/* Orbiting Words */}
-          {orbitingWords.map((word, i) => {
-            const wordAngle = (angle + (i * 360) / orbitingWords.length) % 360;
-            const radius = size / 2 + 60;
-            const rad = (wordAngle * Math.PI) / 180;
-            const x = radius * Math.cos(rad);
-            const z = radius * Math.sin(rad);
-
-            const opacity = z < 0 ? 0.1 : 1;
-            const scale = z < 0 ? 0.6 : 1;
-
-            return (
-              <div
-                key={`orbit-word-${i}`}
-                className="absolute text-white font-bold select-none pointer-events-none"
-                style={{
-                  left: `${size / 2 + x - 25}px`,
-                  top: `${size / 2 - 10}px`,
-                  transform: `scale(${scale})`,
-                  opacity,
-                  fontSize: "1.4rem",
-                  textShadow: "1px 1px 12px rgba(0,0,0,0.7)",
-                  transition: "opacity 0.2s, transform 0.2s",
-                  zIndex: z > 0 ? 1 : 0,
-                }}
-              >
-                {word}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Next-Level Glow & Depth Orbits */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          {[...Array(20)].map((_, i) => {
-            const angleRad = ((i * 360) / 20) * (Math.PI / 180);
-            const orbitRadius = size / 2 + 30 + i * 3;
-            const x = orbitRadius * Math.cos(angleRad);
-            const y = orbitRadius * Math.sin(angleRad);
-            return (
-              <div
-                key={i}
-                className="absolute w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"
-                style={{
-                  left: `${size / 2 + x}px`,
-                  top: `${size / 2 + y}px`,
-                }}
-              />
-            );
-          })}
+          {/* Subtle Center Glow */}
+          <div className="absolute inset-0 rounded-full bg-white/5 blur-2xl scale-75" />
         </div>
       </div>
 
       {/* Testimonials Section */}
-      <div
-        className="mt-40 relative overflow-hidden px-6"
-        onMouseEnter={() => setIsTestimonialHovered(true)}
-        onMouseLeave={() => setIsTestimonialHovered(false)}
-      >
-        <h1 className="text-6xl md:text-7xl lg:text-8xl text-center font-extrabold text-white mb-12 tracking-tight">
-          Trusted by Teams Worldwide
-        </h1>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
+            Trusted by Teams Worldwide
+          </h2>
+          <p className="text-lg text-white/60 max-w-2xl mx-auto">
+            Join thousands of professionals who rely on SkieShare for secure, efficient file sharing.
+          </p>
+        </div>
 
-        <div className="flex gap-8 w-full overflow-hidden relative">
-          <div
-            ref={testimonialRef}
-            className="flex gap-8 animate-scroll"
-            style={{
-              animationPlayState: isTestimonialHovered ? "paused" : "running",
-            }}
-          >
-            {testimonialsData.concat(testimonialsData).map((t, i) => (
-              <div
-                key={i}
-                className="flex-shrink-0 w-72 md:w-80 p-6 bg-black/70 border border-white/20 rounded-3xl shadow-xl text-white transform transition duration-300 hover:scale-105 hover:shadow-2xl"
-              >
-                <p className="text-sm md:text-base italic mb-4 leading-relaxed">
-                  "{t.message}"
-                </p>
-                <p className="font-bold">{t.name}</p>
-                <p className="text-xs md:text-sm text-gray-400">{t.role}</p>
-              </div>
-            ))}
+        <div
+          className="relative overflow-hidden"
+          onMouseEnter={() => setIsTestimonialHovered(true)}
+          onMouseLeave={() => setIsTestimonialHovered(false)}
+        >
+          {/* Fade Edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+
+          <div className="flex gap-6 w-full">
+            <div
+              ref={testimonialRef}
+              className="flex gap-6 animate-scroll"
+              style={{
+                animationPlayState: isTestimonialHovered ? "paused" : "running",
+              }}
+            >
+              {testimonialsData.concat(testimonialsData).map((t, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 w-80 p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl text-white transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:scale-[1.02] group"
+                >
+                  <div className="mb-6">
+                    <svg className="w-8 h-8 text-white/30 group-hover:text-white/40 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                  </div>
+                  <p className="text-base leading-relaxed mb-6 text-white/90">
+                    {t.message}
+                  </p>
+                  <div className="border-t border-white/10 pt-4">
+                    <p className="font-semibold text-white">{t.name}</p>
+                    <p className="text-sm text-white/50">{t.role}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -272,8 +207,13 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
           }
           .animate-scroll {
             display: flex;
-            animation: scroll 40s linear infinite;
+            animation: scroll 50s linear infinite;
             will-change: transform;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .animate-scroll {
+              animation: none;
+            }
           }
         `}
       </style>
