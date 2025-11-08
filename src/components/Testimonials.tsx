@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useState, useEffect } from "react";
-import { ShieldCheckIcon, LockClosedIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
+import { Shield, Lock, Code } from "lucide-react"; // ✅ Lucide icons
 
 interface EarthLoaderProps {
   size?: number;
@@ -11,9 +11,7 @@ interface EarthLoaderProps {
   interactive?: boolean;
   ariaLabel?: string;
   reduceMotion?: boolean;
-  /** Number of animated file dots around globe */
   fileCount?: number;
-  /** File dot color */
   fileColor?: string;
 }
 
@@ -33,11 +31,9 @@ const EarthLoader: FC<EarthLoaderProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [filePositions, setFilePositions] = useState<{ x: number; y: number; z: number }[]>([]);
 
-  // Meridians & latitudes arrays
   const meridianArray = useMemo(() => Array.from({ length: meridians }, (_, i) => i + 1), [meridians]);
   const latitudeArray = useMemo(() => Array.from({ length: latitudes }, (_, i) => i), [latitudes]);
 
-  // Initialize file dots positions randomly around globe
   useEffect(() => {
     const positions = Array.from({ length: fileCount }, () => ({
       x: Math.random() * 2 - 1,
@@ -65,7 +61,7 @@ const EarthLoader: FC<EarthLoaderProps> = ({
         onMouseEnter={() => interactive && setIsHovered(true)}
         onMouseLeave={() => interactive && setIsHovered(false)}
       >
-        {/* Wireframe Meridians */}
+        {/* Meridians */}
         {showWireframe &&
           meridianArray.map((i) => (
             <div
@@ -78,7 +74,7 @@ const EarthLoader: FC<EarthLoaderProps> = ({
             />
           ))}
 
-        {/* Wireframe Latitudes */}
+        {/* Latitudes */}
         {showWireframe &&
           latitudeArray.map((i) => {
             const lineSize = size + 44 - i * 40;
@@ -99,7 +95,7 @@ const EarthLoader: FC<EarthLoaderProps> = ({
             );
           })}
 
-        {/* Axis Lines */}
+        {/* Axis */}
         <div
           className="absolute h-[2px] w-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           style={{
@@ -123,7 +119,7 @@ const EarthLoader: FC<EarthLoaderProps> = ({
           return (
             <div
               key={`file-${idx}`}
-              className="absolute w-3 h-3 rounded-full bg-blue-500 shadow-lg"
+              className="absolute w-3 h-3 rounded-full shadow-lg"
               style={{
                 transform: `translate3d(${x}px, ${y}px, ${z}px)`,
                 animation: `fileOrbit ${5 + idx}s linear infinite`,
@@ -136,19 +132,19 @@ const EarthLoader: FC<EarthLoaderProps> = ({
 
       {/* Security Widget */}
       <div className="absolute top-2 left-2 flex items-center gap-1 bg-black bg-opacity-50 p-1 rounded-lg shadow-md">
-        <ShieldCheckIcon className="w-5 h-5 text-green-400" />
+        <Shield className="w-5 h-5 text-green-400" />
         <span className="text-white text-xs font-medium">Secure</span>
       </div>
 
       {/* Lock Widget */}
       <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black bg-opacity-50 p-1 rounded-lg shadow-md">
-        <LockClosedIcon className="w-5 h-5 text-red-400" />
+        <Lock className="w-5 h-5 text-red-400" />
         <span className="text-white text-xs font-medium">Encrypted</span>
       </div>
 
       {/* Code Widget */}
       <div className="absolute bottom-2 right-2 flex items-center gap-1 bg-black bg-opacity-50 p-1 rounded-lg shadow-md">
-        <CodeBracketIcon className="w-5 h-5 text-blue-400" />
+        <Code className="w-5 h-5 text-blue-400" />
         <span className="text-white text-xs font-medium">Code</span>
       </div>
 
@@ -170,4 +166,3 @@ const EarthLoader: FC<EarthLoaderProps> = ({
 };
 
 export default EarthLoader;
-
