@@ -1,13 +1,5 @@
 import React, { FC, useMemo, useState, useEffect, useRef } from "react";
-import {
-  Shield,
-  Lock,
-  Code,
-  Globe,
-  CloudSnow,
-  Database,
-  Zap,
-} from "lucide-react";
+import { Globe, CloudSnow, Database, Zap } from "lucide-react";
 
 interface EarthLoaderProps {
   size?: number;
@@ -93,7 +85,6 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
   ariaLabel = "3D rotating Earth",
   reduceMotion = false,
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [angle, setAngle] = useState(0);
   const testimonialRef = useRef<HTMLDivElement>(null);
   const [isTestimonialHovered, setIsTestimonialHovered] = useState(false);
@@ -128,15 +119,10 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
       <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/30 via-purple-700/20 to-white/5 blur-3xl -z-10"></div>
 
       {/* Earth Globe Section */}
-      <div
-        className="mx-auto relative perspective-[1500px]"
-        style={{ width: size, height: size }}
-      >
+      <div className="mx-auto relative perspective-[1500px]" style={{ width: size, height: size }}>
         <div
           className={`relative w-full h-full rounded-full ${!reduceMotion ? "animate-spin" : ""}`}
           style={earthStyle}
-          onMouseEnter={() => interactive && setIsHovered(true)}
-          onMouseLeave={() => interactive && setIsHovered(false)}
         >
           {/* Wireframe Meridians */}
           {showWireframe &&
@@ -186,15 +172,6 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
             }}
           />
 
-          {/* Hover Security Icons */}
-          {isHovered && (
-            <div className="absolute top-4 left-4 flex gap-4">
-              <Shield size={28} color={lineColor} />
-              <Lock size={28} color={lineColor} />
-              <Code size={28} color={lineColor} />
-            </div>
-          )}
-
           {/* Orbiting Words */}
           {orbitingWords.map((word, i) => {
             const wordAngle = (angle + (i * 360) / orbitingWords.length) % 360;
@@ -215,7 +192,7 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
                   top: `${size / 2 - 10}px`,
                   transform: `scale(${scale})`,
                   opacity,
-                  fontSize: "1.2rem",
+                  fontSize: "1.4rem",
                   textShadow: "1px 1px 12px rgba(0,0,0,0.7)",
                   transition: "opacity 0.2s, transform 0.2s",
                   zIndex: z > 0 ? 1 : 0,
@@ -226,39 +203,37 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
             );
           })}
         </div>
-      </div>
 
-      {/* Secure/Encryption Widgets */}
-      {isHovered && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-10">
-          <div className="flex flex-col items-center text-white">
-            <Globe size={32} className="animate-pulse" />
-            <span className="mt-2 text-sm">Global Sharing</span>
-          </div>
-          <div className="flex flex-col items-center text-white">
-            <Database size={32} className="animate-pulse" />
-            <span className="mt-2 text-sm">Encrypted Storage</span>
-          </div>
-          <div className="flex flex-col items-center text-white">
-            <Zap size={32} className="animate-pulse" />
-            <span className="mt-2 text-sm">AI Categorization</span>
-          </div>
-          <div className="flex flex-col items-center text-white">
-            <CloudSnow size={32} className="animate-pulse" />
-            <span className="mt-2 text-sm">Cloud Sync</span>
-          </div>
+        {/* Next-Level Glow & Depth Orbits */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+          {[...Array(20)].map((_, i) => {
+            const angleRad = ((i * 360) / 20) * (Math.PI / 180);
+            const orbitRadius = size / 2 + 30 + i * 3;
+            const x = orbitRadius * Math.cos(angleRad);
+            const y = orbitRadius * Math.sin(angleRad);
+            return (
+              <div
+                key={i}
+                className="absolute w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"
+                style={{
+                  left: `${size / 2 + x}px`,
+                  top: `${size / 2 + y}px`,
+                }}
+              />
+            );
+          })}
         </div>
-      )}
+      </div>
 
       {/* Testimonials Section */}
       <div
-        className="mt-32 relative overflow-hidden px-6"
+        className="mt-40 relative overflow-hidden px-6"
         onMouseEnter={() => setIsTestimonialHovered(true)}
         onMouseLeave={() => setIsTestimonialHovered(false)}
       >
-        <h2 className="text-4xl md:text-5xl text-white font-extrabold text-center mb-12 tracking-tight">
-          What Our Users Say
-        </h2>
+        <h1 className="text-6xl md:text-7xl lg:text-8xl text-center font-extrabold text-white mb-12 tracking-tight">
+          Trusted by Teams Worldwide
+        </h1>
 
         <div className="flex gap-8 w-full overflow-hidden relative">
           <div
