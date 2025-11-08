@@ -45,10 +45,27 @@ const EarthLoader: FC<EarthLoaderProps> = ({
 
   return (
     <div
-      className="mx-auto my-12 perspective-[1500px]"
+      className="mx-auto my-12 relative perspective-[1500px]"
       style={{ width: size, height: size }}
       aria-label={ariaLabel}
     >
+      {/* Background SkieShare Text */}
+      <div
+        className="absolute inset-0 flex items-center justify-center"
+        style={{
+          fontSize: `${size / 4}px`,
+          color: "rgba(255, 255, 255, 0.05)",
+          fontWeight: "900",
+          transform: "rotateY(180deg)", // backward/mirrored
+          textShadow: "2px 2px 10px rgba(0,0,0,0.3)",
+          pointerEvents: "none",
+          userSelect: "none",
+        }}
+      >
+        SkieShare
+      </div>
+
+      {/* Earth */}
       <div
         className={`relative w-full h-full rounded-full ${!reduceMotion ? "animate-spin" : ""}`}
         style={earthStyle}
