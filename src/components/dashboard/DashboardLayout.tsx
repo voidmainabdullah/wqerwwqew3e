@@ -394,7 +394,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </AvatarFallback>
       </Avatar>
       {profile?.subscription_tier === 'pro' && (
-        <Badge className="absolute -top-1 -right-1 h-4 sm:h-5 px-1.5 bg-gray-700 text-white text-[8px] sm:text-[10px] border border-gray-600">
+        <Badge className="absolute -top-1 -right-1 h-4 sm:h-5 px-1 sm:px-1.5 bg-gray-700 text-white text-[8px] sm:text-[10px] border border-gray-600">
           PRO
         </Badge>
       )}
@@ -404,7 +404,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   <DropdownMenuContent
     align="end"
     forceMount
-    className="w-64 border-none shadow-lg rounded-2xl bg-gray-900/95 backdrop-blur-md"
+    className="w-64 border-none shadow-lg rounded-2xl bg-gray-900/95 backdrop-blur-sm"
   >
     <DropdownMenuLabel className="font-normal pb-3">
       <div className="flex items-center gap-3">
@@ -426,16 +426,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </Badge>
             )}
           </div>
-          <p className="text-xs leading-none text-gray-400 font-body">
-            {user.email}
-          </p>
+          <p className="text-xs leading-none text-gray-400 font-body">{user.email}</p>
         </div>
       </div>
     </DropdownMenuLabel>
 
     <DropdownMenuSeparator className="bg-gray-700/40" />
 
-    {/* Menu Items */}
     <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
       <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
         <UserGear className="h-4 w-4 text-gray-300" weight="fill" />
@@ -467,7 +464,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     <DropdownMenuSeparator className="bg-gray-700/40" />
 
     <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
-      <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
+      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
         <Gear className="h-4 w-4 text-gray-300" weight="fill" />
         <span className="font-body text-white">Settings</span>
       </Link>
@@ -503,9 +500,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   </DropdownMenuContent>
 </DropdownMenu>
 
-{/* Main Content */}
+{/* Main Content - Responsive padding */}
 <main className="flex-1 overflow-auto bg-gray-950 w-full">
-  <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-gray-900">
-    {children}
-  </div>
+  <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-gray-900">{children}</div>
 </main>
+
