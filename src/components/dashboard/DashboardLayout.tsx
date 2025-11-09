@@ -34,10 +34,6 @@ const navigation = [{
   href: '/dashboard/files',
   lordIcon: LordIcons.lord
 }, {
-  name: 'Teams',
-  href: '/dashboard/teams',
-  lordIcon: LordIcons.users
-}, {
   name: 'Shared Links',
   href: '/dashboard/shared',
   lordIcon: LordIcons.home
@@ -383,116 +379,133 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   
                 </div>
                 
-                {/* User Profile Dropdown with Badge */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 via-indigo-600 to-blue-500 hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
-                      <Avatar className="h-7 w-7 sm:h-9 sm:w-9 ">
-                        <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-white   font-semibold text-xs sm:text-sm">
-                          {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      {profile?.subscription_tier === 'pro' && <Badge className="absolute -top-1 -right-1 h-4 sm:h-5 px-1 sm:px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] sm:text-[10px] border-2 border-background">
-                          PRO
-                        </Badge>}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" forceMount className="w-64 border-none shadow-lg border-c rounded-2xl  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70">
-                    <DropdownMenuLabel className="font-normal pb-3">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-12 w-12 border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 to-pink-500">
-                          <AvatarFallback className="bg-gradient-to-br bg-gradient-to-br from-black to-black/70  text-lg text-white font-extrabold">
-                            {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col space-y-1 flex-1">
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm font-heading font-semibold leading-none text-foreground">
-                              {user.user_metadata?.display_name || 'User'}
-                            </p>
-                            {profile?.subscription_tier === 'pro' && <Badge className="h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px]">
-                                PRO
-                              </Badge>}
-                          </div>
-                          <p className="text-xs leading-none text-muted-foreground font-body">
-                            {user.email}
-                          </p>
-                        </div>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-border" />
-                    
-                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-red-800 focus:bg-zinc-100/5">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <UserGear className="h-4 w-4 text-primary" weight="fill" />
-                        <span className="font-body">Account</span>
-                      </Link>
-                    </DropdownMenuItem>
+{/* User Profile Dropdown with Badge */}
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button
+      variant="ghost"
+      className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full border-[2px] border-gray-700 bg-gray-900 hover:bg-gray-800 transition-all duration-200"
+    >
+      <Avatar className="h-7 w-7 sm:h-9 sm:w-9">
+        <AvatarFallback className="bg-gray-800 text-white font-semibold text-xs sm:text-sm">
+          {(user.user_metadata?.display_name || user.email || 'U')
+            .charAt(0)
+            .toUpperCase()}
+        </AvatarFallback>
+      </Avatar>
+      {profile?.subscription_tier === 'pro' && (
+        <Badge className="absolute -top-1 -right-1 h-4 sm:h-5 px-1.5 bg-gray-700 text-white text-[8px] sm:text-[10px] border border-gray-600">
+          PRO
+        </Badge>
+      )}
+    </Button>
+  </DropdownMenuTrigger>
 
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <ChartBar className="h-4 w-4 text-primary" weight="fill" />
-                        <span className="font-body">Analytic</span>
-                      </Link>
-                    </DropdownMenuItem>
-
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <ClockCounterClockwise className="h-4 w-4 text-primary " weight="fill" />
-                        <span className="font-body">Backup</span>
-                      </Link>
-                    </DropdownMenuItem>
-
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <HardDrives className="h-4 w-4 text-primary" weight="fill" />
-                        <span className="font-body">Storage</span>
-                      </Link>
-                    </DropdownMenuItem>
- <DropdownMenuSeparator className="bg-border" />
-                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
-                        <Gear className="h-4 w-4 text-primary" weight="fill" />
-                        <span className="font-body">Settings</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    
-
-                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
-                      <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
-                        <Headset className="h-4 w-4 text-primary" weight="fill" />
-                        <span className="font-body">Support 24/7</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    
-                    {profile?.subscription_tier !== 'pro' && <>
-               <DropdownMenuSeparator className="bg-border" />
-                        <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
-                          <Link to="/subscription" className="flex items-center gap-3 py-2.5">
-                            <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="fill" />
-                            <span className="font-body">Subscription</span>
-                          </Link>
-                        </DropdownMenuItem>
-                      </>}
-                    
-                    <DropdownMenuSeparator className="bg-border" />
-                    <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer hover:bg-destructive/10 focus:bg-destructive/10 text-destructive">
-                      <SignOut className="mr-3 h-4 w-4" weight="fill" />
-                      <span className="font-body">Sign out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </header>
-
-          {/* Main Content - Responsive padding */}
-          <main className="flex-1 overflow-auto bg-background w-full">
-            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-stone-950">
-              {children}
-            </div>
-          </main>
+  <DropdownMenuContent
+    align="end"
+    forceMount
+    className="w-64 border-none shadow-lg rounded-2xl bg-gray-900/95 backdrop-blur-md"
+  >
+    <DropdownMenuLabel className="font-normal pb-3">
+      <div className="flex items-center gap-3">
+        <Avatar className="h-12 w-12 border-[2px] border-gray-700 bg-gray-800">
+          <AvatarFallback className="text-lg text-white font-extrabold">
+            {(user.user_metadata?.display_name || user.email || 'U')
+              .charAt(0)
+              .toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col space-y-1 flex-1">
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-heading font-semibold leading-none text-white">
+              {user.user_metadata?.display_name || 'User'}
+            </p>
+            {profile?.subscription_tier === 'pro' && (
+              <Badge className="h-5 px-1.5 bg-gray-700 text-white text-[10px]">
+                PRO
+              </Badge>
+            )}
+          </div>
+          <p className="text-xs leading-none text-gray-400 font-body">
+            {user.email}
+          </p>
         </div>
       </div>
-    </SidebarProvider>;
-};
+    </DropdownMenuLabel>
+
+    <DropdownMenuSeparator className="bg-gray-700/40" />
+
+    {/* Menu Items */}
+    <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
+      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+        <UserGear className="h-4 w-4 text-gray-300" weight="fill" />
+        <span className="font-body text-white">Account</span>
+      </Link>
+    </DropdownMenuItem>
+
+    <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
+      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+        <ChartBar className="h-4 w-4 text-gray-300" weight="fill" />
+        <span className="font-body text-white">Analytic</span>
+      </Link>
+    </DropdownMenuItem>
+
+    <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
+      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+        <ClockCounterClockwise className="h-4 w-4 text-gray-300" weight="fill" />
+        <span className="font-body text-white">Backup</span>
+      </Link>
+    </DropdownMenuItem>
+
+    <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
+      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+        <HardDrives className="h-4 w-4 text-gray-300" weight="fill" />
+        <span className="font-body text-white">Storage</span>
+      </Link>
+    </DropdownMenuItem>
+
+    <DropdownMenuSeparator className="bg-gray-700/40" />
+
+    <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
+      <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
+        <Gear className="h-4 w-4 text-gray-300" weight="fill" />
+        <span className="font-body text-white">Settings</span>
+      </Link>
+    </DropdownMenuItem>
+
+    <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
+      <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
+        <Headset className="h-4 w-4 text-gray-300" weight="fill" />
+        <span className="font-body text-white">Support 24/7</span>
+      </Link>
+    </DropdownMenuItem>
+
+    {profile?.subscription_tier !== 'pro' && (
+      <>
+        <DropdownMenuSeparator className="bg-gray-700/40" />
+        <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-800 transition-all duration-200">
+          <Link to="/subscription" className="flex items-center gap-3 py-2.5">
+            <CurrencyCircleDollar className="h-4 w-4 text-gray-300" weight="fill" />
+            <span className="font-body text-white">Subscription</span>
+          </Link>
+        </DropdownMenuItem>
+      </>
+    )}
+
+    <DropdownMenuSeparator className="bg-gray-700/40" />
+    <DropdownMenuItem
+      onClick={() => signOut()}
+      className="cursor-pointer hover:bg-red-800/20 transition-all duration-200 text-red-500"
+    >
+      <SignOut className="mr-3 h-4 w-4" weight="fill" />
+      <span className="font-body">Sign out</span>
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+
+{/* Main Content */}
+<main className="flex-1 overflow-auto bg-gray-950 w-full">
+  <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-gray-900">
+    {children}
+  </div>
+</main>
