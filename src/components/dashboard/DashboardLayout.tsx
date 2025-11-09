@@ -74,7 +74,7 @@ const AppSidebar = () => {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="flex-1 overflow-y-auto py-2 bg-stone-950 text-neutral-400 px-[5px]">
+      <SidebarContent className="flex-1 overflow-y-auto py-2 bg-stone-950 text-neutral-400 px-[8px] ">
         {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-heading font-semibold tracking-wider px-2 mb-1 text-neutral-400">
@@ -85,8 +85,8 @@ const AppSidebar = () => {
             <SidebarMenu className="space-y-0.5 text-neutral-400">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
           <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
-            <Link to={item.href} className="flex items-center gap-2">
-              <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0" />
+            <Link to={item.href} className="flex items-center gap-2 ">
+              <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0 " />
               <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
             </Link>
           </SidebarMenuButton>
