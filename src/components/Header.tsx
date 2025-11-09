@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TextAlignEnd } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import Logo from "./Logo";
 
@@ -83,7 +84,7 @@ const Header = () => {
           onClick={toggleMobileMenu}
         >
         {mobileMenuOpen ? (
-            <LordIcon src={LordIcons.close} size={24} trigger="hover" primaryColor="#ffffff" />
+            <TextAlignEnd />
           ) : (
             <LordIcon src={LordIcons.menu} size={24} trigger="hover" primaryColor="#ffffff" />
           )}
