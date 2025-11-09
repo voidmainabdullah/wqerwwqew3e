@@ -84,7 +84,7 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5 text-neutral-400">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
-          <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-accent/50 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
+          <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
             <Link to={item.href} className="flex items-center gap-2 ">
               <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0 " />
               <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
