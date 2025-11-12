@@ -439,7 +439,7 @@ export const FileUpload: React.FC = () => {
       </div>
 
       <Card>
-        <CardHeader className="pb-2 backdrop-blur-md bg-inherit">
+        <CardHeader className="pb-2 backdrop-blur-md bg-inherit rounded-lg">
           <CardTitle className="font-heading">File Upload</CardTitle>
           <CardDescription className="font-body">
             Upload and manage your files. All file types are supported.
@@ -448,10 +448,10 @@ export const FileUpload: React.FC = () => {
 
         <CardContent className="space-y-4 backdrop-blur-6xl bg-transparent">
           {folders.length > 0 && <div>
-              <label className="text-sm font-heading font-medium">
+              <label className="text-sm font-heading font-medium text-stone-400">
                 Upload to folder (optional)
               </label>
-              <select value={selectedFolderId || ''} onChange={e => setSelectedFolderId(e.target.value || null)} disabled={isUploading} className="w-full p-2 border font-body bg-stone-900 rounded-xl ">
+              <select value={selectedFolderId || ''} onChange={e => setSelectedFolderId(e.target.value || null)} disabled={isUploading} className="w-full p-2 border font-body bg-stone-900 rounded-xl mx-0 my-[5px]">
                 <option value="">Root (No Folder)</option>
                 {folders.map(folder => <option key={folder.id} value={folder.id}>
                     {folder.name}
