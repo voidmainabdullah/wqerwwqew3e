@@ -451,7 +451,7 @@ export const FileUpload: React.FC = () => {
               <label className="text-sm font-heading font-medium">
                 Upload to folder (optional)
               </label>
-              <select value={selectedFolderId || ''} onChange={e => setSelectedFolderId(e.target.value || null)} disabled={isUploading} className="w-full p-2 border border-input rounded-md font-body bg-stone-900">
+              <select value={selectedFolderId || ''} onChange={e => setSelectedFolderId(e.target.value || null)} disabled={isUploading} className="w-full p-2 border font-body bg-stone-900 rounded-xl ">
                 <option value="">Root (No Folder)</option>
                 {folders.map(folder => <option key={folder.id} value={folder.id}>
                     {folder.name}
