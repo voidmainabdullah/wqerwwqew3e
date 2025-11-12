@@ -439,14 +439,14 @@ export const FileUpload: React.FC = () => {
       </div>
 
       <Card>
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-gradient-to-r from-stone-500 via-neutral-500 to-zinc-500 ">
           <CardTitle className="font-heading">File Upload</CardTitle>
           <CardDescription className="font-body">
             Upload and manage your files. All file types are supported.
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opa">
+        <CardContent className="space-y-4 bg-gradient-to-r from-stone-500 via-neutral-500 to-zinc-500 ">
           {folders.length > 0 && <div>
               <label className="text-sm font-heading font-medium">
                 Upload to folder (optional)
