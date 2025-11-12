@@ -3,90 +3,56 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-  Cell,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 import { FileText, TrendingUp } from 'lucide-react';
-
 interface FileComparisonData {
   name: string;
   downloads: number;
   shares: number;
   color: string;
 }
-
-const COLORS = [
-  '#10b981', '#3b82f6', '#8b5cf6', '#f59e0b',
-  '#ef4444', '#06b6d4', '#ec4899', '#14b8a6',
-];
-
+const COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899', '#14b8a6'];
 export const DownloadComparison: React.FC = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [comparisonData, setComparisonData] = useState<FileComparisonData[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalDownloads, setTotalDownloads] = useState(0);
-
   const fetchComparisonData = async () => {
     if (!user?.id) return;
     try {
-      const { data: userFiles } = await supabase
-        .from('files')
-        .select('id, original_name')
-        .eq('user_id', user.id);
-
+      const {
+        data: userFiles
+      } = await supabase.from('files').select('id, original_name').eq('user_id', user.id);
       if (!userFiles?.length) {
         setLoading(false);
         return;
       }
-
-      const fileIds = userFiles.map((f) => f.id);
+      const fileIds = userFiles.map(f => f.id);
 
       // Get all shared links for user's files with download counts
-      const { data: shares } = await supabase
-        .from('shared_links')
-        .select('file_id, download_count')
-        .in('file_id', fileIds);
+      const {
+        data: shares
+      } = await supabase.from('shared_links').select('file_id, download_count').in('file_id', fileIds);
 
       // Aggregate downloads and shares per file from shared_links
       const downloadCounts = new Map<string, number>();
       const shareCounts = new Map<string, number>();
-      
-      shares?.forEach((share) => {
+      shares?.forEach(share => {
         if (share.file_id) {
           // Count total downloads from all shared links
-          downloadCounts.set(
-            share.file_id,
-            (downloadCounts.get(share.file_id) || 0) + (share.download_count || 0)
-          );
+          downloadCounts.set(share.file_id, (downloadCounts.get(share.file_id) || 0) + (share.download_count || 0));
           // Count number of shares
-          shareCounts.set(
-            share.file_id,
-            (shareCounts.get(share.file_id) || 0) + 1
-          );
+          shareCounts.set(share.file_id, (shareCounts.get(share.file_id) || 0) + 1);
         }
       });
-
-      const fileData = userFiles
-        .map((file, i) => ({
-          name: file.original_name.length > 16
-            ? file.original_name.substring(0, 16) + '...'
-            : file.original_name,
-          downloads: downloadCounts.get(file.id) || 0,
-          shares: shareCounts.get(file.id) || 0,
-          color: COLORS[i % COLORS.length],
-        }))
-        .filter((f) => f.downloads > 0 || f.shares > 0)
-        .sort((a, b) => b.downloads - a.downloads)
-        .slice(0, 6);
-
+      const fileData = userFiles.map((file, i) => ({
+        name: file.original_name.length > 16 ? file.original_name.substring(0, 16) + '...' : file.original_name,
+        downloads: downloadCounts.get(file.id) || 0,
+        shares: shareCounts.get(file.id) || 0,
+        color: COLORS[i % COLORS.length]
+      })).filter(f => f.downloads > 0 || f.shares > 0).sort((a, b) => b.downloads - a.downloads).slice(0, 6);
       const total = fileData.reduce((sum, f) => sum + f.downloads, 0);
       setComparisonData(fileData);
       setTotalDownloads(total);
@@ -96,42 +62,36 @@ export const DownloadComparison: React.FC = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchComparisonData();
     const interval = setInterval(fetchComparisonData, 60000);
     return () => clearInterval(interval);
   }, [user?.id]);
-
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({
+    active,
+    payload
+  }: any) => {
     if (active && payload?.length) {
-      return (
-        <div className="bg-zinc-900 border border-zinc-700 rounded-md p-2 shadow-lg text-xs">
+      return <div className="bg-zinc-900 border border-zinc-700 rounded-md p-2 shadow-lg text-xs">
           <p className="text-white mb-1">{payload[0].payload.name}</p>
           <p className="text-emerald-400">Downloads: {payload[0].value}</p>
           {payload[1] && <p className="text-blue-400">Shares: {payload[1].value}</p>}
-        </div>
-      );
+        </div>;
     }
     return null;
   };
-
   if (loading) {
-    return (
-      <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-3">
+    return <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-3">
         <CardHeader>
           <div className="h-4 bg-zinc-700 rounded w-32 animate-pulse" />
         </CardHeader>
         <CardContent>
           <div className="h-48 bg-zinc-800/50 rounded-md animate-pulse" />
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
-
   if (!comparisonData.length) {
-    return (
-      <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-4">
+    return <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-4">
         <CardHeader>
           <CardTitle className="text-base font-semibold text-white flex items-center gap-1.5">
             <FileText className="w-4 h-4 text-emerald-400" />
@@ -145,12 +105,9 @@ export const DownloadComparison: React.FC = () => {
           <FileText className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
           <p className="text-sm text-zinc-400">No download data available</p>
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
-
-  return (
-    <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-4 shadow-lg hover:shadow-xl transition-all duration-300">
+  return <Card className="rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 p-4 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
@@ -172,30 +129,25 @@ export const DownloadComparison: React.FC = () => {
       <CardContent className="pt-2">
         <div className="w-full h-56">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={comparisonData}
-              margin={{ top: 10, right: 10, left: 0, bottom: 40 }}
-            >
+            <BarChart data={comparisonData} margin={{
+            top: 10,
+            right: 10,
+            left: 0,
+            bottom: 40
+          }} className="bg-inherit">
               <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" vertical={false} />
-              <XAxis
-                dataKey="name"
-                stroke="#71717a"
-                tick={{ fill: '#a1a1aa', fontSize: 10 }}
-                angle={-45}
-                textAnchor="end"
-                height={60}
-              />
-              <YAxis
-                stroke="#71717a"
-                tick={{ fill: '#a1a1aa', fontSize: 10 }}
-                allowDecimals={false}
-              />
+              <XAxis dataKey="name" stroke="#71717a" tick={{
+              fill: '#a1a1aa',
+              fontSize: 10
+            }} angle={-45} textAnchor="end" height={60} />
+              <YAxis stroke="#71717a" tick={{
+              fill: '#a1a1aa',
+              fontSize: 10
+            }} allowDecimals={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} iconType="circle" />
+              
               <Bar dataKey="downloads" fill="#10b981" radius={[4, 4, 0, 0]}>
-                {comparisonData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
+                {comparisonData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
               </Bar>
               <Bar dataKey="shares" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             </BarChart>
@@ -208,25 +160,22 @@ export const DownloadComparison: React.FC = () => {
             <p className="text-[11px] text-zinc-400">Files</p>
           </div>
           <div>
-            <p className="text-lg font-semibold text-emerald-400">{totalDownloads}</p>
+            <p className="text-lg font-semibold text-neutral-50">{totalDownloads}</p>
             <p className="text-[11px] text-zinc-400">Downloads</p>
           </div>
           <div>
-            <p className="text-lg font-semibold text-blue-400">
+            <p className="text-lg font-semibold text-neutral-200">
               {comparisonData.reduce((s, f) => s + f.shares, 0)}
             </p>
             <p className="text-[11px] text-zinc-400">Shares</p>
           </div>
           <div>
-            <p className="text-lg font-semibold text-purple-400">
-              {comparisonData.length > 0
-                ? Math.round(totalDownloads / comparisonData.length)
-                : 0}
+            <p className="text-lg font-semibold text-neutral-200">
+              {comparisonData.length > 0 ? Math.round(totalDownloads / comparisonData.length) : 0}
             </p>
             <p className="text-[11px] text-zinc-400">Avg/File</p>
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
