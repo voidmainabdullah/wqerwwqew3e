@@ -400,7 +400,7 @@ export function FileManager() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setAiOrganizerDialog(true)} variant="outline" disabled={files.length === 0} className="font-heading border  bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 hover:bg-fuchsia-500">
+          <Button onClick={() => setAiOrganizerDialog(true)} variant="outline" disabled={files.length === 0} className="font-heading border  bg-gradient-to-r from-blue-500 via-purple-500 to-blue-900 hover:bg-fuchsia-500">
             <Sparkles className="mr-2 h-4 w-4" />
             AI Organize
           </Button>
