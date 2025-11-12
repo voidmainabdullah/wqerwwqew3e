@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import type { Tables } from '@/integrations/supabase/types';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useToast } from '@/hooks/use-toast';
-import { Download, Lock, Warning, FileText } from 'phosphor-react';
-import { AnimatedBackground } from '@/components/ui/animated-background';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
+import { Download, Lock, Warning, FileText } from "phosphor-react";
+import { AnimatedBackground } from "@/components/ui/animated-background";
 
 interface ShareData {
   id: string;
@@ -48,25 +54,28 @@ interface FolderFile {
 export const PublicSharePage: React.FC = () => {
   const { token } = useParams<{ token: string }>();
   const { toast } = useToast();
+
   const [shareData, setShareData] = useState<ShareData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [password, setPassword] = useState('');
+
+  const [password, setPassword] = useState("");
   const [passwordRequired, setPasswordRequired] = useState(false);
+  const [passwordVerified, setPasswordVerified] = useState(false);
+
   const [downloading, setDownloading] = useState(false);
   const [folderFiles, setFolderFiles] = useState<FolderFile[]>([]);
 
   useEffect(() => {
-    if (token) {
-      fetchShareData();
-    }
+    if (token) fetchShareData();
   }, [token]);
 
   const fetchShareData = async () => {
     try {
       const { data, error } = await supabase
-        .from('shared_links')
-        .select(`
+        .from("shared_links")
+        .select(
+          `
           *,
           file:files(
             original_name,
@@ -80,50 +89,44 @@ export const PublicSharePage: React.FC = () => {
             name,
             is_public
           )
-        `)
-        .eq('share_token', token)
-        .eq('is_active', true)
+        `
+        )
+        .eq("share_token", token)
+        .eq("is_active", true)
         .maybeSingle();
 
       if (error) throw error;
-
       if (!data) {
-        setError('Share link not found or has expired');
+        setError("Share link not found or has expired");
         return;
       }
 
-      // Check if link has expired
       if (data.expires_at && new Date(data.expires_at) < new Date()) {
-        setError('This share link has expired');
+        setError("This share link has expired");
         return;
       }
 
-      // Check download limit
       if (data.download_limit && data.download_count >= data.download_limit) {
-        setError('Download limit exceeded');
+        setError("Download limit exceeded");
         return;
       }
 
       setShareData(data);
-      
-      // If it's a folder, fetch its files
+
       if (data.folder_id) {
         const { data: filesData, error: filesError } = await supabase
-          .from('files')
-          .select('id, original_name, file_size, file_type, storage_path')
-          .eq('folder_id', data.folder_id);
-        
+          .from("files")
+          .select("id, original_name, file_size, file_type, storage_path")
+          .eq("folder_id", data.folder_id);
+
         if (filesError) throw filesError;
         setFolderFiles(filesData || []);
       }
-      
-      // Check if password is required
+
       const isLocked = data.file?.is_locked || false;
-      if (data.password_hash || isLocked) {
-        setPasswordRequired(true);
-      }
-    } catch (error: any) {
-      setError(error.message || 'Failed to load share link');
+      if (data.password_hash || isLocked) setPasswordRequired(true);
+    } catch (err: any) {
+      setError(err.message || "Failed to load share link");
     } finally {
       setLoading(false);
     }
@@ -134,19 +137,20 @@ export const PublicSharePage: React.FC = () => {
 
     try {
       if (!shareData?.password_hash) {
+        setPasswordVerified(true);
         setPasswordRequired(false);
         return;
       }
 
-      // Use the database function to properly validate password
-      const { data, error } = await supabase.rpc('validate_share_password', {
-        token: token,
-        password: password
+      const { data, error } = await supabase.rpc("validate_share_password", {
+        token,
+        password,
       });
 
       if (error) throw error;
-      
+
       if (data === true) {
+        setPasswordVerified(true);
         setPasswordRequired(false);
         toast({
           title: "Access granted",
@@ -159,11 +163,11 @@ export const PublicSharePage: React.FC = () => {
           description: "Please check your password and try again",
         });
       }
-    } catch (error: any) {
+    } catch (err: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: err.message,
       });
     }
   };
@@ -171,18 +175,19 @@ export const PublicSharePage: React.FC = () => {
   const downloadFile = async (fileToDownload?: FolderFile) => {
     if (!shareData) return;
 
-    // Check if password is required
-    if (shareData.password_hash && passwordRequired) {
+    if (shareData.password_hash && !passwordVerified) {
       toast({
         variant: "destructive",
         title: "Password required",
-        description: "Please enter the password to access this content",
+        description: "Please enter and verify the password before download",
       });
       return;
     }
 
-    // Final check for download limits
-    if (shareData.download_limit && shareData.download_count >= shareData.download_limit) {
+    if (
+      shareData.download_limit &&
+      shareData.download_count >= shareData.download_limit
+    ) {
       toast({
         variant: "destructive",
         title: "Download limit exceeded",
@@ -193,16 +198,14 @@ export const PublicSharePage: React.FC = () => {
 
     setDownloading(true);
     try {
-      // For folders, download specific file
       if (fileToDownload) {
         const { data: fileData, error } = await supabase.storage
-          .from('files')
+          .from("files")
           .download(fileToDownload.storage_path);
-
         if (error) throw error;
 
         const url = URL.createObjectURL(fileData);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
         a.download = fileToDownload.original_name;
         document.body.appendChild(a);
@@ -214,17 +217,14 @@ export const PublicSharePage: React.FC = () => {
           title: "Download started",
           description: `Downloading ${fileToDownload.original_name}`,
         });
-      } 
-      // For single files
-      else if (shareData.file && shareData.file_id) {
+      } else if (shareData.file && shareData.file_id) {
         const { data: fileData, error } = await supabase.storage
-          .from('files')
+          .from("files")
           .download(shareData.file.storage_path);
-
         if (error) throw error;
 
         const url = URL.createObjectURL(fileData);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
         a.download = shareData.file.original_name;
         document.body.appendChild(a);
@@ -232,33 +232,31 @@ export const PublicSharePage: React.FC = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        // Log the download
-        await supabase.from('download_logs').insert({
+        await supabase.from("download_logs").insert({
           file_id: shareData.file_id,
           shared_link_id: shareData.id,
-          download_method: 'shared_link',
+          download_method: "shared_link",
           downloader_ip: null,
           downloader_user_agent: navigator.userAgent,
         });
 
-        // Update download count
         await supabase
-          .from('shared_links')
+          .from("shared_links")
           .update({ download_count: shareData.download_count + 1 })
-          .eq('id', shareData.id);
+          .eq("id", shareData.id);
 
         toast({
           title: "Download started",
           description: "Your file download has begun",
         });
       } else {
-        throw new Error('No file available to download');
+        throw new Error("No file available to download");
       }
-    } catch (error: any) {
+    } catch (err: any) {
       toast({
         variant: "destructive",
         title: "Download failed",
-        description: error.message,
+        description: err.message,
       });
     } finally {
       setDownloading(false);
@@ -266,14 +264,14 @@ export const PublicSharePage: React.FC = () => {
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  if (loading) {
+  if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -282,9 +280,8 @@ export const PublicSharePage: React.FC = () => {
         </div>
       </div>
     );
-  }
 
-  if (error) {
+  if (error)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card className="w-full max-w-md">
@@ -298,9 +295,8 @@ export const PublicSharePage: React.FC = () => {
         </Card>
       </div>
     );
-  }
 
-  if (!shareData) {
+  if (!shareData)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card className="w-full max-w-md">
@@ -308,146 +304,158 @@ export const PublicSharePage: React.FC = () => {
             <div className="text-center">
               <Warning className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <h2 className="text-lg font-semibold mb-2">Share Link Not Found</h2>
-              <p className="text-muted-foreground">This share link does not exist or has been deactivated.</p>
+              <p className="text-muted-foreground">
+                This share link does not exist or has been deactivated.
+              </p>
             </div>
           </CardContent>
         </Card>
       </div>
     );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated Background */}
       <AnimatedBackground />
-      
-      {/* Content Overlay */}
-      <div className="relative z-10">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <FileText className="mx-auto h-12 w-12 text-primary mb-2" />
-          <CardTitle>
-            {passwordRequired ? 'Password Protected Content' : 'Shared File'}
-          </CardTitle>
-          <CardDescription>
-            {passwordRequired 
-              ? 'This content requires a password to access'
-              : 'Someone has shared a file with you'
-            }
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* CRITICAL: Show password prompt FIRST if required - NO content shown until verified */}
-          {passwordRequired ? (
-            <>
-              <Alert>
-                <Lock className="h-4 w-4" />
-                <AlertDescription>
-                  This content is password protected. Please enter the password to continue.
-                </AlertDescription>
-              </Alert>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Enter Password</Label>
-                <div className="flex space-x-2">
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter password"
-                    onKeyPress={(e) => e.key === 'Enter' && validatePassword()}
-                  />
-                  <Button onClick={validatePassword} size="sm">
-                    Unlock
-                  </Button>
+      <div className="relative z-10">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <FileText className="mx-auto h-12 w-12 text-primary mb-2" />
+            <CardTitle>
+              {passwordRequired && !passwordVerified
+                ? "Password Protected Content"
+                : "Shared File"}
+            </CardTitle>
+            <CardDescription>
+              {passwordRequired && !passwordVerified
+                ? "This content requires a password to access"
+                : "Someone has shared a file with you"}
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            {passwordRequired && !passwordVerified ? (
+              <>
+                <Alert>
+                  <Lock className="h-4 w-4" />
+                  <AlertDescription>
+                    This content is password protected. Please enter the password
+                    to continue.
+                  </AlertDescription>
+                </Alert>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password">Enter Password</Label>
+                  <div className="flex space-x-2">
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter password"
+                      onKeyPress={(e) => e.key === "Enter" && validatePassword()}
+                    />
+                    <Button onClick={validatePassword} size="sm">
+                      Unlock
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Only show content after password validation (or if no password required) */}
-              <div className="text-center space-y-2">
-                <h3 className="font-medium text-lg">
-                  {shareData.file?.original_name || shareData.folder?.name || 'Shared Item'}
-                </h3>
-                {shareData.file && (
-                  <p className="text-sm text-muted-foreground">
-                    {formatFileSize(shareData.file.file_size)} • {shareData.file.file_type}
-                  </p>
-                )}
-                {shareData.folder && (
-                  <p className="text-sm text-muted-foreground">
-                    Folder with {folderFiles.length} file{folderFiles.length !== 1 ? 's' : ''}
-                  </p>
-                )}
-                
-                {shareData.message && (
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
-                    <p className="text-sm text-blue-800 dark:text-blue-200">{shareData.message}</p>
+              </>
+            ) : (
+              <>
+                <div className="text-center space-y-2">
+                  <h3 className="font-medium text-lg">
+                    {shareData.file?.original_name ||
+                      shareData.folder?.name ||
+                      "Shared Item"}
+                  </h3>
+
+                  {shareData.file && (
+                    <p className="text-sm text-muted-foreground">
+                      {formatFileSize(shareData.file.file_size)} •{" "}
+                      {shareData.file.file_type}
+                    </p>
+                  )}
+
+                  {shareData.folder && (
+                    <p className="text-sm text-muted-foreground">
+                      Folder with {folderFiles.length} file
+                      {folderFiles.length !== 1 ? "s" : ""}
+                    </p>
+                  )}
+
+                  {shareData.message && (
+                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
+                        {shareData.message}
+                      </p>
+                    </div>
+                  )}
+
+                  {shareData.expires_at && (
+                    <p className="text-xs text-muted-foreground">
+                      Expires:{" "}
+                      {new Date(shareData.expires_at).toLocaleDateString()}
+                    </p>
+                  )}
+
+                  {shareData.download_limit && (
+                    <p className="text-xs text-muted-foreground">
+                      Downloads: {shareData.download_count}/
+                      {shareData.download_limit}
+                    </p>
+                  )}
+                </div>
+
+                {shareData.folder && folderFiles.length > 0 && (
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    <p className="text-sm font-medium">Files in this folder:</p>
+                    {folderFiles.map((file) => (
+                      <div
+                        key={file.id}
+                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">
+                            {file.original_name}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatFileSize(file.file_size)} • {file.file_type}
+                          </p>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => downloadFile(file)}
+                          disabled={downloading}
+                        >
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
                 )}
-                
-                {shareData.expires_at && (
-                  <p className="text-xs text-muted-foreground">
-                    Expires: {new Date(shareData.expires_at).toLocaleDateString()}
-                  </p>
+
+                {shareData.file && (
+                  <Button
+                    onClick={() => downloadFile()}
+                    disabled={downloading}
+                    className="w-full"
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    {downloading ? "Downloading..." : "Download File"}
+                  </Button>
                 )}
-                
-                {shareData.download_limit && (
-                  <p className="text-xs text-muted-foreground">
-                    Downloads: {shareData.download_count}/{shareData.download_limit}
-                  </p>
+
+                {shareData.folder && folderFiles.length === 0 && (
+                  <div className="text-center py-4 text-muted-foreground">
+                    <p className="text-sm">This folder is empty</p>
+                  </div>
                 )}
-              </div>
-
-              {/* For folders, show file list */}
-              {shareData.folder && folderFiles.length > 0 && (
-                <div className="space-y-2 max-h-64 overflow-y-auto">
-                  <p className="text-sm font-medium">Files in this folder:</p>
-                  {folderFiles.map((file) => (
-                    <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{file.original_name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatFileSize(file.file_size)} • {file.file_type}
-                        </p>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => downloadFile(file)}
-                        disabled={downloading}
-                      >
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* For single files, show download button */}
-              {shareData.file && (
-                <Button 
-                  onClick={() => downloadFile()} 
-                  disabled={downloading}
-                  className="w-full"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  {downloading ? 'Downloading...' : 'Download File'}
-                </Button>
-              )}
-
-              {/* For empty folders */}
-              {shareData.folder && folderFiles.length === 0 && (
-                <div className="text-center py-4 text-muted-foreground">
-                  <p className="text-sm">This folder is empty</p>
-                </div>
-              )}
-            </>
-          )}
-        </CardContent>
-      </Card>
+              </>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
