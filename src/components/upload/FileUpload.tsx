@@ -446,7 +446,7 @@ export const FileUpload: React.FC = () => {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-4 backdrop-blur-md bg-black/50">
+        <CardContent className="space-y-4 backdrop-blur-6xl bg-white/60 ">
           {folders.length > 0 && <div>
               <label className="text-sm font-heading font-medium">
                 Upload to folder (optional)
