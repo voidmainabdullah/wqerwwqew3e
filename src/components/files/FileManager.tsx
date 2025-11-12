@@ -395,7 +395,7 @@ export function FileManager() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-heading font-bold tracking-tight">My Files</h1>
-          <p className="font-body text-muted-foreground">
+          <p className="font-body text-neutral-400">
             Manage your uploaded files and folders.
           </p>
         </div>
