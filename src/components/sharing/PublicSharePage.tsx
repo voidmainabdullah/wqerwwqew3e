@@ -329,7 +329,7 @@ export const PublicSharePage: React.FC = () => {
             <CardDescription>
               {passwordRequired && !passwordVerified
                 ? "This content requires a password to access"
-                : "Someone has shared a file with you"}
+                : "Someone has work work work"}
             </CardDescription>
           </CardHeader>
 
