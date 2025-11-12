@@ -181,18 +181,17 @@ export function FileManager() {
     setSelectionMode(false);
   };
   const deleteFolder = async (folderId: string, folderName: string) => {
-    toast.promise(
-      (async () => {
-        const { error } = await supabase.from('folders').delete().eq('id', folderId);
-        if (error) throw error;
-        await fetchContents();
-      })(),
-      {
-        loading: `Deleting "${folderName}"...`,
-        success: 'Folder deleted successfully',
-        error: 'Failed to delete folder'
-      }
-    );
+    toast.promise((async () => {
+      const {
+        error
+      } = await supabase.from('folders').delete().eq('id', folderId);
+      if (error) throw error;
+      await fetchContents();
+    })(), {
+      loading: `Deleting "${folderName}"...`,
+      success: 'Folder deleted successfully',
+      error: 'Failed to delete folder'
+    });
   };
   const toggleItemSelection = (itemId: string) => {
     const newSelected = new Set(selectedItems);
@@ -206,35 +205,27 @@ export function FileManager() {
   const handleBulkDelete = async () => {
     const selectedFiles = Array.from(selectedItems).filter(id => files.some(f => f.id === id));
     const selectedFolders = Array.from(selectedItems).filter(id => folders.some(f => f.id === id));
-    
     if (selectedFiles.length === 0 && selectedFolders.length === 0) return;
-    
     const totalCount = selectedFiles.length + selectedFolders.length;
-    
-    toast.promise(
-      (async () => {
-        for (const fileId of selectedFiles) {
-          const file = files.find(f => f.id === fileId);
-          if (file) {
-            await supabase.storage.from('files').remove([file.storage_path]);
-            await supabase.from('files').delete().eq('id', fileId);
-          }
+    toast.promise((async () => {
+      for (const fileId of selectedFiles) {
+        const file = files.find(f => f.id === fileId);
+        if (file) {
+          await supabase.storage.from('files').remove([file.storage_path]);
+          await supabase.from('files').delete().eq('id', fileId);
         }
-        
-        for (const folderId of selectedFolders) {
-          await supabase.from('folders').delete().eq('id', folderId);
-        }
-        
-        setSelectedItems(new Set());
-        setSelectionMode(false);
-        await fetchContents();
-      })(),
-      {
-        loading: `Deleting ${totalCount} item(s)...`,
-        success: `Deleted ${totalCount} item(s) successfully`,
-        error: 'Failed to delete some items'
       }
-    );
+      for (const folderId of selectedFolders) {
+        await supabase.from('folders').delete().eq('id', folderId);
+      }
+      setSelectedItems(new Set());
+      setSelectionMode(false);
+      await fetchContents();
+    })(), {
+      loading: `Deleting ${totalCount} item(s)...`,
+      success: `Deleted ${totalCount} item(s) successfully`,
+      error: 'Failed to delete some items'
+    });
   };
   const downloadFile = async (fileId: string, storagePath: string, fileName: string) => {
     try {
@@ -276,22 +267,21 @@ export function FileManager() {
     }, 2000);
   };
   const deleteFile = async (fileId: string, storagePath: string) => {
-    toast.promise(
-      (async () => {
-        const { error: storageError } = await supabase.storage.from('files').remove([storagePath]);
-        if (storageError) throw storageError;
-        
-        const { error: dbError } = await supabase.from('files').delete().eq('id', fileId);
-        if (dbError) throw dbError;
-        
-        await fetchContents();
-      })(),
-      {
-        loading: 'Deleting file...',
-        success: 'File deleted successfully',
-        error: 'Failed to delete file'
-      }
-    );
+    toast.promise((async () => {
+      const {
+        error: storageError
+      } = await supabase.storage.from('files').remove([storagePath]);
+      if (storageError) throw storageError;
+      const {
+        error: dbError
+      } = await supabase.from('files').delete().eq('id', fileId);
+      if (dbError) throw dbError;
+      await fetchContents();
+    })(), {
+      loading: 'Deleting file...',
+      success: 'File deleted successfully',
+      error: 'Failed to delete file'
+    });
   };
   const openShareDialog = (fileId: string, fileName: string) => {
     setShareDialog({
@@ -315,98 +305,86 @@ export function FileManager() {
   };
   // Smart search across all folders recursively
   const searchAllFolders = async (searchQuery: string) => {
-    if (!searchQuery.trim()) return { files: [], folders: [] };
-    
+    if (!searchQuery.trim()) return {
+      files: [],
+      folders: []
+    };
     const query = searchQuery.toLowerCase();
-    
+
     // Search all user's files
-    const { data: allFiles } = await supabase
-      .from('files')
-      .select('*')
-      .eq('user_id', user?.id)
-      .ilike('original_name', `%${query}%`);
-    
+    const {
+      data: allFiles
+    } = await supabase.from('files').select('*').eq('user_id', user?.id).ilike('original_name', `%${query}%`);
+
     // Search all user's folders
-    const { data: allFolders } = await supabase
-      .from('folders')
-      .select('*')
-      .eq('user_id', user?.id)
-      .ilike('name', `%${query}%`);
-    
-    return { files: allFiles || [], folders: allFolders || [] };
+    const {
+      data: allFolders
+    } = await supabase.from('folders').select('*').eq('user_id', user?.id).ilike('name', `%${query}%`);
+    return {
+      files: allFiles || [],
+      folders: allFolders || []
+    };
   };
 
   // Ultra-fast memoized search with debouncing effect
-  const { filteredFiles, filteredFolders } = useMemo(() => {
+  const {
+    filteredFiles,
+    filteredFolders
+  } = useMemo(() => {
     if (searchTerm.trim()) {
       // Search in all folders when search term exists
       const query = searchTerm.toLowerCase();
       return {
-        filteredFiles: files.filter(file => 
-          file.original_name.toLowerCase().includes(query) &&
-          (filterType === 'all' || file.file_type.includes(filterType))
-        ),
-        filteredFolders: folders.filter(folder => 
-          folder.name.toLowerCase().includes(query)
-        )
+        filteredFiles: files.filter(file => file.original_name.toLowerCase().includes(query) && (filterType === 'all' || file.file_type.includes(filterType))),
+        filteredFolders: folders.filter(folder => folder.name.toLowerCase().includes(query))
       };
     }
-    
+
     // Normal filtering in current folder
     return {
-      filteredFiles: files.filter(file => 
-        filterType === 'all' || file.file_type.includes(filterType)
-      ),
+      filteredFiles: files.filter(file => filterType === 'all' || file.file_type.includes(filterType)),
       filteredFolders: folders
     };
   }, [files, folders, searchTerm, filterType]);
 
   // Download multiple files as ZIP
   const downloadAsZip = async () => {
-    const selectedFiles = Array.from(selectedItems)
-      .map(id => files.find(f => f.id === id))
-      .filter(Boolean) as FileItem[];
-    
+    const selectedFiles = Array.from(selectedItems).map(id => files.find(f => f.id === id)).filter(Boolean) as FileItem[];
     if (selectedFiles.length === 0) {
       toast.error('No files selected');
       return;
     }
-
-    toast.promise(
-      (async () => {
-        const zip = new JSZip();
-        
-        for (const file of selectedFiles) {
-          try {
-            const { data } = await supabase.storage
-              .from('files')
-              .createSignedUrl(file.storage_path, 60);
-            
-            if (data?.signedUrl) {
-              const response = await fetch(data.signedUrl);
-              const blob = await response.blob();
-              zip.file(file.original_name, blob);
-            }
-          } catch (error) {
-            console.error(`Failed to add ${file.original_name} to zip:`, error);
+    toast.promise((async () => {
+      const zip = new JSZip();
+      for (const file of selectedFiles) {
+        try {
+          const {
+            data
+          } = await supabase.storage.from('files').createSignedUrl(file.storage_path, 60);
+          if (data?.signedUrl) {
+            const response = await fetch(data.signedUrl);
+            const blob = await response.blob();
+            zip.file(file.original_name, blob);
           }
+        } catch (error) {
+          console.error(`Failed to add ${file.original_name} to zip:`, error);
         }
-        
-        const content = await zip.generateAsync({ type: 'blob' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(content);
-        link.download = `files-${Date.now()}.zip`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
-      })(),
-      {
-        loading: `Creating ZIP with ${selectedFiles.length} file(s)...`,
-        success: 'ZIP downloaded successfully',
-        error: 'Failed to create ZIP file'
       }
-    );
+      const content = await zip.generateAsync({
+        type: 'blob'
+      });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(content);
+      link.download = `files-${Date.now()}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    })(), {
+      loading: `Creating ZIP with ${selectedFiles.length} file(s)...`,
+      success: 'ZIP downloaded successfully',
+      error: 'Failed to create ZIP file'
+    });
   };
   if (loading) {
     return <div className="flex items-center justify-center p-8">
@@ -422,12 +400,7 @@ export function FileManager() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button 
-            onClick={() => setAiOrganizerDialog(true)} 
-            variant="outline" 
-            className="font-heading bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20"
-            disabled={files.length === 0}
-          >
+          <Button onClick={() => setAiOrganizerDialog(true)} variant="outline" disabled={files.length === 0} className="font-heading border  bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:bg-fuchsia-500">
             <Sparkles className="mr-2 h-4 w-4" />
             AI Organize
           </Button>
@@ -478,12 +451,7 @@ export function FileManager() {
               </select>
             </div>
             {selectionMode && <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  onClick={downloadAsZip} 
-                  disabled={Array.from(selectedItems).filter(id => files.some(f => f.id === id)).length === 0}
-                  className="font-heading bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30"
-                >
+                <Button variant="outline" onClick={downloadAsZip} disabled={Array.from(selectedItems).filter(id => files.some(f => f.id === id)).length === 0} className="font-heading bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
                   <Archive className="mr-2 h-4 w-4" />
                   ZIP ({Array.from(selectedItems).filter(id => files.some(f => f.id === id)).length})
                 </Button>
@@ -603,38 +571,25 @@ export function FileManager() {
                   
                   <div className="flex items-center gap-2">
                     {selectionMode && <Checkbox checked={selectedItems.has(file.id)} onCheckedChange={() => toggleItemSelection(file.id)} />}
-                    {!selectionMode && (
-                      <div className="flex items-center gap-1.5">
+                    {!selectionMode && <div className="flex items-center gap-1.5">
                         <Badge variant="outline" className="text-xs bg-background/50">
                           <Download className="mr-1 h-3 w-3" />
                           {file.download_count}
                         </Badge>
                         {file.is_public && <Badge variant="secondary" className="text-xs">Public</Badge>}
                         {file.is_locked && <Badge variant="outline" className="text-xs">Locked</Badge>}
-                      </div>
-                    )}
+                      </div>}
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                {!selectionMode && (
-                  <div className="flex items-center gap-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} 
-                      className="flex-1 h-9 hover:bg-muted"
-                    >
+                {!selectionMode && <div className="flex items-center gap-2">
+                    <Button size="sm" variant="outline" onClick={() => downloadFile(file.id, file.storage_path, file.original_name)} className="flex-1 h-9 hover:bg-muted">
                       <ScanEye className="mr-1.5 h-4 w-4" />
                       <span className="hidden sm:inline">View</span>
                     </Button>
                     
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      onClick={() => openShareDialog(file.id, file.original_name)} 
-                      className="flex-1 h-9 hover:bg-muted"
-                    >
+                    <Button size="sm" variant="outline" onClick={() => openShareDialog(file.id, file.original_name)} className="flex-1 h-9 hover:bg-muted">
                       <Share2 className="mr-1.5 h-4 w-4" />
                       <span className="hidden sm:inline">Share</span>
                     </Button>
@@ -659,10 +614,10 @@ export function FileManager() {
                           Create Share Link
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setShareToTeamsDialog({
-                          isOpen: true,
-                          fileId: file.id,
-                          fileName: file.original_name
-                        })}>
+                  isOpen: true,
+                  fileId: file.id,
+                  fileName: file.original_name
+                })}>
                           <span className="material-icons md-18 mr-2">groups</span>
                           Share to Team
                         </DropdownMenuItem>
@@ -679,8 +634,7 @@ export function FileManager() {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </div>
-                )}
+                  </div>}
               </CardContent>
             </Card>)}
         </div>}
@@ -718,16 +672,11 @@ export function FileManager() {
       fileName: ''
     })} fileId={shareToTeamsDialog.fileId} fileName={shareToTeamsDialog.fileName} />
       
-      <AIFileOrganizer 
-        isOpen={aiOrganizerDialog} 
-        onClose={() => setAiOrganizerDialog(false)}
-        files={files.map(f => ({ 
-          id: f.id, 
-          original_name: f.original_name, 
-          file_type: f.file_type,
-          file_size: f.file_size 
-        }))}
-        onOrganized={fetchContents}
-      />
+      <AIFileOrganizer isOpen={aiOrganizerDialog} onClose={() => setAiOrganizerDialog(false)} files={files.map(f => ({
+      id: f.id,
+      original_name: f.original_name,
+      file_type: f.file_type,
+      file_size: f.file_size
+    }))} onOrganized={fetchContents} />
     </div>;
 }
