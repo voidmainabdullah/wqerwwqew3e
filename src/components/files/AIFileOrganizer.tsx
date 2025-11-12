@@ -1,25 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  Sparkles,
-  FolderTree,
-  ChevronRight,
-  Loader2,
-  Trash2,
-  Edit3,
-  Settings,
-  CheckCircle,
-  XCircle,
-} from 'lucide-react';
+import { Sparkles, FolderTree, ChevronRight, Loader2, Trash2, Edit3, Settings, CheckCircle, XCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
@@ -41,19 +25,22 @@ interface AIFileOrganizerProps {
   }>;
   onOrganized: () => void;
 }
-
 interface OrganizationSuggestion {
   folderName: string;
   originalFolderName?: string; // for when user edits name
   fileIds: string[];
-  filesPreview: Array<{ id: string; name: string; size: number; created_at?: string | null }>;
+  filesPreview: Array<{
+    id: string;
+    name: string;
+    size: number;
+    created_at?: string | null;
+  }>;
   reason: string;
   fileCount: number;
   estimatedBytes: number;
   confidence: number; // 0..1
   enabled: boolean;
 }
-
 const KNOWN_IMAGE_EXT = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'heic', 'avif'];
 const KNOWN_VIDEO_EXT = ['mp4', 'mov', 'avi', 'mkv', 'webm'];
 const KNOWN_AUDIO_EXT = ['mp3', 'wav', 'ogg', 'flac', 'm4a'];
@@ -65,8 +52,12 @@ const KNOWN_CODE_EXT = ['js', 'ts', 'jsx', 'tsx', 'py', 'java', 'cpp', 'c', 'htm
 
 // small helper: safe lowercase
 const lc = (s?: string) => (s || '').toLowerCase();
-
-export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileOrganizerProps) {
+export function AIFileOrganizer({
+  isOpen,
+  onClose,
+  files,
+  onOrganized
+}: AIFileOrganizerProps) {
   const [analyzing, setAnalyzing] = useState(false);
   const [organizing, setOrganizing] = useState(false);
   const [suggestions, setSuggestions] = useState<OrganizationSuggestion[]>([]);
@@ -77,7 +68,6 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
   // Derived totals
   const totalBytes = useMemo(() => files.reduce((s, f) => s + (f.file_size || 0), 0), [files]);
   const totalFiles = files.length;
-
   useEffect(() => {
     // Reset suggestions when closed or files change
     if (!isOpen) {
@@ -94,13 +84,12 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
       toast.info('No files to analyze.');
       return;
     }
-
     setAnalyzing(true);
     try {
       // small helpers
       const extFromName = (name: string) => {
         const m = name.match(/\.([a-z0-9]+)$/i);
-        return (m && m[1]) ? m[1].toLowerCase() : '';
+        return m && m[1] ? m[1].toLowerCase() : '';
       };
 
       // tokenize name to help with fuzzy categories
@@ -113,27 +102,37 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
       };
 
       // produce normalized name tokens for a file
-      const fileTokens = (name: string) =>
-        lc(name)
-          .replace(/[_\-\.]/g, ' ')
-          .replace(/[^\w\s]/g, '')
-          .split(/\s+/)
-          .filter(Boolean);
+      const fileTokens = (name: string) => lc(name).replace(/[_\-\.]/g, ' ').replace(/[^\w\s]/g, '').split(/\s+/).filter(Boolean);
 
       // grouping map: categoryName -> { ids, bytes, preview }
-      const groups: Map<
-        string,
-        { ids: string[]; bytes: number; preview: Array<{ id: string; name: string; size: number; created_at?: string | null }> }
-      > = new Map();
+      const groups: Map<string, {
+        ids: string[];
+        bytes: number;
+        preview: Array<{
+          id: string;
+          name: string;
+          size: number;
+          created_at?: string | null;
+        }>;
+      }> = new Map();
 
       // add to group helper
       const addToGroup = (name: string, file: any) => {
-        if (!groups.has(name)) groups.set(name, { ids: [], bytes: 0, preview: [] });
+        if (!groups.has(name)) groups.set(name, {
+          ids: [],
+          bytes: 0,
+          preview: []
+        });
         const g = groups.get(name)!;
         g.ids.push(file.id);
         g.bytes += file.file_size || 0;
         if (g.preview.length < 6) {
-          g.preview.push({ id: file.id, name: file.original_name, size: file.file_size || 0, created_at: file.created_at });
+          g.preview.push({
+            id: file.id,
+            name: file.original_name,
+            size: file.file_size || 0,
+            created_at: file.created_at
+          });
         }
       };
 
@@ -154,61 +153,129 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
         const tokens = fileTokens(name);
 
         // Base category candidates with scores
-        const candidates: Array<{ category: string; score: number; reasonTags: string[] }> = [];
+        const candidates: Array<{
+          category: string;
+          score: number;
+          reasonTags: string[];
+        }> = [];
 
         // Type-based heuristics (strong)
         if (KNOWN_IMAGE_EXT.includes(ext) || lc(f.file_type || '').includes('image')) {
-          candidates.push({ category: 'Images', score: 1.0, reasonTags: ['type:image'] });
+          candidates.push({
+            category: 'Images',
+            score: 1.0,
+            reasonTags: ['type:image']
+          });
         } else if (KNOWN_VIDEO_EXT.includes(ext) || lc(f.file_type || '').includes('video')) {
-          candidates.push({ category: 'Videos', score: 1.0, reasonTags: ['type:video'] });
+          candidates.push({
+            category: 'Videos',
+            score: 1.0,
+            reasonTags: ['type:video']
+          });
         } else if (KNOWN_AUDIO_EXT.includes(ext) || lc(f.file_type || '').includes('audio')) {
-          candidates.push({ category: 'Audio', score: 1.0, reasonTags: ['type:audio'] });
+          candidates.push({
+            category: 'Audio',
+            score: 1.0,
+            reasonTags: ['type:audio']
+          });
         } else if (KNOWN_DOC_EXT.includes(ext) || lc(f.file_type || '').includes('pdf')) {
-          candidates.push({ category: 'Documents', score: 0.95, reasonTags: ['type:doc'] });
+          candidates.push({
+            category: 'Documents',
+            score: 0.95,
+            reasonTags: ['type:doc']
+          });
         } else if (KNOWN_SHEETS_EXT.includes(ext)) {
-          candidates.push({ category: 'Spreadsheets', score: 0.95, reasonTags: ['type:sheet'] });
+          candidates.push({
+            category: 'Spreadsheets',
+            score: 0.95,
+            reasonTags: ['type:sheet']
+          });
         } else if (KNOWN_PRESENT_EXT.includes(ext)) {
-          candidates.push({ category: 'Presentations', score: 0.95, reasonTags: ['type:presentation'] });
+          candidates.push({
+            category: 'Presentations',
+            score: 0.95,
+            reasonTags: ['type:presentation']
+          });
         } else if (KNOWN_ARCHIVE_EXT.includes(ext)) {
-          candidates.push({ category: 'Archives', score: 0.95, reasonTags: ['type:archive'] });
+          candidates.push({
+            category: 'Archives',
+            score: 0.95,
+            reasonTags: ['type:archive']
+          });
         } else if (KNOWN_CODE_EXT.includes(ext)) {
-          candidates.push({ category: 'Code', score: 0.95, reasonTags: ['type:code'] });
+          candidates.push({
+            category: 'Code',
+            score: 0.95,
+            reasonTags: ['type:code']
+          });
         } else {
           // fallback generic
-          candidates.push({ category: 'Miscellaneous', score: 0.3, reasonTags: ['type:unknown'] });
+          candidates.push({
+            category: 'Miscellaneous',
+            score: 0.3,
+            reasonTags: ['type:unknown']
+          });
         }
 
         // Name-based heuristics (medium)
         if (tokens.some(t => ['invoice', 'receipt', 'bill', 'payment'].includes(t))) {
-          candidates.push({ category: 'Financial', score: 0.9, reasonTags: ['name:financial'] });
+          candidates.push({
+            category: 'Financial',
+            score: 0.9,
+            reasonTags: ['name:financial']
+          });
         }
         if (tokens.some(t => ['project', 'proj', 'task', 'client', 'work', 'spec'].includes(t))) {
-          candidates.push({ category: 'Work Projects', score: 0.9, reasonTags: ['name:project'] });
+          candidates.push({
+            category: 'Work Projects',
+            score: 0.9,
+            reasonTags: ['name:project']
+          });
         }
         if (tokens.some(t => ['personal', 'private', 'diary', 'personalnotes'].includes(t))) {
-          candidates.push({ category: 'Personal', score: 0.9, reasonTags: ['name:personal'] });
+          candidates.push({
+            category: 'Personal',
+            score: 0.9,
+            reasonTags: ['name:personal']
+          });
         }
         if (tokens.some(t => ['backup', 'bak', 'backup-202', 'snap'].includes(t))) {
-          candidates.push({ category: 'Backups', score: 0.95, reasonTags: ['name:backup'] });
+          candidates.push({
+            category: 'Backups',
+            score: 0.95,
+            reasonTags: ['name:backup']
+          });
         }
         if (tokens.some(t => ['photo', 'pic', 'image', 'img', 'portrait'].includes(t))) {
-          candidates.push({ category: 'Photos', score: 0.93, reasonTags: ['name:photo'] });
+          candidates.push({
+            category: 'Photos',
+            score: 0.93,
+            reasonTags: ['name:photo']
+          });
         }
         if (tokens.some(t => /\b20(1[5-9]|2[0-9])\b/.test(t))) {
           // date-like tokens e.g., 2024
           const matched = tokens.find(t => t.match(/\b20(1[5-9]|2[0-9])\b/));
-          candidates.push({ category: `Files ${matched}`, score: 0.7, reasonTags: ['name:year'] });
+          candidates.push({
+            category: `Files ${matched}`,
+            score: 0.7,
+            reasonTags: ['name:year']
+          });
         }
 
         // token-based small project grouping (medium-low)
         const projectTokens = ['website', 'app', 'design', 'logo', 'proposal', 'contract'];
         const ts = tokenScore(projectTokens, tokens);
-        if (ts > 0) candidates.push({ category: 'Work Projects', score: 0.6 + ts * 0.3, reasonTags: ['tokens:project-like'] });
+        if (ts > 0) candidates.push({
+          category: 'Work Projects',
+          score: 0.6 + ts * 0.3,
+          reasonTags: ['tokens:project-like']
+        });
 
         // combine scores into final category selection
         // weighting: type heuristics more important, name heuristics next, recency and size nudge
         // compute best candidate
-        let best = candidates[0]; 
+        let best = candidates[0];
         for (const c of candidates) {
           if (c.score > best.score) best = c;
         }
@@ -217,7 +284,6 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
         const recW = recencyWeight(f.created_at);
         const sizeFactor = Math.min(1, Math.log2((f.file_size || 1) + 1) / 20 + 0.5); // small files less influence
         const finalConfidence = Math.min(1, Math.max(0, best.score * (0.5 + 0.4 * recW) * (0.6 + 0.4 * sizeFactor)));
-
         addToGroup(best.category, f);
 
         // store a secondary 'low confidence fallback' for files that were put into "Miscellaneous"
@@ -253,9 +319,7 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
         const countFactor = Math.min(1, Math.log2(count + 1) / 6); // >64 files => ~1
         const byteFactor = Math.min(1, Math.log2(bytes + 1) / 24); // large total size nudges confidence
         const heuristicConfidence = Math.min(0.99, 0.4 + 0.5 * countFactor + 0.2 * byteFactor);
-
         const reason = getReason(folderName, count);
-
         const suggestion: OrganizationSuggestion = {
           folderName,
           originalFolderName: folderName,
@@ -265,7 +329,7 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
           fileCount: count,
           estimatedBytes: bytes,
           confidence: Number(heuristicConfidence.toFixed(2)),
-          enabled: heuristicConfidence >= 0.45, // default enable if somewhat confident
+          enabled: heuristicConfidence >= 0.45 // default enable if somewhat confident
         };
         built.push(suggestion);
       }
@@ -305,7 +369,7 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
       Financial: 'Organize invoices, receipts and financial documents.',
       Photos: 'Centralize photo collections for easier browsing.',
       Backups: 'Keep backup files separated from active assets.',
-      Miscellaneous: 'Miscellaneous files that don’t fit other categories.',
+      Miscellaneous: 'Miscellaneous files that don’t fit other categories.'
     };
     return reasons[folderName] || `Suggested folder for ${count} related file(s).`;
   };
@@ -314,15 +378,20 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
   const toggleSuggestion = (index: number) => {
     setSuggestions(prev => {
       const copy = [...prev];
-      copy[index] = { ...copy[index], enabled: !copy[index].enabled };
+      copy[index] = {
+        ...copy[index],
+        enabled: !copy[index].enabled
+      };
       return copy;
     });
   };
-
   const editFolderName = (index: number, newName: string) => {
     setSuggestions(prev => {
       const copy = [...prev];
-      copy[index] = { ...copy[index], folderName: newName };
+      copy[index] = {
+        ...copy[index],
+        folderName: newName
+      };
       return copy;
     });
   };
@@ -346,12 +415,10 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
 
       // Check existing folders for this user to avoid duplicates
       const folderNames = toApply.map(s => s.folderName);
-      const { data: existingFolders, error: fetchFoldersError } = await supabase
-        .from('folders')
-        .select('id,name')
-        .in('name', folderNames)
-        .eq('user_id', user.id);
-
+      const {
+        data: existingFolders,
+        error: fetchFoldersError
+      } = await supabase.from('folders').select('id,name').in('name', folderNames).eq('user_id', user.id);
       if (fetchFoldersError) {
         console.warn('Could not fetch existing folders:', fetchFoldersError);
         // continue — we'll attempt to create folders (may cause duplicates)
@@ -367,22 +434,21 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
 
       // loop suggestions and create missing folders then update file folder_id
       const appliedFolderIds: string[] = [];
-      const results: Array<{ suggestion: OrganizationSuggestion; success: boolean; error?: any }> = [];
-
-      for (const suggestion of toApply) { 
+      const results: Array<{
+        suggestion: OrganizationSuggestion;
+        success: boolean;
+        error?: any;
+      }> = [];
+      for (const suggestion of toApply) {
         try {
           let folderId = folderNameToId[suggestion.folderName];
           // if folder doesn't exist create it
           if (!folderId) {
-            const insertRes = await supabase
-              .from('folders')
-              .insert({
-                user_id: user.id,
-                name: suggestion.folderName,
-                parent_folder_id: null,
-              })
-              .select()
-              .single();
+            const insertRes = await supabase.from('folders').insert({
+              user_id: user.id,
+              name: suggestion.folderName,
+              parent_folder_id: null
+            }).select().single();
             if (insertRes.error) throw insertRes.error;
             folderId = insertRes.data.id;
             // record in map so we won't create again
@@ -390,22 +456,26 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
           }
 
           // update files in bulk
-          const updateRes = await supabase
-            .from('files')
-            .update({ folder_id: folderId })
-            .in('id', suggestion.fileIds);
-
+          const updateRes = await supabase.from('files').update({
+            folder_id: folderId
+          }).in('id', suggestion.fileIds);
           if (updateRes.error) throw updateRes.error;
-
           appliedFolderIds.push(folderId);
 
           // create an organization log row (optional analytics) - skipped as table doesn't exist
           // This could be tracked in audit_logs or a custom table if needed
 
-          results.push({ suggestion, success: true });
+          results.push({
+            suggestion,
+            success: true
+          });
         } catch (err) {
           console.error('Error applying suggestion', suggestion.folderName, err);
-          results.push({ suggestion, success: false, error: err });
+          results.push({
+            suggestion,
+            success: false,
+            error: err
+          });
         }
       }
 
@@ -418,7 +488,6 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
       if (failCount > 0) {
         toast.error(`${failCount} folder(s) failed — check logs.`);
       }
-
       onOrganized(); // let parent refresh
       onClose();
     } catch (err: any) {
@@ -445,15 +514,16 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
   // If auto-apply is on, we can pre-enable suggestions above threshold (already done in analyze),
   // but here we provide a one-click to enable / disable based on confidence
   const applyAutoConfidenceFilter = () => {
-    setSuggestions(prev => prev.map(s => ({ ...s, enabled: s.confidence >= minAutoApplyConfidence })));
+    setSuggestions(prev => prev.map(s => ({
+      ...s,
+      enabled: s.confidence >= minAutoApplyConfidence
+    })));
   };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+  return <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
+            <Sparkles className="h-5 w-5 text-indigo-400" />
             AI File Organizer
           </DialogTitle>
           <DialogDescription>
@@ -462,8 +532,7 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
         </DialogHeader>
 
         <div className="space-y-4">
-          {suggestions.length === 0 ? (
-            <Card>
+          {suggestions.length === 0 ? <Card>
               <CardContent className="p-8 text-center space-y-4">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                   <FolderTree className="h-8 w-8 
@@ -481,30 +550,27 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
 
                 <div className="flex gap-2 mt-4">
                   <Button onClick={analyzeFiles} disabled={analyzing} className="flex-1">
-                    {analyzing ? (
-                      <>
+                    {analyzing ? <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Analyzing...
-                      </>
-                    ) : (
-                      <>
+                      </> : <>
                         <Sparkles className="mr-2 h-4 w-4" />
                         Start AI Analysis
-                      </>
-                    )}
+                      </>}
                   </Button>
-                  <Button variant="outline" onClick={() => { setSuggestions([]); toast('Reset'); }} className="flex-1">
+                  <Button variant="outline" onClick={() => {
+                setSuggestions([]);
+                toast('Reset');
+              }} className="flex-1">
                     Reset
                   </Button>
                 </div>
               </CardContent>
-            </Card>
-          ) : (
-            <>
+            </Card> : <>
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className=" text-md font-semibold">Organization Suggestions ({suggestions.length})</h4>
-                  <div className="text-sm text-muted-foreground">
+                  <h4 className="text-md font-normal text-neutral-200">Organization Suggestions ({suggestions.length})</h4>
+                  <div className="text-sm text-muted-foreground my-[4px]">
                     {prettyBytes(totalBytes)} total · {totalFiles} files · analyzed {lastAnalysisAt ? lastAnalysisAt.toLocaleString() : '—'}
                   </div>
                 </div>
@@ -516,22 +582,17 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
                   </div>
                   <Switch checked={autoApplyHighConfidence} onCheckedChange={(v: boolean) => setAutoApplyHighConfidence(v)} />
                   <div className="flex items-center gap-2 pl-2">
-                    <Input
-                      value={String(minAutoApplyConfidence)}
-                      onChange={(e) => {
-                        const val = Number(e.target.value);
-                        if (!Number.isNaN(val)) setMinAutoApplyConfidence(Math.max(0, Math.min(1, val)));
-                      }}
-                      className="w-20"
-                    />
+                    <Input value={String(minAutoApplyConfidence)} onChange={e => {
+                  const val = Number(e.target.value);
+                  if (!Number.isNaN(val)) setMinAutoApplyConfidence(Math.max(0, Math.min(1, val)));
+                }} className="w-20" />
                     <Button onClick={applyAutoConfidenceFilter} size="sm">Apply</Button>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3 mt-2">
-                {suggestions.map((s, idx) => (
-                  <Card key={s.folderName + idx}>
+                {suggestions.map((s, idx) => <Card key={s.folderName + idx}>
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -545,61 +606,44 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
                                 <div className="flex items-center gap-2">
                                   <h4 className="font-semibold truncate">{s.folderName}</h4>
                                   <Badge variant="outline" className="text-xs">{s.fileCount} files</Badge>
-                                  <Badge variant="secondary" className="text-xs">{s.confidence * 100}%</Badge>
+                                  
                                 </div>
                                 <div className="text-muted-foreground text-sm">{s.reason}</div>
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                              <button
-                                className="flex items-center gap-1 text-sm px-2 py-1 border rounded"
-                                onClick={() => toggleSuggestion(idx)}
-                              >
-                                {s.enabled ? <CheckCircle className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
-                                {s.enabled ? 'Enable' : 'Disabled'}
+                            <div className="flex items-center gap-2 my-0 mx-[9px]">
+                              
+
+                              <button className="flex items-center gap-1 text-sm px-2 py-1 border rounded" onClick={() => {
+                          const newName = prompt('Edit folder name', s.folderName);
+                          if (newName && newName.trim()) editFolderName(idx, newName.trim());
+                        }} title="Edit folder name">
+                                <Edit3 className="h-4 w-4 text-zinc-400" />
                               </button>
 
-                              <button
-                                className="flex items-center gap-1 text-sm px-2 py-1 border rounded"
-                                onClick={() => {
-                                  const newName = prompt('Edit folder name', s.folderName);
-                                  if (newName && newName.trim()) editFolderName(idx, newName.trim());
-                                }}
-                                title="Edit folder name"
-                              >
-                                <Edit3 className="h-4 w-4" />
-                              </button>
-
-                              <button
-                                className="flex items-center gap-1 text-sm px-2 py-1 border rounded"
-                                onClick={() => {
-                                  // remove this suggestion from list
-                                  setSuggestions(prev => prev.filter((_, i) => i !== idx));
-                                }}
-                                title="Remove suggestion"
-                              >
-                                <Trash2 className="h-4 w-4" />
+                              <button className="flex items-center gap-1 text-sm px-2 py-1 border rounded" onClick={() => {
+                          // remove this suggestion from list
+                          setSuggestions(prev => prev.filter((_, i) => i !== idx));
+                        }} title="Remove suggestion">
+                                <Trash2 className="h-4 w-4 text-red-400" />
                               </button>
                             </div>
                           </div>
 
                           <div className="mt-3 grid grid-cols-3 gap-2">
-                            {s.filesPreview.map(fp => (
-                              <div key={fp.id} className="text-xs border rounded p-2">
+                            {s.filesPreview.map(fp => <div key={fp.id} className="text-xs border rounded p-2">
                                 <div className="truncate font-medium">{fp.name}</div>
                                 <div className="text-muted-foreground">{prettyBytes(fp.size)}</div>
                                 {fp.created_at ? <div className="text-muted-foreground text-[10px]">{new Date(fp.created_at).toLocaleDateString()}</div> : null}
-                              </div>
-                            ))}
+                              </div>)}
                           </div>
                         </div>
 
                         <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
 
               <Separator />
@@ -608,37 +652,29 @@ export function AIFileOrganizer({ isOpen, onClose, files, onOrganized }: AIFileO
                 <Button variant="outline" onClick={resetSuggestions} className="flex-1">
                   Cancel
                 </Button>
-                <Button
-                  onClick={async () => {
-                    // if auto apply high confidence enabled, set enabled for those
-                    if (autoApplyHighConfidence) {
-                      setSuggestions(prev => prev.map(s => ({ ...s, enabled: s.confidence >= minAutoApplyConfidence })));
-                      // slight delay to reflect UI update (no blocking)
-                      await new Promise(res => setTimeout(res, 120));
-                    }
-                    applyOrganization();
-                  }}
-                  disabled={organizing}
-                  className="flex-1"
-                >
-                  {organizing ? (
-                    <>
+                <Button onClick={async () => {
+              // if auto apply high confidence enabled, set enabled for those
+              if (autoApplyHighConfidence) {
+                setSuggestions(prev => prev.map(s => ({
+                  ...s,
+                  enabled: s.confidence >= minAutoApplyConfidence
+                })));
+                // slight delay to reflect UI update (no blocking)
+                await new Promise(res => setTimeout(res, 120));
+              }
+              applyOrganization();
+            }} disabled={organizing} className="flex-1">
+                  {organizing ? <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Organizing...
-                    </>
-                  ) : (
-                    <>
+                    </> : <>
                       <FolderTree className="mr-2 h-4 w-4" />
                       Apply Organization
-                    </>
-                  )}
+                    </>}
                 </Button>
               </div>
-            </>
-          )}
+            </>}
         </div>
       </DialogContent>
-    </Dialog>
-  ); 
+    </Dialog>;
 }
- 
