@@ -453,7 +453,7 @@ export const FileUpload: React.FC = () => {
               <select
                 value={selectedFolderId || ''}
                 onChange={(e) => setSelectedFolderId(e.target.value || null)}
-                className="w-full p-2 border border-input bg-background rounded-md font-body"
+                className="w-full p-2 border border-input bg-red-600 rounded-md font-body"
                 disabled={isUploading}
               >
                 <option value="">Root (No Folder)</option>
