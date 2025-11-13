@@ -117,7 +117,7 @@ export const ExportAnalytics: React.FC = () => {
   };
   return <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="border-zinc-700 bg-blue-600/60 hover:bg-blue-600 text-neutral-50">
+        <Button variant="outline" className="border-blue-700 bg-blue-600/75 hover:bg-blue-600 text-blue-200">
           <Download className="w-4 h-4 mr-2" />
           Export Analytics
         </Button>
