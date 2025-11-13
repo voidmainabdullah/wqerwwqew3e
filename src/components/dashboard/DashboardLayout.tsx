@@ -60,7 +60,7 @@ const AppSidebar = () => {
       <SidebarHeader className="flex-shrink-0 py-3 bg-stone-950 mx-px my-0 px-[5px]">
         <div className="flex items-center space-x-3 group px-0 py-0 my-0 mx-px">
           <div className="relative flex-shrink-0">
-            <img src="/skie.png" alt="SkieShare Logo" className="h-20 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
+            <img src="/skie.png" alt="SkieShare Logo" className="h-14 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
             <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
               <img src="/skie.png" alt="SkieShare Logo Glow" className="h-8 w-auto object-contain " />
             </div>
