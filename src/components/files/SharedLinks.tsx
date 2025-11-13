@@ -361,7 +361,7 @@ const HeaderFilters = ({
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
       <div className="flex items-center gap-2 w-full sm:w-auto">
         <Input placeholder="Search by file name" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="min-w-0 bg-black text-white placeholder:text-white/50 border-white/10" />
-        <Button variant="outline" onClick={() => setSearchQuery('')} className="border-white/10 text-white/80">Clear</Button>
+        <Button variant="outline" onClick={() => setSearchQuery('')} className="border-white/10 font-extralight font-mono text-red-400">​✖</Button>
       </div>
 
       <div className="flex items-center gap-2">
@@ -371,7 +371,7 @@ const HeaderFilters = ({
           <option value="downloads">Most Downloads</option>
           <option value="expires">Expiring Soon</option>
         </select>
-        <Button variant="outline" onClick={refresh} className="border-white/10 text-white/80">Refresh</Button>
+        <Button variant="outline" onClick={refresh} className="border-white/10 bg-stone-100 text-stone-800">Refresh</Button>
       </div>
     </div>
   </div>;
@@ -549,9 +549,7 @@ const SuggestedAction: React.FC<{
   const actionable = suggestion !== 'No action needed' && suggestion !== 'Consider protecting with a password';
   return <div className="flex items-center gap-2">
       
-      {actionable && <Button size="sm" variant="ghost" onClick={onApplyAction} className="text-white/80 border-white/6">
-          Apply
-        </Button>}
+      {actionable}
     </div>;
 };
 
