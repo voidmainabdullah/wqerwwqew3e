@@ -41,7 +41,7 @@ const Logo = () => {
       {/* Brand Text - Hidden on mobile for space optimization */}
       <div className="hidden lg:block">
         <div className="flex flex-col">
-          <span className={`text-xl xl:text-2xl font-heading font-bold tracking-tight transition-all duration-300 group-hover:scale-105 ${
+          <span className={`text-xl xl:text-2xl font-heading font-bold tracking-tight transition-all duration-300 group-hover:scale-15 ${
             actualTheme === 'light'
               ? 'bg-gradient-to-r from-white/80 via-white/60 to-white bg-clip-text text-transparent'
               : 'bg-gradient-to-r from-white/80 via-white/60 to-white bg-clip-text text-transparent'
