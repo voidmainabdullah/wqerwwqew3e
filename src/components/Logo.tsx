@@ -5,12 +5,12 @@ const Logo = () => {
   
   return (
     <div className="flex items-center gap-3 group">
-      <div className="relative">
+      <div className="relative"> 
         {/* Main Logo */}
         <img 
           src="/skie.png" 
           alt="SkieShare Logo" 
-          className={`h-10 w-auto sm:h-12 md:h-14 lg:h-25 object-contain transition-all duration-500 group-hover:scale-110 ${
+          className={`h-10 w-auto sm:h-12 md:h-14 lg:h-16 object-contain transition-all duration-500 group-hover:scale-110 ${
             actualTheme === 'light' 
               ? 'filter brightness-95 contrast-105' 
               : 'filter brightness-110 contrast-95'
