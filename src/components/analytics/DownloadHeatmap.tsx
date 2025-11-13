@@ -6,10 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, TrendingUp } from 'lucide-react';
 
 interface HeatmapCell {
-  day: string;
-  hour: number;
   count: number;
-  date: Date;
 }
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -17,22 +14,24 @@ const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
 export const DownloadHeatmap: React.FC = () => {
   const { user } = useAuth();
-  const [heatmapData, setHeatmapData] = useState<HeatmapCell[]>([]);
+  const [heatmap, setHeatmap] = useState<HeatmapCell[][]>([]);
   const [maxCount, setMaxCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const fetchHeatmapData = async () => {
     if (!user?.id) return;
 
+    setLoading(true);
     try {
       const { data: userFiles } = await supabase
         .from('files')
         .select('id')
         .eq('user_id', user.id);
 
-      const fileIds = userFiles?.map((f) => f.id) || [];
-
-      if (fileIds.length === 0) {
+      const fileIds = userFiles?.map(f => f.id) || [];
+      if (!fileIds.length) {
+        setHeatmap(Array.from({ length: 7 }, () => Array(24).fill({ count: 0 })));
+        setMaxCount(0);
         setLoading(false);
         return;
       }
@@ -46,36 +45,25 @@ export const DownloadHeatmap: React.FC = () => {
         .in('file_id', fileIds)
         .gte('downloaded_at', weekAgo.toISOString());
 
-      const heatmap = new Map<string, number>();
-      let max = 0;
+      // Initialize heatmap
+      const tempHeatmap: HeatmapCell[][] = Array.from({ length: 7 }, () =>
+        Array.from({ length: 24 }, () => ({ count: 0 }))
+      );
 
-      downloads?.forEach((download) => {
-        const date = new Date(download.downloaded_at);
-        const day = date.getDay();
+      let peak = 0;
+
+      downloads?.forEach(d => {
+        const date = new Date(d.downloaded_at);
+        const day = date.getDay(); // 0 = Sunday
         const hour = date.getHours();
-        const key = `${day}-${hour}`;
-        const count = (heatmap.get(key) || 0) + 1;
-        heatmap.set(key, count);
-        if (count > max) max = count;
+        tempHeatmap[day][hour].count += 1;
+        if (tempHeatmap[day][hour].count > peak) peak = tempHeatmap[day][hour].count;
       });
 
-      const cells: HeatmapCell[] = [];
-      DAYS.forEach((day, dayIndex) => {
-        HOURS.forEach((hour) => {
-          const key = `${dayIndex}-${hour}`;
-          cells.push({
-            day,
-            hour,
-            count: heatmap.get(key) || 0,
-            date: new Date(),
-          });
-        });
-      });
-
-      setHeatmapData(cells);
-      setMaxCount(max);
-    } catch (error) {
-      console.error('Error fetching heatmap data:', error);
+      setHeatmap(tempHeatmap);
+      setMaxCount(peak);
+    } catch (err) {
+      console.error('Error fetching heatmap data:', err);
     } finally {
       setLoading(false);
     }
@@ -83,15 +71,11 @@ export const DownloadHeatmap: React.FC = () => {
 
   useEffect(() => {
     fetchHeatmapData();
-
-    const interval = setInterval(() => {
-      fetchHeatmapData();
-    }, 60000);
-
+    const interval = setInterval(fetchHeatmapData, 60000);
     return () => clearInterval(interval);
   }, [user?.id]);
 
-  const getIntensityColor = (count: number): string => {
+  const getIntensityColor = (count: number) => {
     if (count === 0) return 'bg-zinc-800';
     const intensity = maxCount > 0 ? count / maxCount : 0;
     if (intensity < 0.25) return 'bg-emerald-900/40';
@@ -135,50 +119,45 @@ export const DownloadHeatmap: React.FC = () => {
       </CardHeader>
 
       <CardContent>
-        <div className="overflow-x-auto">
-          <div className="min-w-max">
-            <div className="flex gap-1 mb-2 ml-12">
-              {HOURS.filter((_, i) => i % 2 === 0).map((hour) => (
-                <div key={hour} className="w-8 text-center text-xs text-zinc-400">
-                  {hour.toString().padStart(2, '0')}
-                </div>
-              ))}
-            </div>
-
-            {DAYS.map((day) => (
-              <div key={day} className="flex items-center gap-1 mb-1">
-                <div className="w-10 text-xs text-zinc-400 font-medium">{day}</div>
-                <div className="flex gap-1">
-                  {HOURS.map((hour) => {
-                    const cell = heatmapData.find(
-                      (c) => c.day === day && c.hour === hour
-                    );
-                    const count = cell?.count || 0;
-                    return (
-                      <div
-                        key={`${day}-${hour}`}
-                        className={`w-4 h-4 rounded ${getIntensityColor(
-                          count
-                        )} transition-colors duration-200 cursor-pointer hover:ring-2 hover:ring-emerald-400`}
-                        title={`${day} ${hour}:00 - ${count} downloads`}
-                      />
-                    );
-                  })}
-                </div>
+        <div className="overflow-x-auto min-w-max">
+          <div className="flex gap-1 mb-2 ml-12">
+            {HOURS.filter((_, i) => i % 2 === 0).map(hour => (
+              <div key={hour} className="w-8 text-center text-xs text-zinc-400">
+                {hour.toString().padStart(2, '0')}
               </div>
             ))}
+          </div>
 
-            <div className="flex items-center gap-4 mt-4 pt-4 border-t border-zinc-700">
-              <span className="text-xs text-zinc-400">Less</span>
+          {DAYS.map((day, dayIndex) => (
+            <div key={day} className="flex items-center gap-1 mb-1">
+              <div className="w-10 text-xs text-zinc-400 font-medium">{day}</div>
               <div className="flex gap-1">
-                <div className="w-4 h-4 rounded bg-zinc-800" />
-                <div className="w-4 h-4 rounded bg-emerald-900/40" />
-                <div className="w-4 h-4 rounded bg-emerald-700/60" />
-                <div className="w-4 h-4 rounded bg-emerald-600/80" />
-                <div className="w-4 h-4 rounded bg-emerald-500" />
+                {HOURS.map(hour => {
+                  const count = heatmap[dayIndex]?.[hour]?.count || 0;
+                  return (
+                    <div
+                      key={`${day}-${hour}`}
+                      className={`w-4 h-4 rounded ${getIntensityColor(
+                        count
+                      )} transition-colors duration-200 cursor-pointer hover:ring-2 hover:ring-emerald-400`}
+                      title={`${day} ${hour}:00 - ${count} downloads`}
+                    />
+                  );
+                })}
               </div>
-              <span className="text-xs text-zinc-400">More</span>
             </div>
+          ))}
+
+          <div className="flex items-center gap-4 mt-4 pt-4 border-t border-zinc-700">
+            <span className="text-xs text-zinc-400">Less</span>
+            <div className="flex gap-1">
+              <div className="w-4 h-4 rounded bg-zinc-800" />
+              <div className="w-4 h-4 rounded bg-emerald-900/40" />
+              <div className="w-4 h-4 rounded bg-emerald-700/60" />
+              <div className="w-4 h-4 rounded bg-emerald-600/80" />
+              <div className="w-4 h-4 rounded bg-emerald-500" />
+            </div>
+            <span className="text-xs text-zinc-400">More</span>
           </div>
         </div>
       </CardContent>
