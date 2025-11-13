@@ -360,7 +360,7 @@ const HeaderFilters = ({
 
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
       <div className="flex items-center gap-2 w-full sm:w-auto">
-        <Input placeholder="Search by file name" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="min-w-0 bg-black text-white placeholder:text-white/50 border-white/10" />
+        <Input placeholder="Search by file name" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="min-w-0 bg-neutral-900 text-white border placeholder:text-white/50 border-white/30" />
         <Button variant="outline" onClick={() => setSearchQuery('')} className="border-white/10 font-extralight font-mono text-red-400">​✖</Button>
       </div>
 
