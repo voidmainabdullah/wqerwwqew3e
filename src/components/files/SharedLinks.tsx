@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+ import { Search, X } from "lucide-react"; // import Lucide icons
 import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Link as LinkIcon, FolderOpen, Gear, Globe, Sparkle } from 'phosphor-react';
 interface SharedLink {
   id: string;
@@ -358,11 +359,30 @@ const HeaderFilters = ({
       <p className="text-sm md:text-base text-white/70">Manage and monitor your active file sharing links.</p>
     </div>
 
-    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
-      <div className="flex items-center gap-2 w-full sm:w-auto">
-        <Input placeholder="Search by file name" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="min-w-0 bg-neutral-900 text-white border placeholder:text-white/50 border-white/30" />
-        <Button variant="outline" onClick={() => setSearchQuery('')} className="border-white/10 font-extralight font-mono text-red-400">​✖</Button>
-      </div>
+<div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+  <div className="relative flex items-center w-full sm:w-auto">
+    {/* Search Icon */}
+    <Search className="absolute left-3 text-white/50 w-4 h-4" />
+
+    <Input
+      placeholder="Search by file name"
+      value={searchQuery}
+      onChange={e => setSearchQuery(e.target.value)}
+      className="pl-10 pr-10 min-w-0 bg-neutral-900 text-white border placeholder:text-white/50 border-white/30"
+    />
+
+    {/* Clear / Cross Icon */}
+    {searchQuery && (
+      <button
+        onClick={() => setSearchQuery('')}
+        className="absolute right-2 p-1 text-red-400 hover:bg-red-600/20 rounded"
+      >
+        <X className="w-4 h-4" />
+      </button>
+    )}
+  </div>
+</div>
+
 
       <div className="flex items-center gap-2">
         <Label className="text-xs text-white/70">Sort</Label>
