@@ -10,7 +10,7 @@ const Logo = () => {
         <img 
           src="/skie.png" 
           alt="SkieShare Logo" 
-          className={`h-10 w-auto sm:h-12 md:h-14 lg:h-22 object-contain transition-all duration-500 group-hover:scale-110 ${
+          className={`h-10 w-auto sm:h-12 md:h-14 lg:h-20 object-contain transition-all duration-500 group-hover:scale-110 ${
             actualTheme === 'light' 
               ? 'filter brightness-95 contrast-105' 
               : 'filter brightness-110 contrast-95'
