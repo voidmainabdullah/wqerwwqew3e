@@ -283,11 +283,10 @@ const HeroSection: React.FC = () => {
           duration: 0.6
         }} style={{
           fontFamily: "Exo"
-        }}  <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-              Share Files
-            </span>
+        }} className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+              
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-              Fast & Secure.
+            Globally Share Large Files - Fast & Secure.
             </span>
             <br />
             <span className=" bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 ">
