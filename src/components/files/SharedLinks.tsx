@@ -366,7 +366,7 @@ const HeaderFilters = ({
 
       <div className="flex items-center gap-2">
         <Label className="text-xs text-white/70">Sort</Label>
-        <select value={sortOption} onChange={e => setSortOption(e.target.value as any)} className="bg-black text-white text-xs p-1 rounded border border-white/10">
+        <select value={sortOption} onChange={e => setSortOption(e.target.value as any)} className="text-white text-xs p-1 rounded border border-white/10 bg-stone-900">
           <option value="recent">Most Recent</option>
           <option value="downloads">Most Downloads</option>
           <option value="expires">Expiring Soon</option>
@@ -459,10 +459,10 @@ const LinksGrid = ({
       </div>
 
       <div className="flex items-center gap-1 ml-2">
-        <Button variant="ghost" size="sm" onClick={() => openEditDialog(link)} title="Settings" className="p-1">
+        <Button variant="ghost" size="sm" onClick={() => openEditDialog(link)} title="Settings" className="p-1 hover:bg-stone-800">
           <Gear size={16} className="text-white/70" />
         </Button>
-        <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} title="Delete" className="p-1">
+        <Button variant="ghost" size="sm" onClick={() => deleteSharedLink(link.id)} title="Delete" className="p-1 hover:bg-red-400/10">
           <Trash size={16} className="text-destructive" />
         </Button>
       </div>
