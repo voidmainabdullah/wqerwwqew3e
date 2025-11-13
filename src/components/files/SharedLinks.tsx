@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
- import { Search, X } from "lucide-react"; // import Lucide icons
+import { MagnifyingGlass, X } from "phosphor-react";
+
 import { ShareNetwork, Copy, Download, Eye, Clock, Shield, Trash, ArrowSquareOut, Link as LinkIcon, FolderOpen, Gear, Globe, Sparkle } from 'phosphor-react';
 interface SharedLink {
   id: string;
@@ -362,7 +363,7 @@ const HeaderFilters = ({
 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
   <div className="relative flex items-center w-full sm:w-auto">
     {/* Search Icon */}
-    <Search className="absolute left-3 text-white/50 w-4 h-4" />
+    <MagnifyingGlass className="absolute left-3 text-white/50 w-4 h-4" />
 
     <Input
       placeholder="Search by file name"
