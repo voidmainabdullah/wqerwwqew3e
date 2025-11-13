@@ -281,6 +281,13 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
           onMouseEnter={() => setIsTestimonialHovered(true)}
           onMouseLeave={() => setIsTestimonialHovered(false)}
         >
+          {/* Skie Shadow Background */}
+          <div className="absolute inset-0 -z-10 opacity-10" style={{
+            backgroundImage: "url('/skie.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'blur(1px)',
+          }} />
           {/* Fade Edges */}
           <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
