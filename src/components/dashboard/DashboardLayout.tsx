@@ -66,7 +66,7 @@ const AppSidebar = () => {
             </div>
           </div>
           <div className="group-data-[collapsible=icon]:hidden transition-all duration-300 overflow-hidden">
-            <span className="font-heading font-bold text-sm bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent whitespace-nowrap">
+            <span className="font-heading font-bold text-sm bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent whitespace-nowrap mr-1">
               SkieShare 
             </span>
             <p className="text-xs text-muted-foreground font-body whitespace-nowrap text-neutral-400 mx-0 my-0 py-0 px-px ">Secure Transfer</p>
