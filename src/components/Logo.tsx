@@ -33,8 +33,8 @@ const Logo = () => {
         {/* Subtle Ring Effect */}
         <div className={`absolute inset-0 rounded-full transition-all duration-500 group-hover:scale-125 ${
           actualTheme === 'light'
-            ? 'bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-blue-500/0 group-hover:from-blue-500/10 group-hover:via-blue-500/20 group-hover:to-blue-500/10'
-            : 'bg-gradient-to-r from-blue-400/0 via-blue-400/5 to-blue-400/0 group-hover:from-blue-400/15 group-hover:via-blue-400/25 group-hover:to-blue-400/15'
+            ? 'bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/0 group-hover:from-blue-500/0 group-hover:via-blue-500/0 group-hover:to-blue-500/0'
+            : 'bg-gradient-to-r from-blue-400/0 via-blue-400/0 to-blue-400/0 group-hover:from-blue-400/0 group-hover:via-blue-400/0 group-hover:to-blue-400/0'
         }`} />
       </div>
       
