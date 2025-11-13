@@ -277,22 +277,23 @@ const SkieShareSection: FC<EarthLoaderProps> = ({
         </div>
 
         <div
-          className="relative overflow-hidden"
+          className="relative overflow-hidden py-8 md:py-12"
           onMouseEnter={() => setIsTestimonialHovered(true)}
           onMouseLeave={() => setIsTestimonialHovered(false)}
         >
           {/* Skie Shadow Background */}
-          <div className="absolute inset-0 -z-10 opacity-10" style={{
+          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
             backgroundImage: "url('/skie.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'blur(1px)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center bottom',
+            filter: 'blur(0.5px)',
           }} />
           {/* Fade Edges */}
           <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
-          <div className="flex gap-4 md:gap-6 w-full">
+          <div className="flex gap-4 md:gap-6 w-full relative z-10">
             <div
               ref={testimonialRef}
               className="flex gap-4 md:gap-6 animate-scroll"
