@@ -62,7 +62,7 @@ const AppSidebar = () => {
           <div className="relative flex-shrink-0">
             <img src="/skie.png" alt="SkieShare Logo" className="h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
             <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
-              <img src="/skie.png" alt="SkieShare Logo Glow" className="h-8 w-auto lg:h-8 md:h-12 sm:h-20 object-contain " />
+              <img src="/skie.png" alt="SkieShare Logo Glow" className="h-8 w-auto  object-contain " />
             </div>
           </div>
           <div className="group-data-[collapsible=icon]:hidden transition-all duration-300 overflow-hidden">
