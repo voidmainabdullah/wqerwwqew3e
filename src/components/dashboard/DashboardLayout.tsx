@@ -69,7 +69,7 @@ const AppSidebar = () => {
             <span className="font-heading font-bold text-sm bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent whitespace-nowrap ">
               SkieShare 
             </span>
-            <p className="text-xs text-muted-foreground font-body whitespace-nowrap text-neutral-400 mx-0 my-0 py-0 px-px ">Secure Transfer</p>
+            <p className="text-xs text-muted-foreground font-body whitespace-nowrap text-neutral-400 mx-0 my-0 py-0 px-px ">Secure  Transfer | All in control</p>
           </div>
         </div>
       </SidebarHeader>
