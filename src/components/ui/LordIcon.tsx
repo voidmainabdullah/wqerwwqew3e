@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 declare global {
   namespace JSX {
@@ -8,6 +8,8 @@ declare global {
         trigger?: string;
         colors?: string;
         style?: React.CSSProperties;
+        ref?: React.Ref<HTMLElement>;
+        delay?: number;
       };
     }
   }
@@ -30,6 +32,14 @@ export const LordIcon: React.FC<LordIconProps> = ({
   label,
   gap = 8,
 }) => {
+  const iconRef = useRef<HTMLElement>(null);
+
+  const handleClick = () => {
+    if (iconRef.current) {
+      (iconRef.current as any).play?.(); // manual play on click
+    }
+  };
+
   return (
     <div
       style={{
@@ -38,21 +48,24 @@ export const LordIcon: React.FC<LordIconProps> = ({
         gap: `${gap}px`,
         cursor: 'pointer',
       }}
+      onClick={handleClick}
     >
       <lord-icon
+        ref={iconRef}
         src={src}
-        trigger="hover" // Let Lordicon handle hover animation
+        trigger="hover" // automatic hover animation
         colors={`primary:${primaryColor},secondary:${secondaryColor}`}
         style={{ width: `${size}px`, height: `${size}px` }}
       />
       {label && (
-        <span style={{ pointerEvents: 'none' /* allow hover to pass through to icon */ }}>
+        <span style={{ pointerEvents: 'none' /* allow hover to pass to icon */ }}>
           {label}
         </span>
       )}
     </div>
   );
 };
+
 
 
 // Predefined LordIcon URLs
