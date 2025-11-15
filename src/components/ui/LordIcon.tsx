@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 // Declare the custom lord-icon element for TypeScript
 declare global {
@@ -10,6 +10,7 @@ declare global {
         colors?: string;
         style?: React.CSSProperties;
         ref?: React.Ref<HTMLElement>;
+        delay?: number;
       };
     }
   }
@@ -17,26 +18,22 @@ declare global {
 
 interface LordIconProps {
   src: string;
-  trigger?: 'hover' | 'click' | 'loop' | 'morph';
-  colors?: string;
   size?: number;
   className?: string;
   primaryColor?: string;
   secondaryColor?: string;
-  label?: string; // optional text next to icon
-  gap?: number; // gap between icon and text
+  label?: string;
+  gap?: number;
 }
 
 /**
- * Fully upgraded LordIcon component
- * - Animates on hover (icon or label)
+ * Fully working LordIcon component
+ * - Animates on parent hover (icon or label)
+ * - Waits for Lordicon script to load
  * - Supports optional label
- * - Fully TypeScript typed
  */
 export const LordIcon: React.FC<LordIconProps> = ({
   src,
-  trigger = 'hover',
-  colors,
   size = 32,
   className = '',
   primaryColor = '#ffffff',
@@ -45,6 +42,7 @@ export const LordIcon: React.FC<LordIconProps> = ({
   gap = 8,
 }) => {
   const iconRef = useRef<HTMLElement>(null);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   useEffect(() => {
     // Load lord-icon script if not already loaded
@@ -52,20 +50,21 @@ export const LordIcon: React.FC<LordIconProps> = ({
       const script = document.createElement('script');
       script.src = 'https://cdn.lordicon.com/lordicon.js';
       script.async = true;
+      script.onload = () => setScriptLoaded(true);
       document.body.appendChild(script);
+    } else {
+      setScriptLoaded(true);
     }
   }, []);
 
-  const finalColors = colors || `primary:${primaryColor},secondary:${secondaryColor}`;
-
   const handleMouseEnter = () => {
-    if (iconRef.current && (trigger === 'hover' || trigger === 'manual')) {
+    if (scriptLoaded && iconRef.current) {
       (iconRef.current as any).play?.();
     }
   };
 
   const handleMouseLeave = () => {
-    if (iconRef.current && (trigger === 'hover' || trigger === 'manual')) {
+    if (scriptLoaded && iconRef.current) {
       (iconRef.current as any).reset?.();
     }
   };
@@ -78,10 +77,10 @@ export const LordIcon: React.FC<LordIconProps> = ({
       onMouseLeave={handleMouseLeave}
     >
       <lord-icon
-        ref={iconRef} // ✅ ref on the lord-icon itself
+        ref={iconRef} // ✅ ref on lord-icon itself
         src={src}
-        trigger="manual" // manual trigger to control hover from parent
-        colors={finalColors}
+        trigger="manual" // manual trigger to control hover
+        colors={`primary:${primaryColor},secondary:${secondaryColor}`}
         style={{ width: `${size}px`, height: `${size}px` }}
       />
       {label && <span>{label}</span>}
