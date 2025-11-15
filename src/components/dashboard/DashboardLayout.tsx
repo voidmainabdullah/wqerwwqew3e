@@ -34,10 +34,6 @@ const navigation = [{
   href: '/dashboard/files',
   lordIcon: LordIcons.lord
 }, {
-  name: 'Teams',
-  href: '/dashboard/teams',
-  lordIcon: LordIcons.users
-}, {
   name: 'Shared Links',
   href: '/dashboard/shared',
   lordIcon: LordIcons.home
