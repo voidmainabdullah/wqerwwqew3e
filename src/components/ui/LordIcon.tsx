@@ -23,12 +23,15 @@ interface LordIconProps {
   className?: string;
   primaryColor?: string;
   secondaryColor?: string;
+  label?: string; // optional text next to icon
+  gap?: number; // gap between icon and text
 }
 
 /**
- * Upgraded LordIcon component
- * - Animates on parent hover (icon + text)
- * - Manual trigger for full control
+ * Fully upgraded LordIcon component
+ * - Animates on hover (icon or label)
+ * - Supports optional label
+ * - Fully TypeScript typed
  */
 export const LordIcon: React.FC<LordIconProps> = ({
   src,
@@ -38,11 +41,13 @@ export const LordIcon: React.FC<LordIconProps> = ({
   className = '',
   primaryColor = '#ffffff',
   secondaryColor = '#ffffff',
+  label,
+  gap = 8,
 }) => {
   const iconRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Load Lordicon script if not loaded
+    // Load lord-icon script if not already loaded
     if (!document.querySelector('script[src*="lord-icon"]')) {
       const script = document.createElement('script');
       script.src = 'https://cdn.lordicon.com/lordicon.js';
@@ -53,7 +58,6 @@ export const LordIcon: React.FC<LordIconProps> = ({
 
   const finalColors = colors || `primary:${primaryColor},secondary:${secondaryColor}`;
 
-  // Handlers for parent hover
   const handleMouseEnter = () => {
     if (iconRef.current && (trigger === 'hover' || trigger === 'manual')) {
       (iconRef.current as any).play?.();
@@ -69,17 +73,18 @@ export const LordIcon: React.FC<LordIconProps> = ({
   return (
     <div
       className={className}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: `${gap}px`, cursor: 'pointer' }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
     >
       <lord-icon
-        ref={iconRef}
+        ref={iconRef} // ✅ ref on the lord-icon itself
         src={src}
-        trigger="manual" // manual trigger to control hover
+        trigger="manual" // manual trigger to control hover from parent
         colors={finalColors}
         style={{ width: `${size}px`, height: `${size}px` }}
       />
+      {label && <span>{label}</span>}
     </div>
   );
 };
