@@ -62,7 +62,7 @@ export const LordIcon: React.FC<LordIconProps> = ({
 
 // Common LordIcon presets for navigation
 export const LordIcons = {
-  home: 'https://cdn.lordicon.com/xwjogtno.json',
+  home: 'https://cdn.lordicon.com/fhlrrido.json',
   dashboard: 'https://cdn.lordicon.com/gzqofmcx.json',
   settings: 'https://cdn.lordicon.com/lecprnjb.json',
   logout: 'https://cdn.lordicon.com/gwvmctbb.json',
