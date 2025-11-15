@@ -58,10 +58,10 @@ const AppSidebar = () => {
   } = useSidebar();
   return <Sidebar collapsible="icon" className="border-r border-border/50 h-screen flex flex-col bg-transparent transition-all duration-300 ease-in-out">
       <SidebarHeader className="flex-shrink-0 py-3 bg-stone-950 mx-px my-0 px-[5px]">
-        <div className="flex items-center space-x-3 group px-0 py-0 my-0 mx-px">
+        <div className="flex items-center space-x-3 group mx-0 my-0 py-0 px-0">
           <div className="relative flex-shrink-0">
-            <img src="/skie.png" alt="SkieShare Logo" className="h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110" />
-            <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300">
+            <img src="/skie.png" alt="SkieShare Logo" className="h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110 block mx-auto" />
+            <div className="absolute inset-0 blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300 mx-0 px-0">
               <img src="/skie.png" alt="SkieShare Logo Glow" className="h-8 w-auto  object-contain " />
             </div>
           </div>
