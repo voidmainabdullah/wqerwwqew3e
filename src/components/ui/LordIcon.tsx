@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 
-// TypeScript declaration for custom lord-icon element
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -9,7 +8,6 @@ declare global {
         trigger?: string;
         colors?: string;
         style?: React.CSSProperties;
-        ref?: React.Ref<HTMLElement>;
       };
     }
   }
@@ -18,94 +16,44 @@ declare global {
 interface LordIconProps {
   src: string;
   size?: number;
-  className?: string;
   primaryColor?: string;
   secondaryColor?: string;
   label?: string;
   gap?: number;
-  scaleOnHover?: number; // optional scale effect
-  transitionTime?: string; // optional transition time
 }
 
 export const LordIcon: React.FC<LordIconProps> = ({
   src,
   size = 32,
-  className = '',
   primaryColor = '#ffffff',
   secondaryColor = '#ffffff',
   label,
   gap = 8,
-  scaleOnHover = 1.1,
-  transitionTime = '0.2s',
 }) => {
-  const iconRef = useRef<HTMLElement>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [elementReady, setElementReady] = useState(false);
-
-  // Load Lordicon script dynamically
-  useEffect(() => {
-    if (!document.querySelector('script[src*="lord-icon"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.lordicon.com/lordicon.js';
-      script.async = true;
-      script.onload = () => setScriptLoaded(true);
-      document.body.appendChild(script);
-    } else {
-      setScriptLoaded(true);
-    }
-  }, []);
-
-  // Wait a bit to ensure the custom element is fully upgraded
-  useEffect(() => {
-    if (!scriptLoaded) return;
-
-    const timer = setTimeout(() => setElementReady(true), 50);
-    return () => clearTimeout(timer);
-  }, [scriptLoaded]);
-
-  const handleMouseEnter = () => {
-    if (iconRef.current && elementReady) {
-      (iconRef.current as any).play?.();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (iconRef.current && elementReady) {
-      (iconRef.current as any).reset?.();
-    }
-  };
-
   return (
     <div
-      className={className}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
         gap: `${gap}px`,
         cursor: 'pointer',
-        transition: `transform ${transitionTime}`,
-      }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      // Scale effect on hover
-      onMouseOver={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = `scale(${scaleOnHover})`;
-      }}
-      onMouseOut={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = 'scale(1)';
       }}
     >
       <lord-icon
-        ref={iconRef}
         src={src}
-        trigger="manual"
+        trigger="hover" // Let Lordicon handle hover animation
         colors={`primary:${primaryColor},secondary:${secondaryColor}`}
         style={{ width: `${size}px`, height: `${size}px` }}
       />
-      {label && <span>{label}</span>}
+      {label && (
+        <span style={{ pointerEvents: 'none' /* allow hover to pass through to icon */ }}>
+          {label}
+        </span>
+      )}
     </div>
   );
 };
+
 
 // Predefined LordIcon URLs
 export const LordIcons = {
