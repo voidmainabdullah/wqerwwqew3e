@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 
 declare global {
   namespace JSX {
@@ -9,6 +9,7 @@ declare global {
         colors?: string;
         style?: React.CSSProperties;
         ref?: React.Ref<HTMLElement>;
+        delay?: number;
       };
     }
   }
@@ -32,29 +33,12 @@ export const LordIcon: React.FC<LordIconProps> = ({
   gap = 8,
 }) => {
   const iconRef = useRef<HTMLElement>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
-
-  // Load lord-icon script
-  useEffect(() => {
-    if (!document.querySelector('script[src*="lordicon"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.lordicon.com/lordicon.js';
-      script.async = true;
-      script.onload = () => setScriptLoaded(true);
-      document.body.appendChild(script);
-    } else {
-      setScriptLoaded(true);
-    }
-  }, []);
 
   const handleClick = () => {
     if (iconRef.current) {
-      (iconRef.current as any).play?.();
+      (iconRef.current as any).play?.(); // manual play on click
     }
   };
-
-  // Only render icon after script is loaded
-  if (!scriptLoaded) return null;
 
   return (
     <div
@@ -69,17 +53,18 @@ export const LordIcon: React.FC<LordIconProps> = ({
       <lord-icon
         ref={iconRef}
         src={src}
-        trigger="hover"
+        trigger="hover" // automatic hover animation
         colors={`primary:${primaryColor},secondary:${secondaryColor}`}
         style={{ width: `${size}px`, height: `${size}px` }}
       />
       {label && (
-        <span style={{ pointerEvents: 'none' }}>{label}</span>
+        <span style={{ pointerEvents: 'none' /* allow hover to pass to icon */ }}>
+          {label}
+        </span>
       )}
     </div>
   );
 };
-
 
 
 

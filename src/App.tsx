@@ -111,11 +111,6 @@ const App = () => <QueryClientProvider client={queryClient}>
                     <Analytics />
                   </DashboardLayout>
                 </ProtectedRoute>} />
-               <Route path="/pages/dashbaord" element={<ProtectedRoute>
-                  <DashboardLayout>
-                    <Analytics />
-                  </DashboardLayout>
-                </ProtectedRoute>} />
               <Route path="/dashboard/settings" element={<ProtectedRoute>
                   <DashboardLayout>
                     <Settings />
@@ -130,4 +125,4 @@ const App = () => <QueryClientProvider client={queryClient}>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>;
-export default App; 
+export default App;
