@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StripeProduct } from '../stripe-config';
 import { createCheckoutSession } from '../lib/stripe';
-import { Check, Loader2 } from 'lucide-react';
+import { Check, Loader as Loader2 } from 'lucide-react';
 
 interface ProductCardProps {
   product: StripeProduct;
