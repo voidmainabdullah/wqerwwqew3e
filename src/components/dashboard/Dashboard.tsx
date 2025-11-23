@@ -13,7 +13,7 @@ interface DashboardStats {
   totalFiles: number;
   totalShares: number;
   totalDownloads: number;
-  storageUsed: number
+  storageUsed: number;
   storageLimit: number;
   subscriptionTier: string;
   recentActivity: any[];
@@ -466,14 +466,14 @@ export const Dashboard: React.FC = () => {
               </CardHeader>
               <CardContent className="space-y-3 ">
                 <Button asChild className="w-full bg-stone-950 hover:bg-stone-700 text-white border-0 h-12">
-                  <Link to="/dashboard/upload" className="flex items-center gap-2 ">
+                  <Link to="/dashboard/upload" className="flex items-center gap-2 shadow-inner">
                     <Upload className="w-5 h-5" />
                     Upload Files
                   </Link>
                 </Button>
                 
                 <Button asChild variant="outline" className="w-full bg-stone-950 border  text-slate-300 hover:bg-stone-950 hober:text-white h-12 shadow-none">
-                  <Link to="/code" className="flex items-center gap-2 bg-neutral-700 hover:text-white">
+                  <Link to="/code" className="flex items-center gap-2 hover:text-white shadow-lg opacity-80 bg-indigo-700">
                     <Download className="w-5 h-5" />
                     Receive Files
                   </Link>
