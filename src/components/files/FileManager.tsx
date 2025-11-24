@@ -416,6 +416,7 @@ export function FileManager() {
   </Tooltip>
 </div>
       </div>
+  </div>
 
           <Button onClick={() => setFolderCreateDialog(true)} variant="outline" className="font-heading bg-[#3f3ff5]/[0.16] border border-blue-500">
             <Folder className="mr-2 h-4 w-4" />
