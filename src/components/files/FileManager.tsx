@@ -401,16 +401,20 @@ export function FileManager() {
           </p>
         </div>
 <div className="flex gap-2">
-  <Button
-    onClick={() => setAiOrganizerDialog(true)}
-    variant="outline"
-    disabled={files.length === 0}
-    title={files.length === 0 ? 'No files to organize' : undefined}
-    className="font-heading border bg-gradient-to-r from-blue-500 via-blue-600 to-blue-900 hover:bg-fuchsia-500"
-  >
-    <Sparkles className="mr-2 h-4 w-4" />
-    AI Organize
-  </Button>
+  <Tooltip content={files.length === 0 ? 'No files to organize' : ''} placement="top">
+    <span className="inline-block">
+      <Button
+        onClick={() => setAiOrganizerDialog(true)}
+        variant="outline"
+        disabled={files.length === 0}
+        className="font-heading border bg-gradient-to-r from-blue-500 via-blue-600 to-blue-900 hover:bg-fuchsia-500"
+      >
+        <Sparkles className="mr-2 h-4 w-4" />
+        AI Organize
+      </Button>
+    </span>
+  </Tooltip>
+</div>
 
           <Button onClick={() => setFolderCreateDialog(true)} variant="outline" className="font-heading bg-[#3f3ff5]/[0.16] border border-blue-500">
             <Folder className="mr-2 h-4 w-4" />
