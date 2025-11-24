@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 declare global {
   namespace JSX {
@@ -8,7 +8,6 @@ declare global {
         trigger?: string;
         colors?: string;
         style?: React.CSSProperties;
-        ref?: React.Ref<HTMLElement>;
         delay?: number;
       };
     }
@@ -22,6 +21,7 @@ interface LordIconProps {
   secondaryColor?: string;
   label?: string;
   gap?: number;
+  trigger?: 'hover' | 'loop' | 'click' | 'morph'; // optional custom trigger
 }
 
 export const LordIcon: React.FC<LordIconProps> = ({
@@ -31,12 +31,29 @@ export const LordIcon: React.FC<LordIconProps> = ({
   secondaryColor = '#ffffff',
   label,
   gap = 8,
+  trigger = 'hover',
 }) => {
   const iconRef = useRef<HTMLElement>(null);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
+  // Dynamically load Lordicon script once
+  useEffect(() => {
+    if (!document.getElementById('lord-icon-script')) {
+      const script = document.createElement('script');
+      script.id = 'lord-icon-script';
+      script.src = 'https://cdn.lordicon.com/lusqsztk.js';
+      script.async = true;
+      script.onload = () => setScriptLoaded(true);
+      document.body.appendChild(script);
+    } else {
+      setScriptLoaded(true);
+    }
+  }, []);
+
+  // Optional manual click play
   const handleClick = () => {
-    if (iconRef.current) {
-      (iconRef.current as any).play?.(); // manual play on click
+    if (iconRef.current && (iconRef.current as any).play) {
+      (iconRef.current as any).play();
     }
   };
 
@@ -46,27 +63,25 @@ export const LordIcon: React.FC<LordIconProps> = ({
         display: 'inline-flex',
         alignItems: 'center',
         gap: `${gap}px`,
-        cursor: 'pointer',
+        cursor: label ? 'pointer' : 'default',
       }}
       onClick={handleClick}
     >
-      <lord-icon
-        ref={iconRef}
-        src={src}
-        trigger="hover" // automatic hover animation
-        colors={`primary:${primaryColor},secondary:${secondaryColor}`}
-        style={{ width: `${size}px`, height: `${size}px` }}
-      />
-      {label && (
-        <span style={{ pointerEvents: 'none' /* allow hover to pass to icon */ }}>
-          {label}
-        </span>
+      {scriptLoaded ? (
+        <lord-icon
+          ref={iconRef}
+          src={src}
+          trigger={trigger}
+          colors={`primary:${primaryColor},secondary:${secondaryColor}`}
+          style={{ width: `${size}px`, height: `${size}px` }}
+        />
+      ) : (
+        <div style={{ width: size, height: size }} /> // fallback empty box
       )}
+      {label && <span style={{ pointerEvents: 'none' }}>{label}</span>}
     </div>
   );
 };
-
-
 
 // Predefined LordIcon URLs
 export const LordIcons = {
