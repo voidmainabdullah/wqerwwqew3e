@@ -402,11 +402,10 @@ export function FileManager() {
         </div>
 <div className="flex gap-2">
   <Tooltip content={files.length === 0 ? 'No files to organize' : ''} placement="top">
-    <span className="inline-block">
+    <span className={`inline-block ${files.length === 0 ? 'cursor-not-allowed opacity-50' : ''}`}>
       <Button
-        onClick={() => setAiOrganizerDialog(true)}
+        onClick={() => files.length > 0 && setAiOrganizerDialog(true)}
         variant="outline"
-        disabled={files.length === 0}
         className="font-heading border bg-gradient-to-r from-blue-500 via-blue-600 to-blue-900 hover:bg-fuchsia-500"
       >
         <Sparkles className="mr-2 h-4 w-4" />
@@ -414,6 +413,7 @@ export function FileManager() {
       </Button>
     </span>
   </Tooltip>
+
 
 
   
