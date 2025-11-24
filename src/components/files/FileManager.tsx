@@ -429,6 +429,7 @@ export function FileManager() {
             </a>
           </Button>
         </div>
+      </div>
       
 
       {/* Breadcrumb Navigation */}
