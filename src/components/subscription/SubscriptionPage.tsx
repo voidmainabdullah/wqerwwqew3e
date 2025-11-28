@@ -11,45 +11,59 @@ export const SubscriptionPage: React.FC = () => {
   const { toast } = useToast();
 
   const handleSubscribe = async (plan: "monthly" | "yearly") => {
-  if (!user) {
-    toast({
-      variant: "destructive",
-      title: "Authentication required",
-      description: "Please log in first",
-    });
-    return;
-  }
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Authentication required",
+        description: (
+          <>
+            Please <a href="/auth" className="text-blue-500 underline">log in</a> first.
+          </>
+        ),
+      });
+      return;
+    }
 
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) throw new Error("No valid session");
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error("No valid session found");
 
-    const res = await fetch("/functions/v1/create-paddle-checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${session.access_token}` // THIS IS REQUIRED
-      },
-      body: JSON.stringify({ plan }),
-    });
+      const res = await fetch("/functions/v1/create-paddle-checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({ plan }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to create checkout");
+      // Safe JSON parsing
+      let data: any;
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(`Edge Function returned non-JSON: ${text}`);
+      }
 
-    window.open(data.checkout_url, "_blank");
-    toast({
-      title: "Checkout opened",
-      description: "Complete your subscription in the new tab",
-    });
+      if (!res.ok) throw new Error(data?.error || "Failed to create checkout");
 
-  } catch (err: any) {
-    toast({
-      variant: "destructive",
-      title: "Subscription error",
-      description: err.message,
-    });
-  }
-};
+      // Open Paddle checkout
+      window.open(data.checkout_url, "_blank");
+      toast({
+        title: "Checkout opened",
+        description: "Complete your subscription in the new tab",
+      });
+
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Subscription error",
+        description: err.message,
+      });
+    }
+  };
 
   const features = {
     free: ["2GB storage", "500MB per file", "Basic file sharing", "Community support"],
