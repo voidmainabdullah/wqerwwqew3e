@@ -11,6 +11,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Copy, Mail, Hash, Link, Calendar, Lock, Download } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useSubscription } from '@/hooks/useSubscription';
+import { ProBadge } from '@/components/ui/ProBadge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useNavigate } from 'react-router-dom';
 interface FileShareDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -30,10 +34,12 @@ export function FileShareDialog({
   fileId,
   fileName
 }: FileShareDialogProps) {
+  const navigate = useNavigate();
+  const { isPro, isBasic } = useSubscription();
   const [activeTab, setActiveTab] = useState('link');
   const [shareSettings, setShareSettings] = useState<ShareSettings>({
     password: '',
-    expiryDays: 7,
+    expiryDays: isBasic ? 3 : 7,
     downloadLimit: null,
     recipientEmail: '',
     message: `Hi! I'm sharing "${fileName}" with you. Click the link to access it.`
@@ -172,15 +178,49 @@ export function FileShareDialog({
           <div className="mt-6 space-y-4">
             {/* Common Settings */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Switch id="password-protection" checked={hasPassword} onCheckedChange={setHasPassword} />
-                <Label htmlFor="password-protection" className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
-                  Password Protection
-                </Label>
-              </div>
+              {/* Password Protection - Pro Only */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className={`flex items-center justify-between space-x-2 ${!isPro ? 'opacity-50' : ''}`}>
+                      <div className="flex items-center space-x-2">
+                        <Switch 
+                          id="password-protection" 
+                          checked={hasPassword} 
+                          onCheckedChange={(checked) => {
+                            if (!isPro) {
+                              toast.error('Password protection is a Pro feature');
+                              return;
+                            }
+                            setHasPassword(checked);
+                          }} 
+                          disabled={!isPro}
+                        />
+                        <Label htmlFor="password-protection" className="flex items-center gap-2">
+                          <Lock className="h-4 w-4" />
+                          Password Protection
+                        </Label>
+                      </div>
+                      {!isPro && <ProBadge size="sm" />}
+                    </div>
+                  </TooltipTrigger>
+                  {!isPro && (
+                    <TooltipContent>
+                      <p className="text-xs">Upgrade to Pro to protect files with passwords</p>
+                      <Button 
+                        size="sm" 
+                        variant="link" 
+                        className="h-auto p-0 text-xs text-amber-400"
+                        onClick={() => navigate('/subscription')}
+                      >
+                        Upgrade Now
+                      </Button>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
 
-              {hasPassword && <div>
+              {hasPassword && isPro && <div>
                   <Label htmlFor="password">Password</Label>
                   <Input id="password" type="password" placeholder="Enter password for file access" value={shareSettings.password} onChange={e => setShareSettings(prev => ({
                 ...prev,
@@ -194,32 +234,74 @@ export function FileShareDialog({
                     <Calendar className="h-4 w-4" />
                     Expires in
                   </Label>
-                  <Select value={shareSettings.expiryDays.toString()} onValueChange={value => setShareSettings(prev => ({
-                  ...prev,
-                  expiryDays: parseInt(value)
-                }))}>
+                  <Select 
+                    value={shareSettings.expiryDays.toString()} 
+                    onValueChange={value => {
+                      const numValue = parseInt(value);
+                      if (!isPro && numValue > 3 && numValue !== 0) {
+                        toast.error('Custom expiry dates are a Pro feature');
+                        return;
+                      }
+                      setShareSettings(prev => ({
+                        ...prev,
+                        expiryDays: numValue
+                      }));
+                    }}
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1">1 Day</SelectItem>
-                      <SelectItem value="3">3 Days</SelectItem>
-                      <SelectItem value="7">1 Week</SelectItem>
-                      <SelectItem value="30">1 Month (Pro)</SelectItem>
-                      <SelectItem value="0">Never</SelectItem>
+                      <SelectItem value="3">3 Days {isBasic && '(Max for Basic)'}</SelectItem>
+                      <SelectItem value="7" disabled={!isPro}>
+                        1 Week {!isPro && '(Pro)'}
+                      </SelectItem>
+                      <SelectItem value="30" disabled={!isPro}>
+                        1 Month {!isPro && '(Pro)'}
+                      </SelectItem>
+                      <SelectItem value="0" disabled={!isPro}>
+                        Never {!isPro && '(Pro)'}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
+                {/* Download Limit - Pro Only */}
                 <div>
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Switch id="download-limit" checked={hasDownloadLimit} onCheckedChange={setHasDownloadLimit} />
-                    <Label htmlFor="download-limit" className="flex items-center gap-2">
-                      <Download className="h-4 w-4" />
-                      Download Limit
-                    </Label>
-                  </div>
-                  {hasDownloadLimit && <Input type="number" placeholder="Max downloads" min="1" value={shareSettings.downloadLimit || ''} onChange={e => setShareSettings(prev => ({
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className={`flex items-center justify-between space-x-2 mb-2 ${!isPro ? 'opacity-50' : ''}`}>
+                          <div className="flex items-center space-x-2">
+                            <Switch 
+                              id="download-limit" 
+                              checked={hasDownloadLimit} 
+                              onCheckedChange={(checked) => {
+                                if (!isPro) {
+                                  toast.error('Download limits are a Pro feature');
+                                  return;
+                                }
+                                setHasDownloadLimit(checked);
+                              }}
+                              disabled={!isPro}
+                            />
+                            <Label htmlFor="download-limit" className="flex items-center gap-2">
+                              <Download className="h-4 w-4" />
+                              Limit
+                            </Label>
+                          </div>
+                          {!isPro && <ProBadge size="sm" />}
+                        </div>
+                      </TooltipTrigger>
+                      {!isPro && (
+                        <TooltipContent>
+                          <p className="text-xs">Upgrade to Pro for download limits</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+                  {hasDownloadLimit && isPro && <Input type="number" placeholder="Max downloads" min="1" value={shareSettings.downloadLimit || ''} onChange={e => setShareSettings(prev => ({
                   ...prev,
                   downloadLimit: e.target.value ? parseInt(e.target.value) : null
                 }))} />}

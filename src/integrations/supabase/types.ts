@@ -290,6 +290,8 @@ export type Database = {
           last_backup: string | null
           last_upload_reset: string | null
           notifications: Json | null
+          paddle_customer_id: string | null
+          paddle_subscription_id: string | null
           storage_limit: number | null
           storage_used: number | null
           subscription_end_date: string | null
@@ -314,6 +316,8 @@ export type Database = {
           last_backup?: string | null
           last_upload_reset?: string | null
           notifications?: Json | null
+          paddle_customer_id?: string | null
+          paddle_subscription_id?: string | null
           storage_limit?: number | null
           storage_used?: number | null
           subscription_end_date?: string | null
@@ -338,6 +342,8 @@ export type Database = {
           last_backup?: string | null
           last_upload_reset?: string | null
           notifications?: Json | null
+          paddle_customer_id?: string | null
+          paddle_subscription_id?: string | null
           storage_limit?: number | null
           storage_used?: number | null
           subscription_end_date?: string | null

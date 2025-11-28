@@ -62,7 +62,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Allow manual refresh from UI
   const refreshProfile = useCallback(async () => {
-    if (user?.id) await fetchProfile(user.id);
+    if (user?.id) {
+      await fetchProfile(user.id);
+      // Force a re-render to update UI instantly after subscription changes
+      window.dispatchEvent(new Event('subscription-updated'));
+    }
   }, [user, fetchProfile]);
 
   useEffect(() => {

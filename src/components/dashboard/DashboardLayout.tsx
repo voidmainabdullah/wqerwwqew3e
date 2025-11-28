@@ -13,6 +13,8 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
+import { ProBadge } from '@/components/ui/ProBadge';
+import { useSubscription } from '@/hooks/useSubscription';
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -21,33 +23,47 @@ interface UserProfile {
   storage_limit: number;
   subscription_tier: string;
 }
-const navigation = [{
-  name: 'Dashboard',
-  href: '/dashboard',
-  lordIcon: LordIcons.dashboard
-}, {
-  name: 'Upload',
-  href: '/dashboard/upload',
-  lordIcon: LordIcons.fileStack
-}, {
-  name: 'My Files',
-  href: '/dashboard/files',
-  lordIcon: LordIcons.lord
-}, {
-  name: 'Shared Link',
-  href: '/dashboard/shared',
-  lordIcon: LordIcons.home
-}, {
-  name: 'Analytics',
-  href: '/dashboard/analytics',
-  lordIcon: LordIcons.ana
-}, {
-  name: 'Settings',
-  href: '/dashboard/settings',
-  lordIcon: LordIcons.settings
-}];
+const navigation = [
+  {
+    name: 'Dashboard',
+    href: '/dashboard',
+    lordIcon: LordIcons.dashboard,
+    isPro: false
+  }, 
+  {
+    name: 'Upload',
+    href: '/dashboard/upload',
+    lordIcon: LordIcons.fileStack,
+    isPro: false
+  }, 
+  {
+    name: 'My Files',
+    href: '/dashboard/files',
+    lordIcon: LordIcons.lord,
+    isPro: false
+  }, 
+  {
+    name: 'Shared Link',
+    href: '/dashboard/shared',
+    lordIcon: LordIcons.home,
+    isPro: false
+  }, 
+  {
+    name: 'Analytics',
+    href: '/dashboard/analytics',
+    lordIcon: LordIcons.ana,
+    isPro: true
+  }, 
+  {
+    name: 'Settings',
+    href: '/dashboard/settings',
+    lordIcon: LordIcons.settings,
+    isPro: false
+  }
+];
 const AppSidebar = () => {
   const location = useLocation();
+  const { isPro } = useSubscription();
   const {
     state,
     isMobile
@@ -81,9 +97,14 @@ const AppSidebar = () => {
             <SidebarMenu className="space-y-0.5 text-neutral-400">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
           <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-neutral-400/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
-            <Link to={item.href} className="flex items-center gap-2 ">
-              <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0 " />
-              <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
+            <Link to={item.href} className="flex items-center gap-2 justify-between w-full">
+              <div className="flex items-center gap-2">
+                <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0 " />
+                <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
+              </div>
+              {item.isPro && !isPro && (
+                <ProBadge size="sm" className="group-data-[collapsible=icon]:hidden" />
+              )}
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>)}
