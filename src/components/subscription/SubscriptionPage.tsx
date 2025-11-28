@@ -28,14 +28,18 @@ export const SubscriptionPage: React.FC = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("No valid session found");
 
-      const res = await fetch("/functions/v1/create-paddle-checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ plan }),
-      });
+      const res = await fetch(
+  "https://wbcsmkmtteabatakmhlz.supabase.co/functions/v1/create-paddle-checkout",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify({ plan }),
+  }
+);
+
 
       // Safe JSON parsing
       let data: any;
