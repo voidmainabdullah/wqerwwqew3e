@@ -35,18 +35,41 @@ export const FileUpload: React.FC = () => {
     name: string;
   }>>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [userProfile, setUserProfile] = useState<{
+    subscription_tier: string;
+    storage_used: number;
+    storage_limit: number;
+  } | null>(null);
 
   // A ref map to know which files were explicitly cancelled by user
   const cancelledRef = useRef<Record<number, boolean>>({});
   // A ref to store timeouts for each file, so they can be cleared
   const fileTimeoutsRef = useRef<Record<number, number>>({});
   useEffect(() => {
-    if (user) fetchFolders();
+    if (user) {
+      fetchFolders();
+      fetchUserProfile();
+    }
     // clear timers on unmount
     return () => {
       Object.values(fileTimeoutsRef.current).forEach(t => clearTimeout(t));
     };
   }, [user]);
+
+  const fetchUserProfile = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('subscription_tier, storage_used, storage_limit')
+        .eq('id', user?.id)
+        .single();
+      
+      if (error) throw error;
+      setUserProfile(data);
+    } catch (err) {
+      console.error('Error fetching user profile:', err);
+    }
+  };
   const fetchFolders = async () => {
     try {
       const {
@@ -62,13 +85,31 @@ export const FileUpload: React.FC = () => {
     }
   };
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    // Check for Basic plan file size restrictions (2 GB per file)
+    const MAX_FILE_SIZE_BASIC = 2 * 1024 * 1024 * 1024; // 2 GB
+    
+    if (userProfile?.subscription_tier === 'basic') {
+      const oversizedFiles = acceptedFiles.filter(file => file.size > MAX_FILE_SIZE_BASIC);
+      
+      if (oversizedFiles.length > 0) {
+        toast({
+          variant: 'destructive',
+          title: 'File size limit exceeded',
+          description: `Basic plan users can only upload files up to 2 GB. ${oversizedFiles.length} file(s) exceeded this limit.`
+        });
+        
+        // Only add files that meet the size requirement
+        acceptedFiles = acceptedFiles.filter(file => file.size <= MAX_FILE_SIZE_BASIC);
+      }
+    }
+    
     const newFiles = acceptedFiles.map(file => ({
       file,
       progress: 0,
       status: 'pending' as const
     }));
     setUploadFiles(prev => [...prev, ...newFiles]);
-  }, []);
+  }, [userProfile, toast]);
   const {
     getRootProps,
     getInputProps,
@@ -193,11 +234,32 @@ export const FileUpload: React.FC = () => {
           const i = Math.floor(Math.log(bytes) / Math.log(k));
           return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         };
-        toast({
-          variant: 'destructive',
-          title: 'Storage limit exceeded',
-          description: `You've used ${formatFileSize(profile?.storage_used || 0)} of your ${formatFileSize(profile?.storage_limit || 0)} storage limit.`
-        });
+        
+        // Special message for Basic plan users hitting the per-file limit
+        if (profile?.subscription_tier === 'basic') {
+          const MAX_FILE_SIZE_BASIC = 2 * 1024 * 1024 * 1024; // 2 GB
+          const hasOversizedFile = pendingFiles.some(f => f.size > MAX_FILE_SIZE_BASIC);
+          
+          if (hasOversizedFile) {
+            toast({
+              variant: 'destructive',
+              title: 'File size limit exceeded',
+              description: 'Basic plan users can upload files up to 2 GB per file.'
+            });
+          } else {
+            toast({
+              variant: 'destructive',
+              title: 'Storage limit exceeded',
+              description: `You've used ${formatFileSize(profile?.storage_used || 0)} of your ${formatFileSize(profile?.storage_limit || 0)} storage limit (5 GB for Basic plan).`
+            });
+          }
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Storage limit exceeded',
+            description: `You've used ${formatFileSize(profile?.storage_used || 0)} of your ${formatFileSize(profile?.storage_limit || 0)} storage limit.`
+          });
+        }
         setIsUploading(false);
         return;
       }
@@ -437,6 +499,25 @@ export const FileUpload: React.FC = () => {
           </a>
         </Button>
       </div>
+
+      {/* Basic Plan Warning */}
+      {userProfile?.subscription_tier === 'basic' && (
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <span className="material-icons text-yellow-500 mt-0.5">warning</span>
+            <div className="flex-1">
+              <h3 className="font-heading font-semibold text-yellow-500 mb-1">
+                Basic Plan Limitations
+              </h3>
+              <div className="font-body text-sm text-yellow-200/90 space-y-1">
+                <p>⚠️ Your uploaded files will be automatically deleted after 24 hours.</p>
+                <p>📦 Maximum file size: 2 GB per file</p>
+                <p>💾 Total storage capacity: 5 GB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Card>
         <CardHeader className="pb-2 backdrop-blur-md bg-inherit rounded-lg">
