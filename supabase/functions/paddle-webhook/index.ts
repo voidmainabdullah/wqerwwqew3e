@@ -27,6 +27,8 @@ serve(async (req) => {
       
       const customData = body.data?.custom_data;
       const userId = customData?.user_id;
+      const paddleCustomerId = body.data?.customer_id;
+      const paddleSubscriptionId = body.data?.subscription_id || body.data?.id;
       
       if (!userId) {
         console.error("No user_id found in webhook data");
@@ -47,7 +49,9 @@ serve(async (req) => {
           subscription_status: 'active',
           subscription_end_date: subscriptionEndDate.toISOString(),
           storage_limit: null, // Unlimited storage for pro
-          storage_used: null // Reset storage tracking for pro users
+          daily_upload_limit: null, // Unlimited uploads for pro
+          paddle_customer_id: paddleCustomerId,
+          paddle_subscription_id: paddleSubscriptionId
         })
         .eq('id', userId);
 
@@ -72,8 +76,10 @@ serve(async (req) => {
           .update({
             subscription_tier: 'free',
             subscription_status: 'canceled',
-            storage_limit: 6442450944, // Back to 6GB limit
-            storage_used: null // Keep current storage usage
+            storage_limit: 2147483648, // Back to 2GB limit for free
+            daily_upload_limit: 999999999, // Reset to high limit
+            paddle_customer_id: null,
+            paddle_subscription_id: null
           })
           .eq('id', userId);
 

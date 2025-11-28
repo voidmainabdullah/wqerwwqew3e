@@ -60,8 +60,31 @@ export const SubscriptionPage: React.FC = () => {
     }
   };
   const features = {
-    free: ["10 uploads per day", "Basic file sharing", "7-day link expiry", "Community support"],
-    pro: ["Unlimited uploads", "Password protection", "Custom expiry dates", "Download analytics", "Priority support", "Custom branding", "API access"]
+    free: [
+      "2GB storage limit",
+      "500MB per file",
+      "Basic file sharing",
+      "Community support"
+    ],
+    basic: [
+      "5GB storage limit",
+      "2GB per file upload",
+      "Files auto-delete after 24 hours",
+      "3-day link expiry",
+      "Email support"
+    ],
+    pro: [
+      "Unlimited storage",
+      "10GB per file upload", 
+      "No auto-deletion",
+      "Custom expiry dates",
+      "Download limits & analytics",
+      "Password protection",
+      "Virus scanning",
+      "Team file sharing",
+      "AI file organizer",
+      "Priority support"
+    ]
   };
   return <div className="relative min-h-screen">
       <div className="fixed inset-0 z-0">
@@ -74,12 +97,37 @@ export const SubscriptionPage: React.FC = () => {
             <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto ">Because Your Files Deserve Better !</p>
           </div>
           <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
-            <PriceCard title="Free" price="$0" period="forever" description="Perfect for getting started" features={features.free} onSubscribe={() => toast({
-            title: "Already on Free plan",
-            description: "You're currently using the free plan"
-          })} />
-            <PriceCard title="Pro Monthly" price="$6.99" period="month" description="Full access with monthly billing" features={features.pro} onSubscribe={() => handleSubscribe("monthly")} />
-            <PriceCard title="Pro Yearly" price="$69.99" period="year" description="Save 17% with annual billing" features={features.pro} isPopular={true} onSubscribe={() => handleSubscribe("yearly")} />
+            <PriceCard 
+              title="Free" 
+              price="$0" 
+              period="forever" 
+              description="Perfect for trying out" 
+              features={features.free} 
+              onSubscribe={() => toast({
+                title: "Already on Free plan",
+                description: "You're currently using the free plan"
+              })} 
+            />
+            <PriceCard 
+              title="Basic" 
+              price="$0" 
+              period="forever" 
+              description="Basic usage with limits" 
+              features={features.basic} 
+              onSubscribe={() => toast({
+                title: "Basic Plan",
+                description: "Basic plan is currently free with auto-deletion"
+              })} 
+            />
+            <PriceCard 
+              title="Pro" 
+              price="$9.99" 
+              period="month" 
+              description="Unlimited everything" 
+              features={features.pro} 
+              isPopular={true} 
+              onSubscribe={() => handleSubscribe("monthly")} 
+            />
           </div>
           
           <Card className="max-w-4xl mx-auto brand-card border-brand-accent/20">
