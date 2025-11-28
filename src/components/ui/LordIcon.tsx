@@ -22,6 +22,7 @@ interface LordIconProps {
   label?: string;
   gap?: number;
   trigger?: 'hover' | 'loop' | 'click' | 'morph'; // optional custom trigger
+  className?: string;
 }
 
 export const LordIcon: React.FC<LordIconProps> = ({
@@ -32,6 +33,7 @@ export const LordIcon: React.FC<LordIconProps> = ({
   label,
   gap = 8,
   trigger = 'hover',
+  className,
 }) => {
   const iconRef = useRef<HTMLElement>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -59,6 +61,7 @@ export const LordIcon: React.FC<LordIconProps> = ({
 
   return (
     <div
+      className={className}
       style={{
         display: 'inline-flex',
         alignItems: 'center',

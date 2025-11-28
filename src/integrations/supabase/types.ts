@@ -912,6 +912,7 @@ export type Database = {
               share_code: string
             }[]
           }
+      delete_expired_basic_files: { Args: never; Returns: undefined }
       generate_share_code: { Args: never; Returns: string }
       generate_unique_share_code: { Args: never; Returns: string }
       get_folder_contents: {
@@ -1005,6 +1006,7 @@ export type Database = {
         }[]
       }
       hash_password: { Args: { password: string }; Returns: string }
+      is_basic_plan_user: { Args: { p_user_id: string }; Returns: boolean }
       is_team_owner: {
         Args: { _team_id: string; _user_id: string }
         Returns: boolean
@@ -1040,6 +1042,10 @@ export type Database = {
           p_password_hash?: string
         }
         Returns: boolean
+      }
+      update_storage_after_deletion: {
+        Args: { p_file_size: number; p_user_id: string }
+        Returns: undefined
       }
       user_has_team_role: {
         Args: {
