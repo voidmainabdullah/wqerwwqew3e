@@ -3,12 +3,17 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PriceCard } from "./PriceCard";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+
+  // Hosted Paddle links for test/live
+  const paddleLinks: Record<string, string> = {
+    monthly: "https://sandbox-pay.paddle.io/hsc_01kb6ayrhtz5kdax3h891s0k70_k6epa0rq35v905a580gwckj5mqbk72hy",
+    yearly: "https://sandbox-pay.paddle.io/hsc_YOUR_YEARLY_LINK_HERE",
+  };
 
   const handleSubscribe = async (plan: "monthly" | "yearly") => {
     if (!user) {
@@ -25,40 +30,19 @@ export const SubscriptionPage: React.FC = () => {
     }
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) throw new Error("No valid session found");
+      // Open Paddle hosted checkout
+      const checkoutUrl = paddleLinks[plan];
+      if (!checkoutUrl) throw new Error("Checkout link not configured for this plan");
 
-      const res = await fetch(
-  "https://wbcsmkmtteabatakmhlz.supabase.co/functions/v1/create-paddle-checkout",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${session.access_token}`,
-    },
-    body: JSON.stringify({ plan }),
-  }
-);
-
-
-      // Safe JSON parsing
-      let data: any;
-      const contentType = res.headers.get("content-type") || "";
-      if (contentType.includes("application/json")) {
-        data = await res.json();
-      } else {
-        const text = await res.text();
-        throw new Error(`Edge Function returned non-JSON: ${text}`);
-      }
-
-      if (!res.ok) throw new Error(data?.error || "Failed to create checkout");
-
-      // Open Paddle checkout
-      window.open(data.checkout_url, "_blank");
+      window.open(checkoutUrl, "_blank");
       toast({
         title: "Checkout opened",
         description: "Complete your subscription in the new tab",
       });
+
+      // Optional: Poll/check after redirect to update Supabase plan automatically
+      // This requires a backend function or webhook to verify payment
+      // Example: await supabase.functions.invoke('verify-paddle-payment', { user_id: user.id });
 
     } catch (err: any) {
       toast({
