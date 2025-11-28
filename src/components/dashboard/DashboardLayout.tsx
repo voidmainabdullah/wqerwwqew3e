@@ -4,7 +4,7 @@ import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Sidebar, SidebarRail, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, useSidebar, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, SidebarFooter } from '@/components/ui/sidebar';
+import { Sidebar, SidebarRail, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, useSidebar, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, Headset, HardDrive, ClockCounterClockwise, HardDrives, Question, UserGear, ChatCircle, Crown, Share, DiamondsFour } from 'phosphor-react';
 import { LordIcon, LordIcons } from '@/components/ui/LordIcon';
 import { NotificationPopover } from './NotificationPopover';
@@ -13,7 +13,6 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
-import { ProFeatureModal } from '@/components/pro';
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -47,7 +46,7 @@ const navigation = [{
   href: '/dashboard/settings',
   lordIcon: LordIcons.settings
 }];
-const AppSidebar = ({ profile, handleAnalyticsProClick }) => {
+const AppSidebar = () => {
   const location = useLocation();
   const {
     state,
@@ -82,17 +81,10 @@ const AppSidebar = ({ profile, handleAnalyticsProClick }) => {
             <SidebarMenu className="space-y-0.5 text-neutral-400">
       {navigation.map(item => <SidebarMenuItem key={item.name}>
           <SidebarMenuButton asChild isActive={location.pathname === item.href} tooltip={item.name} className="h-9 px-3 rounded-lg hover:bg-neutral-400/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
-            {item.name === 'Analytics' && profile?.subscription_tier !== 'pro' ? (
-              <button onClick={handleAnalyticsProClick} className="flex items-center gap-2 w-full">
-                <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0 " />
-                <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
-              </button>
-            ) : (
-              <Link to={item.href} className="flex items-center gap-2 ">
-                <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0 " />
-                <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
-              </Link>
-            )}
+            <Link to={item.href} className="flex items-center gap-2 ">
+              <LordIcon src={item.lordIcon} size={18} trigger="hover" primaryColor="#ffffff" className="flex-shrink-0 " />
+              <span className="font-body text-sm group-data-[collapsible=icon]:hidden">{item.name}</span>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>)}
     </SidebarMenu>
@@ -149,31 +141,8 @@ const AppSidebar = ({ profile, handleAnalyticsProClick }) => {
         </SidebarGroup>
       </SidebarContent>
 
-    {/* Compact Neon-Style Trust Widget */}
-<SidebarFooter className="border-t border-neutral-700/50 bg-black/50 py-3 px-3">
-  <div className="relative overflow-hidden rounded-xl bg-black/60 border border-neutral-700/40 p-3 backdrop-blur-sm group hover:shadow-lg transition-shadow duration-300 w-full h-32">
-
-    {/* Abstract Neon Line Wave Background */}
-    <div className="absolute inset-0">
-      <div className="absolute top-0 left-0 w-full h-full bg-[url('/neon-wave.png')] bg-cover bg-center opacity-20 animate-pulse" />
-    </div>
-
-    {/* Centered Text Content */}
-    <div className="relative flex flex-col items-center justify-center text-center h-full space-y-2">
-      <h3 className="text-sm font-semibold text-white/90 tracking-wide">Lost Mine</h3>
-      <a
-        href="#"
-        className="text-xs text-neutral-400 hover:text-white/90 transition-colors underline"
-      >
-        Learn more
-      </a>
-    </div>
-  </div>
-</SidebarFooter>
-
-{/* Sidebar Rail */}
-<SidebarRail />
-
+      {/* Rail for easy sidebar expansion on desktop */}
+      <SidebarRail />
     </Sidebar>;
 };
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
@@ -350,34 +319,20 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </PopoverContent>
     </Popover>;
   const FeedbackButton = () => <Button variant="ghost" size="sm" asChild className="
-  group relative h-auto px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border
+  group relative h-auto px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border 
   font-light
   text-white
   bg-neutral-900
   hover:bg-transparent
-  hover:text-white
+  hover:text-white                              
   hover:shadow-sm
   focus:outline-none
 ">
-
+    
   </Button>;
-
-  const [analyticsProModal, setAnalyticsProModal] = React.useState(false);
-
-  const handleAnalyticsProClick = (e: React.MouseEvent) => {
-    if (profile?.subscription_tier !== 'pro') {
-      e.preventDefault();
-      setAnalyticsProModal(true);
-    }
-  };
-
   return <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full bg-stone-950">
-<AppSidebar 
-  profile={profile}
-  handleAnalyticsProClick={handleAnalyticsProClick}
-/>
-
+        <AppSidebar />
 
     {/* Main Content Area - Responsive */}
     <div className="flex-1 flex flex-col relative w-full min-w-0 bg-transparent">
@@ -427,104 +382,99 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 {/* User Profile Dropdown with Badge */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full border-2 border-neutral-600/40 bg-clip-border bg-gradient-to-r from-cyan-500 to-blue-500 hover:border-neutral-500/60 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 group">
-                      <Avatar className="h-7 w-7 sm:h-9 sm:w-9">
-                        <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-white font-semibold text-xs sm:text-sm">
+                    <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 via-indigo-600 to-blue-500 hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
+                      <Avatar className="h-7 w-7 sm:h-9 sm:w-9 ">
+                        <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-white   font-semibold text-xs sm:text-sm">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
-                      {profile?.subscription_tier === 'pro' && <Badge className="absolute -top-1 -right-1 h-4 sm:h-5 px-1 sm:px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] sm:text-[10px] border-2 border-black/80 font-bold shadow-lg">
+                      {profile?.subscription_tier === 'pro' && <Badge className="absolute -top-1 -right-1 h-4 sm:h-5 px-1 sm:px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] sm:text-[10px] border-2 border-background">
                           PRO
                         </Badge>}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" forceMount className="w-64 border border-neutral-700/30 shadow-2xl rounded-xl bg-black/80 backdrop-blur-xl before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.03),transparent_60%)] before:opacity-100 after:absolute after:inset-0 after:rounded-xl after:pointer-events-none">
-                    <DropdownMenuLabel className="font-normal pb-4 pt-1 px-0">
-                      <div className="relative px-2 py-3 rounded-lg bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 border border-neutral-700/30 flex items-center gap-3">
-                        <Avatar className="h-12 w-12 border-[2px] border-neutral-600/50 bg-clip-border bg-gradient-to-r from-cyan-500 to-blue-500 flex-shrink-0">
-                          <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-lg text-white font-extrabold">
+                  <DropdownMenuContent align="end" forceMount className="w-64 border-none shadow-lg border-c rounded-2xl  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.05),transparent_60%)] before:opacity-70">
+                    <DropdownMenuLabel className="font-normal pb-3">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-12 w-12 border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 to-pink-500">
+                          <AvatarFallback className="bg-gradient-to-br bg-gradient-to-br from-black to-black/70  text-lg text-white font-extrabold">
                             {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col space-y-1 flex-1 min-w-0">
+                        <div className="flex flex-col space-y-1 flex-1">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-heading font-semibold leading-none text-neutral-100 truncate">
+                            <p className="text-sm font-heading font-semibold leading-none text-foreground">
                               {user.user_metadata?.display_name || 'User'}
                             </p>
-                            {profile?.subscription_tier === 'pro' && <Badge className="h-5 px-1.5 flex-shrink-0 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-bold">
+                            {profile?.subscription_tier === 'pro' && <Badge className="h-5 px-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px]">
                                 PRO
                               </Badge>}
                           </div>
-                          <p className="text-xs leading-none text-neutral-400 font-body truncate">
+                          <p className="text-xs leading-none text-muted-foreground font-body">
                             {user.email}
                           </p>
                         </div>
                       </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-neutral-700/30 my-2" />
+                    <DropdownMenuSeparator className="bg-border" />
                     
-                    {/* Account Section */}
-                    <DropdownMenuItem asChild className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-neutral-700/40 focus:bg-neutral-700/40">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5 px-2 text-neutral-300 hover:text-white">
-                        <UserGear className="h-4 w-4 text-cyan-400" weight="fill" />
-                        <span className="font-body text-sm">Account</span>
+                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-red-800 focus:bg-zinc-100/5">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <UserGear className="h-4 w-4 text-primary" weight="fill" />
+                        <span className="font-body">Account</span>
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem asChild className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-neutral-700/40 focus:bg-neutral-700/40">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5 px-2 text-neutral-300 hover:text-white">
-                        <ChartBar className="h-4 w-4 text-cyan-400" weight="fill" />
-                        <span className="font-body text-sm">Analytics</span>
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <ChartBar className="h-4 w-4 text-primary" weight="fill" />
+                        <span className="font-body">Analytic</span>
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem asChild className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-neutral-700/40 focus:bg-neutral-700/40">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5 px-2 text-neutral-300 hover:text-white">
-                        <ClockCounterClockwise className="h-4 w-4 text-cyan-400" weight="fill" />
-                        <span className="font-body text-sm">Backup</span>
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <ClockCounterClockwise className="h-4 w-4 text-primary " weight="fill" />
+                        <span className="font-body">Backup</span>
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem asChild className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-neutral-700/40 focus:bg-neutral-700/40">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5 px-2 text-neutral-300 hover:text-white">
-                        <HardDrives className="h-4 w-4 text-cyan-400" weight="fill" />
-                        <span className="font-body text-sm">Storage</span>
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <HardDrives className="h-4 w-4 text-primary" weight="fill" />
+                        <span className="font-body">Storage</span>
                       </Link>
                     </DropdownMenuItem>
-
-                    <DropdownMenuSeparator className="bg-neutral-700/30 my-1" />
-
-                    {/* Settings Section */}
-                    <DropdownMenuItem asChild className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-neutral-700/40 focus:bg-neutral-700/40">
-                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5 px-2 text-neutral-300 hover:text-white">
-                        <Gear className="h-4 w-4 text-cyan-400" weight="fill" />
-                        <span className="font-body text-sm">Settings</span>
+ <DropdownMenuSeparator className="bg-border" />
+                     <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
+                      <Link to="/dashboard/analytics" className="flex items-center gap-3 py-2.5">
+                        <Gear className="h-4 w-4 text-primary" weight="fill" />
+                        <span className="font-body">Settings</span>
                       </Link>
                     </DropdownMenuItem>
+                    
 
-                    <DropdownMenuItem asChild className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-neutral-700/40 focus:bg-neutral-700/40">
-                      <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5 px-2 text-neutral-300 hover:text-white">
-                        <Headset className="h-4 w-4 text-cyan-400" weight="fill" />
-                        <span className="font-body text-sm">Support 24/7</span>
+                    <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
+                      <Link to="/dashboard/settings" className="flex items-center gap-3 py-2.5">
+                        <Headset className="h-4 w-4 text-primary" weight="fill" />
+                        <span className="font-body">Support 24/7</span>
                       </Link>
                     </DropdownMenuItem>
-
+                    
                     {profile?.subscription_tier !== 'pro' && <>
-                      <DropdownMenuSeparator className="bg-neutral-700/30 my-1" />
-                      <DropdownMenuItem asChild className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-amber-500/20 focus:bg-amber-500/20">
-                        <Link to="/subscription" className="flex items-center gap-3 py-2.5 px-2 text-amber-400 hover:text-amber-300">
-                          <CurrencyCircleDollar className="h-4 w-4" weight="fill" />
-                          <span className="font-body text-sm">Upgrade Plan</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    </>}
-
-                    <DropdownMenuSeparator className="bg-neutral-700/30 my-1" />
-
-                    {/* Sign Out Section */}
-                    <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-red-500/20 focus:bg-red-500/20 text-red-400 hover:text-red-300">
+               <DropdownMenuSeparator className="bg-border" />
+                        <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent focus:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:border-cyan-400/30 hover:scale-[1.02] transition-all duration-300">
+                          <Link to="/subscription" className="flex items-center gap-3 py-2.5">
+                            <CurrencyCircleDollar className="h-4 w-4 text-amber-500" weight="fill" />
+                            <span className="font-body">Subscription</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      </>}
+                    
+                    <DropdownMenuSeparator className="bg-border" />
+                    <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer hover:bg-destructive/10 focus:bg-destructive/10 text-destructive">
                       <SignOut className="mr-3 h-4 w-4" weight="fill" />
-                      <span className="font-body text-sm">Sign out</span>
+                      <span className="font-body">Sign out</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -540,19 +490,5 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </main>
         </div>
       </div>
-
-{/* Pro Feature Modal - Ultra Minimal Black & White */}
-<ProFeatureModal
-  isOpen={analyticsProModal}
-  onClose={() => setAnalyticsProModal(false)}
-  featureName="Advanced Analytics"
-  featureDescription="Unlock detailed insights into your file sharing activity, download patterns, and user engagement metrics."
-  className="bg-black text-white rounded-xl shadow-md max-w-sm mx-auto p-5 space-y-3"
-  titleClassName="text-lg font-semibold text-white"
-  descriptionClassName="text-sm text-gray-300"
-  hideImage={true}
-/>
-
-
     </SidebarProvider>;
 };
