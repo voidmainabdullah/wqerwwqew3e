@@ -34,7 +34,7 @@ export const VirusScanButton: React.FC<VirusScanGuardProps> = ({ onScan, disable
           <TooltipContent>
             <div className="max-w-xs space-y-2">
               <div className="flex items-center gap-2">
-                <DiamondsFour className="h-4 w-4 text-amber-500" weight="fill" />
+                <DiamondsFour className="h-4 w-4 text-zinc-400" weight="fill" />
                 <p className="font-heading font-semibold text-sm">Premium Feature</p>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -42,7 +42,7 @@ export const VirusScanButton: React.FC<VirusScanGuardProps> = ({ onScan, disable
               </p>
               <Button
                 size="sm"
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0"
+                className="w-full bg-gradient-to-r from-zinc-700 to-zinc-800 hover:from-zinc-600 hover:to-zinc-700 text-zinc-100 border border-zinc-600/50"
                 onClick={() => navigate('/subscription')}
               >
                 Upgrade Now
