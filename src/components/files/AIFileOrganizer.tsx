@@ -576,10 +576,7 @@ return (
 
           </CardContent>
         </Card>
-      ) : null}
-    </DialogContent>
-  </Dialog>
-);
+     
 
         ) : (
         <div className="space-y-4">
