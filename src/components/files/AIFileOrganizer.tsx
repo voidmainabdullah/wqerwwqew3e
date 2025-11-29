@@ -518,66 +518,51 @@ export function AIFileOrganizer({
   // If auto-apply is on, we can pre-enable suggestions above threshold (already done in analyze),
   // but here we provide a one-click to enable / disable based on confidence
   const applyAutoConfidenceFilter = () => {
-  setSuggestions(prev =>
-    prev.map(s => ({
+    setSuggestions(prev => prev.map(s => ({
       ...s,
-      enabled: s.confidence >= minAutoApplyConfidence,
-    }))
-  );
-};
+      enabled: s.confidence >= minAutoApplyConfidence
+    })));
+  };
+  return <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-indigo-400" />
+            AI File Organizer
+            <ProBadge size="md" />
+          </DialogTitle>
+          <DialogDescription>
+            Smart, deterministic organization suggestions — tuned for predictability and safety.
+          </DialogDescription>
+        </DialogHeader>
 
-return (
-  <Dialog open={isOpen} onOpenChange={onClose}>
-    <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
-      <DialogHeader>
-        <DialogTitle className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-indigo-400" />
-          AI File Organizer
-          <ProBadge size="md" />
-        </DialogTitle>
-
-        <DialogDescription>
-          Smart, deterministic organization suggestions — tuned for predictability and safety.
-        </DialogDescription>
-      </DialogHeader>
-
-      {/* Premium Check */}
-      {!useSubscription().isPro ? (
-        <Card className="border-amber-500/20 bg-gradient-to-br from-background to-amber-500/5">
-          <CardContent className="p-6 space-y-4">
-
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0">
-                <DiamondsFour className="h-6 w-6 text-white" weight="fill" />
+        {/* Premium Check */}
+        {!useSubscription().isPro ? (
+          <Card className="border-amber-500/20 bg-gradient-to-br from-background to-amber-500/5">
+            <CardContent className="p-6 space-y-4">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                  <DiamondsFour className="h-6 w-6 text-white" weight="fill" />
+                </div>
+                <div className="flex-1 space-y-2">
+                  <h3 className="font-heading font-semibold text-lg">Premium Feature</h3>
+                  <p className="text-sm text-muted-foreground">
+                    AI File Organizer uses advanced algorithms to automatically categorize and organize your files. Upgrade to Pro to unlock this powerful feature.
+                  </p>
+                  <Button
+                    onClick={() => {
+                      const navigate = useNavigate();
+                      navigate('/subscription');
+                    }}
+                    className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0"
+                  >
+                    <DiamondsFour className="mr-2 h-4 w-4" weight="fill" />
+                    Upgrade to Pro
+                  </Button>
+                </div>
               </div>
-
-              <div className="flex-1 space-y-2">
-                <h3 className="font-heading font-semibold text-lg">
-                  Premium Feature
-                </h3>
-
-                <p className="text-sm text-muted-foreground">
-                  AI File Organizer uses advanced algorithms to automatically categorize
-                  and organize your files. Upgrade to Pro to unlock this powerful feature.
-                </p>
-
-                <Button
-                  onClick={() => {
-                    const navigate = useNavigate();
-                    navigate("/subscription");
-                  }}
-                  className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0"
-                >
-                  <DiamondsFour className="mr-2 h-4 w-4" weight="fill" />
-                  Upgrade to Pro
-                </Button>
-              </div>
-            </div>
-
-          </CardContent>
-        </Card>
-     
-
+            </CardContent>
+          </Card>
         ) : (
         <div className="space-y-4">
           {suggestions.length === 0 ? <Card>
