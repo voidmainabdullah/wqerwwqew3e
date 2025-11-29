@@ -28,45 +28,46 @@ export const PremiumGuard: React.FC<PremiumGuardProps> = ({
     <div className="flex items-center justify-center min-h-[550px] p-4">
       <Card className="
         max-w-lg w-full 
-        border border-amber-500/20 
-        bg-black/50 backdrop-blur-xl
-        shadow-[0_0_40px_-10px_rgba(255,165,0,0.5)]
+        border border-zinc-700/50
+        bg-zinc-900/90 backdrop-blur-xl
+        shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]
         rounded-2xl
       ">
         
         {/* Header */}
         <CardHeader className="text-center space-y-4">
           
-          {/* 🔥 Premium Image */}
+          {/* Premium Image */}
           <div className="flex justify-center">
             <img 
-              src="/premium-lock.png"   // <<---------- Yahan apna image path daalna
-              className="w-32 h-32 rounded-full shadow-xl 
-                border border-amber-500/40 
-                bg-gradient-to-br from-amber-500/20 to-orange-600/20 
-                p-1 object-cover"
+              src="/image-case.png"
+              className="w-32 h-32 rounded-2xl shadow-xl 
+                border border-zinc-600/50
+                bg-gradient-to-br from-zinc-800/50 to-zinc-700/50
+                p-2 object-cover"
               alt="Premium Feature"
             />
           </div>
 
-          {/* 🔒 Lock Icon */}
+          {/* Lock Icon */}
           <div className="
             mx-auto w-16 h-16 rounded-full
-            bg-gradient-to-br from-amber-500 to-orange-600
+            bg-gradient-to-br from-zinc-700 to-zinc-800
             flex items-center justify-center shadow-md
+            border border-zinc-600/50
           ">
-            <Lock className="h-8 w-8 text-white" weight="fill" />
+            <Lock className="h-8 w-8 text-zinc-300" weight="fill" />
           </div>
 
           {/* Title Section */}
           <div className="space-y-2">
             <div className="flex items-center justify-center gap-2">
-              <CardTitle className="text-3xl font-bold tracking-tight text-white">
+              <CardTitle className="text-3xl font-bold tracking-tight text-zinc-100">
                 Premium Feature
               </CardTitle>
               <ProBadge size="md" />
             </div>
-            <CardDescription className="text-base text-amber-200/80">
+            <CardDescription className="text-base text-zinc-400">
               {description || `${featureName} is only available for Pro users`}
             </CardDescription>
           </div>
@@ -74,14 +75,14 @@ export const PremiumGuard: React.FC<PremiumGuardProps> = ({
 
         {/* Body */}
         <CardContent className="space-y-6">
-          <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-2 shadow-inner">
-            <h4 className="font-semibold text-white flex items-center gap-2">
-              <DiamondsFour className="h-4 w-4 text-amber-400" weight="fill" />
+          <div className="p-4 bg-zinc-800/50 border border-zinc-700/50 rounded-xl space-y-2 shadow-inner">
+            <h4 className="font-semibold text-zinc-100 flex items-center gap-2">
+              <DiamondsFour className="h-4 w-4 text-zinc-400" weight="fill" />
               What you unlock in Pro:
             </h4>
 
             {/* Feature List */}
-            <ul className="space-y-1 text-sm text-amber-100/80 ml-6">
+            <ul className="space-y-1 text-sm text-zinc-300 ml-6">
               <li>• Unlimited storage & uploads</li>
               <li>• Advanced analytics & insights</li>
               <li>• Virus scanning protection</li>
@@ -96,9 +97,10 @@ export const PremiumGuard: React.FC<PremiumGuardProps> = ({
           <Button 
             onClick={() => navigate('/subscription')} 
             className="
-              w-full text-white text-lg py-6
-              bg-gradient-to-r from-amber-500 to-orange-600 
-              hover:from-amber-600 hover:to-orange-700
+              w-full text-zinc-100 text-lg py-6
+              bg-gradient-to-r from-zinc-700 to-zinc-800
+              hover:from-zinc-600 hover:to-zinc-700
+              border border-zinc-600/50
               rounded-xl shadow-lg
               transition-all duration-200
             "

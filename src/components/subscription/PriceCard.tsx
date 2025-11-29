@@ -10,6 +10,7 @@ interface PriceCardProps {
   description: string;
   features: string[];
   isPopular?: boolean;
+  loading?: boolean;
   onSubscribe: () => void;
 }
 export const PriceCard: React.FC<PriceCardProps> = ({
@@ -19,6 +20,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
   description,
   features,
   isPopular = false,
+  loading = false,
   onSubscribe
 }) => {
   return <Card className={`relative ${isPopular ? 'border-primary shadow-lg' : ''}`}>
@@ -44,11 +46,16 @@ export const PriceCard: React.FC<PriceCardProps> = ({
             </li>)}
         </ul>
         
-        <Button onClick={onSubscribe} variant={isPopular ? "default" : "outline"} className="w-full font-heading icon-text bg-zinc-900 hover:bg-zinc-800">
+        <Button 
+          onClick={onSubscribe} 
+          variant={isPopular ? "default" : "outline"} 
+          className="w-full font-heading icon-text bg-zinc-900 hover:bg-zinc-800"
+          disabled={loading}
+        >
           <span className="material-icons md-18">
             {isPopular ? 'rocket_launch' : 'contact_support'}
           </span>
-          Subscribe to {title}
+          {loading ? 'Processing...' : `Subscribe to ${title}`}
         </Button>
       </CardContent>
     </Card>;
