@@ -1,113 +1,107 @@
 import React from 'react';
 import { useSubscription } from '@/hooks/useSubscription';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ProBadge } from '@/components/ui/ProBadge';
-import { Lock, DiamondsFour } from 'phosphor-react';
+import { Lock, Crown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface PremiumGuardProps {
   children: React.ReactNode;
   featureName: string;
   description?: string;
+  imageSrc?: string; // new (optional)
 }
 
-export const PremiumGuard: React.FC<PremiumGuardProps> = ({ 
-  children, 
+export const PremiumGuard: React.FC<PremiumGuardProps> = ({
+  children,
   featureName,
-  description 
+  description,
+  imageSrc
 }) => {
   const { isPro } = useSubscription();
   const navigate = useNavigate();
 
-  if (isPro) {
-    return <>{children}</>;
-  }
+  if (isPro) return <>{children}</>;
 
   return (
-    <div className="flex items-center justify-center min-h-[550px] p-4">
-      <Card className="
-        max-w-lg w-full 
-        border border-amber-500/20 
-        bg-black/50 backdrop-blur-xl
-        shadow-[0_0_40px_-10px_rgba(255,165,0,0.5)]
-        rounded-2xl
-      ">
-        
-        {/* Header */}
-        <CardHeader className="text-center space-y-4">
-          
-          {/* 🔥 Premium Image */}
-          <div className="flex justify-center">
-            <img 
-              src="/premium-lock.png"   // <<---------- Yahan apna image path daalna
-              className="w-32 h-32 rounded-full shadow-xl 
-                border border-amber-500/40 
-                bg-gradient-to-br from-amber-500/20 to-orange-600/20 
-                p-1 object-cover"
-              alt="Premium Feature"
-            />
-          </div>
+    <div className="flex items-center justify-center min-h-[550px] p-6">
+      <Card className="max-w-4xl w-full bg-zinc-900 text-white rounded-xl shadow-xl p-8 border border-zinc-800 flex gap-8">
 
-          {/* 🔒 Lock Icon */}
-          <div className="
-            mx-auto w-16 h-16 rounded-full
-            bg-gradient-to-br from-amber-500 to-orange-600
-            flex items-center justify-center shadow-md
-          ">
-            <Lock className="h-8 w-8 text-white" weight="fill" />
-          </div>
+        {/* LEFT — Image */}
+        <div className="flex-1 rounded-lg overflow-hidden border border-zinc-700 bg-zinc-800 aspect-video">
+          <img
+            src={imageSrc || '/default-placeholder.png'}
+            alt={featureName}
+            className="w-full h-full object-cover opacity-90"
+            onError={(e) => {
+              e.currentTarget.src = '/default-placeholder.png';
+              e.currentTarget.classList.add('opacity-50');
+            }}
+          />
+        </div>
 
-          {/* Title Section */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-center gap-2">
-              <CardTitle className="text-3xl font-bold tracking-tight text-white">
-                Premium Feature
-              </CardTitle>
-              <ProBadge size="md" />
+        {/* RIGHT — Content */}
+        <div className="flex-1 flex flex-col justify-between space-y-6">
+
+          {/* Header */}
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-zinc-700/20 border border-zinc-600">
+                <Lock className="h-6 w-6 text-white" />
+              </div>
+              <h2 className="text-2xl font-semibold">{featureName}</h2>
             </div>
-            <CardDescription className="text-base text-amber-200/80">
-              {description || `${featureName} is only available for Pro users`}
-            </CardDescription>
+            <p className="text-zinc-400 text-sm">
+              {description || `${featureName} is available only for Pro users.`}
+            </p>
           </div>
-        </CardHeader>
 
-        {/* Body */}
-        <CardContent className="space-y-6">
-          <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-2 shadow-inner">
-            <h4 className="font-semibold text-white flex items-center gap-2">
-              <DiamondsFour className="h-4 w-4 text-amber-400" weight="fill" />
-              What you unlock in Pro:
-            </h4>
-
-            {/* Feature List */}
-            <ul className="space-y-1 text-sm text-amber-100/80 ml-6">
-              <li>• Unlimited storage & uploads</li>
-              <li>• Advanced analytics & insights</li>
-              <li>• Virus scanning protection</li>
-              <li>• Team collaboration features</li>
-              <li>• AI-powered file organization</li>
-              <li>• Password protection & download limits</li>
-              <li>• Priority support</li>
+          {/* Benefits */}
+          <div>
+            <h3 className="text-sm font-semibold text-white mb-3">Why Upgrade?</h3>
+            <ul className="space-y-2">
+              {[
+                "Unlock all premium tools",
+                "Advanced analytics & insights",
+                "Enterprise-grade virus scanning",
+                "AI-powered file organization",
+                "Team sharing & collaboration",
+                "Password protection + download limits",
+                "Priority support included"
+              ].map((benefit, index) => (
+                <li key={index} className="flex items-center gap-2 text-zinc-300 text-sm">
+                  <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                  {benefit}
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Upgrade Button */}
-          <Button 
-            onClick={() => navigate('/subscription')} 
-            className="
-              w-full text-white text-lg py-6
-              bg-gradient-to-r from-amber-500 to-orange-600 
-              hover:from-amber-600 hover:to-orange-700
-              rounded-xl shadow-lg
-              transition-all duration-200
-            "
-          >
-            <DiamondsFour className="mr-2 h-5 w-5" weight="fill" />
-            Upgrade to Pro
-          </Button>
+          {/* CTA */}
+          <div className="flex gap-3 pt-2">
+            <Button
+              onClick={() => navigate('/subscription')}
+              className="flex-1 bg-zinc-100 text-black font-semibold hover:bg-zinc-200"
+            >
+              <Crown className="h-4 w-4 mr-2" />
+              Upgrade to Pro
+            </Button>
 
-        </CardContent>
+            <Button
+              variant="outline"
+              className="flex-1 border-zinc-700 text-zinc-300 hover:bg-zinc-800/40"
+            >
+              Maybe Later
+            </Button>
+          </div>
+
+          {/* Trust message */}
+          <div className="p-3 rounded-lg bg-purple-800/30 border border-purple-900/75 text-center">
+            <p className="text-xs text-zinc-400">
+              Trusted by thousands. Secure, encrypted, reliable. Cancel anytime.
+            </p>
+          </div>
+        </div>
       </Card>
     </div>
   );
