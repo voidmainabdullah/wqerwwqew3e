@@ -1,72 +1,156 @@
 import React from 'react';
-import { useSubscription } from '@/hooks/useSubscription';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { ProBadge } from '@/components/ui/ProBadge';
-import { Lock, DiamondsFour } from 'phosphor-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { X, Crown } from 'lucide-react';
 
-interface PremiumGuardProps {
-  children: React.ReactNode;
+interface PremiumGaurdProps {
+  isOpen: boolean;
+  onClose: () => void;
   featureName: string;
-  description?: string;
+  featureDescription: string;
+  imageSrc: string;
 }
 
-export const PremiumGuard: React.FC<PremiumGuardProps> = ({ 
-  children, 
+export function  PremiumGaurd({
+  isOpen,
+  onClose,
   featureName,
-  description 
-}) => {
-  const { isPro } = useSubscription();
-  const navigate = useNavigate();
-
-  if (isPro) {
-    return <>{children}</>;
-  }
-
+  featureDescription,
+  imageSrc
+}: ProFeatureModalProps) {
   return (
-    <div className="flex items-center justify-center min-h-[500px] p-4">
-      <Card className="max-w-lg w-full border-amber-500/20 bg-gradient-to-br from-background to-amber-500/5">
-        <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-            <Lock className="h-8 w-8 text-white" weight="fill" />
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-center gap-2">
-              <CardTitle className="text-2xl">Premium Feature</CardTitle>
-              <ProBadge size="md" />
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent 
+        className="
+          max-w-4xl 
+          bg-black/60 backdrop-blur-xl 
+          text-white rounded-2xl 
+          border border-amber-500/20 
+          shadow-[0_0_40px_-12px_rgba(255,165,0,0.4)]
+          p-6 flex gap-8
+        "
+      >
+        
+        {/* LEFT SECTION - PREMIUM IMAGE */}
+        <div className="
+          flex-1 rounded-xl overflow-hidden
+          bg-gradient-to-br from-amber-500/10 to-orange-500/10
+          border border-amber-400/20 
+          shadow-inner flex items-center justify-center
+        ">
+          <img
+            src={imageSrc || '/default-placeholder.png'}
+            alt={featureName}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = '/default-placeholder.png';
+              e.currentTarget.classList.add('opacity-40');
+            }}
+          />
+        </div>
+
+        {/* RIGHT SECTION */}
+        <div className="flex-1 flex flex-col justify-between space-y-6">
+
+          {/* HEADER */}
+          <div className="relative">
+            <button
+              onClick={onClose}
+              className="absolute right-0 top-0 p-2 hover:bg-white/10 rounded-lg transition"
+            >
+              <X className="h-5 w-5 text-zinc-300" />
+            </button>
+
+            <div className="flex items-center gap-3 pb-3">
+              <div className="
+                w-11 h-11 rounded-xl 
+                bg-gradient-to-br from-amber-500 to-orange-600 
+                flex items-center justify-center shadow-md border border-amber-400/30
+              ">
+                <Crown className="h-6 w-6 text-white" />
+              </div>
+
+              <DialogTitle className="text-3xl font-bold tracking-tight text-white">
+                {featureName}
+              </DialogTitle>
             </div>
-            <CardDescription className="text-base">
-              {description || `${featureName} is only available for Pro users`}
-            </CardDescription>
+
+            <DialogDescription className="text-amber-200/80 text-base leading-relaxed">
+              {featureDescription}
+            </DialogDescription>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="p-4 bg-muted rounded-lg space-y-2">
-            <h4 className="font-heading font-semibold flex items-center gap-2">
-              <DiamondsFour className="h-4 w-4 text-amber-500" weight="fill" />
-              What you'll get with Pro:
-            </h4>
-            <ul className="space-y-1 text-sm text-muted-foreground ml-6">
-              <li>• Unlimited storage & uploads</li>
-              <li>• Advanced analytics & insights</li>
-              <li>• Virus scanning protection</li>
-              <li>• Team collaboration features</li>
-              <li>• AI-powered file organization</li>
-              <li>• Password protection & download limits</li>
-              <li>• Priority support</li>
+
+          {/* WHY UPGRADE */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-amber-300">Why Upgrade?</h3>
+
+            <ul className="space-y-2">
+              {[
+                'Unlock this premium feature',
+                'Boost productivity & control',
+                'Enterprise-level performance',
+                'Priority customer support'
+              ].map((benefit, index) => (
+                <li 
+                  key={index} 
+                  className="flex items-center gap-3 text-amber-100/80 text-sm"
+                >
+                  <span 
+                    className="
+                      w-2.5 h-2.5 rounded-full 
+                      bg-gradient-to-r from-amber-400 to-orange-400
+                      shadow-[0_0_8px_rgba(255,160,0,0.7)]
+                      flex-shrink-0
+                    "
+                  />
+                  {benefit}
+                </li>
+              ))}
             </ul>
           </div>
-          <Button 
-            onClick={() => navigate('/subscription')} 
-            className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0"
-            size="lg"
-          >
-            <DiamondsFour className="mr-2 h-5 w-5" weight="fill" />
-            Upgrade to Pro
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+
+          {/* CTA BUTTONS */}
+          <div className="flex gap-4 pt-2">
+            <Button
+              asChild
+              className="
+                flex-1 py-5 text-lg font-semibold 
+                bg-gradient-to-r from-amber-500 to-orange-600 
+                hover:from-amber-600 hover:to-orange-700
+                text-white rounded-xl shadow-lg
+              "
+            >
+              <Link to="/subscription">
+                <Crown className="h-5 w-5 mr-2" />
+                Upgrade to Pro
+              </Link>
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="
+                flex-1 text-zinc-200 rounded-xl 
+                border-amber-400/20 hover:bg-white/10
+              "
+            >
+              Maybe Later
+            </Button>
+          </div>
+
+          {/* TRUST BOX */}
+          <div className="
+            p-3 text-center rounded-xl 
+            bg-orange-900/20 border border-orange-800/40
+          ">
+            <p className="text-xs text-amber-200/70">
+              Trusted by thousands. Fully encrypted. You can cancel anytime.
+            </p>
+          </div>
+
+        </div>
+      </DialogContent>
+    </Dialog>
   );
-};
+}
