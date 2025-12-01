@@ -31,22 +31,42 @@ export const DownloadComparison: React.FC = () => {
       }
       const fileIds = userFiles.map(f => f.id);
 
-      // Get all shared links for user's files with download counts
+      // Get actual download counts from download_logs table (last 7 days)
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      
+      const {
+        data: downloadLogs
+      } = await supabase
+        .from('download_logs')
+        .select('file_id')
+        .in('file_id', fileIds)
+        .gte('downloaded_at', weekAgo.toISOString());
+
+      // Get all shared links for user's files
       const {
         data: shares
-      } = await supabase.from('shared_links').select('file_id, download_count').in('file_id', fileIds);
+      } = await supabase
+        .from('shared_links')
+        .select('file_id')
+        .in('file_id', fileIds);
 
-      // Aggregate downloads and shares per file from shared_links
+      // Aggregate downloads and shares per file
       const downloadCounts = new Map<string, number>();
       const shareCounts = new Map<string, number>();
+      
+      downloadLogs?.forEach(log => {
+        if (log.file_id) {
+          downloadCounts.set(log.file_id, (downloadCounts.get(log.file_id) || 0) + 1);
+        }
+      });
+      
       shares?.forEach(share => {
         if (share.file_id) {
-          // Count total downloads from all shared links
-          downloadCounts.set(share.file_id, (downloadCounts.get(share.file_id) || 0) + (share.download_count || 0));
-          // Count number of shares
           shareCounts.set(share.file_id, (shareCounts.get(share.file_id) || 0) + 1);
         }
       });
+      
       const fileData = userFiles.map((file, i) => ({
         name: file.original_name.length > 16 ? file.original_name.substring(0, 16) + '...' : file.original_name,
         downloads: downloadCounts.get(file.id) || 0,
@@ -64,8 +84,27 @@ export const DownloadComparison: React.FC = () => {
   };
   useEffect(() => {
     fetchComparisonData();
-    const interval = setInterval(fetchComparisonData, 60000);
-    return () => clearInterval(interval);
+    
+    // Set up real-time subscription for instant updates
+    const channel = supabase
+      .channel('download-comparison-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'download_logs'
+        },
+        (payload) => {
+          // Refresh data immediately when a new download is logged
+          fetchComparisonData();
+        }
+      )
+      .subscribe();
+    
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user?.id]);
   const CustomTooltip = ({
     active,

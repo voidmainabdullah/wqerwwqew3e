@@ -71,8 +71,27 @@ export const DownloadHeatmap: React.FC = () => {
 
   useEffect(() => {
     fetchHeatmapData();
-    const interval = setInterval(fetchHeatmapData, 60000);
-    return () => clearInterval(interval);
+    
+    // Set up real-time subscription for instant updates
+    const channel = supabase
+      .channel('download-heatmap-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'download_logs'
+        },
+        (payload) => {
+          // Refresh data immediately when a new download is logged
+          fetchHeatmapData();
+        }
+      )
+      .subscribe();
+    
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user?.id]);
 
   const getIntensityColor = (count: number) => {
