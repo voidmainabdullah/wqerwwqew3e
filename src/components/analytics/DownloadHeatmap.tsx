@@ -86,7 +86,7 @@ export const DownloadHeatmap: React.FC = () => {
 
   if (loading) {
     return (
-      <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 shadow-lg">
+      <Card className="rounded-xl border border-zinc-700 bg-card shadow-lg">
         <CardHeader>
           <div className="h-6 bg-zinc-700 rounded w-48 animate-pulse" />
           <div className="h-4 bg-zinc-700 rounded w-64 mt-2 animate-pulse" />
@@ -99,7 +99,7 @@ export const DownloadHeatmap: React.FC = () => {
   }
 
   return (
-    <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <Card className="rounded-xl border border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
