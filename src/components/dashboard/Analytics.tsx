@@ -9,8 +9,8 @@ import { ExportAnalytics } from '@/components/analytics/ExportAnalytics';
 //import { PremiumGuard } from './PremiumGuard';
 //import { ProBadge } from '@/components/ui/ProBadge';
 
-//export const Analytics: React.FC = () => {
-  //return (
+export const Analytics: React.FC = () => {
+  return (
     /*<PremiumGuard 
       featureName="Analytics"
       description="Unlock detailed analytics and insights about your file sharing activity"
