@@ -184,6 +184,28 @@ async function syncCustomerFromStripe(customerId: string) {
       throw new Error('Failed to sync subscription in database');
     }
     console.info(`Successfully synced subscription for customer: ${customerId}`);
+
+    // Update user profile to pro tier if subscription is active
+    if (subscription.status === 'active' || subscription.status === 'trialing') {
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          subscription_tier: 'pro',
+          subscription_status: subscription.status,
+          subscription_end_date: new Date(subscription.current_period_end * 1000).toISOString(),
+          storage_limit: null, // Unlimited storage for pro
+          daily_upload_limit: null, // Unlimited uploads for pro
+        })
+        .eq('id', customerId)
+        .select()
+        .single();
+
+      if (profileError) {
+        console.error('Error updating profile to pro:', profileError);
+      } else {
+        console.info(`User profile updated to pro for customer: ${customerId}`);
+      }
+    }
   } catch (error) {
     console.error(`Failed to sync subscription for customer ${customerId}:`, error);
     throw error;

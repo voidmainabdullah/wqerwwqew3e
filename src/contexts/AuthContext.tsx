@@ -99,6 +99,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [user, fetchProfile]);
 
+  // Auto-refresh profile when window gains focus (e.g., returning from payment)
+  useEffect(() => {
+    const handleFocus = () => {
+      if (user?.id) {
+        fetchProfile(user.id);
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [user, fetchProfile]);
+
   // ---------- Auth functions ----------
 
   const signUp = async (email: string, password: string, displayName?: string) => {
