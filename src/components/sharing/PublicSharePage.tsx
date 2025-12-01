@@ -133,44 +133,65 @@ export const PublicSharePage: React.FC = () => {
   };
 
   const validatePassword = async () => {
-    if (!token || !password) return;
+  if (!token || !password) return;
 
-    try {
-      if (!shareData?.password_hash) {
-        setPasswordVerified(true);
-        setPasswordRequired(false);
-        return;
+  try {
+    // If no password is set, skip RPC
+    if (!shareData?.password_hash) {
+      setPasswordVerified(true);
+      setPasswordRequired(false);
+      return;
+    }
+
+    // 1️⃣ Verify the password
+    const { data, error } = await supabase.rpc("validate_share_password", {
+      token,
+      password,
+    });
+
+    if (error) throw error;
+
+    if (data === true) {
+      // 2️⃣ NEW REQUIRED CHECK — ensure file access is allowed
+      if (shareData.file_id) {
+        const { data: accessCheck } = await supabase.rpc("check_file_access", {
+          p_file_id: shareData.file_id,
+          p_user_id: null, // public user
+        });
+
+        if (accessCheck?.can_access !== true) {
+          toast({
+            variant: "destructive",
+            title: "Access Denied",
+            description: "You do not have permission to download this file.",
+          });
+          return;
+        }
       }
 
-      const { data, error } = await supabase.rpc("validate_share_password", {
-        token,
-        password,
+      // 3️⃣ Mark password as verified
+      setPasswordVerified(true);
+      setPasswordRequired(false);
+
+      toast({
+        title: "Access granted",
+        description: "Password verified successfully",
       });
-
-      if (error) throw error;
-
-      if (data === true) {
-        setPasswordVerified(true);
-        setPasswordRequired(false);
-        toast({
-          title: "Access granted",
-          description: "Password verified successfully",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Invalid password",
-          description: "Please check your password and try again",
-        });
-      }
-    } catch (err: any) {
+    } else {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: err.message,
+        title: "Invalid password",
+        description: "Please check your password and try again",
       });
     }
-  };
+  } catch (err: any) {
+    toast({
+      variant: "destructive",
+      title: "Error",
+      description: err.message,
+    });
+  }
+};
 
   const downloadFile = async (fileToDownload?: FolderFile) => {
     if (!shareData) return;
