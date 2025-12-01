@@ -366,6 +366,13 @@ export function FileManager() {
             const response = await fetch(data.signedUrl);
             const blob = await response.blob();
             zip.file(file.original_name, blob);
+            
+            // Log each file download in the ZIP
+            await supabase.from('download_logs').insert({
+              file_id: file.id,
+              download_method: 'zip_download',
+              downloader_user_agent: navigator.userAgent
+            });
           }
         } catch (error) {
           console.error(`Failed to add ${file.original_name} to zip:`, error);

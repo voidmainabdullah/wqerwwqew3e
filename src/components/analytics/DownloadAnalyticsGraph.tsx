@@ -60,15 +60,15 @@ export const DownloadAnalyticsGraph: React.FC = () => {
           break;
       }
       
-      // Fetch shared links created in the period
-      const { data: shares } = await supabase
-        .from('shared_links')
-        .select('created_at, download_count')
+      // Fetch actual download logs from download_logs table
+      const { data: downloads } = await supabase
+        .from('download_logs')
+        .select('downloaded_at, file_id')
         .in('file_id', fileIds)
-        .gte('created_at', cutoffDate.toISOString())
-        .order('created_at', { ascending: true });
+        .gte('downloaded_at', cutoffDate.toISOString())
+        .order('downloaded_at', { ascending: true });
       
-      if (!shares || shares.length === 0) {
+      if (!downloads || downloads.length === 0) {
         const emptyData = generateEmptyDataPoints(period);
         setChartData(emptyData);
         setTotalDownloads(0);
@@ -77,15 +77,10 @@ export const DownloadAnalyticsGraph: React.FC = () => {
         return;
       }
       
-      // Transform shares data to download events based on download_count
-      const downloads = shares.flatMap(share => 
-        Array(share.download_count || 0).fill({ downloaded_at: share.created_at })
-      );
-      
       const groupedData = groupDownloadsByTime(downloads, period);
       const formattedData = formatChartData(groupedData, period);
       setChartData(formattedData);
-      setTotalDownloads(shares.reduce((sum, s) => sum + (s.download_count || 0), 0));
+      setTotalDownloads(downloads.length);
       const change = calculatePercentChange(formattedData);
       setPercentChange(change);
       setLastUpdate(new Date());
@@ -193,10 +188,27 @@ export const DownloadAnalyticsGraph: React.FC = () => {
   };
   useEffect(() => {
     fetchDownloadData();
-    const interval = setInterval(() => {
-      fetchDownloadData();
-    }, 30000);
-    return () => clearInterval(interval);
+    
+    // Set up real-time subscription for instant updates
+    const channel = supabase
+      .channel('download-analytics-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'download_logs'
+        },
+        (payload) => {
+          // Refresh data immediately when a new download is logged
+          fetchDownloadData();
+        }
+      )
+      .subscribe();
+    
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user?.id, period]);
   const CustomTooltip = ({
     active,
