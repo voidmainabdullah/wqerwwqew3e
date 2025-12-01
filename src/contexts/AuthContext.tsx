@@ -1,7 +1,15 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+
+// ---------------------- Interfaces ----------------------
 
 interface Profile {
   storage_used: number | null;
@@ -14,36 +22,52 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, displayName?: string) => Promise<{ error: any }>;
+
+  signUp: (
+    email: string,
+    password: string,
+    displayName?: string
+  ) => Promise<{ error: any }>;
+
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
   refreshProfile: () => Promise<void>;
+
+  setUserPlan: (userId: string, plan: "basic" | "premium") => Promise<void>;
 }
+
+// ---------------------- Context ----------------------
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  if (!context)
+    throw new Error("useAuth must be used inside an AuthProvider component");
   return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// ---------------------- Provider ----------------------
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+
   const { toast } = useToast();
 
-  // Update user + session
+  // ------------------ Internal Helpers ------------------
+
   const handleAuthChange = useCallback((session: Session | null) => {
     setSession(session);
     setUser(session?.user ?? null);
     setLoading(false);
   }, []);
 
-  // Fetch user profile safely
   const fetchProfile = useCallback(async (userId: string) => {
     try {
       const { data, error } = await supabase
@@ -60,70 +84,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  // Allow manual refresh from UI
   const refreshProfile = useCallback(async () => {
-    if (user?.id) {
-      await fetchProfile(user.id);
-      // Force a re-render to update UI instantly after subscription changes
-      window.dispatchEvent(new Event('subscription-updated'));
-    }
+    if (!user?.id) return;
+    await fetchProfile(user.id);
+
+    // Notify UI that subscription changed (for removing pro badges instantly)
+    window.dispatchEvent(new Event("subscription-updated"));
   }, [user, fetchProfile]);
 
-  useEffect(() => {
-    let mounted = true;
+  // ------------------ Auth Listener ------------------
 
-    // Get session on mount
+  useEffect(() => {
+    let active = true;
+
     supabase.auth.getSession().then(({ data, error }) => {
-      if (!mounted) return;
-      if (error) console.error("Error getting session:", error.message);
+      if (!active) return;
+      if (error) console.error("Session load error:", error.message);
       handleAuthChange(data?.session ?? null);
     });
 
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      handleAuthChange(session);
-    });
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        handleAuthChange(session);
+      }
+    );
 
     return () => {
-      mounted = false;
-      subscription.unsubscribe();
+      active = false;
+      listener.subscription.unsubscribe();
     };
   }, [handleAuthChange]);
 
-  // Fetch profile when user changes
+  // Fetch profile whenever user changes
   useEffect(() => {
-    if (user?.id) {
-      fetchProfile(user.id);
-    } else {
-      setProfile(null);
-    }
+    if (user?.id) fetchProfile(user.id);
+    else setProfile(null);
   }, [user, fetchProfile]);
 
-  // Auto-refresh profile when window gains focus (e.g., returning from payment)
+  // Auto-refresh profile when window gains focus (e.g., after returning from payment)
   useEffect(() => {
-    const handleFocus = () => {
-      if (user?.id) {
-        fetchProfile(user.id);
-      }
+    const onFocus = () => {
+      if (user?.id) fetchProfile(user.id);
     };
-
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
   }, [user, fetchProfile]);
 
-  // ---------- Auth functions ----------
+  // ------------------ Auth Methods ------------------
 
-  const signUp = async (email: string, password: string, displayName?: string) => {
-    const redirectUrl =
-      window.location.hostname === "localhost"
-        ? `${window.location.origin}/`
-        : `https://${window.location.hostname}/`;
+  const getRedirectUrl = () =>
+    window.location.hostname === "localhost"
+      ? `${window.location.origin}/`
+      : `https://${window.location.hostname}/`;
 
+  const signUp = async (
+    email: string,
+    password: string,
+    displayName?: string
+  ) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: redirectUrl,
+        emailRedirectTo: getRedirectUrl(),
         data: { display_name: displayName || email.split("@")[0] },
       },
     });
@@ -137,7 +160,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       toast({
         title: "Account created!",
-        description: "Please check your email for verification.",
+        description: "Check your email to verify your account.",
       });
     }
 
@@ -159,20 +182,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInWithGoogle = async () => {
-    const redirectUrl =
-      window.location.hostname === "localhost"
-        ? `${window.location.origin}/`
-        : `https://${window.location.hostname}/`;
-
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: redirectUrl },
+      options: { redirectTo: getRedirectUrl() },
     });
 
     if (error) {
       toast({
         variant: "destructive",
-        title: "Google sign in failed",
+        title: "Google sign-in failed",
         description: error.message,
       });
     }
@@ -182,6 +200,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
+
     if (error) {
       toast({
         variant: "destructive",
@@ -190,14 +209,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     } else {
       toast({
-        title: "Signed out",
-        description: "You have been signed out successfully.",
+        title: "Logged out",
+        description: "You have signed out successfully.",
       });
     }
+
     return { error };
   };
 
-  // ---------- Context value ----------
+  // ------------------ Manual Plan Control ------------------
+
+  const setUserPlan = async (userId: string, plan: "basic" | "premium") => {
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          subscription_tier: plan,
+          storage_limit: plan === "premium" ? 1000 : 2, // Adjust limits
+        })
+        .eq("id", userId);
+
+      if (error) throw error;
+
+      // Refresh profile if current user
+      if (user?.id === userId) await refreshProfile();
+
+      toast({
+        title: "Plan updated",
+        description: `User is now ${plan.toUpperCase()}`,
+      });
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Plan update failed",
+        description: err.message,
+      });
+    }
+  };
+
+  // ------------------ Context Value ------------------
+
   const value: AuthContextType = {
     user,
     session,
@@ -208,6 +259,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signOut,
     signInWithGoogle,
     refreshProfile,
+    setUserPlan,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
