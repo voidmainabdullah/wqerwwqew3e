@@ -524,7 +524,7 @@ export function AIFileOrganizer({
     })));
   };
   return <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-xl max-h-[110vh] overflow-x-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-indigo-400" />
@@ -538,10 +538,10 @@ export function AIFileOrganizer({
 
         {/* Premium Check */}
         {!useSubscription().isPro ? (
-          <Card className="border-amber-500/20 bg-gradient-to-br from-background to-amber-500/5">
+          <Card className="border-amber-500/20 bg-gradient-to-br from-neutral-800 to-zinc-900">
             <CardContent className="p-6 space-y-4">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-black to-black flex items-center justify-center flex-shrink-0">
                   <DiamondsFour className="h-6 w-6 text-white" weight="fill" />
                 </div>
                 <div className="flex-1 space-y-2">
@@ -549,12 +549,19 @@ export function AIFileOrganizer({
                   <p className="text-sm text-muted-foreground">
                     AI File Organizer uses advanced algorithms to automatically categorize and organize your files. Upgrade to Pro to unlock this powerful feature.
                   </p>
+                  <div className="w-full hidden md:flex items-center justify-center p-4 ">
+            <img
+              src="/neon-wave.png"
+              className="w-full h-50 rounded-lg object-cover"
+              alt="Premium Feature"
+            />
+          </div>
                   <Button
                     onClick={() => {
                       const navigate = useNavigate();
                       navigate('/subscription');
                     }}
-                    className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0"
+                    className="w-full mt-4 bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-600 hover:to-blue-600 text-white border-0"
                   >
                     <DiamondsFour className="mr-2 h-4 w-4" weight="fill" />
                     Upgrade to Pro
