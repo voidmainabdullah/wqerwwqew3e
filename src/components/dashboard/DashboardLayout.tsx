@@ -147,19 +147,31 @@ const AppSidebar = () => {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
-              <SidebarMenuItem> 
+              <SidebarMenuItem>
                <SidebarMenuButton asChild tooltip="Upgrade" className="h-9 px-3 rounded-xl bg-accent/10  border text-neutral-200 hover:bg-accent/10 transition-all duration-200 group-data-[collapsible=icon]:justify-center">
   <Link to="/subscription" className="flex items-center gap-2">
     <DiamondsFour className="flex-shrink-0" />
     <span className="font-body text-sm group-data-[collapsible=icon]:hidden">
       Upgrade Plan
-    </span> 
+    </span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Upgrade Image Section - Hidden when collapsed */}
+        <div className="flex-shrink-0 mt-auto px-2 py-4 group-data-[collapsible=icon]:hidden transition-all duration-300">
+          <div className="relative overflow-hidden rounded-xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-3">
+            <img
+              src="/image.png"
+              alt="Upgrade to Pro"
+              className="w-full h-24 object-cover rounded-lg"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+          </div>
+        </div>
       </SidebarContent>
 
       {/* Rail for easy sidebar expansion on desktop */}
