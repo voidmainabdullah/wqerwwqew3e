@@ -380,7 +380,7 @@ export const Dashboard: React.FC = () => {
             <DownloadHeatmap />
 
             {/* Real-time Analytics Component */}
-            <div className="border rounded-xl p-6 bg-neutral-900">
+            <div className="border rounded-xl p-6  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
               <div className="space-y-6 bg-transparent">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
@@ -393,7 +393,7 @@ export const Dashboard: React.FC = () => {
                 
                 {/* Analytics Cards Grid */}
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
+                  <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
                         <Download className="w-5 h-5 text-zinc-400" />
@@ -405,7 +405,7 @@ export const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
+                  <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
                         <ShareNetwork className="w-5 h-5 text-zinc-400" />
@@ -417,7 +417,7 @@ export const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
+                  <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
                         <Files className="w-5 h-5 text-zinc-400" />
@@ -431,7 +431,7 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 {/* Popular Files */}
-                <div className="rounded-lg p-4 border border-slate-600/30 bg-zinc-800">
+                <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
                   <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                     <TrendUp className="w-4 h-4 text-emerald-400" />
                     Popular Files
@@ -457,7 +457,7 @@ export const Dashboard: React.FC = () => {
           {/* Right Column - Activity and Actions */}
           <div className="space-y-8">
             {/* Quick Actions */}
-            <Card className="bg-stone-950 border">
+            <Card className="border border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
               <CardHeader className="border-none border-t">
                 <CardTitle className="text-white flex items-center gap-2">
                   <Lightning className="w-5 h-5 text-amber-400" />
@@ -489,14 +489,14 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Storage Overview */}
-            <Card className="bg-gradient-to-br from-neutral-900 to-slate-600 border-slate-600/50 text-white bg-neutral-800">
-              <CardHeader className="bg-zinc-800 ">
+            <Card className=" border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30 text-white bg-neutral-800">
+              <CardHeader className=" border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30 ">
                 <CardTitle className="text-white flex items-center gap-2">
                   <Database className="w-5 h-5 text-blue-400" />
                   Storage Overview
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 bg-neutral-800">
+              <CardContent className="space-y-4  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-400">Used</span>
@@ -527,7 +527,7 @@ export const Dashboard: React.FC = () => {
             </Card>
 
             {/* Recent Activity */}
-            <Card className="bg-gradient-to-br from-stone-900 to-zinc-800 border-slate-600/50">  
+            <Card className=" border-zinc-700 bg-gradient-to-br from-black to-zinc-800 border">  
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Activity className="w-5 h-5 text-emerald-400" />
