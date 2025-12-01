@@ -527,7 +527,7 @@ export function FileManager() {
           </CardContent>
         </Card> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Folders */}
-          {filteredFolders.map(folder => <Card key={`folder-${folder.id}`} className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-foreground/20 bg-card/50 backdrop-blur">
+          {filteredFolders.map(folder => <Card key={`folder-${folder.id}`} className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-foreground/20 bg-card/50 border backdrop-blur">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 flex-1 cursor-pointer" onClick={() => navigateToFolder(folder.id, folder.name)}>
@@ -573,7 +573,7 @@ export function FileManager() {
             </Card>)}
 
           {/* Files */}
-          {filteredFiles.map(file => <Card key={file.id} className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-foreground/20 bg-card/50 backdrop-blur">
+          {filteredFiles.map(file => <Card key={file.id} className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-foreground/20 bg-card/50 border backdrop-blur">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
