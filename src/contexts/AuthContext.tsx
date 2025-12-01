@@ -87,8 +87,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const refreshProfile = useCallback(async () => {
     if (!user?.id) return;
     await fetchProfile(user.id);
-
-    // Notify UI that subscription changed (for removing pro badges instantly)
     window.dispatchEvent(new Event("subscription-updated"));
   }, [user, fetchProfile]);
 
@@ -117,11 +115,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Fetch profile whenever user changes
   useEffect(() => {
-    if (user?.id) fetchProfile(user.id);
-    else setProfile(null);
+    const assignPremium = async () => {
+      if (!user?.id) return;
+
+      await fetchProfile(user.id);
+
+      // ---------- Automatic Premium Assignment ----------
+      const PREMIUM_USER_UUID = "34c04427-0ad2-42dc-81ec-3d3d5cac5d25"; // <--- yahan specific user UUID
+      if (user.id === PREMIUM_USER_UUID) {
+        await setUserPlan(user.id, "premium");
+      }
+    };
+
+    assignPremium();
   }, [user, fetchProfile]);
 
-  // Auto-refresh profile when window gains focus (e.g., after returning from payment)
+  // Auto-refresh profile on window focus
   useEffect(() => {
     const onFocus = () => {
       if (user?.id) fetchProfile(user.id);
@@ -225,13 +234,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         .from("profiles")
         .update({
           subscription_tier: plan,
-          storage_limit: plan === "premium" ? 1000 : 2, // Adjust limits
+          storage_limit: plan === "premium" ? 1000 : 2,
         })
         .eq("id", userId);
 
       if (error) throw error;
 
-      // Refresh profile if current user
       if (user?.id === userId) await refreshProfile();
 
       toast({
