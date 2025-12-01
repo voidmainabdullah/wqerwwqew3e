@@ -6,13 +6,13 @@ import { DownloadHeatmap } from '@/components/analytics/DownloadHeatmap';
 import { DownloadComparison } from '@/components/analytics/DownloadComparison';
 import { LiveDownloadFeed } from '@/components/analytics/LiveDownloadFeed';
 import { ExportAnalytics } from '@/components/analytics/ExportAnalytics';
-import { PremiumGuard } from './PremiumGuard';
-import { ProBadge } from '@/components/ui/ProBadge';
+//import { PremiumGuard } from './PremiumGuard';
+//import { ProBadge } from '@/components/ui/ProBadge';
 
-export const Analytics: React.FC = () => {
-  return (
-    <PremiumGuard 
-      featureName="Analytics" 
+//export const Analytics: React.FC = () => {
+  //return (
+    /*<PremiumGuard 
+      featureName="Analytics"
       description="Unlock detailed analytics and insights about your file sharing activity"
     >
       <div className="space-y-6">
@@ -25,13 +25,12 @@ export const Analytics: React.FC = () => {
             <p className="text-zinc-400">
               Track your file sharing performance and download statistics in real-time.
             </p>
-          </div>
-          <ExportAnalytics />
-        </div>
+          </div> */
+          
+      
 
-        <DownloadMetrics />
+      
 
-        <DownloadAnalyticsGraph />
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2 space-y-6">
