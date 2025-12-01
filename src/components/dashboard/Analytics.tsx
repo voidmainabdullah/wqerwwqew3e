@@ -1,15 +1,17 @@
 import React from 'react';
-import { RealTimeAnalytics } from '@/components/analytics/RealTimeAnalytics';
+import { useSubscription } from '@/hooks/useSubscription';
 import { DownloadAnalyticsGraph } from '@/components/analytics/DownloadAnalyticsGraph';
 import { DownloadMetrics } from '@/components/analytics/DownloadMetrics';
 import { DownloadHeatmap } from '@/components/analytics/DownloadHeatmap';
 import { DownloadComparison } from '@/components/analytics/DownloadComparison';
 import { LiveDownloadFeed } from '@/components/analytics/LiveDownloadFeed';
 import { ExportAnalytics } from '@/components/analytics/ExportAnalytics';
-//import { PremiumGuard } from './PremiumGuard';
-//import { ProBadge } from '@/components/ui/ProBadge';
+import { PremiumGuard } from './PremiumGuard';
+import { ProBadge } from '@/components/ui/ProBadge';
 
-//export const Analytics: React.FC = () => {
+export const Analytics: React.FC = () => {
+  const { isPro } = useSubscription();
+
   return (
     <PremiumGuard 
       featureName="Analytics" 
@@ -19,10 +21,10 @@ import { ExportAnalytics } from '@/components/analytics/ExportAnalytics';
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight text-white">Analytics</h1>
-              <ProBadge size="md" />
+              <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
+              {!isPro && <ProBadge size="md" />}
             </div>
-            <p className="text-zinc-400">
+            <p className="text-muted-foreground">
               Track your file sharing performance and download statistics in real-time.
             </p>
           </div>

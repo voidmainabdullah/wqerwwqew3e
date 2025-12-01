@@ -20,6 +20,7 @@ export const PremiumGuard: React.FC<PremiumGuardProps> = ({
   const { isPro } = useSubscription();
   const navigate = useNavigate();
 
+  // If user is Pro, render children without any guard or badge
   if (isPro) {
     return <>{children}</>;
   }

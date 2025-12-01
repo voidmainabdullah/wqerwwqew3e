@@ -4,9 +4,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, ArrowLeft } from 'phosphor-react';
 import { AnimatedBackground } from '@/components/ui/animated-background';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const SubscriptionSuccess: React.FC = () => {
   const navigate = useNavigate();
+  const { refreshProfile } = useAuth();
+
+  // Refresh profile when component mounts to get updated subscription status
+  React.useEffect(() => {
+    refreshProfile();
+  }, [refreshProfile]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">

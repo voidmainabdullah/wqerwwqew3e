@@ -7,8 +7,9 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders, status: 204 });
   }
 
   try {
@@ -32,7 +33,13 @@ serve(async (req) => {
       
       if (!userId) {
         console.error("No user_id found in webhook data");
-        return new Response("No user_id found", { status: 400 });
+        return new Response(
+          JSON.stringify({ error: "No user_id found" }), 
+          { 
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400 
+          }
+        );
       }
 
       // Calculate subscription end date (monthly or yearly)
@@ -57,7 +64,13 @@ serve(async (req) => {
 
       if (error) {
         console.error("Error updating profile:", error);
-        return new Response("Database update failed", { status: 500 });
+        return new Response(
+          JSON.stringify({ error: "Database update failed" }), 
+          { 
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 500 
+          }
+        );
       }
 
       console.log(`User ${userId} upgraded to pro successfully`);

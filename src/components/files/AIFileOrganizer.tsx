@@ -529,7 +529,7 @@ export function AIFileOrganizer({
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-indigo-400" />
             AI File Organizer
-            <ProBadge size="md" />
+            {!useSubscription().isPro && <ProBadge size="md" />}
           </DialogTitle>
           <DialogDescription>
             Smart, deterministic organization suggestions — tuned for predictability and safety.
