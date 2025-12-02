@@ -159,7 +159,7 @@ export const PublicSharePage: React.FC = () => {
           p_user_id: null, // public user
         });
 
-        if (accessCheck?.can_access !== true) {
+        if (!accessCheck?.[0]?.can_access) {
           toast({
             variant: "destructive",
             title: "Access Denied",

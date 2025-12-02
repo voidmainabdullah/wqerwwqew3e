@@ -21,7 +21,7 @@ export const SUBSCRIPTION_FEATURES: Record<SubscriptionTier, SubscriptionFeature
   free: {
     maxStorageGB: 2,
     maxFileUploadGB: 0.5, // 500MB
-    autoDeleteHours: null,
+    autoDeleteHours: 48, // 2 days
     customExpiry: false,
     downloadLimits: false,
     passwordProtection: false,
@@ -34,7 +34,7 @@ export const SUBSCRIPTION_FEATURES: Record<SubscriptionTier, SubscriptionFeature
   basic: {
     maxStorageGB: 5,
     maxFileUploadGB: 2,
-    autoDeleteHours: 24,
+    autoDeleteHours: 48, // 2 days
     customExpiry: false,
     downloadLimits: false,
     passwordProtection: false,
