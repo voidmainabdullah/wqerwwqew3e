@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
@@ -17,6 +17,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Download, Lock, Warning, FileText } from "phosphor-react";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 
+/**
+ * Types
+ */
 interface ShareData {
   id: string;
   file_id: string | null;
@@ -67,29 +70,40 @@ export const PublicSharePage: React.FC = () => {
   const [folderFiles, setFolderFiles] = useState<FolderFile[]>([]);
 
   useEffect(() => {
-    if (token) fetchShareData();
+    if (token) {
+      fetchShareData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
+  /**
+   * Fetch shared link metadata and (if folder) its files
+   */
   const fetchShareData = async () => {
+    setLoading(true);
+    setError(null);
+
     try {
       const { data, error } = await supabase
         .from("shared_links")
         .select(
           `
-          *,
-          file:files(
-            original_name,
-            file_size,
-            file_type,
-            storage_path,
-            is_locked,
-            is_public
-          ),
-          folder:folders(
-            name,
-            is_public
-          )
-        `
+            *,
+            file:files(
+              id,
+              original_name,
+              file_size,
+              file_type,
+              storage_path,
+              is_locked,
+              is_public
+            ),
+            folder:folders(
+              id,
+              name,
+              is_public
+            )
+          `
         )
         .eq("share_token", token)
         .eq("is_active", true)
@@ -101,11 +115,13 @@ export const PublicSharePage: React.FC = () => {
         return;
       }
 
+      // expiration check
       if (data.expires_at && new Date(data.expires_at) < new Date()) {
         setError("This share link has expired");
         return;
       }
 
+      // download limit check
       if (data.download_limit && data.download_count >= data.download_limit) {
         setError("Download limit exceeded");
         return;
@@ -113,6 +129,7 @@ export const PublicSharePage: React.FC = () => {
 
       setShareData(data);
 
+      // if folder -> fetch files
       if (data.folder_id) {
         const { data: filesData, error: filesError } = await supabase
           .from("files")
@@ -123,79 +140,153 @@ export const PublicSharePage: React.FC = () => {
         setFolderFiles(filesData || []);
       }
 
+      // password requirement detection
       const isLocked = data.file?.is_locked || false;
-      if (data.password_hash || isLocked) setPasswordRequired(true);
+      if (data.password_hash || isLocked) {
+        setPasswordRequired(true);
+      } else {
+        setPasswordRequired(false);
+      }
     } catch (err: any) {
-      setError(err.message || "Failed to load share link");
+      console.error("fetchShareData error:", err);
+      setError(err?.message || "Failed to load share link");
     } finally {
       setLoading(false);
     }
   };
 
+  /**
+   * Validate share password using RPC. Also re-check file access RPC if needed.
+   */
   const validatePassword = async () => {
-  if (!token || !password) return;
-
-  try {
-    // If no password is set, skip RPC
-    if (!shareData?.password_hash) {
-      setPasswordVerified(true);
-      setPasswordRequired(false);
+    if (!token) return;
+    if (!password) {
+      toast({
+        variant: "destructive",
+        title: "Password required",
+        description: "Please enter the password.",
+      });
       return;
     }
 
-    // 1️⃣ Verify the password
-    const { data, error } = await supabase.rpc("validate_share_password", {
-      token,
-      password,
-    });
-
-    if (error) throw error;
-
-    if (data === true) {
-      // 2️⃣ NEW REQUIRED CHECK — ensure file access is allowed
-      if (shareData.file_id) {
-        const { data: accessCheck } = await supabase.rpc("check_file_access", {
-          p_file_id: shareData.file_id,
-          p_user_id: null, // public user
-        });
-
-        if (!accessCheck?.[0]?.can_access) {
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: "You do not have permission to download this file.",
-          });
-          return;
-        }
+    try {
+      // If no password on shareData, allow
+      if (!shareData?.password_hash) {
+        setPasswordVerified(true);
+        setPasswordRequired(false);
+        toast({ title: "Access granted", description: "No password required" });
+        return;
       }
 
-      // 3️⃣ Mark password as verified
-      setPasswordVerified(true);
-      setPasswordRequired(false);
-
-      toast({
-        title: "Access granted",
-        description: "Password verified successfully",
+      const { data, error } = await supabase.rpc("validate_share_password", {
+        token,
+        password,
       });
-    } else {
+
+      if (error) throw error;
+
+      if (data === true) {
+        // extra file access check (RPC) to respect any other protections
+        if (shareData?.file_id) {
+          const { data: accessCheck, error: accessErr } = await supabase.rpc(
+            "check_file_access",
+            {
+              p_file_id: shareData.file_id,
+              p_user_id: null,
+            }
+          );
+          if (accessErr) throw accessErr;
+
+          if (!accessCheck?.[0]?.can_access) {
+            toast({
+              variant: "destructive",
+              title: "Access Denied",
+              description: "You do not have permission to download this file.",
+            });
+            return;
+          }
+        }
+
+        setPasswordVerified(true);
+        setPasswordRequired(false);
+        toast({ title: "Access granted", description: "Password verified" });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Invalid password",
+          description: "Please check your password and try again",
+        });
+      }
+    } catch (err: any) {
+      console.error("validatePassword error:", err);
       toast({
         variant: "destructive",
-        title: "Invalid password",
-        description: "Please check your password and try again",
+        title: "Error",
+        description: err.message || "Password validation failed",
       });
     }
-  } catch (err: any) {
-    toast({
-      variant: "destructive",
-      title: "Error",
-      description: err.message,
-    });
-  }
-};
+  };
 
+  /**
+   * Insert a download log row with only allowed columns:
+   * id (handled by DB), file_id, downloader_ip, downloader_user_agent, download_method, downloaded_at
+   *
+   * NOTE: downloaded_at column in DB expects timestamp — we send ISO string.
+   * downloader_ip is null from frontend; replace with backend/edge function if you want real IP.
+   */
+  const insertDownloadLog = async (fileId: string, method = "public_shared") => {
+    try {
+      const payload = {
+        file_id: fileId,
+        downloader_ip: null, // frontend cannot reliably obtain real client IP
+        downloader_user_agent: navigator.userAgent,
+        download_method: method,
+        downloaded_at: new Date().toISOString(),
+      };
+
+      const { data: inserted, error: insertError } = await supabase
+        .from("download_logs")
+        .insert(payload);
+
+      if (insertError) {
+        // log to console for debugging; RLS or column mismatch will appear here
+        console.error("insertDownloadLog failed:", insertError);
+        // don't throw — we want downloads to still proceed if logging fails
+        return { success: false, error: insertError };
+      }
+
+      return { success: true, inserted };
+    } catch (err: any) {
+      console.error("insertDownloadLog unexpected error:", err);
+      return { success: false, error: err };
+    }
+  };
+
+  /**
+   * Generic single-file downloader for data blobs
+   */
+  const triggerBrowserDownload = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  /**
+   * Main download function:
+   * - supports folder item downloads (fileToDownload passed)
+   * - supports single shared file (shareData.file)
+   * - logs to download_logs with only allowed fields
+   * - updates shared_links.download_count
+   */
   const downloadFile = async (fileToDownload?: FolderFile) => {
     if (!shareData) return;
 
+    // password protection
     if (shareData.password_hash && !passwordVerified) {
       toast({
         variant: "destructive",
@@ -205,6 +296,7 @@ export const PublicSharePage: React.FC = () => {
       return;
     }
 
+    // download limit guard
     if (
       shareData.download_limit &&
       shareData.download_count >= shareData.download_limit
@@ -218,66 +310,71 @@ export const PublicSharePage: React.FC = () => {
     }
 
     setDownloading(true);
+
     try {
+      let fileMeta: { id?: string; original_name: string } | null = null;
+      let storagePath = "";
+
+      // decide which file and storage path
       if (fileToDownload) {
-        const { data: fileData, error } = await supabase.storage
-          .from("files")
-          .download(fileToDownload.storage_path);
-        if (error) throw error;
-
-        const url = URL.createObjectURL(fileData);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileToDownload.original_name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        toast({
-          title: "Download started",
-          description: `Downloading ${fileToDownload.original_name}`,
-        });
+        fileMeta = { id: fileToDownload.id, original_name: fileToDownload.original_name };
+        storagePath = fileToDownload.storage_path;
       } else if (shareData.file && shareData.file_id) {
-        const { data: fileData, error } = await supabase.storage
-          .from("files")
-          .download(shareData.file.storage_path);
-        if (error) throw error;
-
-        const url = URL.createObjectURL(fileData);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = shareData.file.original_name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        await supabase.from("download_logs").insert({
-          file_id: shareData.file_id,
-          shared_link_id: shareData.id,
-          download_method: "shared_link",
-          downloader_ip: null,
-          downloader_user_agent: navigator.userAgent,
-        });
-
-        await supabase
-          .from("shared_links")
-          .update({ download_count: shareData.download_count + 1 })
-          .eq("id", shareData.id);
-
-        toast({
-          title: "Download started",
-          description: "Your file download has begun",
-        });
+        fileMeta = { id: shareData.file_id, original_name: shareData.file.original_name };
+        storagePath = shareData.file.storage_path;
       } else {
         throw new Error("No file available to download");
       }
+
+      // download binary from Supabase Storage
+      const { data: fileBlob, error: storageError } = await supabase.storage
+        .from("files")
+        .download(storagePath);
+
+      if (storageError) throw storageError;
+      if (!fileBlob) throw new Error("Downloaded file blob is empty");
+
+      // browser download
+      triggerBrowserDownload(fileBlob, fileMeta.original_name);
+
+      // attempt to insert download log (only allowed columns)
+      if (fileMeta.id) {
+        const { success, error: logErr } = await insertDownloadLog(fileMeta.id, "public_shared");
+        if (!success) {
+          // Show non-blocking warning to user & log for debug
+          console.warn("Download log insertion failed:", logErr);
+          // We avoid showing destructive toast here because we don't want normal users alarmed.
+        }
+      } else {
+        console.warn("No file id to log for download");
+      }
+
+      // increment shared link download_count (best-effort)
+      try {
+        const { error: updateError } = await supabase
+          .from("shared_links")
+          .update({ download_count: (shareData.download_count || 0) + 1 })
+          .eq("id", shareData.id);
+        if (updateError) {
+          console.error("Failed to increment shared_links.download_count:", updateError);
+        } else {
+          // optimistic local update so UI reflects new count immediately
+          setShareData({ ...shareData, download_count: (shareData.download_count || 0) + 1 });
+        }
+      } catch (uErr) {
+        console.error("update download_count unexpected error:", uErr);
+      }
+
+      toast({
+        title: "Download started",
+        description: fileMeta.original_name,
+      });
     } catch (err: any) {
+      console.error("downloadFile error:", err);
       toast({
         variant: "destructive",
         title: "Download failed",
-        description: err.message,
+        description: err?.message || "An error occurred during download",
       });
     } finally {
       setDownloading(false);
@@ -285,6 +382,7 @@ export const PublicSharePage: React.FC = () => {
   };
 
   const formatFileSize = (bytes: number) => {
+    if (!bytes && bytes !== 0) return "";
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB", "GB"];
@@ -292,6 +390,9 @@ export const PublicSharePage: React.FC = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
+  /**
+   * UI states
+   */
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -350,7 +451,7 @@ export const PublicSharePage: React.FC = () => {
             <CardDescription>
               {passwordRequired && !passwordVerified
                 ? "This content requires a password to access"
-                : "Someone has work work work"}
+                : "Someone shared a file with you"}
             </CardDescription>
           </CardHeader>
 
@@ -360,8 +461,7 @@ export const PublicSharePage: React.FC = () => {
                 <Alert>
                   <Lock className="h-4 w-4" />
                   <AlertDescription>
-                    This content is password protected. Please enter the password
-                    to continue.
+                    This content is password protected. Please enter the password to continue.
                   </AlertDescription>
                 </Alert>
 
@@ -400,8 +500,7 @@ export const PublicSharePage: React.FC = () => {
 
                   {shareData.folder && (
                     <p className="text-sm text-muted-foreground">
-                      Folder with {folderFiles.length} file
-                      {folderFiles.length !== 1 ? "s" : ""}
+                      Folder with {folderFiles.length} file{folderFiles.length !== 1 ? "s" : ""}
                     </p>
                   )}
 
@@ -422,8 +521,7 @@ export const PublicSharePage: React.FC = () => {
 
                   {shareData.download_limit && (
                     <p className="text-xs text-muted-foreground">
-                      Downloads: {shareData.download_count}/
-                      {shareData.download_limit}
+                      Downloads: {shareData.download_count}/{shareData.download_limit}
                     </p>
                   )}
                 </div>
@@ -437,9 +535,7 @@ export const PublicSharePage: React.FC = () => {
                         className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent"
                       >
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">
-                            {file.original_name}
-                          </p>
+                          <p className="text-sm font-medium truncate">{file.original_name}</p>
                           <p className="text-xs text-muted-foreground">
                             {formatFileSize(file.file_size)} • {file.file_type}
                           </p>
@@ -481,3 +577,5 @@ export const PublicSharePage: React.FC = () => {
     </div>
   );
 };
+
+
