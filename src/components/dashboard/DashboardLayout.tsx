@@ -215,24 +215,26 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const StoragePopover = () => <Popover>
      <PopoverTrigger asChild>
   <div className="flex overflow-hidden border divide-x rounded-full bg-stone-950 border-zinc-700 divide-zinc-700 hover:border-zinc-600 transition-colors duration-200">
-    {/* Left Button */}
-    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
+    {/* Left Button - Cloud Upload */}
+    <Link to="/dashboard/upload" className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
       <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" strokeLinejoin="round" strokeLinecap="round"></path>
       </svg>
-    </button>
+    </Link>
 
-    {/* Middle Button - TEAM ICON */}
-    <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
+    {/* Middle Button - Team */}
+    <Link to="/dashboard/teams" className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800">
       <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16 14c1.657 0 3 1.343 3 3v1H5v-1c0-1.657 1.343-3 3-3h8zM8.5 11a3.5 3.5 0 110-7 3.5 3.5 0 010 7zM15.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" strokeLinecap="round" strokeLinejoin="round"></path>
       </svg>
-    </button>
+    </Link>
 
-    {/* Right Button */}
+    {/* Right Button - Google Drive */}
     <button className="px-2 sm:px-3 md:px-4 py-2 flex items-center justify-center font-medium text-gray-300 transition-colors duration-200 hover:bg-zinc-800 relative">
-      <svg className="w-4 h-4 sm:w-5 sm:h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeLinejoin="round" strokeLinecap="round"></path>
+      <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.433 22l3.073-5.333h12.927L17.36 22H4.433z" fill="#3777E3"/>
+        <path d="M15.567 8.667L8.5 2h7.067l7.066 11.667h-7.066z" fill="#FFCF63"/>
+        <path d="M1.367 13.667L8.433 2l3.567 6.667-7.067 11.666-3.566-6.666z" fill="#11A861"/>
       </svg>
 
       {profile?.subscription_tier !== "pro" && storageProgress > 80 && <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-yellow-500 flex items-center justify-center animate-pulse">
