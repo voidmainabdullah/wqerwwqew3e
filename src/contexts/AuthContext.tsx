@@ -34,7 +34,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<{ error: any }>;
   refreshProfile: () => Promise<void>;
 
-  setUserPlan: (userId: string, plan: "basic" | "premium") => Promise<void>;
+  setUserPlan: (userId: string, plan: "free" | "pro") => Promise<void>;
 }
 
 // ---------------------- Context ----------------------
@@ -115,19 +115,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Fetch profile whenever user changes
   useEffect(() => {
-    const assignPremium = async () => {
-      if (!user?.id) return;
-
-      await fetchProfile(user.id);
-
-      // ---------- Automatic Premium Assignment ----------
-      const PREMIUM_USER_UUID = "34c04427-0ad2-42dc-81ec-3d3d5cac5d25"; // <--- yahan specific user UUID
-      if (user.id === PREMIUM_USER_UUID) {
-        await setUserPlan(user.id, "premium");
-      }
-    };
-
-    assignPremium();
+    if (user?.id) {
+      fetchProfile(user.id);
+    }
   }, [user, fetchProfile]);
 
   // Auto-refresh profile on window focus
@@ -228,13 +218,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // ------------------ Manual Plan Control ------------------
 
-  const setUserPlan = async (userId: string, plan: "basic" | "premium") => {
+  const setUserPlan = async (userId: string, plan: "free" | "pro") => {
     try {
       const { error } = await supabase
         .from("profiles")
         .update({
           subscription_tier: plan,
-          storage_limit: plan === "premium" ? 1000 : 2,
+          storage_limit: plan === "pro" ? null : 5368709120, // unlimited for pro, 5GB for free
         })
         .eq("id", userId);
 
