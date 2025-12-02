@@ -23,29 +23,42 @@ export const DownloadHeatmap: React.FC = () => {
 
     setLoading(true);
     try {
-      const { data: userFiles } = await supabase
+      const { data: userFiles, error: userFilesError } = await supabase
         .from('files')
         .select('id')
         .eq('user_id', user.id);
 
+      if (userFilesError) {
+        console.error('Error fetching user files:', userFilesError);
+        setHeatmap(Array.from({ length: 7 }, () => Array(24).fill({ count: 0 })));
+        setMaxCount(0);
+        return;
+      }
+
       const fileIds = userFiles?.map(f => f.id) || [];
+
       if (!fileIds.length) {
         setHeatmap(Array.from({ length: 7 }, () => Array(24).fill({ count: 0 })));
         setMaxCount(0);
-        setLoading(false);
         return;
       }
 
       const weekAgo = new Date();
       weekAgo.setDate(weekAgo.getDate() - 7);
 
-      const { data: downloads } = await supabase
+      const { data: downloads, error: downloadError } = await supabase
         .from('download_logs')
         .select('downloaded_at')
         .in('file_id', fileIds)
         .gte('downloaded_at', weekAgo.toISOString());
 
-      // Initialize heatmap
+      if (downloadError) {
+        console.error('Error fetching downloads:', downloadError);
+        setHeatmap(Array.from({ length: 7 }, () => Array(24).fill({ count: 0 })));
+        setMaxCount(0);
+        return;
+      }
+
       const tempHeatmap: HeatmapCell[][] = Array.from({ length: 7 }, () =>
         Array.from({ length: 24 }, () => ({ count: 0 }))
       );
@@ -53,8 +66,8 @@ export const DownloadHeatmap: React.FC = () => {
       let peak = 0;
 
       downloads?.forEach(d => {
-        const date = new Date(d.downloaded_at);
-        const day = date.getDay(); // 0 = Sunday
+        const date = new Date(d.downloaded_at + 'Z'); // Ensure UTC parsing
+        const day = date.getDay(); 
         const hour = date.getHours();
         tempHeatmap[day][hour].count += 1;
         if (tempHeatmap[day][hour].count > peak) peak = tempHeatmap[day][hour].count;
@@ -62,17 +75,22 @@ export const DownloadHeatmap: React.FC = () => {
 
       setHeatmap(tempHeatmap);
       setMaxCount(peak);
+
+      console.log('Heatmap updated:', tempHeatmap);
     } catch (err) {
-      console.error('Error fetching heatmap data:', err);
+      console.error('Unexpected error fetching heatmap data:', err);
+      setHeatmap(Array.from({ length: 7 }, () => Array(24).fill({ count: 0 })));
+      setMaxCount(0);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    if (!user?.id) return;
+
     fetchHeatmapData();
-    
-    // Set up real-time subscription for instant updates
+
     const channel = supabase
       .channel('download-heatmap-updates')
       .on(
@@ -82,13 +100,13 @@ export const DownloadHeatmap: React.FC = () => {
           schema: 'public',
           table: 'download_logs'
         },
-        (payload) => {
-          // Refresh data immediately when a new download is logged
+        payload => {
+          console.log('Realtime payload received:', payload);
           fetchHeatmapData();
         }
       )
       .subscribe();
-    
+
     return () => {
       supabase.removeChannel(channel);
     };
