@@ -14,7 +14,7 @@ export const SubscriptionPage: React.FC = () => {
 
   // Paddle Hosted Checkout Links (from Paddle dashboard)
   // These include passthrough parameter for user identification
-  const PADDLE_CHECKOUT_BASE = "https://buy.paddle.com/checkout/custom-checkout";
+  const PADDLE_CHECKOUT_BASE = "https://sandbox-checkout-service.paddle.com/transaction-checkout";
   
   // Replace with your actual Paddle product/price checkout links
   const paddleCheckoutLinks = {
