@@ -15,8 +15,8 @@ export const SubscriptionPage: React.FC = () => {
 
   // Supabase client (make sure env vars are set)
   const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+    process.env.SUPABASE_URL || "",
+    process.env.SUPABASE_ANON_KEY || ""
   );
 
   // ----------------------------
