@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PriceCard } from "./PriceCard";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { CheckCircle } from "phosphor-react";
+import { createClient } from "@supabase/supabase-js";
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
@@ -12,51 +13,64 @@ export const SubscriptionPage: React.FC = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Paddle Hosted Checkout Links (from Paddle dashboard)
-  // These include passthrough parameter for user identification
-  const PADDLE_CHECKOUT_BASE = "https://sandbox-checkout-service.paddle.com/transaction-checkout";
-  
-  // Replace with your actual Paddle product/price checkout links
-  const paddleCheckoutLinks = {
-    // Monthly Pro plan - replace with your actual Paddle hosted checkout link
-    monthly: "https://sandbox-pay.paddle.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez",
-    // Yearly Pro plan (if you have one)
-    yearly: "https://sandbox-pay.paddle.io/hsc_01kb6ayrhtz5kdax3h891s0k70_k6epa0rq35v905a580gwckj5mqbk72hy",
-  };
+  // Supabase client (make sure env vars are set)
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+  );
 
-  const handleSubscribe = (plan: "monthly" | "yearly") => {
+  // ----------------------------
+  // TEST UPGRADE: Directly make user Pro
+  // ----------------------------
+  const handleTestUpgrade = async () => {
     if (!user) {
       toast({
         variant: "destructive",
         title: "Login Required",
-        description: "Please log in to subscribe.",
+        description: "Please log in to test upgrade.",
       });
       return;
     }
 
     setIsLoading(true);
 
-    // Get the base checkout URL
-    let checkoutUrl = paddleCheckoutLinks[plan];
-    
-    // Add passthrough data with user_id for webhook identification
-    // Paddle accepts passthrough as a URL parameter
-    const passthrough = encodeURIComponent(JSON.stringify({
-      user_id: user.id,
-      user_email: user.email,
-    }));
-    
-    // Append passthrough to the checkout URL
-    const separator = checkoutUrl.includes('?') ? '&' : '?';
-    checkoutUrl = `${checkoutUrl}${separator}passthrough=${passthrough}`;
-    
-    // Add success and cancel URLs
-    const successUrl = encodeURIComponent(`${window.location.origin}/subscription-success`);
-    const cancelUrl = encodeURIComponent(`${window.location.origin}/subscription`);
-    checkoutUrl = `${checkoutUrl}&success_url=${successUrl}&cancel_url=${cancelUrl}`;
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          subscription_tier: "pro",
+          subscription_status: "active",
+          subscription_end_date: new Date(
+            new Date().setMonth(new Date().getMonth() + 1)
+          ).toISOString(), // 1 month test
+          storage_limit: null,
+          daily_upload_limit: null,
+        })
+        .eq("id", user.id);
 
-    // Redirect to Paddle checkout
-    window.location.href = checkoutUrl;
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Upgrade Failed",
+          description: error.message,
+        });
+      } else {
+        toast({
+          variant: "success",
+          title: "Upgraded Successfully!",
+          description: "Your account is now Pro (for testing).",
+        });
+        setTimeout(() => window.location.reload(), 500); // refresh to reflect change
+      }
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: err.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const features = {
@@ -93,12 +107,12 @@ export const SubscriptionPage: React.FC = () => {
           {/* Header */}
           <div className="text-center space-y-4">
             <h1 className="text-5xl font-heading font-bold tracking-tight">
-              {isPro ? "You're on Pro!" : "Upgrade to Pro"}
+              {isPro ? "You're on Pro!" : "Upgrade to Pro (Test)"}
             </h1>
             <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">
-              {isPro 
+              {isPro
                 ? "Thank you for being a Pro member. Enjoy all premium features!"
-                : "Unlock unlimited storage, advanced analytics, and premium features."}
+                : "Click the button below to test upgrade to Pro."}
             </p>
           </div>
 
@@ -106,11 +120,17 @@ export const SubscriptionPage: React.FC = () => {
           {isPro && (
             <div className="max-w-md mx-auto">
               <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center">
-                <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" weight="fill" />
-                <h3 className="text-xl font-semibold text-green-500 mb-2">Pro Plan Active</h3>
+                <CheckCircle
+                  className="w-12 h-12 text-green-500 mx-auto mb-3"
+                  weight="fill"
+                />
+                <h3 className="text-xl font-semibold text-green-500 mb-2">
+                  Pro Plan Active
+                </h3>
                 {subscriptionEndDate && (
                   <p className="text-sm text-muted-foreground">
-                    Your subscription renews on {subscriptionEndDate.toLocaleDateString()}
+                    Your subscription renews on{" "}
+                    {subscriptionEndDate.toLocaleDateString()}
                   </p>
                 )}
               </div>
@@ -134,21 +154,21 @@ export const SubscriptionPage: React.FC = () => {
             />
 
             <PriceCard
-              title="Pro"
-              price="$9.99"
-              period="month"
-              description="Best for power users"
+              title="Pro (Test)"
+              price="$0"
+              period="test"
+              description="Directly upgrade to Pro (testing)"
               features={features.pro}
               isPopular
               loading={isLoading}
               disabled={isPro}
-              onSubscribe={() => handleSubscribe("monthly")}
+              onSubscribe={handleTestUpgrade} // Test upgrade
             />
           </div>
 
-          {/* FAQ or Additional Info */}
+          {/* FAQ / Info */}
           <div className="max-w-2xl mx-auto text-center text-sm text-muted-foreground space-y-2">
-            <p>Secure payment powered by Paddle. Cancel anytime.</p>
+            <p>This is a test upgrade. No payment will be processed.</p>
             <p>Questions? Contact support@skie.app</p>
           </div>
         </div>
