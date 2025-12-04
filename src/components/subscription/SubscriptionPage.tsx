@@ -69,7 +69,7 @@ export const SubscriptionPage: React.FC = () => {
     ],
     pro: [
       "Unlimited storage",
-      "10GB per file",
+      "10m+++GB per file",
       "No auto-delete",
       "Custom link expiry",
       "Download limits",
