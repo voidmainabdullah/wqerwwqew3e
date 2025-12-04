@@ -1,12 +1,12 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useMemo } from 'react';
 
-export type SubscriptionTier = 'free' | 'basic' | 'pro';
+export type SubscriptionTier = 'free' | 'pro';
 
 export interface SubscriptionFeatures {
   maxStorageGB: number | null; // null = unlimited
   maxFileUploadGB: number;
-  autoDeleteHours: number | null; // null = no auto-delete
+  autoDeleteDays: number | null; // null = no auto-delete
   customExpiry: boolean;
   downloadLimits: boolean;
   passwordProtection: boolean;
@@ -19,22 +19,9 @@ export interface SubscriptionFeatures {
 
 export const SUBSCRIPTION_FEATURES: Record<SubscriptionTier, SubscriptionFeatures> = {
   free: {
-    maxStorageGB: 2,
-    maxFileUploadGB: 0.5, // 500MB
-    autoDeleteHours: 48, // 2 days
-    customExpiry: false,
-    downloadLimits: false,
-    passwordProtection: false,
-    analytics: false,
-    virusScan: false,
-    teamSharing: false,
-    aiOrganizer: false,
-    prioritySupport: false,
-  },
-  basic: {
     maxStorageGB: 5,
     maxFileUploadGB: 2,
-    autoDeleteHours: 48, // 2 days
+    autoDeleteDays: 2, // 2 days
     customExpiry: false,
     downloadLimits: false,
     passwordProtection: false,
@@ -47,7 +34,7 @@ export const SUBSCRIPTION_FEATURES: Record<SubscriptionTier, SubscriptionFeature
   pro: {
     maxStorageGB: null, // unlimited
     maxFileUploadGB: 10,
-    autoDeleteHours: null,
+    autoDeleteDays: null, // no auto-delete while subscription active
     customExpiry: true,
     downloadLimits: true,
     passwordProtection: true,
@@ -63,28 +50,46 @@ export const useSubscription = () => {
   const { profile } = useAuth();
 
   const tier: SubscriptionTier = useMemo(() => {
-    const userTier = profile?.subscription_tier as SubscriptionTier;
-    return userTier || 'free';
+    const userTier = profile?.subscription_tier;
+    // Only 'pro' is considered pro, everything else is free
+    return userTier === 'pro' ? 'pro' : 'free';
   }, [profile?.subscription_tier]);
 
   const features = useMemo(() => {
     return SUBSCRIPTION_FEATURES[tier];
   }, [tier]);
 
+  // Simple boolean flags for easy access
   const isPro = tier === 'pro';
-  const isBasic = tier === 'basic';
   const isFree = tier === 'free';
+  // isBasic is an alias for isFree (for backward compatibility)
+  const isBasic = isFree;
 
   const canAccess = (featureName: keyof SubscriptionFeatures): boolean => {
-    return features[featureName] === true;
+    const value = features[featureName];
+    // For boolean features, return the value directly
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    // For numeric features (like storage), return true if they have any allocation
+    return value !== null && value > 0;
   };
+
+  // Get subscription dates from profile (cast to any to access properties)
+  const profileAny = profile as any;
+  const subscriptionStatus = profileAny?.subscription_status || 'active';
+  const subscriptionEndDate = profileAny?.subscription_end_date 
+    ? new Date(profileAny.subscription_end_date) 
+    : null;
 
   return {
     tier,
     features,
     isPro,
-    isBasic,
     isFree,
+    isBasic, // Alias for isFree
     canAccess,
+    subscriptionStatus,
+    subscriptionEndDate,
   };
 };
