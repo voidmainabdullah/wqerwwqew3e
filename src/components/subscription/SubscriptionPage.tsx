@@ -19,9 +19,9 @@ export const SubscriptionPage: React.FC = () => {
   // Replace with your actual Paddle product/price checkout links
   const paddleCheckoutLinks = {
     // Monthly Pro plan - replace with your actual Paddle hosted checkout link
-    monthly: "https://buy.paddle.com/product/your-product-id",
+    monthly: "https://sandbox-pay.paddle.io/hsc_01kb6ayrhtz5kdax3h891s0k70_k6epa0rq35v905a580gwckj5mqbk72hy",
     // Yearly Pro plan (if you have one)
-    yearly: "https://buy.paddle.com/product/your-yearly-product-id",
+    yearly: "https://sandbox-pay.paddle.io/hsc_01kb6ayrhtz5kdax3h891s0k70_k6epa0rq35v905a580gwckj5mqbk72hy",
   };
 
   const handleSubscribe = (plan: "monthly" | "yearly") => {
