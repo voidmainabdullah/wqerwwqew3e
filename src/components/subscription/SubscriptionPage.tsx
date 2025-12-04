@@ -4,7 +4,6 @@ import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
 import { PriceCard } from "./PriceCard";
 import { AnimatedBackground } from "@/components/ui/animated-background";
-import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle } from "phosphor-react";
 
 export const SubscriptionPage: React.FC = () => {
@@ -13,7 +12,19 @@ export const SubscriptionPage: React.FC = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubscribe = async (plan: "monthly" | "yearly") => {
+  // Paddle Hosted Checkout Links (from Paddle dashboard)
+  // These include passthrough parameter for user identification
+  const PADDLE_CHECKOUT_BASE = "https://buy.paddle.com/checkout/custom-checkout";
+  
+  // Replace with your actual Paddle product/price checkout links
+  const paddleCheckoutLinks = {
+    // Monthly Pro plan - replace with your actual Paddle hosted checkout link
+    monthly: "https://buy.paddle.com/product/your-product-id",
+    // Yearly Pro plan (if you have one)
+    yearly: "https://buy.paddle.com/product/your-yearly-product-id",
+  };
+
+  const handleSubscribe = (plan: "monthly" | "yearly") => {
     if (!user) {
       toast({
         variant: "destructive",
@@ -23,34 +34,29 @@ export const SubscriptionPage: React.FC = () => {
       return;
     }
 
-    try {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      // Call edge function to create Paddle checkout
-      const { data, error } = await supabase.functions.invoke("create-paddle-checkout", {
-        body: { plan },
-      });
+    // Get the base checkout URL
+    let checkoutUrl = paddleCheckoutLinks[plan];
+    
+    // Add passthrough data with user_id for webhook identification
+    // Paddle accepts passthrough as a URL parameter
+    const passthrough = encodeURIComponent(JSON.stringify({
+      user_id: user.id,
+      user_email: user.email,
+    }));
+    
+    // Append passthrough to the checkout URL
+    const separator = checkoutUrl.includes('?') ? '&' : '?';
+    checkoutUrl = `${checkoutUrl}${separator}passthrough=${passthrough}`;
+    
+    // Add success and cancel URLs
+    const successUrl = encodeURIComponent(`${window.location.origin}/subscription-success`);
+    const cancelUrl = encodeURIComponent(`${window.location.origin}/subscription`);
+    checkoutUrl = `${checkoutUrl}&success_url=${successUrl}&cancel_url=${cancelUrl}`;
 
-      if (error) {
-        throw new Error(error.message || "Failed to create checkout");
-      }
-
-      if (data?.checkoutUrl) {
-        // Redirect to Paddle checkout
-        window.location.href = data.checkoutUrl;
-      } else {
-        throw new Error("No checkout URL received");
-      }
-    } catch (err: any) {
-      console.error("Subscription error:", err);
-      toast({
-        variant: "destructive",
-        title: "Subscription Error",
-        description: err.message || "Failed to start checkout",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Redirect to Paddle checkout
+    window.location.href = checkoutUrl;
   };
 
   const features = {
