@@ -19,34 +19,88 @@ serve(async (req) => {
     );
 
     const body = await req.json();
-    console.log("Paddle webhook received:", body);
+    console.log("Paddle webhook received:", JSON.stringify(body, null, 2));
 
-    // Handle subscription events
-    if (body.event_type === "subscription.activated" || 
-        body.event_type === "subscription.updated" ||
-        body.event_type === "transaction.completed") {
-      
-      const customData = body.data?.custom_data;
-      const userId = customData?.user_id;
-      const paddleCustomerId = body.data?.customer_id;
-      const paddleSubscriptionId = body.data?.subscription_id || body.data?.id;
-      
+    // Paddle sends different event formats
+    // For hosted checkout, look for alert_name or event_type
+    const eventType = body.alert_name || body.event_type;
+    console.log("Event type:", eventType);
+
+    // Parse passthrough data (contains user_id)
+    let userId: string | null = null;
+    let userEmail: string | null = null;
+
+    // Try to get user info from passthrough (hosted checkout)
+    if (body.passthrough) {
+      try {
+        const passthrough = typeof body.passthrough === 'string' 
+          ? JSON.parse(body.passthrough) 
+          : body.passthrough;
+        userId = passthrough.user_id;
+        userEmail = passthrough.user_email;
+        console.log("Parsed passthrough - userId:", userId, "email:", userEmail);
+      } catch (e) {
+        console.error("Failed to parse passthrough:", e);
+      }
+    }
+
+    // Also check custom_data (API checkout)
+    if (!userId && body.data?.custom_data) {
+      userId = body.data.custom_data.user_id;
+      userEmail = body.data.custom_data.user_email;
+      console.log("Got userId from custom_data:", userId);
+    }
+
+    // Handle subscription/payment success events
+    const successEvents = [
+      // Hosted checkout events
+      "subscription_created",
+      "subscription_updated", 
+      "subscription_payment_succeeded",
+      "payment_succeeded",
+      // API events
+      "subscription.activated",
+      "subscription.updated",
+      "transaction.completed"
+    ];
+
+    if (successEvents.includes(eventType)) {
       if (!userId) {
         console.error("No user_id found in webhook data");
-        return new Response(
-          JSON.stringify({ error: "No user_id found" }), 
-          { 
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-            status: 400 
+        // Try to find user by email as fallback
+        if (userEmail || body.email) {
+          const email = userEmail || body.email;
+          const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('id')
+            .eq('email', email)
+            .single();
+          
+          if (profile) {
+            userId = profile.id;
+            console.log("Found userId by email:", userId);
           }
+        }
+      }
+
+      if (!userId) {
+        console.error("Could not identify user for upgrade");
+        return new Response(
+          JSON.stringify({ error: "Could not identify user" }), 
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
         );
       }
 
-      // Calculate subscription end date (monthly or yearly)
+      // Calculate subscription end date
       const now = new Date();
-      const isYearly = body.data?.billing_cycle?.interval === "year";
+      const billingInterval = body.billing_cycle?.interval || body.data?.billing_cycle?.interval;
+      const isYearly = billingInterval === "year";
       const subscriptionEndDate = new Date(now);
       subscriptionEndDate.setMonth(now.getMonth() + (isYearly ? 12 : 1));
+
+      // Get Paddle IDs
+      const paddleCustomerId = body.user_id || body.customer_id || body.data?.customer_id;
+      const paddleSubscriptionId = body.subscription_id || body.data?.subscription_id || body.data?.id;
 
       // Update user profile to pro
       const { error } = await supabaseClient
@@ -65,61 +119,53 @@ serve(async (req) => {
       if (error) {
         console.error("Error updating profile:", error);
         return new Response(
-          JSON.stringify({ error: "Database update failed" }), 
-          { 
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-            status: 500 
-          }
+          JSON.stringify({ error: "Database update failed", details: error.message }), 
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
         );
       }
 
-      console.log(`User ${userId} upgraded to pro successfully`);
+      console.log(`User ${userId} upgraded to pro successfully!`);
     }
 
-    // Handle subscription cancellation
-    if (body.event_type === "subscription.canceled" || 
-        body.event_type === "subscription.paused") {
-      
-      const customData = body.data?.custom_data;
-      const userId = customData?.user_id;
-      
+    // Handle subscription cancellation events
+    const cancelEvents = [
+      "subscription_cancelled",
+      "subscription_canceled", 
+      "subscription_paused",
+      "subscription.canceled",
+      "subscription.paused"
+    ];
+
+    if (cancelEvents.includes(eventType)) {
       if (userId) {
         const { error } = await supabaseClient
           .from('profiles')
           .update({
             subscription_tier: 'free',
             subscription_status: 'canceled',
-            storage_limit: 2147483648, // Back to 2GB limit for free
-            daily_upload_limit: 999999999, // Reset to high limit
-            paddle_customer_id: null,
-            paddle_subscription_id: null
+            storage_limit: 5368709120, // Back to 5GB limit for free
+            daily_upload_limit: 999999999,
           })
           .eq('id', userId);
 
         if (error) {
           console.error("Error downgrading profile:", error);
         } else {
-          console.log(`User ${userId} downgraded to free successfully`);
+          console.log(`User ${userId} downgraded to free`);
         }
       }
     }
 
     return new Response(
-      JSON.stringify({ success: true }),
-      { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200 
-      }
+      JSON.stringify({ success: true, event: eventType }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
     );
 
   } catch (error: any) {
     console.error("Webhook error:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500 
-      }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
     );
   }
 });
