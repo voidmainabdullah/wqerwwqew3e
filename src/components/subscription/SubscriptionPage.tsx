@@ -1,42 +1,24 @@
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
 import { PriceCard } from "./PriceCard";
 import { AnimatedBackground } from "@/components/ui/animated-background";
+import { supabase } from "@/integrations/supabase/client";
+import { CheckCircle } from "phosphor-react";
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
+  const { isPro, subscriptionEndDate } = useSubscription();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-
-  /**
-   * Hosted Paddle Checkout Links
-   * ⚠️ These must be generated from Paddle dashboard.
-   * Go to:
-   * Products → Prices → Select Price → "Create Hosted Checkout Link"
-   */
-  const paddleLinks: Record<string, string> = {
-    monthly:
-      "https://sandbox-pay.paddle.io/hsc_01kb6ayrhtz5kdax3h891s0k70_k6epa0rq35v905a580gwckj5mqbk72hy",
-
-    // ⚠️ YEARLY LINK MUST BE GENERATED FROM PADDLE (not auto)
-    yearly: "", // ← paste your generated yearly checkout link here
-  };
 
   const handleSubscribe = async (plan: "monthly" | "yearly") => {
     if (!user) {
       toast({
         variant: "destructive",
         title: "Login Required",
-        description: (
-          <>
-            Please{" "}
-            <a href="/auth" className="text-blue-500 underline">
-              log in
-            </a>{" "}
-            to continue.
-          </>
-        ),
+        description: "Please log in to subscribe.",
       });
       return;
     }
@@ -44,24 +26,27 @@ export const SubscriptionPage: React.FC = () => {
     try {
       setIsLoading(true);
 
-      const checkoutUrl = paddleLinks[plan];
-      if (!checkoutUrl) {
-        throw new Error(
-          `Hosted checkout link not configured for the "${plan}" plan.`
-        );
+      // Call edge function to create Paddle checkout
+      const { data, error } = await supabase.functions.invoke("create-paddle-checkout", {
+        body: { plan },
+      });
+
+      if (error) {
+        throw new Error(error.message || "Failed to create checkout");
       }
 
-      window.open(checkoutUrl, "_blank");
-
-      toast({
-        title: "Checkout Opened",
-        description: "Complete your subscription in the new tab.",
-      });
+      if (data?.checkoutUrl) {
+        // Redirect to Paddle checkout
+        window.location.href = data.checkoutUrl;
+      } else {
+        throw new Error("No checkout URL received");
+      }
     } catch (err: any) {
+      console.error("Subscription error:", err);
       toast({
         variant: "destructive",
         title: "Subscription Error",
-        description: err.message,
+        description: err.message || "Failed to start checkout",
       });
     } finally {
       setIsLoading(false);
@@ -70,17 +55,11 @@ export const SubscriptionPage: React.FC = () => {
 
   const features = {
     free: [
-      "2GB storage",
-      "500MB per file",
-      "Basic file sharing",
-      "Community support",
-    ],
-    basic: [
       "5GB storage",
       "2GB per file",
-      "Auto-delete after 24h",
-      "3-day link expiry",
-      "Email support",
+      "Auto-delete after 2 days",
+      "Basic file sharing",
+      "Community support",
     ],
     pro: [
       "Unlimited storage",
@@ -108,15 +87,32 @@ export const SubscriptionPage: React.FC = () => {
           {/* Header */}
           <div className="text-center space-y-4">
             <h1 className="text-5xl font-heading font-bold tracking-tight">
-              Take Control of Your Files
+              {isPro ? "You're on Pro!" : "Upgrade to Pro"}
             </h1>
             <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">
-              Choose the plan that fits your workflow.
+              {isPro 
+                ? "Thank you for being a Pro member. Enjoy all premium features!"
+                : "Unlock unlimited storage, advanced analytics, and premium features."}
             </p>
           </div>
 
+          {/* Current Plan Status (if Pro) */}
+          {isPro && (
+            <div className="max-w-md mx-auto">
+              <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center">
+                <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" weight="fill" />
+                <h3 className="text-xl font-semibold text-green-500 mb-2">Pro Plan Active</h3>
+                {subscriptionEndDate && (
+                  <p className="text-sm text-muted-foreground">
+                    Your subscription renews on {subscriptionEndDate.toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Pricing Grid */}
-          <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
+          <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
             <PriceCard
               title="Free"
               price="$0"
@@ -132,21 +128,6 @@ export const SubscriptionPage: React.FC = () => {
             />
 
             <PriceCard
-              title="Basic"
-              price="$0"
-              period="forever"
-              description="Basic usage with limitations"
-              features={features.basic}
-              onSubscribe={() =>
-                toast({
-                  title: "Basic Plan",
-                  description:
-                    "Basic plan features are active with auto-delete enabled.",
-                })
-              }
-            />
-
-            <PriceCard
               title="Pro"
               price="$9.99"
               period="month"
@@ -154,8 +135,15 @@ export const SubscriptionPage: React.FC = () => {
               features={features.pro}
               isPopular
               loading={isLoading}
+              disabled={isPro}
               onSubscribe={() => handleSubscribe("monthly")}
             />
+          </div>
+
+          {/* FAQ or Additional Info */}
+          <div className="max-w-2xl mx-auto text-center text-sm text-muted-foreground space-y-2">
+            <p>Secure payment powered by Paddle. Cancel anytime.</p>
+            <p>Questions? Contact support@skie.app</p>
           </div>
         </div>
       </div>
