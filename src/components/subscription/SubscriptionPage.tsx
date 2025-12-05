@@ -2,9 +2,80 @@ import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
-import { PriceCard } from "./PriceCard";
-import { AnimatedBackground } from "@/components/ui/animated-background";
 import { CheckCircle } from "phosphor-react";
+
+interface PriceCardProps {
+  title: string;
+  price: string;
+  period: string;
+  description: string;
+  features: string[];
+  isPopular?: boolean;
+  isCurrent?: boolean;
+  onSubscribe?: () => void;
+}
+
+const PriceCard: React.FC<PriceCardProps> = ({
+  title,
+  price,
+  period,
+  description,
+  features,
+  isPopular,
+  isCurrent,
+  onSubscribe,
+}) => {
+  return (
+    <div
+      className={`relative flex flex-col rounded-2xl p-6 border transition-all ${
+        isPopular
+          ? "bg-gradient-to-br from-purple-600 via-indigo-600 to-cyan-500 text-white shadow-xl border-transparent"
+          : "bg-gray-800 border-gray-700 text-gray-100 hover:bg-gray-700"
+      }`}
+    >
+      {isPopular && (
+        <span className="absolute top-4 right-4 bg-white text-gray-900 text-xs px-2 py-1 rounded-full font-semibold">
+          NEW
+        </span>
+      )}
+
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <p className="text-3xl font-bold mb-1">
+        Rs {price} <span className="text-base font-normal">/{period}</span>
+      </p>
+      <p className="text-gray-300 mb-4">{description}</p>
+
+      <ul className="flex-1 space-y-2 mb-6">
+        {features.map((feat, idx) => (
+          <li key={idx} className="flex items-center space-x-2 text-sm">
+            <span className="text-cyan-400">★</span>
+            <span>{feat}</span>
+          </li>
+        ))}
+      </ul>
+
+      {isCurrent ? (
+        <button
+          className="w-full py-2 mt-auto rounded-lg bg-gray-700 cursor-not-allowed text-gray-400"
+          disabled
+        >
+          Your current plan
+        </button>
+      ) : (
+        <button
+          onClick={onSubscribe}
+          className={`w-full py-2 mt-auto rounded-lg font-semibold transition-colors ${
+            isPopular
+              ? "bg-white text-purple-700 hover:brightness-95"
+              : "bg-cyan-500 text-gray-900 hover:brightness-105"
+          }`}
+        >
+          {isPopular ? `Upgrade to ${title}` : `Get ${title}`}
+        </button>
+      )}
+    </div>
+  );
+};
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
@@ -15,7 +86,7 @@ export const SubscriptionPage: React.FC = () => {
   const PADDLE_CHECKOUT_URL =
     "https://sandbox-pay.paddle.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez";
 
-  const handleSubscribe = () => {
+  const handleSubscribe = (plan: string) => {
     if (!user) {
       toast({
         variant: "destructive",
@@ -41,88 +112,80 @@ export const SubscriptionPage: React.FC = () => {
   };
 
   const features = {
-    free: ["5GB storage", "2GB per file", "Auto-delete after 2 days", "Basic file sharing", "Community support"],
-    pro: ["Unlimited storage", "10m+++GB per file", "No auto-delete", "Custom link expiry", "Download limits", "Analytics dashboard", "Password protection", "Virus scan", "Team sharing", "AI file organizer", "Priority support"],
+    free: [
+      "Get simple explanations",
+      "Have short chats for common questions",
+      "Try out image generation",
+      "Save limited memory and context",
+    ],
+    go: [
+      "Go deep on harder questions",
+      "Chat longer and upload more content",
+      "Make realistic images for your projects",
+      "Store more context for smarter replies",
+      "Get help with planning and tasks",
+    ],
+    plus: [
+      "Solve complex problems",
+      "Have long chats over multiple sessions",
+      "Create more images, faster",
+      "Remember goals and past conversations",
+      "Plan travel and tasks with agent mode",
+    ],
+    pro: [
+      "Master advanced tasks and topics",
+      "Tackle big projects with unlimited messages",
+      "Create high-quality images at any scale",
+      "Keep full context with maximum memory",
+      "Run research and plan tasks with agents",
+    ],
   };
 
   return (
-    <div className="relative min-h-screen bg-gray-900 text-white">
-      {/* Background animation */}
-      <div className="fixed inset-0 z-0">
-        <AnimatedBackground />
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center py-12 px-4">
+      <h1 className="text-4xl font-bold text-white mb-6">Upgrade your plan</h1>
+
+      {/* Plan toggle (optional) */}
+      <div className="mb-12 flex space-x-4">
+        <button className="px-4 py-2 rounded-full bg-gray-800 text-white">Personal</button>
+        <button className="px-4 py-2 rounded-full bg-gray-700 text-gray-300">Business</button>
       </div>
 
-      <div className="relative z-10 bg-gray-900/80 backdrop-blur-md min-h-screen">
-        <div className="container mx-auto px-4 py-12 space-y-16">
-          {/* Header */}
-          <div className="text-center space-y-4">
-            <h1 className="text-5xl font-bold tracking-tight text-white">
-              {isPro ? "You're on Pro!" : "Upgrade to Pro"}
-            </h1>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-              {isPro
-                ? "Thank you for being a Pro member. Enjoy all premium features!"
-                : "Unlock unlimited storage, advanced analytics, and premium features."}
-            </p>
-          </div>
-
-          {/* Pro Status */}
-          {isPro && (
-            <div className="max-w-md mx-auto">
-              <div className="bg-green-600/10 border border-green-500/30 rounded-xl p-6 text-center backdrop-blur-sm">
-                <CheckCircle
-                  className="w-12 h-12 text-green-400 mx-auto mb-3"
-                  weight="fill"
-                />
-                <h3 className="text-xl font-semibold text-green-400 mb-2">
-                  Pro Plan Active
-                </h3>
-                {subscriptionEndDate && (
-                  <p className="text-sm text-gray-300">
-                    Your subscription renews on {subscriptionEndDate.toLocaleDateString()}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Pricing Grid */}
-          <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
-            <PriceCard
-              title="Free"
-              price="$0"
-              period="forever"
-              description="Perfect for getting started"
-              features={features.free}
-              onSubscribe={() =>
-                toast({
-                  title: "Free Plan",
-                  description: "You are already using the free plan.",
-                })
-              }
-              className="bg-gray-800 hover:bg-gray-700 shadow-lg shadow-black/20 border border-gray-700"
-            />
-
-            <PriceCard
-              title="Pro"
-              price="$9.99"
-              period="month"
-              description="Unlock all premium features"
-              features={features.pro}
-              isPopular
-              loading={isLoading}
-              disabled={isPro}
-              onSubscribe={handleSubscribe}
-              className="bg-gradient-to-br from-indigo-600 via-cyan-500 to-teal-400 text-white shadow-xl border border-transparent hover:brightness-110"
-            />
-          </div>
-
-          {/* Bottom Notes */}
-          <div className="max-w-2xl mx-auto text-center text-sm text-gray-400 space-y-2">
-            <p>Secure payments powered by Paddle. Cancel anytime.</p>
-            <p>Questions? Contact <a href="mailto:support@skie.app" className="text-cyan-400 underline">support@skie.app</a></p>
-          </div>
-        </div>
+      {/* Pricing grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl w-full">
+        <PriceCard
+          title="Free"
+          price="0"
+          period="month"
+          description="See what AI can do"
+          features={features.free}
+          isCurrent
+        />
+        <PriceCard
+          title="Go"
+          price="1,400"
+          period="month"
+          description="Do more with smarter AI"
+          features={features.go}
+          isPopular
+          onSubscribe={() => handleSubscribe("Go")}
+        />
+        <PriceCard
+          title="Plus"
+          price="5,700"
+          period="month"
+          description="Unlock the full experience"
+          features={features.plus}
+          onSubscribe={() => handleSubscribe("Plus")}
+        />
+        <PriceCard
+          title="Pro"
+          price="49,900"
+          period="month"
+          description="Maximize your productivity"
+          features={features.pro}
+          onSubscribe={() => handleSubscribe("Pro")}
+        />
       </div>
     </div>
   );
