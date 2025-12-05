@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarRail, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, useSidebar, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { House, Upload, Files, ShareNetwork, ChartBar, Gear, SignOut, Users, PaperPlaneTilt, Code, CurrencyCircleDollar, Lifebuoy, Info, Bell, Headset, HardDrive, ClockCounterClockwise, HardDrives, Question, UserGear, ChatCircle, Crown, Share, DiamondsFour } from 'phosphor-react';
@@ -22,6 +22,7 @@ interface UserProfile {
   storage_used: number;
   storage_limit: number;
   subscription_tier: string;
+  avatar_url: string | null;
 }
 const navigation = [
   {
@@ -196,9 +197,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   }, [user]);
   const fetchProfile = async () => {
     try {
-      const {
+const {
         data
-      } = await supabase.from('profiles').select('storage_used, storage_limit, subscription_tier').eq('id', user?.id).single();
+      } = await supabase.from('profiles').select('storage_used, storage_limit, subscription_tier, avatar_url').eq('id', user?.id).single();
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -419,7 +420,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 via-indigo-600 to-blue-500 hover:bg-accent hover:ring-2 hover:ring-primary/20 transition-all duration-200">
                       <Avatar className="h-7 w-7 sm:h-9 sm:w-9 ">
-                        <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-white   font-semibold text-xs sm:text-sm">
+                        <AvatarImage 
+                          src={user.user_metadata?.avatar_url || user.user_metadata?.picture || profile?.avatar_url || undefined} 
+                          alt={user.user_metadata?.display_name || user.email || 'User'}
+                        />
+                        <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-white font-semibold text-xs sm:text-sm">
                           {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -432,7 +437,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <DropdownMenuLabel className="font-normal pb-3">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-12 w-12 border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-500 to-pink-500">
-                          <AvatarFallback className="bg-gradient-to-br bg-gradient-to-br from-black to-black/70  text-lg text-white font-extrabold">
+                          <AvatarImage 
+                            src={user.user_metadata?.avatar_url || user.user_metadata?.picture || profile?.avatar_url || undefined} 
+                            alt={user.user_metadata?.display_name || user.email || 'User'}
+                          />
+                          <AvatarFallback className="bg-gradient-to-br from-black to-black/70 text-lg text-white font-extrabold">
                             {(user.user_metadata?.display_name || user.email || 'U').charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
