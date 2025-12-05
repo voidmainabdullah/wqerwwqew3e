@@ -14,7 +14,7 @@ export const SubscriptionPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Paddle hosted checkout URL (replace with your actual Paddle checkout link)
-  const PADDLE_CHECKOUT_URL = "https://checkout.paddle.com/checkout/custom/"; // Update with your checkout link
+  const PADDLE_CHECKOUT_URL = "https://sandbox-pay.paddle.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez"; // Update with your checkout link
   
   const handleSubscribe = () => {
     if (!user) {
