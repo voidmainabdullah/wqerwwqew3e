@@ -56,7 +56,6 @@ export const SubscriptionPage: React.FC = () => {
         });
       } else {
         toast({
-          variant: "success",
           title: "Upgraded Successfully!",
           description: "Your account is now Pro (for testing).",
         });
