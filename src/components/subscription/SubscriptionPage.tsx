@@ -6,16 +6,16 @@ import { PriceCard } from "./PriceCard";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { CheckCircle } from "phosphor-react";
 
-
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
   const { isPro, subscriptionEndDate } = useSubscription();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Paddle hosted checkout URL (replace with your actual Paddle checkout link)
-  const PADDLE_CHECKOUT_URL = "https://sandbox-pay.paddle.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez"; // Update with your checkout link
-  
+  // 🔥 Your LIVE Hosted Paddle Checkout URL (replace with LIVE link, NOT sandbox)
+  const PADDLE_CHECKOUT_URL =
+    "https://your-live-checkout-link-from-paddle.com"; // <- replace this
+
   const handleSubscribe = () => {
     if (!user) {
       toast({
@@ -28,20 +28,22 @@ export const SubscriptionPage: React.FC = () => {
 
     setIsLoading(true);
 
-    // Build passthrough data for webhook identification
+    // 🔥 Passthrough sent to webhook
     const passthrough = JSON.stringify({
       user_id: user.id,
       email: user.email,
     });
 
-    // Construct Paddle checkout URL with parameters
-    // Note: Replace PADDLE_CHECKOUT_URL with your actual Paddle hosted checkout link
+    // Build final Paddle checkout URL
     const checkoutUrl = new URL(PADDLE_CHECKOUT_URL);
     checkoutUrl.searchParams.set("passthrough", passthrough);
     checkoutUrl.searchParams.set("email", user.email || "");
-    checkoutUrl.searchParams.set("success_url", `${window.location.origin}/subscription/success`);
-    
-    // Redirect to Paddle checkout
+    checkoutUrl.searchParams.set(
+      "success_url",
+      `${window.location.origin}/subscription/success`
+    );
+
+    // Redirect user to Paddle
     window.location.href = checkoutUrl.toString();
   };
 
@@ -88,7 +90,7 @@ export const SubscriptionPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Current Plan Status (if Pro) */}
+          {/* Pro Status */}
           {isPro && (
             <div className="max-w-md mx-auto">
               <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center">
@@ -111,6 +113,7 @@ export const SubscriptionPage: React.FC = () => {
 
           {/* Pricing Grid */}
           <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+            {/* Free Card */}
             <PriceCard
               title="Free"
               price="$0"
@@ -125,6 +128,7 @@ export const SubscriptionPage: React.FC = () => {
               }
             />
 
+            {/* PRO Card */}
             <PriceCard
               title="Pro"
               price="$9.99"
@@ -138,7 +142,7 @@ export const SubscriptionPage: React.FC = () => {
             />
           </div>
 
-          {/* FAQ / Info */}
+          {/* Bottom Notes */}
           <div className="max-w-2xl mx-auto text-center text-sm text-muted-foreground space-y-2">
             <p>Secure payments powered by Paddle. Cancel anytime.</p>
             <p>Questions? Contact support@skie.app</p>
