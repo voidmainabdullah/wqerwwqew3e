@@ -5,19 +5,13 @@ import { useToast } from "@/hooks/use-toast";
 import { PriceCard } from "./PriceCard";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { CheckCircle } from "phosphor-react";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
   const { isPro, subscriptionEndDate } = useSubscription();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-
-  // Supabase client (make sure env vars are set)
-  const supabase = createClient(
-    process.env.SUPABASE_URL || "",
-    process.env.SUPABASE_ANON_KEY || ""
-  );
 
   // ----------------------------
   // TEST UPGRADE: Directly make user Pro
