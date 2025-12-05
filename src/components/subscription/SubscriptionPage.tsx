@@ -14,7 +14,7 @@ export const SubscriptionPage: React.FC = () => {
 
   // 🔥 Your LIVE Hosted Paddle Checkout URL (replace with LIVE link, NOT sandbox)
   const PADDLE_CHECKOUT_URL =
-    "https://preview--secure-share-stream-68.lovable.app/auth"; // <- replace this
+    "https://sandbox-pay.paddle.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez"; // <- replace this
 
   const handleSubscribe = () => {
     if (!user) {
