@@ -533,7 +533,8 @@ const {
               {/* Linear gradient from blue to pink */}
               <div className="absolute inset-0 bg-gradient-to-r from-white via-stone-950 to-stone-950 opacity-40" />
               {/* Radial blend for softer effect */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_center,rgba(236,72,153,0.35)_0%,rgba(147,51,234,0.25)_30%,transparent_70%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_center,rgba(236,72,153,0.2)_0%,rgba(147,51,234,0.15)_30%,rgba(173,216,230,0.1)_50%,rgba(255,255,255,0.05)_70%,transparent_90%)]" />
+
               {/* Fade to black at top for smooth transition */}
               <div className="absolute inset-0 bg-gradient-to-t from-transparent via-stone-950/50 to-stone-950" />
             </div>
