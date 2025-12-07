@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Download, Clock, MapPin, Activity } from 'lucide-react';
+import { Download, Clock, Activity } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 
 interface DownloadEvent {
@@ -13,7 +13,6 @@ interface DownloadEvent {
   file_name: string;
   downloaded_at: string;
   download_method: string;
-  downloader_ip?: string;
   isNew?: boolean;
 }
 
@@ -21,12 +20,12 @@ export const LiveDownloadFeed: React.FC = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState<DownloadEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [liveCount, setLiveCount] = useState(0);
 
   const fetchRecentDownloads = async () => {
     if (!user?.id) return;
 
     try {
+      // Get user's files first
       const { data: userFiles } = await supabase
         .from('files')
         .select('id, original_name')
@@ -40,25 +39,29 @@ export const LiveDownloadFeed: React.FC = () => {
         return;
       }
 
-      // Fetch shared links with recent activity (updated timestamps indicate downloads)
-      const { data: recentShares } = await supabase
-        .from('shared_links')
-        .select('id, file_id, created_at, download_count, link_type')
+      // Fetch REAL download logs from download_logs table
+      const { data: downloadLogs, error } = await supabase
+        .from('download_logs')
+        .select('id, file_id, downloaded_at, download_method')
         .in('file_id', fileIds)
-        .order('created_at', { ascending: false })
+        .order('downloaded_at', { ascending: false })
         .limit(20);
 
+      if (error) {
+        console.error('Error fetching download logs:', error);
+        setLoading(false);
+        return;
+      }
+
       const formattedEvents: DownloadEvent[] =
-        recentShares?.map((share) => ({
-          id: share.id,
-          file_name: fileMap.get(share.file_id!) || 'Unknown',
-          downloaded_at: share.created_at,
-          download_method: share.link_type || 'link',
-          downloader_ip: undefined, // Shared links don't track IPs for privacy
+        downloadLogs?.map((log) => ({
+          id: log.id,
+          file_name: fileMap.get(log.file_id) || 'Unknown',
+          downloaded_at: log.downloaded_at,
+          download_method: log.download_method || 'direct',
         })) || [];
 
       setEvents(formattedEvents);
-      setLiveCount(formattedEvents.length);
     } catch (error) {
       console.error('Error fetching download events:', error);
     } finally {
@@ -69,46 +72,43 @@ export const LiveDownloadFeed: React.FC = () => {
   useEffect(() => {
     fetchRecentDownloads();
 
+    // Subscribe to real download_logs inserts
     const channel = supabase
-      .channel('shared-link-activity')
+      .channel('live-download-feed')
       .on(
         'postgres_changes',
         {
-          event: 'UPDATE',
+          event: 'INSERT',
           schema: 'public',
-          table: 'shared_links',
+          table: 'download_logs',
         },
         async (payload) => {
-          const updatedLink = payload.new as any;
+          const newLog = payload.new as any;
 
-          // Check if download_count increased (indicating a new download)
-          const oldLink = payload.old as any;
-          if (updatedLink.download_count > oldLink.download_count) {
-            const { data: file } = await supabase
-              .from('files')
-              .select('original_name, user_id')
-              .eq('id', updatedLink.file_id)
-              .single();
+          // Check if this download is for one of the user's files
+          const { data: file } = await supabase
+            .from('files')
+            .select('original_name, user_id')
+            .eq('id', newLog.file_id)
+            .maybeSingle();
 
-            if (file && file.user_id === user?.id) {
-              const newEvent: DownloadEvent = {
-                id: updatedLink.id,
-                file_name: file.original_name,
-                downloaded_at: new Date().toISOString(),
-                download_method: updatedLink.link_type || 'link',
-                downloader_ip: undefined,
-                isNew: true,
-              };
+          if (file && file.user_id === user?.id) {
+            const newEvent: DownloadEvent = {
+              id: newLog.id,
+              file_name: file.original_name,
+              downloaded_at: newLog.downloaded_at,
+              download_method: newLog.download_method || 'direct',
+              isNew: true,
+            };
 
-              setEvents((prev) => [newEvent, ...prev.slice(0, 19)]);
-              setLiveCount((prev) => prev + 1);
+            setEvents((prev) => [newEvent, ...prev.slice(0, 19)]);
 
-              setTimeout(() => {
-                setEvents((prev) =>
-                  prev.map((e) => (e.id === newEvent.id ? { ...e, isNew: false } : e))
-                );
-              }, 3000);
-            }
+            // Remove "new" highlight after 3 seconds
+            setTimeout(() => {
+              setEvents((prev) =>
+                prev.map((e) => (e.id === newEvent.id ? { ...e, isNew: false } : e))
+              );
+            }, 3000);
           }
         }
       )
@@ -177,7 +177,7 @@ export const LiveDownloadFeed: React.FC = () => {
               Live Download Feed
             </CardTitle>
             <CardDescription className="text-sm text-zinc-400 mt-1">
-              Real-time download activity as it happens
+              Real-time download activity from download_logs
             </CardDescription>
           </div>
           <div className="flex items-center gap-2">
@@ -188,10 +188,10 @@ export const LiveDownloadFeed: React.FC = () => {
           </div>
         </div>
 
-        {liveCount > 0 && (
+        {events.length > 0 && (
           <div className="mt-3 flex items-center gap-2 text-xs text-zinc-400">
             <Download className="w-4 h-4" />
-            <span>{liveCount} downloads tracked</span>
+            <span>{events.length} recent downloads</span>
           </div>
         )}
       </CardHeader>
@@ -251,13 +251,6 @@ export const LiveDownloadFeed: React.FC = () => {
                           })}
                         </span>
                       </div>
-
-                      {event.downloader_ip && (
-                        <div className="flex items-center gap-1 text-xs text-zinc-500">
-                          <MapPin className="w-3 h-3" />
-                          <span>{event.downloader_ip.split('.').slice(0, 2).join('.')}.***.***</span>
-                        </div>
-                      )}
                     </div>
 
                     <p className="text-xs text-zinc-500 mt-1">
