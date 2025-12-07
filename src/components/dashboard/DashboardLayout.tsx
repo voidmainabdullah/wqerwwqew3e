@@ -535,7 +535,7 @@ const {
               {/* Radial blend for softer effect */}
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_center,rgba(236,72,153,0.35)_0%,rgba(147,51,234,0.25)_30%,transparent_70%)]" />
               {/* Fade to black at top for smooth transition */}
-              <div className="absolute inset-0 bg-gradient-to-t from-red via-green to-yellow-950" />
+              <div className="absolute inset-0 bg-gradient-to-t from-red-600 via-green-600 to-yellow-950" />
             </div>
             
             <div className="p-3 sm:p-4 md:p-6 lg:p-8 relative z-10">
