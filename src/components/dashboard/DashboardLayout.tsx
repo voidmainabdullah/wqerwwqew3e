@@ -527,19 +527,19 @@ const {
           </header>
 
           {/* Main Content - Responsive padding */}
-          <main className="flex-1 overflow-auto bg-background w-full relative">
-            <div className="p-3 sm:p-4 md:p-6 lg:p-8 bg-stone-950 relative z-10">
-              {children}
+          <main className="flex-1 overflow-auto w-full relative bg-stone-950">
+            {/* Blue-to-Pink Gradient at Bottom - Fixed positioning */}
+            <div className="fixed bottom-0 left-0 right-0 h-[50vh] pointer-events-none z-0">
+              {/* Linear gradient from blue to pink */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-purple-500/25 to-pink-500/30" />
+              {/* Radial blend for softer effect */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_center,rgba(236,72,153,0.35)_0%,rgba(147,51,234,0.25)_30%,transparent_70%)]" />
+              {/* Fade to black at top for smooth transition */}
+              <div className="absolute inset-0 bg-gradient-to-t from-transparent via-stone-950/50 to-stone-950" />
             </div>
             
-            {/* Blue-to-Pink Gradient at Bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-[45%] pointer-events-none z-0">
-              {/* Linear gradient from blue to pink */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-500/15 to-pink-500/20" />
-              {/* Radial blend for softer effect */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_center,rgba(147,51,234,0.25)_0%,transparent_70%)]" />
-              {/* Fade to black at top for smooth transition */}
-              <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-stone-950" />
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 relative z-10">
+              {children}
             </div>
           </main>
         </div>
