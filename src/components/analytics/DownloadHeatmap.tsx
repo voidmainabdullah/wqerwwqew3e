@@ -66,7 +66,8 @@ export const DownloadHeatmap: React.FC = () => {
       let peak = 0;
 
       downloads?.forEach(d => {
-        const date = new Date(d.downloaded_at + 'Z'); // Ensure UTC parsing
+        // Parse the timestamp correctly (it's already in ISO format with timezone)
+        const date = new Date(d.downloaded_at);
         const day = date.getDay(); 
         const hour = date.getHours();
         tempHeatmap[day][hour].count += 1;

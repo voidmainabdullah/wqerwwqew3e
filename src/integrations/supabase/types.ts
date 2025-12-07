@@ -829,6 +829,33 @@ export type Database = {
       }
     }
     Views: {
+      deduplicated_download_logs: {
+        Row: {
+          download_method: string | null
+          downloaded_at: string | null
+          downloader_ip: unknown
+          downloader_user_agent: string | null
+          file_id: string | null
+          id: string | null
+          shared_link_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "download_logs_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "download_logs_shared_link_id_fkey"
+            columns: ["shared_link_id"]
+            isOneToOne: false
+            referencedRelation: "shared_links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       view_backup_requests: {
         Row: {
           download_url: string | null
@@ -921,6 +948,13 @@ export type Database = {
       delete_expired_basic_files: { Args: never; Returns: undefined }
       generate_share_code: { Args: never; Returns: string }
       generate_unique_share_code: { Args: never; Returns: string }
+      get_daily_download_counts: {
+        Args: { p_user_id: string }
+        Returns: {
+          download_count: number
+          download_date: string
+        }[]
+      }
       get_folder_contents: {
         Args: { p_folder_id?: string; p_user_id?: string }
         Returns: {
@@ -934,6 +968,17 @@ export type Database = {
           is_public: boolean
           item_type: string
           name: string
+        }[]
+      }
+      get_link_download_stats: {
+        Args: { p_user_id: string }
+        Returns: {
+          download_count: number
+          file_id: string
+          file_name: string
+          last_download_at: string
+          link_type: string
+          shared_link_id: string
         }[]
       }
       get_my_team_files: {
@@ -999,6 +1044,25 @@ export type Database = {
         Returns: {
           email: string
           user_id: string
+        }[]
+      }
+      get_user_download_heatmap: {
+        Args: { p_user_id: string }
+        Returns: {
+          day_of_week: number
+          download_count: number
+          hour_of_day: number
+        }[]
+      }
+      get_user_download_stats: {
+        Args: { p_user_id: string }
+        Returns: {
+          peak_hour: number
+          peak_hour_count: number
+          today_downloads: number
+          total_downloads: number
+          unique_files_downloaded: number
+          week_downloads: number
         }[]
       }
       get_user_teams: {
