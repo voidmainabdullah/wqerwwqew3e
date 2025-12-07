@@ -531,7 +531,7 @@ const {
             {/* Blue-to-Pink Gradient at Bottom - Fixed positioning */}
             <div className="fixed bottom-0 left-0 right-0 h-[50vh] pointer-events-none z-0">
               {/* Linear gradient from blue to pink */}
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-100/30 bg-stone-950 to-pink-500/30" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white via-stone-950 to-stone-950 opacity-40" />
               {/* Radial blend for softer effect */}
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_center,rgba(236,72,153,0.35)_0%,rgba(147,51,234,0.25)_30%,transparent_70%)]" />
               {/* Fade to black at top for smooth transition */}
