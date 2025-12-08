@@ -208,7 +208,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Hover Title */}
-    <a href="https://www.youtube.com/watch?v=gb5yinCW8hs" target="_blank" rel="noopener noreferrer" className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500">
+    <a href="https://www.youtube.com/watch?v=VrVzpEJgtqY" target="_blank" rel="noopener noreferrer" className="relative z-10 flex flex-col items-center justify-center text-center py-20 md:py-28 transition-all duration-500">
       <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 text-2xl font-semibold opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 tracking-wide drop-shadow-lg">
         Cloud Sync Pro — Lightning Fast Uploads
       </h3>
