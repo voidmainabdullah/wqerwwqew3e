@@ -96,13 +96,18 @@ export default function CodePage() {
         .createSignedUrl(file.storage_path, 60);
       
       if (data) {
-        // Create download link and trigger download
+        // Fetch file as blob to force download
+        const response = await fetch(data.signedUrl);
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        
         const link = document.createElement('a');
-        link.href = data.signedUrl;
+        link.href = blobUrl;
         link.download = file.original_name;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
 
         // Log the download
         await supabase
