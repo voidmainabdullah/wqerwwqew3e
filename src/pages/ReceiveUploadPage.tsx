@@ -121,7 +121,7 @@ export const ReceiveUploadPage: React.FC = () => {
             .toString(36)
             .substring(2)}.${fileExt}`;
 
-          // Upload to storage
+          // Upload to storage (anonymous upload to received folder)
           const { error: storageError } = await supabase.storage
             .from('files')
             .upload(fileName, uploadFile.file, { upsert: false });
@@ -132,36 +132,22 @@ export const ReceiveUploadPage: React.FC = () => {
             prev.map((f, idx) => (idx === i ? { ...f, progress: 60 } : f))
           );
 
-          // Create file record
-          const { data: fileData, error: fileError } = await supabase
-            .from('files')
-            .insert({
-              user_id: receiveRequest.user_id,
-              original_name: uploadFile.file.name,
-              file_size: uploadFile.file.size,
-              file_type: uploadFile.file.type || 'application/octet-stream',
-              storage_path: fileName,
-            })
-            .select()
-            .single();
+          // Use RPC function to create file record, link, and notification (bypasses RLS)
+          const { data: fileId, error: rpcError } = await supabase.rpc('create_received_file', {
+            p_receive_request_id: receiveRequest.id,
+            p_original_name: uploadFile.file.name,
+            p_file_size: uploadFile.file.size,
+            p_file_type: uploadFile.file.type || 'application/octet-stream',
+            p_storage_path: fileName,
+            p_uploader_name: uploaderName || null,
+            p_uploader_email: uploaderEmail || null,
+          });
 
-          if (fileError) throw fileError;
+          if (rpcError) throw rpcError;
 
           setUploadFiles((prev) =>
             prev.map((f, idx) => (idx === i ? { ...f, progress: 80 } : f))
           );
-
-          // Link to receive request
-          const { error: linkError } = await supabase
-            .from('received_files')
-            .insert({
-              receive_request_id: receiveRequest.id,
-              file_id: fileData.id,
-              uploader_name: uploaderName || null,
-              uploader_email: uploaderEmail || null,
-            });
-
-          if (linkError) throw linkError;
 
           setUploadFiles((prev) =>
             prev.map((f, idx) => (idx === i ? { ...f, status: 'success', progress: 100 } : f))
