@@ -945,6 +945,18 @@ export type Database = {
               share_code: string
             }[]
           }
+      create_received_file: {
+        Args: {
+          p_file_size: number
+          p_file_type: string
+          p_original_name: string
+          p_receive_request_id: string
+          p_storage_path: string
+          p_uploader_email?: string
+          p_uploader_name?: string
+        }
+        Returns: string
+      }
       delete_expired_basic_files: { Args: never; Returns: undefined }
       generate_share_code: { Args: never; Returns: string }
       generate_unique_share_code: { Args: never; Returns: string }
