@@ -206,80 +206,127 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="flex items-center gap-3 h-10 px-3 hover:bg-accent/10 transition-all"
+                  className="relative flex items-center gap-3 h-11 px-2 pr-3 rounded-full border border-border/50 bg-background/50 hover:bg-accent/10 hover:border-border transition-all duration-200 group"
                 >
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-primary text-primary-foreground">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col items-start leading-tight">
-                    <span className="text-sm font-medium">{name}</span>
-                    <Badge
-                      variant={
-                        profile?.subscription_tier === "pro"
-                          ? "default"
-                          : "secondary"
-                      }
-                      className="text-xs flex items-center gap-1"
-                    >
-                      {profile?.subscription_tier === "pro" ? (
-                        <>
-                          <LordIcon src={LordIcons.crown} size={12} trigger="hover" primaryColor="#ffffff" /> Pro
-                        </>
-                      ) : (
-                        "Free"
-                      )}
-                    </Badge>
+                  <div className="relative">
+                    <Avatar className="h-8 w-8 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold text-sm">
+                        {initials}
+                      </AvatarFallback>
+                    </Avatar>
+                    {profile?.subscription_tier === "pro" && (
+                      <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-amber-500 ring-2 ring-background flex items-center justify-center">
+                        <LordIcon src={LordIcons.crown} size={8} trigger="hover" primaryColor="#ffffff" />
+                      </span>
+                    )}
                   </div>
+                  <div className="flex flex-col items-start leading-none">
+                    <span className="text-sm font-medium text-foreground">{name}</span>
+                    <span className="text-[10px] text-muted-foreground capitalize">
+                      {profile?.subscription_tier === "pro" ? "Pro Member" : "Free Plan"}
+                    </span>
+                  </div>
+                  <LordIcon 
+                    src={LordIcons.arrowDown} 
+                    size={14} 
+                    trigger="hover" 
+                    primaryColor="currentColor" 
+                    className="text-muted-foreground group-hover:text-foreground transition-colors ml-1" 
+                  />
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent
                 align="end"
-                className="w-56 bg-background/95 border-border backdrop-blur-md"
+                sideOffset={8}
+                className="w-64 p-2 bg-background border-border/80 backdrop-blur-xl shadow-xl rounded-xl"
               >
-                <DropdownMenuLabel>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{name}</span>
-                    <span className="text-xs text-muted-foreground truncate">
-                      {user.email}
-                    </span>
+                {/* Profile Header */}
+                <div className="px-2 py-3 mb-2 rounded-lg bg-gradient-to-br from-muted/50 to-muted/30">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-11 w-11 ring-2 ring-primary/30">
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold">
+                        {initials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-foreground truncate">{name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                      <Badge
+                        variant={profile?.subscription_tier === "pro" ? "default" : "secondary"}
+                        className="mt-1.5 text-[10px] h-5 px-2"
+                      >
+                        {profile?.subscription_tier === "pro" ? (
+                          <span className="flex items-center gap-1">
+                            <LordIcon src={LordIcons.crown} size={10} trigger="hover" primaryColor="#ffffff" /> Pro Plan
+                          </span>
+                        ) : (
+                          "Free Plan"
+                        )}
+                      </Badge>
+                    </div>
                   </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard" className="flex items-center">
-                    <LordIcon src={LordIcons.dashboard} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Dashboard
+                </div>
+
+                <DropdownMenuItem asChild className="rounded-lg h-10 cursor-pointer">
+                  <Link to="/dashboard" className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <LordIcon src={LordIcons.dashboard} size={16} trigger="hover" primaryColor="hsl(var(--primary))" />
+                    </div>
+                    <span className="font-medium">Dashboard</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard/settings" className="flex items-center">
-                    <LordIcon src={LordIcons.settings} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Settings
+                
+                <DropdownMenuItem asChild className="rounded-lg h-10 cursor-pointer">
+                  <Link to="/dashboard/settings" className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center">
+                      <LordIcon src={LordIcons.settings} size={16} trigger="hover" primaryColor="hsl(var(--muted-foreground))" />
+                    </div>
+                    <span className="font-medium">Settings</span>
                   </Link>
                 </DropdownMenuItem>
+
                 {profile?.subscription_tier !== "pro" && (
-                  <DropdownMenuItem asChild>
-                    <Link to="/subscription" className="flex items-center">
-                      <LordIcon src={LordIcons.crown} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Upgrade to Pro
-                    </Link>
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuSeparator className="my-2" />
+                    <DropdownMenuItem asChild className="rounded-lg h-10 cursor-pointer bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20">
+                      <Link to="/subscription" className="flex items-center gap-3">
+                        <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                          <LordIcon src={LordIcons.crown} size={16} trigger="hover" primaryColor="#ffffff" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-amber-600 dark:text-amber-400">Upgrade to Pro</span>
+                          <span className="text-[10px] text-muted-foreground">Unlock all features</span>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
                 )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut} className="flex items-center">
-                  <LordIcon src={LordIcons.logout} size={18} trigger="hover" primaryColor="#ffffff" className="mr-2" /> Sign Out
+
+                <DropdownMenuSeparator className="my-2" />
+                
+                <DropdownMenuItem 
+                  onClick={handleSignOut} 
+                  className="rounded-lg h-10 cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-lg bg-destructive/10 flex items-center justify-center">
+                      <LordIcon src={LordIcons.logout} size={16} trigger="hover" primaryColor="hsl(var(--destructive))" />
+                    </div>
+                    <span className="font-medium">Sign Out</span>
+                  </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <>
-              <Button variant="ghost" asChild>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" asChild className="rounded-full px-4">
                 <Link to="/auth">Login</Link>
               </Button>
-              <Button asChild>
+              <Button asChild className="rounded-full px-5 shadow-lg shadow-primary/25">
                 <Link to="/auth">Get Started</Link>
               </Button>
-            </>
+            </div>
           )}
         </div>
       </div>
