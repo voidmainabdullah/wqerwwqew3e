@@ -25,71 +25,68 @@ const PriceCard: React.FC<PriceCardProps> = ({
   isPopular,
   isCurrent,
   onSubscribe,
-}) => {
-  return (
-    <div
-      className={`relative flex flex-col rounded-2xl p-6 border transition-all ${
-        isPopular
-          ? "bg-gradient-to-br from-purple-600/20 via-purple-600/20 to-purple-500/20 text-white shadow-xl border-transparent"
-          : "bg-zinc-800 border text-gray-100 hover:bg-zinc-800/75"
-      }`}
-    >
-      {isPopular && (
-        <span className="absolute top-4 right-4 bg-white/85 text-gray-900 text-xs px-2 py-1 rounded-full font-semibold">
-          25% OFF
-        </span>
-      )}
+}) => (
+  <div
+    className={`relative flex flex-col rounded-2xl p-6 border transition-all ${
+      isPopular
+        ? "bg-gradient-to-br from-purple-600/20 via-purple-600/20 to-purple-500/20 text-white shadow-xl border-transparent"
+        : "bg-zinc-800 border text-gray-100 hover:bg-zinc-800/75"
+    }`}
+  >
+    {isPopular && (
+      <span className="absolute top-4 right-4 bg-white/85 text-gray-900 text-xs px-2 py-1 rounded-full font-semibold">
+        25% OFF
+      </span>
+    )}
 
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-3xl font-bold mb-1">
-        $ {price} <span className="text-base font-normal">/{period}</span>
-      </p>
-      <p className="text-gray-300 mb-4">{description}</p>
+    <h3 className="text-xl font-semibold mb-2">{title}</h3>
+    <p className="text-3xl font-bold mb-1">
+      $ {price} <span className="text-base font-normal">/{period}</span>
+    </p>
+    <p className="text-gray-300 mb-4">{description}</p>
 
-      <ul className="flex-1 space-y-2 mb-6">
-        {features.map((feat, idx) => (
-          <li key={idx} className="flex items-center space-x-2 text-sm">
-            <span className="text-neutral-400">★</span>
-            <span>{feat}</span>
-          </li>
-        ))}
-      </ul>
+    <ul className="flex-1 space-y-2 mb-6">
+      {features.map((feat, idx) => (
+        <li key={idx} className="flex items-center space-x-2 text-sm">
+          <span className="text-neutral-400">★</span>
+          <span>{feat}</span>
+        </li>
+      ))}
+    </ul>
 
-      {isCurrent ? (
-        <button
-          className="w-full py-2 mt-auto rounded-lg border cursor-not-allowed text-neutral-600"
-          disabled
-        >
-          Your current plan
-        </button>
-      ) : (
-        <button
-          onClick={onSubscribe}
-          className={`w-full py-2 mt-auto rounded-lg font-semibold transition-colors ${
-            isPopular
-              ? "bg-white text-gray-700 hover:brightness-110"
-              : "bg-white text-gray-700 hover:brightness-95"
-          }`}
-        >
-          {isPopular ? `Upgrade to ${title}` : `Get ${title}`}
-        </button>
-      )}
-    </div>
-  );
-};
+    {isCurrent ? (
+      <button
+        className="w-full py-2 mt-auto rounded-lg border cursor-not-allowed text-neutral-600"
+        disabled
+      >
+        Your current plan
+      </button>
+    ) : (
+      <button
+        onClick={onSubscribe}
+        className={`w-full py-2 mt-auto rounded-lg font-semibold transition-colors ${
+          isPopular
+            ? "bg-white text-gray-700 hover:brightness-110"
+            : "bg-white text-gray-700 hover:brightness-95"
+        }`}
+      >
+        {isPopular ? `Upgrade to ${title}` : `Get ${title}`}
+      </button>
+    )}
+  </div>
+);
 
 export const SubscriptionPage: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { isPro, subscriptionEndDate } = useSubscription();
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   // -------------------------------
-  // Paddle Checkout URL toggle
+  // Paddle URLs
   // -------------------------------
   const SANDBOX_CHECKOUT_URL =
-    "https://sandbox-pay.paddle.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez";
+    "https://sandbox-payadd.ple.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez";
   const PRODUCTION_CHECKOUT_URL = "https://checkout.paddle.com/YOUR_PRODUCT_LINK";
 
   const PADDLE_CHECKOUT_URL =
