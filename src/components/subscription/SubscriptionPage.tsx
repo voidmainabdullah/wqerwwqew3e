@@ -41,11 +41,9 @@ const PriceCard: React.FC<PriceCardProps> = ({
       )}
 
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
-
       <p className="text-3xl font-bold mb-1">
         $ {price} <span className="text-base font-normal">/{period}</span>
       </p>
-
       <p className="text-gray-300 mb-4">{description}</p>
 
       <ul className="flex-1 space-y-2 mb-6">
@@ -87,8 +85,17 @@ export const SubscriptionPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const PADDLE_CHECKOUT_URL =
+  // -------------------------------
+  // Paddle Checkout URL toggle
+  // -------------------------------
+  const SANDBOX_CHECKOUT_URL =
     "https://sandbox-pay.paddle.io/hsc_01kbnh9xfbrrjdshk5ppmcff4k_652dx1e709v3e33edy8d8w7rwh1e9hez";
+  const PRODUCTION_CHECKOUT_URL = "https://checkout.paddle.com/YOUR_PRODUCT_LINK";
+
+  const PADDLE_CHECKOUT_URL =
+    process.env.NODE_ENV === "production"
+      ? PRODUCTION_CHECKOUT_URL
+      : SANDBOX_CHECKOUT_URL;
 
   const handleSubscribe = (plan: string) => {
     if (!user) {
@@ -147,7 +154,6 @@ export const SubscriptionPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0b0c0f] flex flex-col items-center py-12 px-4 relative">
-
       {/* CROSS ICON */}
       <button
         onClick={() => navigate("/dashboard")}
