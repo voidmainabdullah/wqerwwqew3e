@@ -237,7 +237,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     <div className="text-left space-y-3">
-      <h4 className=" text-gray-400 dark:text-gray-100 text-lg font-semibold">Ultra Cloud Storage</h4>
+      <h4 className=" text-black dark:text-gray-100 text-lg font-semibold">Ultra Cloud Storage</h4>
       <p className="text-gray-400 text-sm leading-relaxed">
         Experience next-gen speed and security with the most efficient cloud system built for professionals.
       </p>
