@@ -391,44 +391,30 @@ export const Dashboard: React.FC = () => {
                   <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
                 </div>
                 
-                {/* Analytics Cards Grid */}
-                <div className="grid gap-4 md:grid-cols-3">
-                  <div className="rounded-lg p-4 border border-zinc-200  dark:border-zinc-700 bg-neutral-300  dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
-                        <Download className="w-5 h-5 text-zinc-800 dark:text-zinc-400" />
-                      </div>
-                      <div>
-                        <p className="text-slate-800 dark:text-slate-400 text-sm">Total Downloads</p>
-                        <p className="text-black/60 dark:text-white text-2xl font-bold">{stats?.totalDownloads || 0}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
-                        <ShareNetwork className="w-5 h-5 text-zinc-400" />
-                      </div>
-                      <div>
-                        <p className="text-slate-400 text-sm">Active Shares</p>
-                        <p className="text-white text-2xl font-bold">{stats?.totalShares || 0}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
-                        <Files className="w-5 h-5 text-zinc-400" />
-                      </div>
-                      <div>
-                        <p className="text-slate-400 text-sm">Total Files</p>
-                        <p className="text-white text-2xl font-bold">{stats?.totalFiles || 0}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+               {/* Analytics Cards Grid */}
+<div className="grid gap-4 md:grid-cols-3">
+  {[
+    { icon: <Download className="w-5 h-5 text-zinc-800 dark:text-zinc-400" />, label: "Total Downloads", value: stats?.totalDownloads || 0 },
+    { icon: <ShareNetwork className="w-5 h-5 text-zinc-800 dark:text-zinc-400" />, label: "Active Shares", value: stats?.totalShares || 0 },
+    { icon: <Files className="w-5 h-5 text-zinc-800 dark:text-zinc-400" />, label: "Total Files", value: stats?.totalFiles || 0 },
+  ].map((card, idx) => (
+    <div
+      key={idx}
+      className="rounded-lg p-4 border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30"
+    >
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
+          {card.icon}
+        </div>
+        <div>
+          <p className="text-slate-800 dark:text-slate-400 text-sm">{card.label}</p>
+          <p className="text-black/60 dark:text-white text-2xl font-bold">{card.value}</p>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
                 {/* Popular Files */}
                 <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
