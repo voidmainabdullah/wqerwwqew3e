@@ -230,10 +230,10 @@ export const Dashboard: React.FC = () => {
   </div>
 
   {/* Right Side Preview Card */}
-  <div className="hidden md:flex relative flex-col justify-between bg-stone-950 rounded-3xl border border-neutral-800 shadow-xl h-80 w-full md:w-1/3 p-6 hover:shadow-gray-500/20 transition-all duration-500">
+  <div className="hidden md:flex relative flex-col justify-between bg-white dark:bg-stone-950 rounded-3xl border border-neutral-800 shadow-xl h-80 w-full md:w-1/3 p-6 hover:shadow-gray-500/20 transition-all duration-500">
     <div className="relative overflow-hidden rounded-2xl mb-5">
       <img src="/skie.png" alt="Ad Preview" className="w-full h-48 object-cover rounded-2xl hover:scale-105 transition-transform duration-500" />
-      <div className="absolute inset-0 bg-gradient-to-b from-red-600 via-black/20 to-black/60 rounded-2xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 rounded-2xl"></div>
     </div>
 
     <div className="text-left space-y-3">
