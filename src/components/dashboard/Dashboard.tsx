@@ -12,7 +12,7 @@ import { DownloadHeatmap } from "@/components/analytics/DownloadHeatmap";
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
-  totalDownloads: number;
+  totalDownloads: number; 
   storageUsed: number;
   storageLimit: number; 
   subscriptionTier: string;
