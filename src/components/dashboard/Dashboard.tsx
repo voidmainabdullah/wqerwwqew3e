@@ -415,8 +415,7 @@ export const Dashboard: React.FC = () => {
   ))}
 </div>
 
-
-               {/* Popular Files */}
+{/* Popular Files */}
 <div className="rounded-lg p-4 border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
   <h4 className="text-slate-800 dark:text-slate-400 font-medium mb-3 flex items-center gap-2">
     <TrendUp className="w-4 h-4 text-emerald-400" />
@@ -538,18 +537,3 @@ export const Dashboard: React.FC = () => {
     </div>
   </CardContent>
 </Card>
-
-
-            {/* System Status */}
-            <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
-              
-              
-            </Card>
-          </div>
-        </div>
-
-        {/* Bottom Action Cards */}
-        
-      </div>
-    </div>;
-};
