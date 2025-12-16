@@ -435,15 +435,13 @@ export const Dashboard: React.FC = () => {
         </div>
         <span className="text-black/60 dark:text-white text-sm">{file.download_count} downloads</span>
       </div>
-    )) : (
-      <p className="text-slate-400 text-sm">No files uploaded yet</p>
-    )}
+    )) : <p className="text-slate-400 text-sm">No files uploaded yet</p>}
   </div>
 </div>
 
 {/* Quick Actions */}
 <Card className="border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
-  <CardHeader className="border-none">
+  <CardHeader className="border-none border-t">
     <CardTitle className="text-slate-800 dark:text-slate-400 flex items-center gap-2">
       <Lightning className="w-5 h-5 text-amber-400" />
       Quick Actions
@@ -456,12 +454,14 @@ export const Dashboard: React.FC = () => {
         Upload Files
       </Link>
     </Button>
+
     <Button asChild variant="outline" className="w-full bg-stone-950 border text-slate-300 hover:bg-stone-950 hover:text-white h-12 shadow-none">
       <Link to="/code" className="flex items-center gap-2 hover:text-white shadow-lg opacity-80 bg-indigo-700">
         <Download className="w-5 h-5" />
         Receive Files
       </Link>
     </Button>
+
     <Button asChild variant="outline" className="w-full bg-white border text-slate-800 hover:bg-white/80 h-12">
       <Link to="/dashboard/shared" className="flex items-center gap-2">
         <ShareNetwork className="w-5 h-5" />
@@ -473,17 +473,19 @@ export const Dashboard: React.FC = () => {
 
 {/* Storage Overview */}
 <Card className="border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30 text-white">
-  <CardHeader>
+  <CardHeader className="border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
     <CardTitle className="text-slate-800 dark:text-slate-400 flex items-center gap-2">
       <Database className="w-5 h-5 text-blue-400" />
       Storage Overview
     </CardTitle>
   </CardHeader>
-  <CardContent className="space-y-4">
+  <CardContent className="space-y-4 border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
     <div className="space-y-2">
       <div className="flex justify-between text-sm">
         <span className="text-slate-400">Used</span>
-        <span className="text-black/60 dark:text-white font-medium">{formatFileSize(stats?.storageUsed || 0)}</span>
+        <span className="text-black/60 dark:text-white font-medium">
+          {formatFileSize(stats?.storageUsed || 0)}
+        </span>
       </div>
       {!isPro && <>
         <Progress value={storageProgress} className="h-2 bg-slate-600" />
@@ -493,6 +495,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </>}
     </div>
+
     {!isPro && <Button asChild className="w-full bg-stone-950 text-white border-0">
       <Link to="/subscription" className="flex items-center gap-2">
         <Crown className="w-4 h-4 text-amber-300" />
@@ -513,7 +516,7 @@ export const Dashboard: React.FC = () => {
   <CardContent>
     <div className="space-y-3">
       {stats?.recentActivity.length ? stats.recentActivity.map((activity, index) => (
-        <div key={index} className="flex items-center gap-3 p-3 bg-neutral-200 dark:bg-zinc-900/50 rounded-lg">
+        <div key={index} className="flex items-center gap-3 p-3 bg-neutral-300 dark:bg-zinc-900/50 rounded-lg">
           <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
             <Download className="w-4 h-4 text-emerald-400" />
           </div>
