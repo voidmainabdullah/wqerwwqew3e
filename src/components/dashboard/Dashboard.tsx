@@ -178,7 +178,7 @@ export const Dashboard: React.FC = () => {
         </button>
 
         {/* Dropdown Menu - Professional Key Points */}
-        <div id="adDropdown" className="hidden absolute right-0 mt-3 w-56 sm:w-64 bg-neutral-950/95 border border-neutral-800 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md z-30">
+        <div id="adDropdown" className="hidden absolute right-0 mt-3 w-56 sm:w-64 bg-white dark:bg-neutral-950/95 border border-neutral-800 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md z-30">
           <h4 className="text-gray-100 text-sm font-semibold mb-3 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20h9" />
