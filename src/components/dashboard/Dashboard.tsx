@@ -400,7 +400,7 @@ export const Dashboard: React.FC = () => {
                       </div>
                       <div>
                         <p className="text-slate-800 dark:text-slate-400 text-sm">Total Downloads</p>
-                        <p className="text-white text-2xl font-bold">{stats?.totalDownloads || 0}</p>
+                        <p className="text-black dark:text-white text-2xl font-bold">{stats?.totalDownloads || 0}</p>
                       </div>
                     </div>
                   </div>
