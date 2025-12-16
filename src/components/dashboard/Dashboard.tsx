@@ -150,8 +150,8 @@ export const Dashboard: React.FC = () => {
     <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4 bg-white  dark:bg-stone-950 to-stone-950 border-none">
 
   {/* Interactive Video Ad Card */}
-  <div className="relative overflow-hidden bg-red-600 dark:bg-stone-950 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
-
+  <div className="relative overflow-hidden  dark:bg-stone-950 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
+ 
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe className="w-full h-80 object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0" title="Ad Video" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe> 
