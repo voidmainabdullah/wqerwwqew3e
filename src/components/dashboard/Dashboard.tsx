@@ -155,9 +155,9 @@ export const Dashboard: React.FC = () => {
     {/* Background Video */}
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
       <iframe className="w-full h-80 object-cover scale-105 opacity-85 transition-all duration-500 group-hover:opacity-100" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&modestbranding=1&showinfo=0" title="Ad Video" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe> 
-      <div className="absolute inset-0 bg-red-600 dark:bg-stone-900 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px] bg-inherit"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-neutral-900/40 to-neutral-800/70 group-hover:from-transparent group-hover:to-transparent transition-all duration-500 backdrop-blur-[1px] bg-inherit"></div>
     </div>
-
+ 
     {/* Top Bar (Ad Label + Dropdown Menu) */}
     <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 flex items-center justify-between z-20">
       <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-neutral-800 dark:bg-neutral-950/80 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
