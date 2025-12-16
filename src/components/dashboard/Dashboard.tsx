@@ -396,7 +396,7 @@ export const Dashboard: React.FC = () => {
                   <div className="rounded-lg p-4 border border-zinc-200  dark:border-zinc-700 bg-neutral-300  dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
-                        <Download className="w-5 h-5 text-zinc-400" />
+                        <Download className="w-5 h-5 text-zinc-800 dark:text-zinc-400" />
                       </div>
                       <div>
                         <p className="text-slate-800 dark:text-slate-400 text-sm">Total Downloads</p>
