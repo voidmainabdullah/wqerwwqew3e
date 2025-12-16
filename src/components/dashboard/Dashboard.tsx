@@ -385,7 +385,7 @@ export const Dashboard: React.FC = () => {
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-white text-xl font-semibold">Live Analytics</h3>
+                    <h3 className="text-black dark:text-white text-xl font-semibold">Live Analytics</h3>
                     <p className="text-slate-400">Real-time file sharing performance</p>
                   </div>
                   <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
