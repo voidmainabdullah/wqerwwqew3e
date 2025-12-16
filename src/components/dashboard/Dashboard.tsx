@@ -244,7 +244,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     <div className="mt-5">
-      <a href="https://www.youtube.com/watch?v=b5Wu9ypTKqM" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-850 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300">
+      <a href="https://www.youtube.com/watch?v=b5Wu9ypTKqM" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-neutral-600 text-gray-200 font-semibold border border-neutral-700 hover:from-neutral-700 hover:to-neutral-600 hover:text-white transition-all duration-300">
         Learn More
         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
