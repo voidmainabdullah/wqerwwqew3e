@@ -300,7 +300,7 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           {/* Shares Card */}
-          <Card className="bg-stone-950 border border border-zinc-700/40  transition-all duration-300">
+          <Card className=" bg-red-600 dark:bg-stone-950 border border border-zinc-700/40  transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
                 <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
