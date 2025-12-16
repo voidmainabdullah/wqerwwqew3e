@@ -160,7 +160,7 @@ export const Dashboard: React.FC = () => {
 
     {/* Top Bar (Ad Label + Dropdown Menu) */}
     <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 flex items-center justify-between z-20">
-      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-white/70 dark:bg-neutral-950/80 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
+      <span className="text-xs sm:text-sm font-semibold text-gray-200 bg-neutral-900 dark:bg-neutral-950/80 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full border border-neutral-800 shadow-sm">
         Ad · Sponsored
       </span>
 
