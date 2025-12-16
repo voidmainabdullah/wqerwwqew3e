@@ -321,7 +321,7 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           {/* Downloads Card */}
-          <Card className="bg-stone-950 border border border-zinc-700/40  hover:border-slate-500/50 transition-all duration-300">
+          <Card className=" bg-white dark:bg-stone-950 border border border-zinc-700/40  hover:border-slate-500/50 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div>
                 <CardTitle className="text-slate-400 text-sm font-medium uppercase tracking-wide">
