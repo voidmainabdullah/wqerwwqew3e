@@ -416,142 +416,122 @@ export const Dashboard: React.FC = () => {
 </div>
 
 
-                {/* Popular Files */}
-                <div className="rounded-lg p-4 border  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
-                  <h4 className="text-white font-medium mb-3 flex items-center gap-2">
-                    <TrendUp className="w-4 h-4 text-emerald-400" />
-                    Popular Files
-                  </h4>
-                  <div className="space-y-2">
-                    {stats?.popularFiles.length ? stats.popularFiles.slice(0, 3).map((file, index) => <div key={index} className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded bg-blue-500/20 flex items-center justify-center">
-                            <Files className="w-3 h-3 text-blue-400" />
-                          </div>
-                          <span className="text-slate-300 text-sm truncate max-w-[150px]">
-                            {file.original_name}
-                          </span>
-                        </div>
-                        <span className="text-sm text-stone-400">{file.download_count} downloads</span>
-                      </div>) : <p className="text-slate-400 text-sm">No files uploaded yet</p>}
-                  </div>
-                </div>
-              </div>
-            </div>
+               {/* Popular Files */}
+<div className="rounded-lg p-4 border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
+  <h4 className="text-slate-800 dark:text-slate-400 font-medium mb-3 flex items-center gap-2">
+    <TrendUp className="w-4 h-4 text-emerald-400" />
+    Popular Files
+  </h4>
+  <div className="space-y-2">
+    {stats?.popularFiles.length ? stats.popularFiles.slice(0, 3).map((file, index) => (
+      <div key={index} className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded bg-blue-500/20 flex items-center justify-center">
+            <Files className="w-3 h-3 text-blue-400" />
           </div>
+          <span className="text-slate-800 dark:text-slate-400 text-sm truncate max-w-[150px]">
+            {file.original_name}
+          </span>
+        </div>
+        <span className="text-black/60 dark:text-white text-sm">{file.download_count} downloads</span>
+      </div>
+    )) : (
+      <p className="text-slate-400 text-sm">No files uploaded yet</p>
+    )}
+  </div>
+</div>
 
-          {/* Right Column - Activity and Actions */}
-          <div className="space-y-8">
-            {/* Quick Actions */}
-            <Card className="border border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
-              <CardHeader className="border-none border-t">
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Lightning className="w-5 h-5 text-amber-400" />
-                  Quick Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 ">
-                <Button asChild className="w-full bg-stone-950 hover:bg-stone-700 text-white border-0 h-12">
-                  <Link to="/dashboard/upload" className="flex items-center gap-2 shadow-inner">
-                    <Upload className="w-5 h-5" />
-                    Upload Files
-                  </Link>
-                </Button>
-                
-                <Button asChild variant="outline" className="w-full bg-stone-950 border  text-slate-300 hover:bg-stone-950 hober:text-white h-12 shadow-none">
-                  <Link to="/code" className="flex items-center gap-2 hover:text-white shadow-lg opacity-80 bg-indigo-700">
-                    <Download className="w-5 h-5" />
-                    Receive Files
-                  </Link>
-                </Button>
-                
-                <Button asChild variant="outline" className="w-full bg-white border text-slate-800 hover:bg-white/80 h-12">
-                  <Link to="/dashboard/shared" className="flex items-center gap-2">
-                    <ShareNetwork className="w-5 h-5" />
-                    Manage Shares
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+{/* Quick Actions */}
+<Card className="border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
+  <CardHeader className="border-none">
+    <CardTitle className="text-slate-800 dark:text-slate-400 flex items-center gap-2">
+      <Lightning className="w-5 h-5 text-amber-400" />
+      Quick Actions
+    </CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-3">
+    <Button asChild className="w-full bg-stone-950 hover:bg-stone-700 text-white border-0 h-12">
+      <Link to="/dashboard/upload" className="flex items-center gap-2 shadow-inner">
+        <Upload className="w-5 h-5" />
+        Upload Files
+      </Link>
+    </Button>
+    <Button asChild variant="outline" className="w-full bg-stone-950 border text-slate-300 hover:bg-stone-950 hover:text-white h-12 shadow-none">
+      <Link to="/code" className="flex items-center gap-2 hover:text-white shadow-lg opacity-80 bg-indigo-700">
+        <Download className="w-5 h-5" />
+        Receive Files
+      </Link>
+    </Button>
+    <Button asChild variant="outline" className="w-full bg-white border text-slate-800 hover:bg-white/80 h-12">
+      <Link to="/dashboard/shared" className="flex items-center gap-2">
+        <ShareNetwork className="w-5 h-5" />
+        Manage Shares
+      </Link>
+    </Button>
+  </CardContent>
+</Card>
 
-            {/* Storage Overview */}
-            <Card className=" border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30 text-white bg-neutral-800">
-              <CardHeader className=" border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30 ">
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Database className="w-5 h-5 text-blue-400" />
-                  Storage Overview
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Used</span>
-                    <span className="text-white font-medium">
-                      {formatFileSize(stats?.storageUsed || 0)}
-                    </span>
-                  </div>
-                  {!isPro && <>
-                      <Progress value={storageProgress} className="h-2 bg-slate-600" />
-                      <div className="flex justify-between text-xs">
-                        <span className="text-slate-500">
-                          {storageProgress.toFixed(1)}% used
-                        </span>
-                        <span className="text-slate-500">
-                          {formatFileSize(stats?.storageLimit || 0)} total
-                        </span>
-                      </div>
-                    </>}
-                </div>
-                
-                {!isPro && <Button asChild className="w-full bg-stone-950 text-white text-white border-0">
-                    <Link to="/subscription" className="flex items-center gap-2 ">
-                      <Crown className="w-4 h-4 text-amber-300" />
-                      Upgrade to Pro 
-                    </Link>
-                  </Button>}
-              </CardContent>
-            </Card>
+{/* Storage Overview */}
+<Card className="border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30 text-white">
+  <CardHeader>
+    <CardTitle className="text-slate-800 dark:text-slate-400 flex items-center gap-2">
+      <Database className="w-5 h-5 text-blue-400" />
+      Storage Overview
+    </CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    <div className="space-y-2">
+      <div className="flex justify-between text-sm">
+        <span className="text-slate-400">Used</span>
+        <span className="text-black/60 dark:text-white font-medium">{formatFileSize(stats?.storageUsed || 0)}</span>
+      </div>
+      {!isPro && <>
+        <Progress value={storageProgress} className="h-2 bg-slate-600" />
+        <div className="flex justify-between text-xs">
+          <span className="text-slate-500">{storageProgress.toFixed(1)}% used</span>
+          <span className="text-slate-500">{formatFileSize(stats?.storageLimit || 0)} total</span>
+        </div>
+      </>}
+    </div>
+    {!isPro && <Button asChild className="w-full bg-stone-950 text-white border-0">
+      <Link to="/subscription" className="flex items-center gap-2">
+        <Crown className="w-4 h-4 text-amber-300" />
+        Upgrade to Pro
+      </Link>
+    </Button>}
+  </CardContent>
+</Card>
 
-            {/* Recent Activity */}
-            <Card className=" border-zinc-700 bg-gradient-to-br from-black to-zinc-800 border">  
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-emerald-400" />
-                  Recent Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {stats?.recentActivity.length ? stats.recentActivity.map((activity, index) => <div key={index} className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                          <Download className="w-4 h-4 text-emerald-400" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium truncate">
-                             {activity.files?.original_name || 'Unknown file'}
-                          </p>
-                          <p className="text-slate-400 text-xs">
-                            {new Date(activity.downloaded_at).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>) : <div className="text-center py-6 text-slate-400">
-                      <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">No recent activity</p>
-                    </div>}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* System Status */}
-            <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
-              
-              
-            </Card>
+{/* Recent Activity */}
+<Card className="border border-zinc-200 dark:border-zinc-700 bg-neutral-300 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
+  <CardHeader>
+    <CardTitle className="text-slate-800 dark:text-slate-400 flex items-center gap-2">
+      <Activity className="w-5 h-5 text-emerald-400" />
+      Recent Activity
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-3">
+      {stats?.recentActivity.length ? stats.recentActivity.map((activity, index) => (
+        <div key={index} className="flex items-center gap-3 p-3 bg-neutral-200 dark:bg-zinc-900/50 rounded-lg">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+            <Download className="w-4 h-4 text-emerald-400" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-black/60 dark:text-white text-sm font-medium truncate">
+              {activity.files?.original_name || 'Unknown file'}
+            </p>
+            <p className="text-slate-400 text-xs">
+              {new Date(activity.downloaded_at).toLocaleDateString()}
+            </p>
           </div>
         </div>
-
-        {/* Bottom Action Cards */}
-        
-      </div>
-    </div>;
-};
+      )) : (
+        <div className="text-center py-6 text-slate-400">
+          <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
+          <p className="text-sm">No recent activity</p>
+        </div>
+      )}
+    </div>
+  </CardContent>
+</Card>
