@@ -535,9 +535,7 @@ export const Dashboard: React.FC = () => {
     </div>
   </CardContent>
 </Card>
-
-
-            {/* System Status */}
+      {/* System Status */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600/50">
               
               
