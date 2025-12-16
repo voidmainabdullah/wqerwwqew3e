@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"; 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -12,9 +12,9 @@ import { DownloadHeatmap } from "@/components/analytics/DownloadHeatmap";
 interface DashboardStats {
   totalFiles: number;
   totalShares: number;
-  totalDownloads: number; 
+  totalDownloads: number;
   storageUsed: number;
-  storageLimit: number; 
+  storageLimit: number;
   subscriptionTier: string;
   recentActivity: any[];
   popularFiles: any[];
@@ -561,7 +561,7 @@ export const Dashboard: React.FC = () => {
               
               
             </Card>
-          </div> 
+          </div>
         </div>
 
         {/* Bottom Action Cards */}
