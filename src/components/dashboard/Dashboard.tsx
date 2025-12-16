@@ -147,7 +147,7 @@ export const Dashboard: React.FC = () => {
     </div>
 
     {/* Ultra Professional Ad Layout */}
-    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4  bg-stone-950 to-stone-950 border-none">
+    <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center w-full max-w-6xl mx-auto p-4 bg-white dark:bg-stone-950 to-stone-950 border-none">
 
   {/* Interactive Video Ad Card */}
   <div className="relative overflow-hidden  bg-stone-950 rounded-3xl border border-neutral-800 shadow-2xl w-full md:w-2/3 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-gray-500/20 h-[300px]">
