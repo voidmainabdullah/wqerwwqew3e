@@ -393,7 +393,7 @@ export const Dashboard: React.FC = () => {
                 
                 {/* Analytics Cards Grid */}
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="rounded-lg p-4 border  border-zinc-700 bg-neutral-100 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
+                  <div className="rounded-lg p-4 border  border-zinc-700 bg-neutral-400 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-transparent">
                         <Download className="w-5 h-5 text-zinc-400" />
