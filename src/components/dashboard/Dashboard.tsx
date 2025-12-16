@@ -380,7 +380,7 @@ export const Dashboard: React.FC = () => {
             <DownloadHeatmap />
 
             {/* Real-time Analytics Component */}
-            <div className="border rounded-xl p-6  border-zinc-700 bg-gradient-to-br from-black to-zinc-800/30">
+            <div className="border rounded-xl p-6  border-zinc-700 bg-red-600 dark:bg-gradient-to-br dark:from-black dark:to-zinc-800/30">
               <div className="space-y-6 bg-transparent">
                 {/* Analytics Header */}
                 <div className="flex items-center justify-between">
